@@ -1,0 +1,459 @@
+{
+  "state": "running",
+  "error": null,
+  "uptime_seconds": 4,
+  "processes": {
+    "engine": {
+      "pid": 95065,
+      "returncode": null
+    }
+  },
+  "native_connected": true,
+  "retail_ready": false,
+  "browser": {
+    "online": 0,
+    "lobby": [],
+    "byGame": {
+      "jk1": {
+        "online": 0,
+        "lobby": []
+      },
+      "mots": {
+        "online": 0,
+        "lobby": []
+      }
+    },
+    "games": [
+      {
+        "name": "JK Cross Server",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 8,
+        "mod": "",
+        "id": 1,
+        "game": "jk1",
+        "players": 0,
+        "names": []
+      }
+    ]
+  },
+  "session": {
+    "name": "JK Cross Server",
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "locked": false,
+    "max": 8,
+    "players": 0,
+    "mod": "",
+    "flags": 128,
+    "tick_ms": 100,
+    "game": "jk"
+  },
+  "preflight": {
+    "game": "jk",
+    "episode": "JK1MP.GOB",
+    "map": "m2.jkl",
+    "episode_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+    "catalog": {
+      "episodes": [
+        {
+          "episode": "JK1MP",
+          "file": "JK1MP.GOB",
+          "maps": [
+            "m10.jkl",
+            "m2.jkl",
+            "m4.jkl",
+            "m5.jkl",
+            "m_boss15.jkl",
+            "m_boss17.jkl"
+          ],
+          "type": 2,
+          "title": "Jedi Training",
+          "size": 3337481
+        }
+      ],
+      "errors": []
+    },
+    "note": "Archive hashes identify content; connected gameplay is a separate check."
+  },
+  "run_directory": "/workspace/scratch/66b0203ff71a/research/controller_state/runs/20261024T202808Z-a23e2f",
+  "logs": [
+    {
+      "time": "2026-10-24T20:28:08+00:00",
+      "source": "manager",
+      "text": "Started engine (PID 95065)"
+    },
+    {
+      "time": "2026-10-24T20:28:08+00:00",
+      "source": "engine",
+      "text": "error: XDG_RUNTIME_DIR is invalid or not set in the environment."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Recreating SDL2 Window!"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkGob_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkRes_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: stdFileUtil_NewFind mods/*.gob"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: stdFileUtil_NewFind resource//*.gob"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: Gob opened `resource/res1.gob`."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: Gob loaded GOB file `resource/res1.gob`..."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: Gob opened `resource/res2.gob`."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: Gob loaded GOB file `resource/res2.gob`..."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: Windows_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkStrings_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Premature 'END' found after only 787 lines in 'ui\\jkstrings.uni'.  Check number in 'MSG xxx' header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Premature 'END' found after only 1 lines in 'ui\\openjkdf2_i8n.uni'.  Check number in 'MSG xxx' header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Premature 'END' found after only 100 lines in 'ui\\openjkdf2.uni'.  Check number in 'MSG xxx' header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: sithCvar_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: rdStartup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkGui_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkGuiMultiplayer_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkGuiNetHost_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkGuiSetup_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkGuiMain_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Premature 'END' found after only 25 lines in 'misc\\sithStrings.uni'.  Check number in 'MSG xxx' header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Loaded libGameNetworkingSockets.so successfully."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkDev_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkGame_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkControl_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Free SDL joysticks..."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Free SDL joysticks..."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "SDL has 0 joysticks."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkHudInv_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkDSS_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkCutscene_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Premature 'END' found after only 187 lines in 'ui\\cutStrings.uni'.  Check number in 'MSG xxx' header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: jkCredits_Startup"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Premature 'END' found after only 451 lines in 'ui\\credits.uni'.  Check number in 'MSG xxx' header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Autostarting level: `m2.jkl`"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: sithWorld_Load -> static.jkl"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section copyright."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section sounds."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section materials."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.001000 seconds to parse section soundclass."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.018000 seconds to parse section models."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section sprites."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section keyframes."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.032000 seconds to parse section animclass."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section cogscripts."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.193000 seconds to parse section cogs."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Updating texture cache..."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "GATEWAY_LISTEN 127.0.0.1:46010 protocol=1"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: Gob opened `episode/JK1MP.gob`."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: Gob loaded GOB file `episode/JK1MP.gob`..."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "Premature 'END' found after only 6 lines in 'misc\\cogStrings.uni'.  Check number in 'MSG xxx' header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "OpenJKDF2: sithWorld_Load -> m2.jkl"
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section jk."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section copyright."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section header."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.003000 seconds to parse section sounds."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.022000 seconds to parse section materials."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.016000 seconds to parse section georesource."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.006000 seconds to parse section sectors."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section aiclass."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.059000 seconds to parse section models."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section sprites."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.027000 seconds to parse section keyframes."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section animclass."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.002000 seconds to parse section soundclass."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.048000 seconds to parse section cogscripts."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.210000 seconds to parse section cogs."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.001000 seconds to parse section templates."
+    },
+    {
+      "time": "2026-10-24T20:28:09+00:00",
+      "source": "engine",
+      "text": "0.000000 seconds to parse section things."
+    },
+    {
+      "time": "2026-10-24T20:28:10+00:00",
+      "source": "engine",
+      "text": "Updating texture cache..."
+    },
+    {
+      "time": "2026-10-24T20:28:10+00:00",
+      "source": "manager",
+      "text": "Session running; compatibility qualification is recorded separately in qa/."
+    }
+  ],
+  "proof_scope": "native core and HTTP gateway startup only"
+}

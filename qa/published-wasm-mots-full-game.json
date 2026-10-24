@@ -1,0 +1,78 @@
+{
+  "qualification": "Published unchanged JKDF2Web full game in MotS mode against dedicated native engine",
+  "recorded_utc": "2026-10-24T21:06:10.029969+00:00",
+  "client": {
+    "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+    "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+    "path": "cloudflare-38/public",
+    "displayed_engine_version": "v0.9.9 / 97f905da",
+    "engine_patched": false,
+    "bundle_patched": false,
+    "browser": "Chromium 140.0.7339.16",
+    "files": {
+      "index.html": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+      "openjkdf2.js": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+      "openjkdf2.wasm": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6"
+    },
+    "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c"
+  },
+  "game": "mots",
+  "episode": "JKM_MP",
+  "map": "mdm02_freezer.jkl",
+  "character": {
+    "player": "WebMots",
+    "multiplayer_character": "WebMotsJedi",
+    "format": "MotS personalities",
+    "personality": "Jedi",
+    "rank": 7
+  },
+  "engine_session": {
+    "name": "Cross Server MotS Test",
+    "episode": "JKM_MP",
+    "map": "mdm02_freezer.jkl",
+    "locked": false,
+    "max": 7,
+    "transport_slots": 8,
+    "players": 1,
+    "mod": "",
+    "flags": 128,
+    "tick_ms": 100,
+    "game": "mots"
+  },
+  "engine_log_evidence": [
+    {
+      "time": "2026-10-24T21:03:05+00:00",
+      "source": "engine",
+      "text": "WebMots has joined the game"
+    },
+    {
+      "time": "2026-10-24T21:04:32+00:00",
+      "source": "engine",
+      "text": "WebMots says 'web_mots_crossplay_ok'"
+    }
+  ],
+  "browser_transport": "WebSocket fallback",
+  "browser_stats": {
+    "dcSent": 0,
+    "dcRecv": 0,
+    "wsSent": 381,
+    "wsRecv": 1122,
+    "wsSkipped": 504
+  },
+  "canonical_player_id": 17378660,
+  "checks": {
+    "original_mots_files_selected_in_normal_folder_picker": true,
+    "unmodified_same_js_wasm_binary_as_jk_test": true,
+    "engine_acknowledged_full_join": true,
+    "fully_joined_humans_at_first_capture": 1,
+    "carbon_freeze_chamber_rendered": true,
+    "movement_key_exercised": true,
+    "chat_observed_by_server": "WebMots says 'web_mots_crossplay_ok'"
+  },
+  "limits": [
+    "Single-browser MotS test; simultaneous native/retail/browser evidence is separate.",
+    "The team intentionally restarted the server after this successful run to load additional retail chat translation.",
+    "Full game used WebSocket fallback; separate socket tests validate RTC channels.",
+    "No game assets or game screenshots are included."
+  ]
+}

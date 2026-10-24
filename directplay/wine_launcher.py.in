@@ -1,0 +1,39 @@
+# WINE and PREFIX are filled in by setup_wine.py.
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+if len(sys.argv) < 2:
+    raise SystemExit("Pass a Windows executable to this launcher.")
+configured = os.environ.get("WINEPREFIX")
+if configured and str(Path(configured).expanduser().resolve()) != PREFIX:
+    raise SystemExit("Wine prefix differs from this launcher's prepared prefix.")
+env = os.environ.copy()
+env.update(WINEPREFIX=PREFIX, WINEARCH="win32",
+           WINEDLLOVERRIDES="dplay,dplayx,dpwsockx=n;dplaysvr.exe=n;mscoree,mshtml=")
+env.setdefault("WINEDEBUG", "-all")
+helper_path = str(Path(PREFIX) / "drive_c/windows/system32/dplaysvr.exe")
+helper = subprocess.Popen([WINE, helper_path], env=env)
+try:
+    probe = subprocess.run([WINE, str(Path(PREFIX) / "wait_helper.exe")], env=env, timeout=25)
+    if probe.returncode:
+        raise SystemExit("Original DirectPlay helper did not become ready")
+    child = subprocess.Popen([WINE, *sys.argv[1:]], env=env)
+    result = child.wait()
+finally:
+    if helper.poll() is None:
+        try:
+            subprocess.run([WINE, str(Path(PREFIX) / "wait_helper.exe"), "--stop"], env=env, timeout=8)
+        except subprocess.TimeoutExpired:
+            pass
+        try:
+            helper.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            helper.terminate()
+            try:
+                helper.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                helper.kill()
+                helper.wait()
+raise SystemExit(result)

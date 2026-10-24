@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admin-token" content="__ADMIN_TOKEN__">
+  <title>JK Cross Server</title>
+  <link rel="stylesheet" href="/ui/style.css">
+  <script src="/ui/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><div><p class="eyebrow">DEDICATED SERVER CONTROL</p><h1>JK Cross Server<span class="dot">.</span></h1>
+      <p class="subtitle">Retail · OpenJKDF2 · JKDF2Web</p></div>
+      <div class="statebox"><span id="state" class="badge">Connecting</span><small id="uptime">Local control panel</small></div>
+    </header>
+    <section class="status-strip" aria-label="Transport status">
+      <div><span class="stat-label">Native engine</span><strong id="native-status">—</strong></div>
+      <div><span class="stat-label">Retail bridge</span><strong id="retail-status">—</strong></div>
+      <div><span class="stat-label">Browser gateway</span><strong id="web-status">—</strong></div>
+      <div><span class="stat-label">Players</span><strong id="player-status">—</strong></div>
+    </section>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <form id="settings">
+      <fieldset id="settings-fields">
+        <section class="card"><div class="section-heading"><div><p class="eyebrow">01 / SESSION</p><h2>Choose the game</h2></div><button type="button" id="catalog" class="quiet">Read map catalog</button></div>
+          <div class="grid three">
+            <label>Game<select name="game"><option value="jk">Jedi Knight: Dark Forces II</option><option value="mots">Mysteries of the Sith</option></select></label>
+            <label class="span-two">Server name<input name="name" maxlength="31" required></label>
+            <label>Episode<input name="episode" list="episodes" required><datalist id="episodes"></datalist></label>
+            <label>Map<input name="map" list="maps" required><datalist id="maps"></datalist></label>
+            <label>Legacy game password<input name="password" type="password" autocomplete="new-password" maxlength="31" placeholder="Optional client prompt"></label>
+          </div>
+          <p class="hint">All players need matching game content. JK and MotS run as separate sessions. The legacy password prompt is not an access-control boundary across these transports.</p>
+          <div class="grid five compact">
+            <label>Player slots<input name="max_players" type="number" min="1" max="31" required></label>
+            <label>Force rank<input name="rank" type="number" min="0" max="8" required></label>
+            <label>Tick interval · ms<input name="tick_ms" type="number" min="10" max="1000" required></label>
+            <label>Score limit<input name="score_limit" type="number" min="0" max="9999" required></label>
+            <label>Time limit · min<input name="time_limit" type="number" min="0" max="9999" required></label>
+          </div>
+          <p id="rank-hint" class="hint" hidden>MotS defaults to personality mode. Use rank 7 for compatibility with all clients; lower ranks require ranked Jedi mode (additional game flag 4096).</p>
+          <div class="checks"><label><input name="teams" type="checkbox"> Team game</label><label><input name="auto_restart" type="checkbox"> Restart after a component failure</label></div>
+          <p class="hint">A limit of 0 disables that limit. Retail sessions allow up to 15 human slots and a 100–300 ms tick interval.</p>
+        </section>
+        <section class="card"><div class="section-heading"><div><p class="eyebrow">02 / CONTENT</p><h2>Local files</h2></div></div>
+          <div class="grid two">
+            <label class="span-two">Game data folder<input name="game_data" placeholder="Folder containing resource/ and episode/" spellcheck="false"></label>
+            <label>Dedicated engine executable<input name="engine" placeholder="Full path to the built server engine" spellcheck="false"></label>
+            <label>Unchanged browser build folder<input name="web_client" placeholder="runtime/browser-client" spellcheck="false"></label>
+            <label class="span-two">Mod folder<input name="mod_dir" placeholder="Optional; the active mod loaded by the server" spellcheck="false"></label>
+          </div>
+          <div class="checks"><label><input name="web_asset_downloads" type="checkbox"> Send missing custom maps and mods to browser players</label></div>
+          <p class="hint">The browser verifies downloaded files and restarts when a mod change requires it. Players still need their own original game data. Retail and native players install matching custom content themselves.</p>
+        </section>
+        <section class="card"><div class="section-heading"><div><p class="eyebrow">03 / CONNECTIONS</p><h2>Client transports</h2></div></div>
+          <div class="checks"><label><input name="retail_enabled" type="checkbox"> Retail DirectPlay</label><label><input name="web_enabled" type="checkbox"> Browser WebSocket + WebRTC</label></div>
+          <div class="grid three">
+            <label>OpenJKDF2 port<input name="native_port" type="number" min="1024" max="65535" required></label>
+            <label>Browser listen address<input name="web_bind" spellcheck="false" required></label>
+            <label>Browser port<input name="web_port" type="number" min="1024" max="65535" required></label>
+          </div>
+          <p class="hint">127.0.0.1 accepts local browser clients. Use 0.0.0.0 to listen on the server's network interfaces. The control panel always stays local.</p>
+          <details><summary>Retail bridge and advanced settings</summary><div class="grid two">
+            <label class="span-two">DirectPlay bridge executable<input name="directplay_bridge" spellcheck="false"></label>
+            <label>Wine executable · Linux<input name="wine" spellcheck="false"></label>
+            <label>Wine prefix<input name="wine_prefix" spellcheck="false" placeholder="Optional"></label>
+            <label>Native IPC port<input name="ipc_port" type="number" min="1024" max="65535" required></label>
+            <label>Retail broker port<input name="broker_port" type="number" min="1024" max="65535" required></label>
+            <label>Additional game flags<input name="game_flags" type="number" min="0" max="65535" required></label>
+            <label>Allowed browser origins<textarea name="web_origins" rows="2" placeholder="Optional; one exact https://origin per line" spellcheck="false"></textarea></label>
+            <label class="span-two">Browser STUN / TURN servers · JSON<textarea name="web_ice_servers" rows="3" placeholder='[]' spellcheck="false"></textarea><span class="hint">Optional. Each entry has urls and, for TURN, username and credential. Empty [] uses direct connections.</span></label>
+          </div></details>
+        </section>
+      </fieldset>
+      <div class="actions"><p id="edit-hint">Save settings, check the files, then start the session.</p><div><button type="button" id="preflight" class="quiet">Check files</button><button type="submit" id="save" class="quiet">Save settings</button><button type="button" id="start" class="primary">Start server</button><button type="button" id="stop" class="danger" disabled>Stop</button></div></div>
+    </form>
+    <section id="asset-panel" class="card" hidden><div class="section-heading"><div><p class="eyebrow">LIVE / CONTENT</p><h2>Browser downloads</h2></div><span id="asset-policy" class="badge">—</span></div><div id="asset-offers" class="grid two"></div><p id="asset-transfer" class="hint" aria-live="polite"></p></section>
+    <section class="card logs"><div class="section-heading"><div><p class="eyebrow">LIVE / OUTPUT</p><h2>Server log</h2></div><a id="play-link" href="#" target="_blank" rel="noopener" hidden>Open browser client ↗</a></div><pre id="logs" aria-label="Server log">Waiting for status…</pre></section>
+    <footer>Engine and transport readiness are shown here. In-game compatibility evidence is recorded separately in the project documentation.</footer>
+  </main>
+</body>
+</html>

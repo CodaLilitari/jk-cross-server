@@ -1,0 +1,34 @@
+{
+  "unix": 1792877701.9800324,
+  "read_only": true,
+  "source": "Original callback0x422e20 stores5 UTF16 lines at0x5b5218 stride0x214",
+  "lines": [
+    {
+      "slot": 0,
+      "text": "WebMots says, 'web_boundary_check'",
+      "state": 19274890
+    },
+    {
+      "slot": 1,
+      "text": "You say, 'retail_mots_crossplay_ok'",
+      "state": 18499993
+    },
+    {
+      "slot": 2,
+      "text": "You say, 'retail_mots_crossplay_ok'",
+      "state": -2
+    },
+    {
+      "slot": 3,
+      "text": "0.035000 seconds to parse section things.\n",
+      "state": -2
+    },
+    {
+      "slot": 4,
+      "text": "0.010000 seconds to parse section archlighting.\n",
+      "state": -2
+    }
+  ],
+  "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+  "observer_note": "Original callback pointer at0x8d8014 read as0x422e20. Disassembly verifies line base/stride; no writes or hooks."
+}

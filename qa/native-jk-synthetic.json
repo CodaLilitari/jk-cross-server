@@ -1,0 +1,22 @@
+{
+  "mode": "jk",
+  "synthetic_peer": true,
+  "gameplay_certification": false,
+  "mode_word": 0,
+  "descriptor_bytes": 240,
+  "empty_active_players": 0,
+  "peer_id": 65536,
+  "welcome_received": true,
+  "packet_counts": {
+    "41": 3,
+    "36": 3,
+    "32": 2,
+    "3": 2,
+    "11": 139,
+    "1": 139,
+    "33": 1
+  },
+  "active_after_sync": 1,
+  "active_after_remove": 0,
+  "engine_returncode_after_termination": -15
+}

@@ -1,0 +1,959 @@
+{
+  "qualification": "Three simultaneous original retail MotS, unmodified native OpenJKDF2 MotS, and published JKDF2Web MotS clients",
+  "recorded_utc": "2026-10-24T21:33:57.387374+00:00",
+  "game": "mots",
+  "episode": "JKM_MP",
+  "map": "mdm02_freezer.jkl",
+  "session_rank": 7,
+  "personality_mode": true,
+  "browser_client": {
+    "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+    "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+    "path": "cloudflare-38/public",
+    "displayed_engine_version": "v0.9.9 / 97f905da",
+    "engine_patched": false,
+    "bundle_patched": false,
+    "browser": "Chromium 140.0.7339.16",
+    "files": {
+      "index.html": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+      "openjkdf2.js": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+      "openjkdf2.wasm": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6"
+    },
+    "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c"
+  },
+  "other_clients": {
+    "retail_exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+    "native_binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085"
+  },
+  "engine_session": {
+    "name": "Cross Server MotS Test",
+    "episode": "JKM_MP",
+    "map": "mdm02_freezer.jkl",
+    "locked": false,
+    "max": 7,
+    "transport_slots": 8,
+    "players": 3,
+    "mod": "",
+    "flags": 128,
+    "tick_ms": 100,
+    "game": "mots"
+  },
+  "browser_route": "WebSocket fallback",
+  "browser_latest_counters": {
+    "dcSent": 0,
+    "dcRecv": 0,
+    "wsSent": 7518,
+    "wsRecv": 19817,
+    "wsSkipped": 16285
+  },
+  "browser_roster_snapshots": [
+    {
+      "unix": 1792876654.6065974,
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "id": 1,
+          "flags": 4,
+          "thingIndex": 0,
+          "guid": 0,
+          "type": 10,
+          "thingFlags": 539493633,
+          "sector": 152,
+          "position": [
+            7.927976131439209,
+            5.239065170288086,
+            -0.24605199694633484
+          ],
+          "health": 100,
+          "maxHealth": 100
+        },
+        {
+          "slot": 1,
+          "name": "native",
+          "id": 17764042,
+          "flags": 7,
+          "thingIndex": 39,
+          "guid": 39,
+          "type": 10,
+          "thingFlags": 540017921,
+          "sector": 33,
+          "position": [
+            7.519839763641357,
+            0.5412650108337402,
+            1.6635593175888062
+          ],
+          "health": 100,
+          "maxHealth": 100
+        },
+        {
+          "slot": 3,
+          "name": "WebMots",
+          "id": 17764043,
+          "flags": 7,
+          "thingIndex": 58,
+          "guid": 58,
+          "type": 10,
+          "thingFlags": 540017665,
+          "sector": 231,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "health": 100,
+          "maxHealth": 100
+        }
+      ]
+    },
+    {
+      "unix": 1792877073.1367424,
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "id": 1,
+          "flags": 4,
+          "thingIndex": 0,
+          "guid": 0,
+          "type": 10,
+          "sector": 152,
+          "position": [
+            7.927976131439209,
+            5.239065170288086,
+            -0.24605199694633484
+          ],
+          "health": 100,
+          "maxHealth": 100
+        },
+        {
+          "slot": 1,
+          "name": "native",
+          "id": 17764042,
+          "flags": 7,
+          "thingIndex": 39,
+          "guid": 39,
+          "type": 10,
+          "sector": 11,
+          "position": [
+            7.138991832733154,
+            0.5412650108337402,
+            1.6481497287750244
+          ],
+          "health": 100,
+          "maxHealth": 100
+        },
+        {
+          "slot": 2,
+          "name": "retailmots",
+          "id": 17764034,
+          "flags": 7,
+          "thingIndex": 40,
+          "guid": 40,
+          "type": 10,
+          "sector": 96,
+          "position": [
+            1.3604042530059814,
+            -3.628290891647339,
+            -0.1398983597755432
+          ],
+          "health": 100,
+          "maxHealth": 100
+        },
+        {
+          "slot": 3,
+          "name": "WebMots",
+          "id": 17764043,
+          "flags": 7,
+          "thingIndex": 58,
+          "guid": 58,
+          "type": 10,
+          "sector": 231,
+          "position": [
+            2.962848663330078,
+            0.561365008354187,
+            1.6635595560073853
+          ],
+          "health": 100,
+          "maxHealth": 100
+        }
+      ]
+    },
+    {
+      "unix": 1792877342.8168292,
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "id": 1,
+          "flags": 4,
+          "thingFlags": 539493633,
+          "thingIndex": 0,
+          "type": 10,
+          "sector": 152,
+          "position": [
+            7.927976131439209,
+            5.239065170288086,
+            -0.24605199694633484
+          ],
+          "health": 100,
+          "kills": 0,
+          "deaths": 0,
+          "suicides": 0,
+          "score": 0
+        },
+        {
+          "slot": 1,
+          "name": "native",
+          "id": 17764042,
+          "flags": 7,
+          "thingFlags": 540017921,
+          "thingIndex": 39,
+          "type": 10,
+          "sector": 32,
+          "position": [
+            6.02630090713501,
+            -1.5722270011901855,
+            1.184946060180664
+          ],
+          "health": 100,
+          "kills": 0,
+          "deaths": 1,
+          "suicides": 1,
+          "score": -1
+        },
+        {
+          "slot": 2,
+          "name": "retailmots",
+          "id": 17764034,
+          "flags": 7,
+          "thingFlags": 538969345,
+          "thingIndex": 40,
+          "type": 10,
+          "sector": 96,
+          "position": [
+            1.3604042530059814,
+            -3.628290891647339,
+            -0.1398983597755432
+          ],
+          "health": 100,
+          "kills": 0,
+          "deaths": 0,
+          "suicides": 0,
+          "score": 0
+        },
+        {
+          "slot": 3,
+          "name": "WebMots",
+          "id": 17764043,
+          "flags": 7,
+          "thingFlags": 540017665,
+          "thingIndex": 58,
+          "type": 10,
+          "sector": 231,
+          "position": [
+            2.962848663330078,
+            0.561365008354187,
+            1.6635595560073853
+          ],
+          "health": 100,
+          "kills": 0,
+          "deaths": 0,
+          "suicides": 0,
+          "score": 0
+        }
+      ]
+    },
+    {
+      "unix": 1792877368.988967,
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "id": 1,
+          "flags": 4,
+          "thingFlags": 539493633,
+          "thingIndex": 0,
+          "type": 10,
+          "sector": 152,
+          "position": [
+            7.927976131439209,
+            5.239065170288086,
+            -0.24605199694633484
+          ],
+          "health": 100,
+          "kills": 0,
+          "deaths": 0,
+          "suicides": 0,
+          "score": 0
+        },
+        {
+          "slot": 1,
+          "name": "native",
+          "id": 17764042,
+          "flags": 7,
+          "thingFlags": 540017921,
+          "thingIndex": 39,
+          "type": 10,
+          "sector": 32,
+          "position": [
+            6.02630090713501,
+            -1.5722270011901855,
+            1.184946060180664
+          ],
+          "health": 100,
+          "kills": 0,
+          "deaths": 1,
+          "suicides": 1,
+          "score": -1
+        },
+        {
+          "slot": 2,
+          "name": "retailmots",
+          "id": 17764034,
+          "flags": 7,
+          "thingFlags": 538969345,
+          "thingIndex": 40,
+          "type": 10,
+          "sector": 96,
+          "position": [
+            1.3604042530059814,
+            -3.628290891647339,
+            -0.1398983597755432
+          ],
+          "health": 100,
+          "kills": 0,
+          "deaths": 0,
+          "suicides": 0,
+          "score": 0
+        },
+        {
+          "slot": 3,
+          "name": "WebMots",
+          "id": 17764043,
+          "flags": 7,
+          "thingFlags": 540017665,
+          "thingIndex": 58,
+          "type": 10,
+          "sector": 231,
+          "position": [
+            2.962848663330078,
+            0.561365008354187,
+            1.6635595560073853
+          ],
+          "health": 100,
+          "kills": 0,
+          "deaths": 0,
+          "suicides": 0,
+          "score": 0
+        }
+      ]
+    }
+  ],
+  "browser_chat": [
+    {
+      "unix": 1792876650.0145786,
+      "text": "You say, ' 30'"
+    },
+    {
+      "unix": 1792876811.5262978,
+      "text": "native says 'Native_mots_crossplay_ok'"
+    },
+    {
+      "unix": 1792876815.1025174,
+      "text": "retailmots says 'retail_mots_crossplay_ok'"
+    },
+    {
+      "unix": 1792876902.1289315,
+      "text": "native says 'native_to_retail_mots'"
+    },
+    {
+      "unix": 1792877067.813366,
+      "text": "You say, 'WebMots_crossplay_ok'"
+    },
+    {
+      "unix": 1792877350.887928,
+      "text": "You say, 'web_to_retail_mots'"
+    },
+    {
+      "unix": 1792877591.2855685,
+      "text": "You say, 'web_boundary_check'"
+    }
+  ],
+  "browser_death_text": [
+    {
+      "unix": 1792877099.7675068,
+      "text": "native has become more powerful than you can possibly imagine"
+    }
+  ],
+  "browser_movement_observed_by_native": {
+    "before": [
+      2.7180709838867188,
+      0.561365008354187,
+      1.6635596752166748
+    ],
+    "native_observer_after": [
+      2.9470291137695312,
+      0.561365008354187,
+      1.6635595560073853
+    ],
+    "browser_after": [
+      2.962848663330078,
+      0.561365008354187,
+      1.6635595560073853
+    ],
+    "source_receipt": "native-mots-live.json"
+  },
+  "native_projectiles_observed_in_browser": {
+    "guids": [
+      135177,
+      135184,
+      135191,
+      135197,
+      135205,
+      135212
+    ],
+    "observation": {
+      "kind": "mots_native_fire_observation",
+      "duration_ms": 45287,
+      "read_only": true,
+      "events": [
+        {
+          "elapsed_ms": 2,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": []
+        },
+        {
+          "elapsed_ms": 16439,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": [
+            {
+              "index": 110,
+              "guid": 135177,
+              "position": [
+                5.677441596984863,
+                0.554764986038208,
+                1.6635593175888062
+              ]
+            }
+          ]
+        },
+        {
+          "elapsed_ms": 16940,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": [
+            {
+              "index": 129,
+              "guid": 135184,
+              "position": [
+                5.597441673278809,
+                0.554764986038208,
+                1.6635593175888062
+              ]
+            }
+          ]
+        },
+        {
+          "elapsed_ms": 17423,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": [
+            {
+              "index": 111,
+              "guid": 135191,
+              "position": [
+                5.437441825866699,
+                0.554764986038208,
+                1.6635593175888062
+              ]
+            }
+          ]
+        },
+        {
+          "elapsed_ms": 17692,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": [
+            {
+              "index": 117,
+              "guid": 135197,
+              "position": [
+                5.3574419021606445,
+                0.554764986038208,
+                1.6635593175888062
+              ]
+            }
+          ]
+        },
+        {
+          "elapsed_ms": 18045,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": []
+        },
+        {
+          "elapsed_ms": 18340,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": [
+            {
+              "index": 131,
+              "guid": 135205,
+              "position": [
+                5.917441368103027,
+                0.554764986038208,
+                1.6635593175888062
+              ]
+            }
+          ]
+        },
+        {
+          "elapsed_ms": 18862,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": []
+        },
+        {
+          "elapsed_ms": 19289,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": [
+            {
+              "index": 126,
+              "guid": 135212,
+              "position": [
+                5.3574419021606445,
+                0.554764986038208,
+                1.6635593175888062
+              ]
+            }
+          ]
+        },
+        {
+          "elapsed_ms": 19644,
+          "health": 100,
+          "shields": 100,
+          "flags": 540017665,
+          "position": [
+            2.7180709838867188,
+            0.561365008354187,
+            1.6635596752166748
+          ],
+          "projectiles": []
+        }
+      ]
+    },
+    "unix_completed": 1792876889.0681624
+  },
+  "browser_projectiles_observed_in_native": {
+    "controls": "Normal Control key held for 3 seconds with the normally selected pistol.",
+    "guids": [
+      267899,
+      267908,
+      267919,
+      267923,
+      267933
+    ],
+    "samples_with_projectiles": 22,
+    "first_sample": {
+      "unix": 1792877363.7327554,
+      "game_ms": 1022930,
+      "players": [
+        {
+          "slot": 1,
+          "id": 17764042,
+          "health": 100.0,
+          "dead": false,
+          "position": [
+            6.02630090713501,
+            -1.5722270011901855,
+            1.184946060180664
+          ]
+        },
+        {
+          "slot": 2,
+          "id": 17764034,
+          "health": 100.0,
+          "dead": false,
+          "position": [
+            1.3604042530059814,
+            -3.628290891647339,
+            -0.1398983597755432
+          ]
+        },
+        {
+          "slot": 3,
+          "id": 17764043,
+          "health": 100.0,
+          "dead": false,
+          "position": [
+            2.9470291137695312,
+            0.561365008354187,
+            1.6635595560073853
+          ]
+        }
+      ],
+      "projectiles": [
+        {
+          "index": 121,
+          "guid": 267899,
+          "flags": 537919745,
+          "position": [
+            3.365248441696167,
+            0.5478650331497192,
+            1.6635595560073853
+          ],
+          "velocity": [
+            4.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    "last_sample": {
+      "unix": 1792877366.8781931,
+      "game_ms": 1026043,
+      "players": [
+        {
+          "slot": 1,
+          "id": 17764042,
+          "health": 100.0,
+          "dead": false,
+          "position": [
+            6.02630090713501,
+            -1.5722270011901855,
+            1.184946060180664
+          ]
+        },
+        {
+          "slot": 2,
+          "id": 17764034,
+          "health": 100.0,
+          "dead": false,
+          "position": [
+            1.3604042530059814,
+            -3.628290891647339,
+            -0.1398983597755432
+          ]
+        },
+        {
+          "slot": 3,
+          "id": 17764043,
+          "health": 100.0,
+          "dead": false,
+          "position": [
+            2.9470291137695312,
+            0.561365008354187,
+            1.6635595560073853
+          ]
+        }
+      ],
+      "projectiles": [
+        {
+          "index": 111,
+          "guid": 267933,
+          "flags": 537919745,
+          "position": [
+            4.485247611999512,
+            0.5478650331497192,
+            1.6635595560073853
+          ],
+          "velocity": [
+            4.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    "source_receipt": "native-mots-live.json"
+  },
+  "native_environmental_death_and_respawn": {
+    "controls": "Normal native movement around the central platform; environmental death, then normal respawn.",
+    "browser_observation": {
+      "slot": 1,
+      "name": "native",
+      "id": 17764042,
+      "flags": 7,
+      "thingFlags": 540017921,
+      "thingIndex": 39,
+      "type": 10,
+      "sector": 32,
+      "position": [
+        6.02630090713501,
+        -1.5722270011901855,
+        1.184946060180664
+      ],
+      "health": 100,
+      "kills": 0,
+      "deaths": 1,
+      "suicides": 1,
+      "score": -1
+    },
+    "native_own_observation": {
+      "slot": 1,
+      "flags": 7,
+      "id": 17764042,
+      "name": "native",
+      "last_communication_ms": 0,
+      "scores": {
+        "numKills": 0,
+        "numKilled": 1,
+        "numSuicides": 1,
+        "score": -1
+      },
+      "thing": {
+        "index": 39,
+        "guid": 39,
+        "type": 10,
+        "flags": 540017665,
+        "dead": false,
+        "position": [
+          6.02630090713501,
+          -1.5722270011901855,
+          1.184946060180664
+        ],
+        "orientation": [
+          0.7069798111915588,
+          0.7069631814956665,
+          -0.0,
+          -0.7069631814956665,
+          0.7069798111915588,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "sector": 32,
+        "health": 100.0
+      }
+    },
+    "original_retail_observation": {
+      "slot": 1,
+      "flags": 7,
+      "name": "native",
+      "network_id": 17764042,
+      "scores": {
+        "kills": 0,
+        "deaths": 1,
+        "suicides": 1,
+        "team": 0,
+        "score": -1
+      },
+      "thing": {
+        "index": 39,
+        "guid": 39,
+        "type": 10,
+        "position": [
+          5.953935623168945,
+          -1.644591212272644,
+          1.1588784456253052
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "sector": 32,
+        "flags": "0x20300501"
+      }
+    },
+    "scores_match_all_three": true,
+    "native_and_browser_respawn_position_equal": true,
+    "retail_replica_health": 100.0
+  },
+  "method": {
+    "browser_reads": "Read-only HEAPU32/HEAPU16/HEAPF32 access through Playwright after normal UI join. No WASM memory or engine code was modified.",
+    "controls": "Normal directory picker, normal player and multiplayer-character menus, normal keyboard movement, chat, and pistol fire.",
+    "native_and_retail_reads": "Read-only bounded process-memory observations by the respective client agents; no game-state writes or code injection.",
+    "inventory_caution": "Remote inventory shield values are not synchronized; only local browser shields were used in damage observations."
+  },
+  "checks": {
+    "fully_joined_humans": 3,
+    "all_three_browser_roster_flags": 7,
+    "browser_received_original_retail_chat": true,
+    "browser_received_native_chat": true,
+    "native_movement_observed_in_browser": true,
+    "original_retail_movement_observed_in_browser": true,
+    "browser_movement_observed_in_native": true,
+    "native_pistol_projectiles_observed_in_browser": true,
+    "browser_pistol_projectiles_observed_in_native": true,
+    "native_death_score_respawn_observed_in_browser_and_retail": true,
+    "browser_movement_observed_in_original_retail": true,
+    "browser_broadcast_chat_routed_to_original_retail_broker": true,
+    "browser_chat_observed_in_original_retail_hud_buffer": true
+  },
+  "limits": [
+    "This is a local functional qualification on the stock map, not endurance or all-map/mod/team/class/Force-power parity testing.",
+    "Pistol projectile creation and travel were observed; player-to-player damage was not demonstrated across the central obstructing geometry.",
+    "The native environmental death and respawn were observed, including all three score replicas; this does not establish every combat death path.",
+    "Positions recorded at different times are not asserted to converge exactly. Only the stationary native own/browser respawn comparison is explicitly equal.",
+    "The full-game browser path used the published WebSocket fallback. Separate socket tests exercise RTC channels; full-game RTC/WAN traversal is not established here.",
+    "Original retail MotS ran with a slow software renderer under Wine; performance of that fixture is not a dedicated-server benchmark.",
+    "No copyrighted game data or rendered-game screenshots are included."
+  ],
+  "additional_browser_normal_movement": [
+    {
+      "unix": 1792877434.5843897,
+      "kind": "mots_browser_long_move",
+      "playerId": 17764043,
+      "position": [
+        3.932373046875,
+        0.561365008354187,
+        1.2316770553588867
+      ],
+      "health": 100,
+      "stats": {
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 5993,
+        "wsRecv": 16299,
+        "wsSkipped": 13376
+      }
+    }
+  ],
+  "original_retail_observations_of_browser_movement": [
+    {
+      "source_receipt": "mots_web_move_applied.json",
+      "unix": 1792877409.6755981,
+      "browser_id": 17764043,
+      "position": [
+        2.7180709838867188,
+        0.561365008354187,
+        1.6635596752166748
+      ],
+      "sector": 231,
+      "flags": 7
+    },
+    {
+      "source_receipt": "mots_web_move_larger.json",
+      "unix": 1792877468.9803662,
+      "browser_id": 17764043,
+      "position": [
+        3.786705732345581,
+        0.561365008354187,
+        1.3045231103897095
+      ],
+      "sector": 22,
+      "flags": 7
+    }
+  ],
+  "browser_chat_at_directplay_broker_boundary": {
+    "passive": true,
+    "interface": "private namespace lo",
+    "broker_port": 46001,
+    "frames": [
+      {
+        "unix": 1792877591.3080027,
+        "source": 17764043,
+        "target": 17764034,
+        "sequence": 23,
+        "recipient": 4294967295,
+        "sender_slot": 3,
+        "length": 19,
+        "text": "web_boundary_check"
+      }
+    ]
+  },
+  "original_retail_retained_hud_chat": {
+    "unix": 1792877701.9800324,
+    "read_only": true,
+    "source": "Original callback0x422e20 stores5 UTF16 lines at0x5b5218 stride0x214",
+    "lines": [
+      {
+        "slot": 0,
+        "text": "WebMots says, 'web_boundary_check'",
+        "state": 19274890
+      },
+      {
+        "slot": 1,
+        "text": "You say, 'retail_mots_crossplay_ok'",
+        "state": 18499993
+      },
+      {
+        "slot": 2,
+        "text": "You say, 'retail_mots_crossplay_ok'",
+        "state": -2
+      },
+      {
+        "slot": 3,
+        "text": "0.035000 seconds to parse section things.\n",
+        "state": -2
+      },
+      {
+        "slot": 4,
+        "text": "0.010000 seconds to parse section archlighting.\n",
+        "state": -2
+      }
+    ],
+    "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+    "observer_note": "Original callback pointer at0x8d8014 read as0x422e20. Disassembly verifies line base/stride; no writes or hooks."
+  }
+}

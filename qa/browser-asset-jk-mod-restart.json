@@ -1,0 +1,755 @@
+{
+  "qualification": "Unchanged published JKDF2Web client downloads missing episode and active mod, restarts, and joins",
+  "recorded_utc": "2026-10-24T22:32:56.459416+00:00",
+  "game": "jk",
+  "episode": "QAAssetJK",
+  "map": "m2.jkl",
+  "case": "jk-mod-live",
+  "browser_client": {
+    "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+    "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+    "path": "cloudflare-38/public",
+    "displayed_engine_version": "v0.9.9 / 97f905da",
+    "engine_patched": false,
+    "bundle_patched": false,
+    "browser": "Chromium 140.0.7339.16",
+    "files": {
+      "index.html": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+      "openjkdf2.js": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+      "openjkdf2.wasm": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6"
+    },
+    "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c"
+  },
+  "actual_client_http_responses": [
+    {
+      "url": "http://127.0.0.1:8794/",
+      "status": 200,
+      "bytes": 226513,
+      "sha256": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc"
+    },
+    {
+      "url": "http://127.0.0.1:8794/openjkdf2.js",
+      "status": 200,
+      "bytes": 532943,
+      "sha256": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0"
+    },
+    {
+      "url": "http://127.0.0.1:8794/openjkdf2.wasm",
+      "status": 200,
+      "bytes": 3681717,
+      "sha256": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6"
+    }
+  ],
+  "custom_content": {
+    "episode_sha256": "ab29dd4352221f41a34ac7807f80db86d1152626087749dd89f56dae426549d5",
+    "episode_size": 3362331,
+    "stock_entry_count": 21,
+    "episode_marker_sha256": "40891a76c9367a7100a456a3b5d22eddc30f696c1eddbefbf2d326ccf4be6015",
+    "marker_materials": [
+      "01whull2.mat",
+      "01wgril4.mat",
+      "01wtech3.mat"
+    ],
+    "active_mod_sha256": "dc1ee1674e8f83d24719749689089222ddd602090871a53411dd433e0f723359",
+    "active_mod_marker_sha256": "5386902f47bcfedbfbabdec02d486b3a7346f53de212ef11a5ceed8bbd3b37cb",
+    "description": "Stock world and scripts are unchanged. Only the authored episode manifest and original RGB565 materials are custom. The mod overrides those same material names and carries one unused stock material to exercise references."
+  },
+  "transport": "Published WebSocket fallback in a task-scoped loopback network namespace",
+  "transfers": [
+    {
+      "kind": "episode",
+      "info": {
+        "status": "ok",
+        "name": "QAAssetJK",
+        "ext": "gob",
+        "size": 3362331,
+        "sha256": "ab29dd4352221f41a34ac7807f80db86d1152626087749dd89f56dae426549d5",
+        "streamSize": 29328,
+        "refsBytes": 844
+      },
+      "chunk_size": 49152,
+      "chunks": 1,
+      "actual_request_count": 1,
+      "stream_size": 29328,
+      "stream_sha256": "d368712fe079d323fdeb1319391906da46d5edd8d91b1af2048229974090db18",
+      "archive_size": 3362331,
+      "archive_sha256": "ab29dd4352221f41a34ac7807f80db86d1152626087749dd89f56dae426549d5",
+      "reference_count": 21,
+      "retail_bytes_reconstructed_locally": 3333847,
+      "inline_bytes": 28484,
+      "all_copied_retail_entries_are_references": true,
+      "byte_for_byte_equal_to_host": true,
+      "references": [
+        {
+          "offset": 84,
+          "size": 788,
+          "sha256": "05c89649877081cf34262c9fdf8ec08f93825335e201818e2abfe291f012dc73",
+          "browser_owned_source": "JK1MP.gob:cog/m10_lightingtrap.cog"
+        },
+        {
+          "offset": 872,
+          "size": 1560,
+          "sha256": "645e265663cea9011344f56c7e90aa9af5c7e5b5042d9894c3acccacd1f64394",
+          "browser_owned_source": "JK1MP.gob:cog/m2_dettrap.cog"
+        },
+        {
+          "offset": 2432,
+          "size": 4462,
+          "sha256": "d7ab83b77df27d5901a73c98bfe313b1f56b3d1a3d0a1d444faff389c045f3b2",
+          "browser_owned_source": "JK1MP.gob:cog/m2_ffieldswitch.cog"
+        },
+        {
+          "offset": 6894,
+          "size": 2464,
+          "sha256": "6fefa176b532c0cdab4b6ca57b98d3dbc3f53015df7861b21ad614ca2358dcc2",
+          "browser_owned_source": "JK1MP.gob:cog/m2_turrettrap.cog"
+        },
+        {
+          "offset": 9358,
+          "size": 3611,
+          "sha256": "94c7c9f02160358635627b17afc5fbcdcb8bc8be1499040e263681f3cc00f817",
+          "browser_owned_source": "JK1MP.gob:cog/m4_reactorthrust.cog"
+        },
+        {
+          "offset": 12969,
+          "size": 1477,
+          "sha256": "4e13ff94a0d2c5b13f0e72683c680746576dc9082264b842ac5998767b3d587a",
+          "browser_owned_source": "JK1MP.gob:cog/m5_ambientconveyersound.cog"
+        },
+        {
+          "offset": 14446,
+          "size": 1486,
+          "sha256": "3df702974e95530696acc3d2d774afd2377e3558815fa039f96b2ad009c8eb56",
+          "browser_owned_source": "JK1MP.gob:cog/m5_ambienttechsound.cog"
+        },
+        {
+          "offset": 15932,
+          "size": 1768,
+          "sha256": "a559209e9d051511ee04890f919eae50ed4782763647a58c30b49932b5dd493a",
+          "browser_owned_source": "JK1MP.gob:cog/m5_antigrav.cog"
+        },
+        {
+          "offset": 17700,
+          "size": 1863,
+          "sha256": "587b3c33c16b54fcd1c6277aee2c7d1f0496d2005bce7b45320491ffb4ac6f8a",
+          "browser_owned_source": "JK1MP.gob:cog/m5_autodoor.cog"
+        },
+        {
+          "offset": 19563,
+          "size": 868,
+          "sha256": "233921704da91cc627eebb9254bd4090d92dfd448c8460fbabee817d6daabe72",
+          "browser_owned_source": "JK1MP.gob:cog/m5_convbelt.cog"
+        },
+        {
+          "offset": 20431,
+          "size": 3606,
+          "sha256": "19920c1e626f76ffaa547dd89d0395a5a7d4384a35a77784edcb3fe33c0b2b08",
+          "browser_owned_source": "JK1MP.gob:cog/m5_fandamage.cog"
+        },
+        {
+          "offset": 24037,
+          "size": 1890,
+          "sha256": "f22d211f89c7a8998ce2b59c63c8d5c03e77e9478cb217c38ba6d1d9de1d543f",
+          "browser_owned_source": "JK1MP.gob:cog/m5_flashingredlight.cog"
+        },
+        {
+          "offset": 25927,
+          "size": 1440,
+          "sha256": "986ad151be317a57a5813d2028eb6312eb05cdca3105f88f8091fd8f37256a66",
+          "browser_owned_source": "JK1MP.gob:cog/m5_healingsector.cog"
+        },
+        {
+          "offset": 27367,
+          "size": 531,
+          "sha256": "dd7179ad806eda104c22c5df397dd2c5839cded1ae0c50ecdbb613f64387a4d3",
+          "browser_owned_source": "JK1MP.gob:cog/m5_surfanim.cog"
+        },
+        {
+          "offset": 27898,
+          "size": 250823,
+          "sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+          "browser_owned_source": "JK1MP.gob:jkl/m10.jkl"
+        },
+        {
+          "offset": 278721,
+          "size": 419023,
+          "sha256": "938f8a892bcdc90a7f54f25aed4fd58baba750293c5d01ac2dec68ef170eef9a",
+          "browser_owned_source": "JK1MP.gob:jkl/m2.jkl"
+        },
+        {
+          "offset": 697744,
+          "size": 669414,
+          "sha256": "150eda1c2e6c7f316c8b76a0f2f060ce5d49dcc9ae24bb43e4fb42a5df20d89c",
+          "browser_owned_source": "JK1MP.gob:jkl/m4.jkl"
+        },
+        {
+          "offset": 1367158,
+          "size": 1411983,
+          "sha256": "61713ac79aa60bba1b558f8457a1351f720b076c242469110975ac26b2dcff38",
+          "browser_owned_source": "JK1MP.gob:jkl/m5.jkl"
+        },
+        {
+          "offset": 2779141,
+          "size": 323132,
+          "sha256": "1f8502deba0220a3f39a2a3fb2f638ecf71b214f127b74d47ac482194e907458",
+          "browser_owned_source": "JK1MP.gob:jkl/m_boss15.jkl"
+        },
+        {
+          "offset": 3102273,
+          "size": 231156,
+          "sha256": "5c0795709ff3f2da525d0ad9ce4a3e41b13445febc1b5f88f727c864b606349f",
+          "browser_owned_source": "JK1MP.gob:jkl/m_boss17.jkl"
+        },
+        {
+          "offset": 3333429,
+          "size": 502,
+          "sha256": "dad864ab367c537790fdbae3cbb08fa65a8e81c9ab4fa873164e5ca2c1261e81",
+          "browser_owned_source": "JK1MP.gob:misc/cogstrings.uni"
+        }
+      ]
+    },
+    {
+      "kind": "mod",
+      "info": {
+        "status": "ok",
+        "name": "MarkerMod-jk",
+        "ext": "gob",
+        "size": 112964,
+        "sha256": "dc1ee1674e8f83d24719749689089222ddd602090871a53411dd433e0f723359",
+        "streamSize": 25828,
+        "refsBytes": 44
+      },
+      "chunk_size": 49152,
+      "chunks": 1,
+      "actual_request_count": 1,
+      "stream_size": 25828,
+      "stream_sha256": "cd307cb2c846c7e81b3cf332d2c2b2a0409ec17f7b7ac593c77b9e015effa5ad",
+      "archive_size": 112964,
+      "archive_sha256": "dc1ee1674e8f83d24719749689089222ddd602090871a53411dd433e0f723359",
+      "reference_count": 1,
+      "retail_bytes_reconstructed_locally": 87180,
+      "inline_bytes": 25784,
+      "all_copied_retail_entries_are_references": true,
+      "byte_for_byte_equal_to_host": true,
+      "references": [
+        {
+          "offset": 25008,
+          "size": 87180,
+          "sha256": "59a6197900d12dbe895c8740eebef38b59d194a5ca5d09e71d3ced8d69216022",
+          "browser_owned_source": "Res2.gob:mat/01whull2.mat"
+        }
+      ]
+    }
+  ],
+  "browser_initial": {
+    "ready": true,
+    "root": "/jk1",
+    "args": [
+      "./this.program"
+    ],
+    "files": [],
+    "retailFiles": [
+      {
+        "path": "/jk1/episode/JK1CTF.gob",
+        "size": 5964087
+      },
+      {
+        "path": "/jk1/episode/JK1.gob",
+        "size": 34861164
+      },
+      {
+        "path": "/jk1/episode/JK1MP.gob",
+        "size": 3337481
+      },
+      {
+        "path": "/jk1/resource/Res2.gob",
+        "size": 56069075
+      },
+      {
+        "path": "/jk1/resource/Res1hi.gob",
+        "size": 58703359
+      }
+    ],
+    "mod": null,
+    "mapState": 1,
+    "modState": 1,
+    "net": {
+      "state": 1,
+      "session": null,
+      "seat": null,
+      "stats": {
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 0,
+        "wsRecv": 0,
+        "wsSkipped": 0
+      }
+    },
+    "roster": []
+  },
+  "browser_final": {
+    "ready": true,
+    "root": "/jk1",
+    "args": [
+      "./this.program"
+    ],
+    "files": [
+      {
+        "path": "/jk1/episode/QAAssetJK.gob",
+        "size": 3362331,
+        "sha256": "ab29dd4352221f41a34ac7807f80db86d1152626087749dd89f56dae426549d5"
+      },
+      {
+        "path": "/jk1/netmods/dc1ee1674e8f83d2/mat/01wgril4.mat",
+        "size": 8332,
+        "sha256": "5386902f47bcfedbfbabdec02d486b3a7346f53de212ef11a5ceed8bbd3b37cb"
+      },
+      {
+        "path": "/jk1/netmods/dc1ee1674e8f83d2/mat/01whull2.mat",
+        "size": 8332,
+        "sha256": "5386902f47bcfedbfbabdec02d486b3a7346f53de212ef11a5ceed8bbd3b37cb"
+      },
+      {
+        "path": "/jk1/netmods/dc1ee1674e8f83d2/mat/01wtech3.mat",
+        "size": 8332,
+        "sha256": "5386902f47bcfedbfbabdec02d486b3a7346f53de212ef11a5ceed8bbd3b37cb"
+      },
+      {
+        "path": "/jk1/netmods/dc1ee1674e8f83d2/mat/stock_reference.mat",
+        "size": 87180,
+        "sha256": "59a6197900d12dbe895c8740eebef38b59d194a5ca5d09e71d3ced8d69216022"
+      },
+      {
+        "path": "/jk1/netmods/dc1ee1674e8f83d2/qa-marker.json",
+        "size": 92,
+        "sha256": "3a3af3a65640dd15ca3f7cd55f1bee402d11681f5787c7ce52970b60ec48e351"
+      }
+    ],
+    "retailFiles": [
+      {
+        "path": "/jk1/episode/JK1CTF.gob",
+        "size": 5964087
+      },
+      {
+        "path": "/jk1/episode/JK1.gob",
+        "size": 34861164
+      },
+      {
+        "path": "/jk1/episode/JK1MP.gob",
+        "size": 3337481
+      },
+      {
+        "path": "/jk1/episode/QAAssetJK.gob",
+        "size": 3362331
+      },
+      {
+        "path": "/jk1/resource/Res2.gob",
+        "size": 56069075
+      },
+      {
+        "path": "/jk1/resource/Res1hi.gob",
+        "size": 58703359
+      }
+    ],
+    "mod": {
+      "fp": "dc1ee1674e8f83d24719749689089222ddd602090871a53411dd433e0f723359",
+      "name": "MarkerMod-jk",
+      "path": "netmods/dc1ee1674e8f83d2"
+    },
+    "mapState": 1,
+    "modState": 1,
+    "net": {
+      "state": 1,
+      "session": true,
+      "seat": {
+        "room": 1,
+        "id": 65537
+      },
+      "stats": {
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 241,
+        "wsRecv": 824,
+        "wsSkipped": 293
+      }
+    },
+    "roster": [
+      {
+        "slot": 0,
+        "name": "ServerDed",
+        "id": 1,
+        "flags": 4,
+        "position": [
+          -0.019950000569224358,
+          -0.5,
+          0.12011399865150452
+        ]
+      },
+      {
+        "slot": 1,
+        "name": "WebClient",
+        "id": 65537,
+        "flags": 7,
+        "position": [
+          -3.523338794708252,
+          -1.8500499725341797,
+          -0.1298954337835312
+        ]
+      },
+      {
+        "slot": 2,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.244999885559082,
+          -1.4499499797821045,
+          1.4201140403747559
+        ]
+      },
+      {
+        "slot": 3,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -2.75,
+          -1.4400500059127808,
+          1.4201140403747559
+        ]
+      },
+      {
+        "slot": 4,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.399999618530273,
+          -1.1599500179290771,
+          0.9201139807701111
+        ]
+      },
+      {
+        "slot": 5,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -2,
+          -1.8500499725341797,
+          -0.12988600134849548
+        ]
+      },
+      {
+        "slot": 6,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.399999618530273,
+          -1.7499500513076782,
+          0.9201120138168335
+        ]
+      },
+      {
+        "slot": 7,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -7.999949932098389,
+          0.25,
+          1.4201140403747559
+        ]
+      }
+    ]
+  },
+  "active_roster": [
+    {
+      "slot": 1,
+      "name": "WebClient",
+      "id": 65537,
+      "flags": 7,
+      "position": [
+        -2.748446464538574,
+        -1.8500499725341797,
+        -0.1298954337835312
+      ]
+    }
+  ],
+  "normal_movement": {
+    "before": [
+      {
+        "slot": 0,
+        "name": "ServerDed",
+        "id": 1,
+        "flags": 4,
+        "position": [
+          -0.019950000569224358,
+          -0.5,
+          0.12011399865150452
+        ]
+      },
+      {
+        "slot": 1,
+        "name": "WebClient",
+        "id": 65537,
+        "flags": 7,
+        "position": [
+          -2,
+          -1.8500499725341797,
+          -0.12987622618675232
+        ]
+      },
+      {
+        "slot": 2,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.244999885559082,
+          -1.4499499797821045,
+          1.4201140403747559
+        ]
+      },
+      {
+        "slot": 3,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -2.75,
+          -1.4400500059127808,
+          1.4201140403747559
+        ]
+      },
+      {
+        "slot": 4,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.399999618530273,
+          -1.1599500179290771,
+          0.9201139807701111
+        ]
+      },
+      {
+        "slot": 5,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -2,
+          -1.8500499725341797,
+          -0.12988600134849548
+        ]
+      },
+      {
+        "slot": 6,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.399999618530273,
+          -1.7499500513076782,
+          0.9201120138168335
+        ]
+      },
+      {
+        "slot": 7,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -7.999949932098389,
+          0.25,
+          1.4201140403747559
+        ]
+      }
+    ],
+    "after": [
+      {
+        "slot": 0,
+        "name": "ServerDed",
+        "id": 1,
+        "flags": 4,
+        "position": [
+          -0.019950000569224358,
+          -0.5,
+          0.12011399865150452
+        ]
+      },
+      {
+        "slot": 1,
+        "name": "WebClient",
+        "id": 65537,
+        "flags": 7,
+        "position": [
+          -2.748446464538574,
+          -1.8500499725341797,
+          -0.1298954337835312
+        ]
+      },
+      {
+        "slot": 2,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.244999885559082,
+          -1.4499499797821045,
+          1.4201140403747559
+        ]
+      },
+      {
+        "slot": 3,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -2.75,
+          -1.4400500059127808,
+          1.4201140403747559
+        ]
+      },
+      {
+        "slot": 4,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.399999618530273,
+          -1.1599500179290771,
+          0.9201139807701111
+        ]
+      },
+      {
+        "slot": 5,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -2,
+          -1.8500499725341797,
+          -0.12988600134849548
+        ]
+      },
+      {
+        "slot": 6,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -8.399999618530273,
+          -1.7499500513076782,
+          0.9201120138168335
+        ]
+      },
+      {
+        "slot": 7,
+        "name": "",
+        "id": 0,
+        "flags": 2,
+        "position": [
+          -7.999949932098389,
+          0.25,
+          1.4201140403747559
+        ]
+      }
+    ]
+  },
+  "console_transitions": [
+    "OpenJKDF2: installed mod MarkerMod-jk from the host (5 files)",
+    "OpenJKDF2: Restarting with mod path \"netmods/dc1ee1674e8f83d2\" to join room 1",
+    "OpenJKDF2: installed map QAAssetJK.gob from the host"
+  ],
+  "chat_sent": [
+    "You say, 'downloaded_jk_mod_ok'",
+    "You say, 'downloaded_jk_mod_ok'"
+  ],
+  "engine_session": {
+    "name": "Asset QA JK",
+    "episode": "QAAssetJK",
+    "map": "m2.jkl",
+    "locked": false,
+    "max": 7,
+    "transport_slots": 8,
+    "players": 1,
+    "mod": "",
+    "flags": 128,
+    "tick_ms": 100,
+    "game": "jk"
+  },
+  "browser_asset_status": {
+    "download_enabled": true,
+    "game": "jk",
+    "map": {
+      "name": "QAAssetJK",
+      "ext": "gob",
+      "status": "ok",
+      "size": 3362331,
+      "sha256": "ab29dd4352221f41a34ac7807f80db86d1152626087749dd89f56dae426549d5",
+      "stream_size": 29328,
+      "retail_references": 21,
+      "file_count": 25
+    },
+    "mod": {
+      "name": "MarkerMod-jk",
+      "ext": "gob",
+      "status": "ok",
+      "size": 112964,
+      "sha256": "dc1ee1674e8f83d24719749689089222ddd602090871a53411dd433e0f723359",
+      "stream_size": 25828,
+      "retail_references": 1,
+      "file_count": 5
+    },
+    "remastered": null
+  },
+  "browser_transfer_metrics": {
+    "websocket_in": 243,
+    "websocket_out": 834,
+    "webrtc_in": 0,
+    "webrtc_out": 0,
+    "map_requests": 4,
+    "queue_overflows": 0,
+    "asset_requests": 4,
+    "asset_chunks": 2,
+    "asset_bytes": 55156,
+    "asset_wire_bytes": 55589,
+    "asset_denied": 0,
+    "asset_request_drops": 0,
+    "active_asset_transfers": 0
+  },
+  "render_observation": "The unchanged client downloaded the active mod, restarted into its netmods path, and rejoined through its ordinary Multiplayer/character menus. The rendered corridor showed the mod-authored magenta/yellow striped wall materials replacing the episode-authored green/white checker. Normal forward movement and chat continued with one active server human.",
+  "checks": {
+    "initial_custom_episode_absent": true,
+    "actual_client_requested_and_received_chunks": true,
+    "wire_reconstruction_equals_host_bytes": true,
+    "all_copied_retail_entries_reconstructed_from_references": true,
+    "installed_episode_sha256_equals_host": true,
+    "fully_joined_server_human_count": 1,
+    "browser_player_flags": 7,
+    "normal_keyboard_movement_changed_position": true,
+    "custom_material_observed_in_rendered_world": true,
+    "http_client_assets_match_published_hashes": true,
+    "client_files_unchanged_after_test": true,
+    "fixture_closed_cleanly": true,
+    "initial_active_mod_absent": true,
+    "installed_mod_files_match_host": true,
+    "normal_engine_mod_restart_observed": true,
+    "active_mod_fingerprint_equals_host": true
+  },
+  "method": {
+    "actions": "Ordinary folder picker, profile/character/multiplayer menus, keyboard movement and chat. Mod restart is performed by the unchanged engine.",
+    "reads": "Read-only published Module FS/transfer state and bounded WASM heap observations. Passive capture of only JKMT binary asset frames.",
+    "independent_validation": "Python reassembled actual captured chunks, resolved every retail reference from the browser input files, and compared the rebuilt bytes with the exact host archive/mod pack.",
+    "images": "Rendered-game screenshots were inspected locally and are not distributed."
+  },
+  "limits": [
+    "Local functional checks on one stock-based custom episode per mode; not exhaustive mod compatibility, malformed-content fuzzing, or WAN/performance qualification.",
+    "The gameplay browser path used WebSocket fallback; separate protocol tests cover other adapter paths.",
+    "Native and original retail clients still need matching content installed locally; this qualification concerns the published browser download capability.",
+    "No proprietary game data, archive bytes, runtime binaries, authentication keys, or rendered-game screenshots are included in this receipt."
+  ]
+}

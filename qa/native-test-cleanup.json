@@ -1,0 +1,22 @@
+{
+  "unix": 1792878119.777466,
+  "targets": [
+    {
+      "pid": 109632,
+      "kind": "client",
+      "exe": "/workspace/scratch/66b0203ff71a/research/native/baseline-client/openjkdf2-unmodified",
+      "validated_start_time": "1732496",
+      "result": "exited",
+      "forced_kill": false
+    },
+    {
+      "pid": 97022,
+      "kind": "xvfb",
+      "exe": "/usr/bin/Xvfb",
+      "validated_start_time": "1557768",
+      "result": "exited",
+      "forced_kill": false
+    }
+  ],
+  "unrelated_processes_signalled": false
+}

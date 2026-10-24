@@ -1,0 +1,22 @@
+{
+  "mode": "mots",
+  "synthetic_peer": true,
+  "gameplay_certification": false,
+  "mode_word": 1,
+  "descriptor_bytes": 240,
+  "empty_active_players": 0,
+  "peer_id": 65536,
+  "welcome_received": true,
+  "packet_counts": {
+    "41": 2,
+    "36": 2,
+    "32": 2,
+    "3": 5,
+    "11": 108,
+    "1": 108,
+    "33": 1
+  },
+  "active_after_sync": 1,
+  "active_after_remove": 0,
+  "engine_returncode_after_termination": -15
+}

@@ -1,0 +1,82 @@
+{
+  "qualification": "Published JKDF2Web full game against the dedicated native engine",
+  "recorded_utc": "2026-10-24T20:46:27.239275+00:00",
+  "game": "jk",
+  "episode": "JK1MP",
+  "map": "m2.jkl",
+  "client": {
+    "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+    "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+    "path": "cloudflare-38/public",
+    "displayed_engine_version": "v0.9.9 / 97f905da",
+    "engine_patched": false,
+    "bundle_patched": false,
+    "browser": "Chromium 140.0.7339.16",
+    "files": {
+      "index.html": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+      "openjkdf2.js": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+      "openjkdf2.wasm": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6"
+    },
+    "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c"
+  },
+  "server": {
+    "session": {
+      "name": "Crossplay WASM Test",
+      "episode": "JK1MP",
+      "map": "m2.jkl",
+      "locked": false,
+      "max": 7,
+      "transport_slots": 8,
+      "players": 1,
+      "mod": "",
+      "flags": 128,
+      "tick_ms": 100,
+      "game": "jk"
+    },
+    "engine_log_evidence": [
+      {
+        "time": "2026-10-24T20:43:04+00:00",
+        "source": "engine",
+        "text": "GATEWAY_PEER_ADDED 65536"
+      },
+      {
+        "time": "2026-10-24T20:43:18+00:00",
+        "source": "engine",
+        "text": "WebClient has joined the game"
+      },
+      {
+        "time": "2026-10-24T20:45:26+00:00",
+        "source": "engine",
+        "text": "WebClient says 'WASM crossplay check'"
+      }
+    ]
+  },
+  "transport": {
+    "full_game_route": "WebSocket fallback",
+    "browser_stats": {
+      "dcSent": 0,
+      "dcRecv": 0,
+      "wsSent": 130,
+      "wsRecv": 1491,
+      "wsSkipped": 317
+    },
+    "native_peer_id": 65536,
+    "webrtc_full_game_verified": false,
+    "webrtc_note": "Chromium had no local ICE candidates in the private test namespace; SDP exchange succeeded and gameplay used the original client fallback."
+  },
+  "checks": {
+    "original_game_files_selected_via_normal_directory_picker": true,
+    "normal_player_and_rank0_multiplayer_character_created": true,
+    "engine_acknowledged_player_join": true,
+    "fully_joined_humans": 1,
+    "m2_world_rendered": true,
+    "movement_key_exercised": true,
+    "rendered_view_changed_after_movement": true,
+    "chat_observed_by_server": "WebClient says 'WASM crossplay check'"
+  },
+  "limits": [
+    "Single-browser-to-server test; simultaneous three-client evidence is separate.",
+    "No latency, throughput, endurance, or public Internet qualification.",
+    "No retail game files or rendered-game screenshots are included in this receipt."
+  ]
+}

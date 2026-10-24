@@ -1,0 +1,174 @@
+{
+  "qualification": "Three simultaneous original retail JK, unmodified native OpenJKDF2, and published JKDF2Web clients",
+  "recorded_utc": "2026-10-24T20:54:38.786822+00:00",
+  "game": "jk",
+  "episode": "JK1MP",
+  "map": "m2.jkl",
+  "browser_client": {
+    "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+    "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+    "path": "cloudflare-38/public",
+    "displayed_engine_version": "v0.9.9 / 97f905da",
+    "engine_patched": false,
+    "bundle_patched": false,
+    "browser": "Chromium 140.0.7339.16",
+    "files": {
+      "index.html": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+      "openjkdf2.js": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+      "openjkdf2.wasm": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6"
+    },
+    "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c"
+  },
+  "engine_session": {
+    "name": "Cross Server Retail Test",
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "locked": false,
+    "max": 7,
+    "transport_slots": 8,
+    "players": 3,
+    "mod": "",
+    "flags": 128,
+    "tick_ms": 100,
+    "game": "jk"
+  },
+  "browser_route": "WebSocket fallback",
+  "browser_latest_counters": {
+    "dcSent": 0,
+    "dcRecv": 0,
+    "wsSent": 1590,
+    "wsRecv": 5769,
+    "wsSkipped": 4197
+  },
+  "browser_roster_snapshots": [
+    {
+      "unix": 1792875136.553084,
+      "players": [
+        {
+          "name": "native",
+          "flags": 7,
+          "id": 16501127,
+          "position": [
+            -7.3195977210998535,
+            -1.4499499797821045,
+            1.4201045036315918
+          ]
+        },
+        {
+          "name": "podclient",
+          "flags": 7,
+          "id": 16501135,
+          "position": [
+            0.461764395236969,
+            -1.5000499486923218,
+            1.4201045036315918
+          ]
+        },
+        {
+          "name": "WebClient",
+          "flags": 7,
+          "id": 16501126,
+          "position": [
+            -7.4319167137146,
+            -1.1599500179290771,
+            0.15202213823795319
+          ]
+        }
+      ]
+    },
+    {
+      "unix": 1792875235.609214,
+      "players": [
+        {
+          "name": "native",
+          "flags": 7,
+          "id": 16501127,
+          "position": [
+            -6.900875091552734,
+            -1.4499499797821045,
+            1.4201045036315918
+          ]
+        },
+        {
+          "name": "podclient",
+          "flags": 7,
+          "id": 16501135,
+          "position": [
+            0.461764395236969,
+            -1.5000499486923218,
+            1.4201045036315918
+          ]
+        },
+        {
+          "name": "WebClient",
+          "flags": 7,
+          "id": 16501126,
+          "position": [
+            -7.4319167137146,
+            -1.1599500179290771,
+            0.15202213823795319
+          ]
+        }
+      ]
+    }
+  ],
+  "browser_received_chat": [
+    {
+      "unix": 1792875104.1012912,
+      "text": "podclient says 'retail_jk_crossplay_ok'"
+    },
+    {
+      "unix": 1792875215.9243715,
+      "text": "native says 'Native mixed JK check'"
+    }
+  ],
+  "browser_sent_chat": [
+    {
+      "unix": 1792875164.2232952,
+      "text": "You say, 'web_jk_crossplay_ok'"
+    }
+  ],
+  "original_retail_observations_of_browser_movement": [
+    {
+      "source_receipt": "jk_wirefixed_initial.json",
+      "unix": 1792874999.5195844,
+      "client_exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "browser_player_id": 16501126,
+      "position": [
+        -8.399999618530273,
+        -1.1599500179290771,
+        1.0349854230880737
+      ]
+    },
+    {
+      "source_receipt": "jk_after_browser_move.json",
+      "unix": 1792875119.386705,
+      "client_exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "browser_player_id": 16501126,
+      "position": [
+        -7.76220703125,
+        -1.1599500179290771,
+        0.4823218882083893
+      ]
+    }
+  ],
+  "method": {
+    "browser_reads": "Read-only HEAPU32/HEAPU16/HEAPF32 access through Playwright, after normal UI join. No WASM memory or engine code was modified.",
+    "layout_checks": "SithPlayer names are64-byte UTF16 fields, flags/id at128/132, pLocalPlayer at4952; live pointers and canonical IDs validated. MotS-enabled wasm32 SithThing position is at192.",
+    "controls": "Normal page directory picker, normal player/character menus, keyboard movement and chat."
+  },
+  "checks": {
+    "fully_joined_humans": 3,
+    "all_three_browser_roster_flags": 7,
+    "browser_received_original_retail_chat": true,
+    "browser_received_native_chat": true,
+    "native_movement_observed_in_browser": true,
+    "browser_movement_observed_in_original_retail": true
+  },
+  "limits": [
+    "This records a functional three-client local smoke test, not long-run parity or combat/force/score qualification.",
+    "Positions observed at different times are not asserted to converge exactly.",
+    "The full-game browser path used WebSocket fallback; separate socket tests exercise RTC channels.",
+    "No copyrighted game data or rendered-game screenshots are included."
+  ]
+}

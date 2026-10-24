@@ -1,0 +1,154 @@
+{
+  "method": "Read-only disassembly of original local retail executables compared with pinned OpenJKDF2 packet writers/readers; no retail executable modification.",
+  "native_source_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "executables": {
+    "JK.EXE": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+    "JKM.EXE": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974"
+  },
+  "header": "uint16 message type followed by uint16 reliability sequence; lengths below include this four-byte header",
+  "differences": [
+    {
+      "packet": 49,
+      "name": "SABERINFO3",
+      "original_JK_writer": "0x0040c920; final flags written at0x0040ca9f..0x0040cad4",
+      "original_JK_reader": "0x0040cb00; final flags read at0x0040cc78..0x0040cc9b",
+      "original_MotS_writer": "0x0040e200; final flags written at0x0040e39d..0x0040e3d2",
+      "original_MotS_reader": "0x0040e400; final flags read at0x0040e590..0x0040e5b2",
+      "original_final_fields": [
+        "int16 superWeapon",
+        "int16 superShields",
+        "int16 forceSurge"
+      ],
+      "native_final_fields": [
+        "uint32 superWeapon",
+        "uint32 superShields",
+        "uint32 forceSurge"
+      ],
+      "original_lengths": [
+        46,
+        118
+      ],
+      "native_lengths": [
+        52,
+        124
+      ],
+      "optional_block": "72 bytes after float baseRadius at raw offset24; receiver consumes it when baseRadius is nonzero",
+      "required_adapter": "Narrow final12 bytes to6 outbound; sign-extend final6 bytes to12 inbound. Keep header and reliable sequence."
+    },
+    {
+      "packet": 11,
+      "name": "SYNCTHING / UpdateState",
+      "original_writer": "0x004f3420; float light store at0x004f34ec..0x004f34f8",
+      "finding": "Original retail writes float32 light. The pinned native source wrongly casts the sender light to int32 while its reader already expects float32. Server patch corrects sender to float32."
+    },
+    {
+      "packet": 2,
+      "name": "CHAT (MotS only)",
+      "original_MotS_writer": "0x00519b10",
+      "original_MotS_reader": "0x00519bc0",
+      "original_format": "int16 recipientCount, recipientCount*int32 recipient player slots, int32 senderSlot, int32 textLength, text bytes including terminator",
+      "canonical_format": "int32 recipientSlot, int32 senderSlot, int32 textLength, text bytes including terminator",
+      "required_adapter": "For broadcast, insert count1 before the existing -1 recipient outbound, strip count1 inbound. Private/multiple recipient lists must be filtered to matching destination player slots, never broadened to all peers.",
+      "mode_scope": "Original JK and inspected native/browser writers/readers use canonical layout; only original MotS uses the list prefix."
+    }
+  ],
+  "additional_JK_layout_checks": [
+    {
+      "packet": 1,
+      "name": "THINGPOS",
+      "writer": "0x004f3120",
+      "reader": "0x004f3270",
+      "result": "Matches native guid32, attach16, sector16, vec3 position, vec3 angles, conditional physicsflags32/vec3 velocity/vec3 angular velocity, player float32 pitch.",
+      "smoothing": "Original receiver helper0x004f5440 and native sithDSSThing_MoveToPos both use velocity compensation below a0.5-distance threshold instead of always assigning exact received position."
+    },
+    {
+      "packet": 4,
+      "name": "FIREPROJECTILE",
+      "writer": "0x004f3e70",
+      "reader": "0x004f3f60",
+      "raw_length": 52,
+      "result": "Matches native JK field order and widths: guid32, four16-bit fields, two vec3, two floats, guid32."
+    },
+    {
+      "packet": 5,
+      "name": "DEATH",
+      "writer": "0x004f4040",
+      "reader": "0x004f40b0",
+      "raw_length": 13,
+      "result": "Matches: two guid32 and uint8 cause."
+    },
+    {
+      "packet": 6,
+      "name": "DAMAGE",
+      "writer": "0x004f4120",
+      "reader": "0x004f41a0",
+      "raw_length": 18,
+      "result": "Matches: two guid32, float32 damage, int16 hitType."
+    },
+    {
+      "packet": 14,
+      "name": "SURFACESTATUS",
+      "writer": "0x004f8f80",
+      "reader": "0x004f9050",
+      "raw_lengths": [
+        44,
+        48
+      ],
+      "result": "Matches native field widths/order including optional adjoin flags."
+    },
+    {
+      "packet": 16,
+      "name": "INVENTORY",
+      "writer": "0x004f9900",
+      "reader": "0x004f99c0",
+      "raw_length": 32,
+      "result": "Matches: two int16 indices, float32 amount, two uint32 flags, three float32 timing values."
+    },
+    {
+      "packet": 50,
+      "name": "POV puppet state",
+      "writer": "0x0040ceb0",
+      "reader": "0x0040cfa0",
+      "result": "Inspected writer matches native: two uint32 prefix values; four tracks with uint32 status and conditional uint32 key/flags, two int16 priorities, four floats."
+    },
+    {
+      "packet": 59,
+      "name": "SETWEAPONMESH",
+      "writer": "0x0040ccb0",
+      "reader": "0x0040cd30",
+      "raw_length": 16,
+      "result": "Matches: guid32, model32, two int16 twinkle values."
+    }
+  ],
+  "limitations": "This is a targeted format audit, not exhaustive validation of every game packet, gameplay path, retail update, or modern engine commit. Runtime movement/interaction receipts are recorded separately.",
+  "additional_MotS_layout_checks": [
+    {
+      "packet": 29,
+      "name": "CREATETHING",
+      "writer": "0x00545a90; absolute sector DWORD write at0x00545acd",
+      "reader": "0x00545b50; absolute sector DWORD read at0x00545ba7 and pointer advances4",
+      "raw_lengths": [
+        14,
+        42
+      ],
+      "result": "Original MotS sector index is int32 in both directions. Canonical server and browser format agree. Pinned unchanged native client erroneously reads int16, handled by server native-edge narrowing for absolute packets."
+    },
+    {
+      "packets": [
+        4,
+        45
+      ],
+      "name": "FIREPROJECTILE and extended MotS fire",
+      "writer": "0x005444f0",
+      "readers": [
+        "0x00544600",
+        "0x005446e0"
+      ],
+      "raw_lengths": [
+        52,
+        56
+      ],
+      "result": "Original MotS uses canonical JK fire body; extended type45 appends int32 extra parameter, matching inspected native writer/reader."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "passive": true,
+  "interface": "private namespace lo",
+  "broker_port": 46001,
+  "frames": [
+    {
+      "unix": 1792877591.3080027,
+      "source": 17764043,
+      "target": 17764034,
+      "sequence": 23,
+      "recipient": 4294967295,
+      "sender_slot": 3,
+      "length": 19,
+      "text": "web_boundary_check"
+    }
+  ]
+}

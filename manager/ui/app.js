@@ -1,0 +1,146 @@
+'use strict';
+const token=document.querySelector('meta[name="admin-token"]').content;
+const form=document.querySelector('#settings');
+const fields=document.querySelector('#settings-fields');
+let config=null, catalog=null, lastStatus=null, busy=false;
+const numeric=['max_players','rank','tick_ms','score_limit','time_limit','native_port','ipc_port','broker_port','web_port','game_flags'];
+const bools=['teams','web_enabled','web_asset_downloads','retail_enabled','auto_restart'];
+const byId=id=>document.getElementById(id);
+
+async function api(path,method='GET',body){
+  const headers={'Authorization':'Bearer '+token};
+  if(body!==undefined) headers['Content-Type']='application/json';
+  const response=await fetch('/api/'+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),cache:'no-store'});
+  const result=await response.json();
+  if(!response.ok) throw new Error(result.error||('Request failed: '+response.status));
+  return result;
+}
+function notice(message,type='success'){
+  const node=byId('notice');node.textContent=message;node.className=type;node.hidden=false;
+}
+function fill(value){
+  config=value;
+  for(const [key,item] of Object.entries(value)){
+    const input=form.elements.namedItem(key);if(!input)continue;
+    if(bools.includes(key))input.checked=item;
+    else input.value=key==='web_origins'?item.join('\n'):key==='web_ice_servers'?JSON.stringify(item,null,2):String(item);
+  }
+  updateRankHint();
+}
+function updateRankHint(){byId('rank-hint').hidden=form.elements.namedItem('game').value!=='mots';}
+function current(){
+  const value={...config};
+  for(const key of Object.keys(config)){
+    const input=form.elements.namedItem(key);if(!input)continue;
+    value[key]=bools.includes(key)?input.checked:numeric.includes(key)?Number(input.value):
+      key==='web_origins'?input.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean):
+      key==='web_ice_servers'?JSON.parse(input.value||'[]'):
+      key==='password'?input.value:input.value.trim();
+  }
+  return value;
+}
+function mapChoices(){
+  const episode=form.elements.namedItem('episode').value.toLowerCase();
+  const selected=catalog?.episodes.find(e=>e.episode.toLowerCase()===episode);
+  byId('maps').replaceChildren(...(selected?.maps||[]).map(name=>{const n=document.createElement('option');n.value=name;return n;}));
+}
+function updateControls(){
+  const state=lastStatus?.state||'stopped';
+  const editable=['stopped','failed'].includes(state);
+  fields.disabled=!editable||busy;
+  byId('save').disabled=!editable||busy;
+  byId('preflight').disabled=!editable||busy;
+  byId('start').disabled=!editable||busy;
+  byId('stop').disabled=editable||busy;
+  byId('edit-hint').textContent=editable?'Save settings, check the files, then start the session.':'Stop the session to change its settings.';
+}
+function byteLabel(value){
+  if(!Number.isFinite(value)||value<0)return '—';
+  if(value<1024)return value+' B';
+  if(value<1024*1024)return (value/1024).toFixed(1)+' KiB';
+  return (value/(1024*1024)).toFixed(1)+' MiB';
+}
+function renderAssets(value){
+  const assets=value.browser_assets, panel=byId('asset-panel');
+  panel.hidden=!assets;if(!assets)return;
+  byId('asset-policy').textContent=assets.download_enabled?'Downloads enabled':'Downloads disabled';
+  const labels={'ok':'Ready to send','ready':'Ready to send','retail':'Original game content','retail-only':'Uses original game content only','disabled':'Downloads disabled','no-mod':'No active mod','none':'No transferable content','missing':'File unavailable','not-gob':'Not a supported episode archive','too-big':'Exceeds browser download limit','too-many-files':'Exceeds browser file-count limit','local-required':'Matching pack required on each client','error':'Unavailable'};
+  const offers=[];
+  for(const [kind,title] of [['map','Episode'],['mod','Active mod'],['remastered','Required local pack']]){
+    if(kind==='remastered'&&!assets[kind])continue;
+    const item=assets[kind], box=document.createElement('div');box.className='asset-offer';
+    const heading=document.createElement('strong');heading.textContent=title+(item?.name?' · '+item.name:'');box.append(heading);
+    const detail=document.createElement('p');detail.className='hint';
+    if(!item)detail.textContent='No active mod.';
+    else{
+      const parts=[labels[item.status]||item.status||'Preparing'];
+      if(Number.isFinite(item.size))parts.push(byteLabel(item.size)+' installed');
+      if(Number.isFinite(item.stream_size))parts.push(byteLabel(item.stream_size)+' transfer');
+      if(item.retail_references)parts.push(item.retail_references+' original-content references');
+      detail.textContent=parts.join(' · ');
+    }
+    box.append(detail);
+    if(item?.sha256){const hash=document.createElement('p');hash.className='asset-hash';hash.textContent='SHA-256 '+item.sha256;box.append(hash);}
+    offers.push(box);
+  }
+  byId('asset-offers').replaceChildren(...offers);
+  const transfer=value.browser_transfer||{};
+  byId('asset-transfer').textContent=(transfer.active_asset_transfers||0)+' active transfers · '+(transfer.asset_chunks||0)+' chunks sent · '+byteLabel(transfer.asset_bytes||0)+' sent this session';
+}
+function renderStatus(value){
+  lastStatus=value;
+  const state=byId('state');state.textContent=value.state;state.className='badge '+value.state;
+  const seconds=value.uptime_seconds||0;
+  byId('uptime').textContent=seconds?Math.floor(seconds/3600)+'h '+Math.floor(seconds%3600/60)+'m '+seconds%60+'s':'Local control panel';
+  byId('native-status').textContent=value.native_connected?'Connected':'Offline';
+  byId('retail-status').textContent=value.retail_ready?'Connected':config?.retail_enabled?'Waiting':'Disabled';
+  byId('web-status').textContent=value.browser?'Listening':config?.web_enabled?'Offline':'Disabled';
+  const game=value.browser?.games?.[0];
+  byId('player-status').textContent=value.session?value.session.players+' / '+value.session.max:game?game.players+' / '+game.max:'—';
+  const log=byId('logs'), atBottom=log.scrollHeight-log.scrollTop-log.clientHeight<50;
+  log.textContent=value.logs?.map(row=>row.time+' ['+row.source+'] '+row.text).join('\n')||'No server output yet.';
+  if(atBottom)log.scrollTop=log.scrollHeight;
+  const play=byId('play-link');play.hidden=!value.browser;
+  if(value.browser)play.href='http://127.0.0.1:'+config.web_port+'/';
+  renderAssets(value);
+  updateControls();
+}
+async function action(fn){
+  if(busy)return;busy=true;updateControls();
+  try{await fn();}catch(error){notice(error.message,'error');}
+  finally{busy=false;updateControls();}
+}
+async function save(){const value=await api('config','PUT',current());fill(value);return value;}
+form.addEventListener('submit',event=>{event.preventDefault();action(async()=>{await save();notice('Settings saved.');});});
+form.elements.namedItem('episode').addEventListener('input',mapChoices);
+form.elements.namedItem('game').addEventListener('change',()=>{
+  const mots=form.elements.namedItem('game').value==='mots';
+  form.elements.namedItem('episode').value=mots?'JKM_MP':'JK1MP';
+  form.elements.namedItem('map').value=mots?'mdm02_freezer.jkl':'m2.jkl';
+  form.elements.namedItem('rank').value=mots?'7':'0';
+  updateRankHint();
+  catalog=null;byId('episodes').replaceChildren();byId('maps').replaceChildren();
+  notice('Select the matching game data folder, read its catalog, and choose a map.');
+});
+byId('catalog').addEventListener('click',()=>action(async()=>{
+  catalog=await api('catalog','POST',{config:current()});
+  const suffix=current().game==='mots'?'.goo':'.gob';
+  const episodes=catalog.episodes.filter(e=>e.file.toLowerCase().endsWith(suffix));
+  byId('episodes').replaceChildren(...episodes.map(e=>{const n=document.createElement('option');n.value=e.episode;n.label=e.maps.length+' maps';return n;}));
+  mapChoices();
+  notice(episodes.length+' episodes found. Choose an episode and map from the suggestions.'+(catalog.errors.length?' '+catalog.errors.length+' archive(s) could not be read.':''));
+}));
+byId('preflight').addEventListener('click',()=>action(async()=>{
+  const result=await api('preflight','POST',{config:current()});
+  notice('Files checked: '+result.episode+' → '+result.map+'\nSHA-256: '+result.episode_sha256);
+}));
+byId('start').addEventListener('click',()=>action(async()=>{
+  if(!form.reportValidity())return;
+  await save();notice('Starting the engine and enabled transports…');
+  renderStatus(await api('start','POST'));notice('Session started.');
+}));
+byId('stop').addEventListener('click',()=>action(async()=>{
+  notice('Stopping the session…');renderStatus(await api('stop','POST'));notice('Session stopped.');
+}));
+async function poll(){try{renderStatus(await api('status'));}catch(error){byId('state').textContent='Disconnected';notice(error.message,'error');}}
+(async()=>{try{fill(await api('config'));await poll();setInterval(poll,1500);}catch(error){notice(error.message,'error');}})();

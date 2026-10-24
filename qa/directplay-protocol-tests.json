@@ -1,0 +1,29 @@
+{
+  "returncode": 0,
+  "stdout": "cc -std=c11 -O2 -Wall -Wextra -Werror -o test_protocol.tmp protocol.c test_protocol.c\n./test_protocol.tmp\nPASS: roster, saber-info and MotS chat layouts, truncated prefixes, sequence preservation, high-bit IDs, signed scores/flags, U8 wrap, capacity and opaque-payload checks\nrm -f test_protocol.tmp\nmake: Nothing to be done for 'all'.\n",
+  "stderr": "",
+  "files": {
+    "gateway.c": "1a69f77610b0986efafc40fcbe57cc09a8fc127dec8ffb540804298a93283864",
+    "protocol.c": "8472a0b48ba69b1440136bd540ddc785a304dbe3967b1ce51c916088f5c484ff",
+    "protocol.h": "55c2b8064bd1a58849da99f141a17509dbfcd1d35c8a20f0daa79cad37bfea9a",
+    "test_protocol.c": "91713c4550c662fd392f0e8bb14717973f501758a7ef9ecbb3a765edada41401",
+    "gateway.exe": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3"
+  },
+  "original_layout_addresses": {
+    "JK1.00": {
+      "roster_u8_write": "0x4caa54",
+      "roster_u8_read": "0x4cad23",
+      "saber_s16_write": "0x40ca9f",
+      "saber_s16_read": "0x40cc78"
+    },
+    "MotS": {
+      "roster_u8_write": "0x519284",
+      "roster_u8_read": "0x519553",
+      "saber_s16_write": "0x40e39d",
+      "saber_s16_read": "0x40e590",
+      "chat_write": "0x519b10",
+      "chat_read": "0x519bc0"
+    }
+  },
+  "verified_utc": "2026-10-24T21:41:36.572654+00:00"
+}

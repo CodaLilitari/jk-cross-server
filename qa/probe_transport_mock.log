@@ -1,0 +1,26 @@
+transport mock listening
+{"unix": 1792873544.7519727, "type": 2, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873544.9321997, "type": 8, "source": 0, "target": 0, "bytes": 60, "sith_type": null}
+{"unix": 1792873554.9375038, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873564.93796, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873574.9599102, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873584.9599853, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873594.96038, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873604.967005, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873614.9678695, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873624.9753897, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873634.9745045, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873644.9999743, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873655.0320385, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873667.7674232, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873677.9193478, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873687.901859, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873697.9108632, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873707.9147284, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873717.9123902, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873727.9159176, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873737.9241037, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873747.9228938, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873757.9239461, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873767.9247673, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}
+{"unix": 1792873777.9359608, "type": 7, "source": 0, "target": 0, "bytes": 0, "sith_type": null}

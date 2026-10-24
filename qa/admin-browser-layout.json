@@ -1,0 +1,17 @@
+{
+  "qualification": "Actual local control panel in Chromium",
+  "recorded_utc": "2026-10-24T20:48:35.276465+00:00",
+  "viewport": {
+    "width": 1280,
+    "height": 960
+  },
+  "page_errors": [],
+  "observations": [
+    "Session form, content paths, transport controls and logs rendered without clipping or overlap.",
+    "Running state disables settings and enables Stop.",
+    "Human player capacity is displayed as7 for8 engine slots.",
+    "Native engine and retail bridge readiness were visible."
+  ],
+  "scope": "Read-only browser inspection; API behavior is covered by separate automated tests.",
+  "screenshots_included": false
+}

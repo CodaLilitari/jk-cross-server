@@ -1,0 +1,13 @@
+{
+  "base": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "patch_applied_to_original_files": true,
+  "patched_files_identical_to_built_worktree": [
+    "src/Dss/sithDSSThing.c",
+    "src/Main/Main.c",
+    "src/Platform/Networking/GNS/stdComm_GNS.cpp",
+    "src/Win95/Window.c",
+    "src/Platform/Networking/GNS/GatewayBridge.h",
+    "src/Tests/gateway_bridge_test.cpp",
+    "docs/crossplay-gateway.md"
+  ]
+}

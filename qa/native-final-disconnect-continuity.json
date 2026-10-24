@@ -1,0 +1,483 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-24T21:41:53.610214+00:00",
+  "result": "PASS: ordinary original-retail MotS disconnect removes its roster identity while unchanged native and published browser stay active in the same session",
+  "run": "20261024T213558Z-8a314e",
+  "retail_action": "Original client normal Escape -> Abort -> Yes, independently confirmed by retail test agent",
+  "before": {
+    "unix": 1792877993.2657387,
+    "access": "O_RDONLY bounded reads of exact task client; no writes or injection",
+    "binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085",
+    "pid": 109632,
+    "netns": "net:[4026532206]",
+    "game_ms": 133759,
+    "multiplayer": 1,
+    "self_id": 19503988,
+    "self_slot": 1,
+    "map": "mdm02_freezer.jkl",
+    "local": {
+      "index": 39,
+      "guid": 39,
+      "type": 10,
+      "flags": 540017665,
+      "dead": false,
+      "position": [
+        4.174016952514648,
+        0.4815939962863922,
+        1.153955340385437
+      ],
+      "orientation": [
+        4.7674325287516695e-07,
+        -0.9999991655349731,
+        -0.0006904653855599463,
+        0.9999991655349731,
+        0.0,
+        0.0006904659676365554,
+        -0.0006904653855599463,
+        -0.0006904659676365554,
+        0.9999983310699463,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sector": 222,
+      "health": 100.0
+    },
+    "roster": [
+      {
+        "slot": 0,
+        "flags": 4,
+        "id": 1,
+        "name": "ServerDed",
+        "last_communication_ms": 133633,
+        "scores": {
+          "numKills": 0,
+          "numKilled": 0,
+          "numSuicides": 0,
+          "score": 0
+        },
+        "thing": {
+          "index": 0,
+          "guid": 0,
+          "type": 10,
+          "flags": 539493633,
+          "dead": false,
+          "position": [
+            3.44704008102417,
+            -0.812978982925415,
+            1.1539440155029297
+          ],
+          "orientation": [
+            -1.0,
+            -0.0,
+            -0.0,
+            0.0,
+            -1.0,
+            0.0,
+            -0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sector": 129,
+          "health": 100.0
+        }
+      },
+      {
+        "slot": 1,
+        "flags": 7,
+        "id": 19503988,
+        "name": "native",
+        "last_communication_ms": 0,
+        "scores": {
+          "numKills": 0,
+          "numKilled": 0,
+          "numSuicides": 0,
+          "score": 0
+        },
+        "thing": {
+          "index": 39,
+          "guid": 39,
+          "type": 10,
+          "flags": 540017665,
+          "dead": false,
+          "position": [
+            4.174016952514648,
+            0.4815939962863922,
+            1.153955340385437
+          ],
+          "orientation": [
+            4.7674325287516695e-07,
+            -0.9999991655349731,
+            -0.0006904653855599463,
+            0.9999991655349731,
+            0.0,
+            0.0006904659676365554,
+            -0.0006904653855599463,
+            -0.0006904659676365554,
+            0.9999983310699463,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sector": 222,
+          "health": 100.0
+        }
+      },
+      {
+        "slot": 2,
+        "flags": 7,
+        "id": 19503989,
+        "name": "WebMots",
+        "last_communication_ms": 133485,
+        "scores": {
+          "numKills": 0,
+          "numKilled": 0,
+          "numSuicides": 0,
+          "score": 0
+        },
+        "thing": {
+          "index": 40,
+          "guid": 40,
+          "type": 10,
+          "flags": 540017921,
+          "dead": false,
+          "position": [
+            2.739840030670166,
+            0.561365008354187,
+            1.6635593175888062
+          ],
+          "orientation": [
+            0.0,
+            -1.0,
+            -0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sector": 231,
+          "health": 100.0
+        }
+      },
+      {
+        "slot": 3,
+        "flags": 7,
+        "id": 19503996,
+        "name": "retailmots",
+        "last_communication_ms": 133633,
+        "scores": {
+          "numKills": 0,
+          "numKilled": 0,
+          "numSuicides": 0,
+          "score": 0
+        },
+        "thing": {
+          "index": 58,
+          "guid": 58,
+          "type": 10,
+          "flags": 538969345,
+          "dead": false,
+          "position": [
+            1.291839838027954,
+            -3.7235002517700195,
+            -0.10542700439691544
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            -0.0,
+            -0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sector": 96,
+          "health": 100.0
+        }
+      }
+    ],
+    "render_fps_limit": 30,
+    "mode": "mots"
+  },
+  "after": {
+    "unix": 1792878076.5876985,
+    "access": "O_RDONLY bounded reads of exact task client; no writes or injection",
+    "binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085",
+    "pid": 109632,
+    "netns": "net:[4026532206]",
+    "game_ms": 205071,
+    "multiplayer": 1,
+    "self_id": 19503988,
+    "self_slot": 1,
+    "map": "mdm02_freezer.jkl",
+    "local": {
+      "index": 39,
+      "guid": 39,
+      "type": 10,
+      "flags": 540017665,
+      "dead": false,
+      "position": [
+        4.174016952514648,
+        0.4815939962863922,
+        1.153955340385437
+      ],
+      "orientation": [
+        4.7674325287516695e-07,
+        -0.9999991655349731,
+        -0.0006904653855599463,
+        0.9999991655349731,
+        0.0,
+        0.0006904659676365554,
+        -0.0006904653855599463,
+        -0.0006904659676365554,
+        0.9999983310699463,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sector": 222,
+      "health": 100.0
+    },
+    "roster": [
+      {
+        "slot": 0,
+        "flags": 4,
+        "id": 1,
+        "name": "ServerDed",
+        "last_communication_ms": 204958,
+        "scores": {
+          "numKills": 0,
+          "numKilled": 0,
+          "numSuicides": 0,
+          "score": 0
+        },
+        "thing": {
+          "index": 0,
+          "guid": 0,
+          "type": 10,
+          "flags": 539493633,
+          "dead": false,
+          "position": [
+            3.44704008102417,
+            -0.812978982925415,
+            1.1539440155029297
+          ],
+          "orientation": [
+            -1.0,
+            -0.0,
+            -0.0,
+            0.0,
+            -1.0,
+            0.0,
+            -0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sector": 129,
+          "health": 100.0
+        }
+      },
+      {
+        "slot": 1,
+        "flags": 7,
+        "id": 19503988,
+        "name": "native",
+        "last_communication_ms": 0,
+        "scores": {
+          "numKills": 0,
+          "numKilled": 0,
+          "numSuicides": 0,
+          "score": 0
+        },
+        "thing": {
+          "index": 39,
+          "guid": 39,
+          "type": 10,
+          "flags": 540017665,
+          "dead": false,
+          "position": [
+            4.174016952514648,
+            0.4815939962863922,
+            1.153955340385437
+          ],
+          "orientation": [
+            4.7674325287516695e-07,
+            -0.9999991655349731,
+            -0.0006904653855599463,
+            0.9999991655349731,
+            0.0,
+            0.0006904659676365554,
+            -0.0006904653855599463,
+            -0.0006904659676365554,
+            0.9999983310699463,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sector": 222,
+          "health": 100.0
+        }
+      },
+      {
+        "slot": 2,
+        "flags": 7,
+        "id": 19503989,
+        "name": "WebMots",
+        "last_communication_ms": 204958,
+        "scores": {
+          "numKills": 0,
+          "numKilled": 0,
+          "numSuicides": 0,
+          "score": 0
+        },
+        "thing": {
+          "index": 40,
+          "guid": 40,
+          "type": 10,
+          "flags": 540017921,
+          "dead": false,
+          "position": [
+            2.739840030670166,
+            0.561365008354187,
+            1.6635593175888062
+          ],
+          "orientation": [
+            0.0,
+            -1.0,
+            -0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sector": 231,
+          "health": 100.0
+        }
+      },
+      {
+        "slot": 3,
+        "flags": 6,
+        "id": 0,
+        "name": "retailmots",
+        "last_communication_ms": 182535,
+        "scores": {
+          "numKills": 0,
+          "numKilled": 0,
+          "numSuicides": 0,
+          "score": 0
+        },
+        "thing": {
+          "index": 58,
+          "guid": 58,
+          "type": 10,
+          "flags": 539493633,
+          "dead": false,
+          "position": [
+            1.291839838027954,
+            -3.7235002517700195,
+            -0.10542700439691544
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            -0.0,
+            -0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "sector": 96,
+          "health": 100.0
+        }
+      }
+    ],
+    "render_fps_limit": 30,
+    "mode": "mots"
+  },
+  "core_sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
+  "final_gateway_sha256": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3",
+  "retail_independent_manager_result": {
+    "humans": 2,
+    "engine_pid": 123129,
+    "gateway_pid": 123177,
+    "retail_ready": true,
+    "error": null
+  },
+  "scope": "Local stock MotS FFA; this check verifies continued session and correct roster removal, not unrelated gameplay features."
+}

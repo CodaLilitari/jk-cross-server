@@ -1,0 +1,64 @@
+{
+  "jk_disc1": {
+    "archive_item": "starwars-pc-redump",
+    "record": {
+      "name": "SW-PC-REDUMP/Star Wars - Jedi Knight - Dark Forces II (USA) (Disc 1).zip",
+      "source": "original",
+      "mtime": "1617048466",
+      "size": "606572723",
+      "md5": "5aba1980df7d9faff80700fb53f9b5fe",
+      "crc32": "cc729259",
+      "sha1": "92a1d269bd030dd897381501e20ba31cec0eeab9",
+      "format": "ZIP",
+      "filecount": "9"
+    },
+    "sha256": "7de9b2481d6a90e30faaef986d54e7d8f1385fcdb1781ae0ced5c0466bb23919",
+    "source": "Reused original disc fixture after current IA metadata and executable-hash verification"
+  },
+  "jk_disc2": {
+    "url": "https://archive.org/download/starwars-pc-redump/SW-PC-REDUMP/Star%20Wars%20-%20Jedi%20Knight%20-%20Dark%20Forces%20II%20%28USA%29%20%28Disc%202%29.zip",
+    "record": {
+      "name": "SW-PC-REDUMP/Star Wars - Jedi Knight - Dark Forces II (USA) (Disc 2).zip",
+      "source": "original",
+      "mtime": "1617049120",
+      "size": "572780134",
+      "md5": "2bf9fba826492d1338474a89a239e888",
+      "crc32": "06591f64",
+      "sha1": "d3b446318229138a329830e1347366a2087051bb",
+      "format": "ZIP",
+      "filecount": "13"
+    },
+    "sha1": "d3b446318229138a329830e1347366a2087051bb",
+    "sha256": "0e9809d7572f04922de36cd8d2b3873c5ba7ab1978739d6950827b5014d447e2"
+  },
+  "mots": {
+    "archive_item": "StarWarsJediKnightMysteriesOfTheSithUSAAlt",
+    "url": "https://archive.org/download/StarWarsJediKnightMysteriesOfTheSithUSAAlt/Star%20Wars%20-%20Jedi%20Knight%20-%20Mysteries%20of%20the%20Sith%20%28USA%29.zip",
+    "record": {
+      "name": "Star Wars - Jedi Knight - Mysteries of the Sith (USA).zip",
+      "source": "original",
+      "format": "ZIP",
+      "title": "Star Wars - Jedi Knight - Mysteries of the Sith (USA)",
+      "mtime": "1548859743",
+      "size": "544380823",
+      "md5": "53f30e09f976bc525a6af3e87e09fc45",
+      "crc32": "9a474f1c",
+      "sha1": "a0985f7d021946da7f4381287703aa2f950e3f72",
+      "filecount": "15"
+    },
+    "sha1": "a0985f7d021946da7f4381287703aa2f950e3f72",
+    "sha256": "5e983b028a190956ac5a6641e62a219745f9849f4a62c76cf1e1906727166d77"
+  },
+  "executables": {
+    "JK.EXE": {
+      "size": 1387520,
+      "sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "modified": false
+    },
+    "JKM.EXE": {
+      "size": 1759744,
+      "sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+      "modified": false
+    }
+  }
+}

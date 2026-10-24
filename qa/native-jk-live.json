@@ -1,0 +1,661 @@
+{
+  "result": "PASS: three unchanged client families simultaneously joined stock JK m2; deliberate retail, native, and browser movement observed in native client, and native movement observed in original retail client.",
+  "mode": "jk",
+  "session": "Cross Server Retail Test",
+  "native_client_provenance": "native-client-provenance.json",
+  "native_endpoint": "127.0.0.1:3500",
+  "client_ids": {
+    "native": 16501127,
+    "original_retail": 16501135,
+    "published_browser": 16501126
+  },
+  "observation_method": "Normal menu/keyboard interaction; bounded O_RDONLY native process-state observations, no process writes, code injection, suspension or client engine modification. Original retail observer provided independently.",
+  "snapshots": {
+    "fixed_peers.json": {
+      "unix": 1792875003.712933,
+      "access": "O_RDONLY bounded reads of exact task client; no writes or injection",
+      "binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085",
+      "pid": 97026,
+      "netns": "net:[4026532206]",
+      "game_ms": 44937,
+      "multiplayer": 1,
+      "self_id": 16501127,
+      "self_slot": 1,
+      "map": "m2.jkl",
+      "local": {
+        "index": 1,
+        "guid": 1,
+        "flags": 540017665,
+        "position": [
+          -8.244999885559082,
+          -1.4499499797821045,
+          1.4201140403747559
+        ],
+        "sector": 44,
+        "health": 100.0
+      },
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 4,
+          "id": 1,
+          "name": "ServerDed",
+          "last_communication_ms": 44869,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "flags": 539493633,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "sector": 12,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "id": 16501127,
+          "name": "native",
+          "last_communication_ms": 0,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "flags": 540017665,
+            "position": [
+              -8.244999885559082,
+              -1.4499499797821045,
+              1.4201140403747559
+            ],
+            "sector": 44,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "id": 16501135,
+          "name": "podclient",
+          "last_communication_ms": 43851,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "flags": 538969345,
+            "position": [
+              1.0,
+              -1.5000499486923218,
+              1.4201140403747559
+            ],
+            "sector": 58,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "id": 16501126,
+          "name": "WebClient",
+          "last_communication_ms": 44545,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "flags": 538969345,
+            "position": [
+              -8.399999618530273,
+              -1.1599500179290771,
+              0.9201217293739319
+            ],
+            "sector": 36,
+            "health": 100.0
+          }
+        }
+      ]
+    },
+    "fixed_after_retail_move.json": {
+      "unix": 1792875029.6878445,
+      "access": "O_RDONLY bounded reads of exact task client; no writes or injection",
+      "binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085",
+      "pid": 97026,
+      "netns": "net:[4026532206]",
+      "game_ms": 70915,
+      "multiplayer": 1,
+      "self_id": 16501127,
+      "self_slot": 1,
+      "map": "m2.jkl",
+      "local": {
+        "index": 1,
+        "guid": 1,
+        "flags": 540017665,
+        "position": [
+          -8.244999885559082,
+          -1.4499499797821045,
+          1.4201140403747559
+        ],
+        "sector": 44,
+        "health": 100.0
+      },
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 4,
+          "id": 1,
+          "name": "ServerDed",
+          "last_communication_ms": 70871,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "flags": 539493633,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "sector": 12,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "id": 16501127,
+          "name": "native",
+          "last_communication_ms": 0,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "flags": 540017665,
+            "position": [
+              -8.244999885559082,
+              -1.4499499797821045,
+              1.4201140403747559
+            ],
+            "sector": 44,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "id": 16501135,
+          "name": "podclient",
+          "last_communication_ms": 70520,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "flags": 538969345,
+            "position": [
+              0.461764395236969,
+              -1.5000499486923218,
+              1.4201045036315918
+            ],
+            "sector": 58,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "id": 16501126,
+          "name": "WebClient",
+          "last_communication_ms": 69926,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "flags": 540017921,
+            "position": [
+              -8.399999618530273,
+              -1.1599500179290771,
+              0.9201217293739319
+            ],
+            "sector": 36,
+            "health": 100.0
+          }
+        }
+      ]
+    },
+    "fixed_after_native_move.json": {
+      "unix": 1792875046.0114532,
+      "access": "O_RDONLY bounded reads of exact task client; no writes or injection",
+      "binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085",
+      "pid": 97026,
+      "netns": "net:[4026532206]",
+      "game_ms": 87192,
+      "multiplayer": 1,
+      "self_id": 16501127,
+      "self_slot": 1,
+      "map": "m2.jkl",
+      "local": {
+        "index": 1,
+        "guid": 1,
+        "flags": 540017665,
+        "position": [
+          -7.350823879241943,
+          -1.4499499797821045,
+          1.4201045036315918
+        ],
+        "sector": 44,
+        "health": 100.0
+      },
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 4,
+          "id": 1,
+          "name": "ServerDed",
+          "last_communication_ms": 87109,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "flags": 539493633,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "sector": 12,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "id": 16501127,
+          "name": "native",
+          "last_communication_ms": 0,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "flags": 540017665,
+            "position": [
+              -7.350823879241943,
+              -1.4499499797821045,
+              1.4201045036315918
+            ],
+            "sector": 44,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "id": 16501135,
+          "name": "podclient",
+          "last_communication_ms": 86349,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "flags": 538969345,
+            "position": [
+              0.461764395236969,
+              -1.5000499486923218,
+              1.4201045036315918
+            ],
+            "sector": 58,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "id": 16501126,
+          "name": "WebClient",
+          "last_communication_ms": 86506,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "flags": 540017921,
+            "position": [
+              -8.399999618530273,
+              -1.1599500179290771,
+              0.9201217293739319
+            ],
+            "sector": 36,
+            "health": 100.0
+          }
+        }
+      ]
+    },
+    "fixed_after_browser_move.json": {
+      "unix": 1792875097.5228183,
+      "access": "O_RDONLY bounded reads of exact task client; no writes or injection",
+      "binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085",
+      "pid": 97026,
+      "netns": "net:[4026532206]",
+      "game_ms": 138693,
+      "multiplayer": 1,
+      "self_id": 16501127,
+      "self_slot": 1,
+      "map": "m2.jkl",
+      "local": {
+        "index": 1,
+        "guid": 1,
+        "flags": 540017665,
+        "position": [
+          -7.350823879241943,
+          -1.4499499797821045,
+          1.4201045036315918
+        ],
+        "sector": 44,
+        "health": 100.0
+      },
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 4,
+          "id": 1,
+          "name": "ServerDed",
+          "last_communication_ms": 138573,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "flags": 539493633,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "sector": 12,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "id": 16501127,
+          "name": "native",
+          "last_communication_ms": 0,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "flags": 540017665,
+            "position": [
+              -7.350823879241943,
+              -1.4499499797821045,
+              1.4201045036315918
+            ],
+            "sector": 44,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "id": 16501135,
+          "name": "podclient",
+          "last_communication_ms": 137795,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "flags": 538969345,
+            "position": [
+              0.461764395236969,
+              -1.5000499486923218,
+              1.4201045036315918
+            ],
+            "sector": 58,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "id": 16501126,
+          "name": "WebClient",
+          "last_communication_ms": 137795,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "flags": 540017921,
+            "position": [
+              -7.382868766784668,
+              -1.1599500179290771,
+              0.10297419130802155
+            ],
+            "sector": 34,
+            "health": 100.0
+          }
+        }
+      ]
+    },
+    "fixed_after_native_second_move.json": {
+      "unix": 1792875220.314815,
+      "access": "O_RDONLY bounded reads of exact task client; no writes or injection",
+      "binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085",
+      "pid": 97026,
+      "netns": "net:[4026532206]",
+      "game_ms": 261452,
+      "multiplayer": 1,
+      "self_id": 16501127,
+      "self_slot": 1,
+      "map": "m2.jkl",
+      "local": {
+        "index": 1,
+        "guid": 1,
+        "flags": 540017665,
+        "position": [
+          -6.895707130432129,
+          -1.4499499797821045,
+          1.4201045036315918
+        ],
+        "sector": 44,
+        "health": 100.0
+      },
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 4,
+          "id": 1,
+          "name": "ServerDed",
+          "last_communication_ms": 261344,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "flags": 539493633,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "sector": 12,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "id": 16501127,
+          "name": "native",
+          "last_communication_ms": 0,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "flags": 540017665,
+            "position": [
+              -6.895707130432129,
+              -1.4499499797821045,
+              1.4201045036315918
+            ],
+            "sector": 44,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "id": 16501135,
+          "name": "podclient",
+          "last_communication_ms": 260637,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "flags": 538969345,
+            "position": [
+              0.461764395236969,
+              -1.5000499486923218,
+              1.4201045036315918
+            ],
+            "sector": 58,
+            "health": 100.0
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "id": 16501126,
+          "name": "WebClient",
+          "last_communication_ms": 261395,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "flags": 540017921,
+            "position": [
+              -7.382868766784668,
+              -1.1599500179290771,
+              0.10297419130802155
+            ],
+            "sector": 34,
+            "health": 100.0
+          }
+        }
+      ]
+    }
+  },
+  "retail_after_native_move": {
+    "unix": 1792875061.0616179,
+    "pid": 104424,
+    "exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+    "read_only": true,
+    "game_ms": 41000,
+    "submode_flags": "0x1",
+    "local_player_index": 2,
+    "network_id": 16501135,
+    "server_id": 16501124,
+    "enum_gate": 1,
+    "checksum": 2320694975,
+    "roster": [
+      {
+        "slot": 0,
+        "flags": 5,
+        "name": "ServerDed",
+        "network_id": 16501124,
+        "thing": {
+          "index": 0,
+          "guid": 0,
+          "type": 10,
+          "position": [
+            1.2999999523162842,
+            -3.5500500202178955,
+            1.4201140403747559
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "health": 100.0,
+          "flags": "0x20280501"
+        }
+      },
+      {
+        "slot": 1,
+        "flags": 7,
+        "name": "native",
+        "network_id": 16501127,
+        "thing": {
+          "index": 1,
+          "guid": 1,
+          "type": 10,
+          "position": [
+            -7.478274822235107,
+            -1.4499499797821045,
+            1.4201139211654663
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "health": 100.0,
+          "flags": "0x20300501"
+        }
+      },
+      {
+        "slot": 2,
+        "flags": 7,
+        "name": "podclient",
+        "network_id": 16501135,
+        "thing": {
+          "index": 3,
+          "guid": 3,
+          "type": 10,
+          "position": [
+            0.5004937648773193,
+            -1.5000499486923218,
+            1.4201140403747559
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "health": 100.0,
+          "flags": "0x20200401"
+        }
+      },
+      {
+        "slot": 3,
+        "flags": 7,
+        "name": "WebClient",
+        "network_id": 16501126,
+        "thing": {
+          "index": 13,
+          "guid": 13,
+          "type": 10,
+          "position": [
+            -8.399999618530273,
+            -1.1599500179290771,
+            0.9201120138168335
+          ],
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "health": 100.0,
+          "flags": "0x20200501"
+        }
+      }
+    ],
+    "player": {
+      "index": 3,
+      "guid": 3,
+      "type": 10,
+      "position": [
+        0.5004937648773193,
+        -1.5000499486923218,
+        1.4201140403747559
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "health": 100.0,
+      "flags": "0x20200401"
+    },
+    "world": {
+      "map": "m2.jkl",
+      "sectors": 116,
+      "highest_thing_index": 138
+    }
+  },
+  "limitations": [
+    "Three-client local isolated network test, not WAN/Internet reliability certification.",
+    "Native local versus retail remote position differed by 0.127451 world units; retail local versus native remote position differed by 0.038729 world units in the recorded snapshots. Exact coordinate convergence is not claimed; source-confirmed threshold smoothing is not established as the cause.",
+    "Combat, every item/force-power, every map/mod, and other client releases are not exhaustively qualified."
+  ],
+  "browser_reciprocal_receipt": "published-wasm-jk-three-client.json",
+  "native_test_chat": "Native mixed JK check"
+}

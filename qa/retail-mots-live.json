@@ -1,0 +1,4234 @@
+{
+  "result": "PASS: original MotS1.00 joined simultaneously with unchanged OpenJKDF2 and published JKDF2Web; server-acknowledged humans3, valid roster, movement, reciprocal chat across all three clients and pistol projectile instantiation, native world death/respawn score replication.",
+  "mode": "mots",
+  "map": "JKM_MP/mdm02_freezer.jkl",
+  "rank": 7,
+  "clients": {
+    "retail": 17764034,
+    "openjkdf2": 17764042,
+    "jkdf2web": 17764043
+  },
+  "original_client": {
+    "size": 1759744,
+    "sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+    "modified": false
+  },
+  "tested_gateway_sha256": "d44ce1f331b21be9bb2d761da66e235697d06e8434e02fe1bc957d4f7526ab5e",
+  "method": "Normal game UI and keyboard. Independently verified bounded O_RDONLY process snapshots; no writes, injection or engine changes. Genuine JK CD2 and MotS media verification through original UI. Portable Wine/qemu with local PulseAudio null sink.",
+  "recorded_utc": "2026-10-24T21:27:25.118847+00:00",
+  "server_status": {
+    "state": "running",
+    "error": null,
+    "uptime_seconds": 1221,
+    "processes": {
+      "engine": {
+        "pid": 113229,
+        "returncode": null
+      },
+      "directplay": {
+        "pid": 113333,
+        "returncode": null
+      }
+    },
+    "native_connected": true,
+    "retail_ready": true,
+    "browser": {
+      "online": 3,
+      "lobby": [],
+      "byGame": {
+        "jk1": {
+          "online": 0,
+          "lobby": []
+        },
+        "mots": {
+          "online": 3,
+          "lobby": []
+        }
+      },
+      "games": [
+        {
+          "name": "Cross Server MotS Test",
+          "episode": "JKM_MP",
+          "map": "mdm02_freezer.jkl",
+          "locked": false,
+          "max": 7,
+          "mod": "",
+          "id": 1,
+          "game": "mots",
+          "players": 3,
+          "names": [
+            "WebMots"
+          ]
+        }
+      ]
+    },
+    "session": {
+      "name": "Cross Server MotS Test",
+      "episode": "JKM_MP",
+      "map": "mdm02_freezer.jkl",
+      "locked": false,
+      "max": 7,
+      "transport_slots": 8,
+      "players": 3,
+      "mod": "",
+      "flags": 128,
+      "tick_ms": 100,
+      "game": "mots"
+    },
+    "preflight": {
+      "game": "mots",
+      "episode": "JKM_MP.GOO",
+      "map": "mdm02_freezer.jkl",
+      "episode_sha256": "92e3895aa5ae179861f8174dd23c03506acad270916c7f58b7b8f260d7a36bcd",
+      "catalog": {
+        "episodes": [
+          {
+            "episode": "JKM_MP",
+            "file": "JKM_MP.GOO",
+            "maps": [
+              "k1.jkl",
+              "k2.jkl",
+              "k3.jkl",
+              "k4.jkl",
+              "k5.jkl",
+              "mdm02_freezer.jkl",
+              "mdm03_canopy.jkl",
+              "mdm04_palace.jkl",
+              "mdm05_reactor.jkl",
+              "mdm07_vaporator.jkl",
+              "mdm08_cargo.jkl",
+              "mdm10_gantry.jkl",
+              "mdm12_spaceport.jkl",
+              "mdm14_throne.jkl",
+              "mdm15_homestead.jkl",
+              "mdm17_bespin.jkl"
+            ],
+            "type": 2,
+            "title": "Sith Multiplayer Duel",
+            "size": 14810929
+          }
+        ],
+        "errors": []
+      },
+      "note": "Archive hashes identify content; connected gameplay is a separate check."
+    },
+    "run_directory": "/workspace/scratch/66b0203ff71a/research/retail/manager_state/runs/20261024T210655Z-f3c944",
+    "logs": [
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "0.017000 seconds to parse section soundclass."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "0.206000 seconds to parse section models."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "0.007000 seconds to parse section sprites."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "0.003000 seconds to parse section keyframes."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "0.196000 seconds to parse section animclass."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "0.006000 seconds to parse section cogscripts."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "0.843000 seconds to parse section cogs."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "Updating texture cache..."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "GATEWAY_LISTEN 127.0.0.1:46000 protocol=1"
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `episode/JK1MP.gob`."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `episode/JK1MP.gob`..."
+      },
+      {
+        "time": "2026-10-24T20:45:48+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 6 lines in 'misc\\cogStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T20:45:49+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithWorld_Load -> m2.jkl"
+      },
+      {
+        "time": "2026-10-24T20:45:49+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section jk."
+      },
+      {
+        "time": "2026-10-24T20:45:49+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section copyright."
+      },
+      {
+        "time": "2026-10-24T20:45:49+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section header."
+      },
+      {
+        "time": "2026-10-24T20:45:49+00:00",
+        "source": "engine",
+        "text": "0.063000 seconds to parse section sounds."
+      },
+      {
+        "time": "2026-10-24T20:45:50+00:00",
+        "source": "engine",
+        "text": "0.064000 seconds to parse section materials."
+      },
+      {
+        "time": "2026-10-24T20:45:50+00:00",
+        "source": "engine",
+        "text": "1.017000 seconds to parse section georesource."
+      },
+      {
+        "time": "2026-10-24T20:45:50+00:00",
+        "source": "engine",
+        "text": "0.002000 seconds to parse section sectors."
+      },
+      {
+        "time": "2026-10-24T20:45:50+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section aiclass."
+      },
+      {
+        "time": "2026-10-24T20:45:50+00:00",
+        "source": "engine",
+        "text": "0.197000 seconds to parse section models."
+      },
+      {
+        "time": "2026-10-24T20:45:50+00:00",
+        "source": "engine",
+        "text": "0.002000 seconds to parse section sprites."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "engine",
+        "text": "0.198000 seconds to parse section keyframes."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section animclass."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "engine",
+        "text": "0.006000 seconds to parse section soundclass."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "engine",
+        "text": "0.306000 seconds to parse section cogscripts."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "engine",
+        "text": "1.220000 seconds to parse section cogs."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "engine",
+        "text": "0.002000 seconds to parse section templates."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "engine",
+        "text": "0.045000 seconds to parse section things."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "engine",
+        "text": "Updating texture cache..."
+      },
+      {
+        "time": "2026-10-24T20:45:52+00:00",
+        "source": "manager",
+        "text": "Started directplay (PID 103728)"
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"CoCreateInstance_IDirectPlay3A\"}"
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"EnumConnections_TCPIP\"}"
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"InitializeConnection_TCPIP\"}"
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"Open_session\"}"
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"Create_server_player\"}"
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "manager",
+        "text": "DirectPlay pool ready (7 surrogate identities)"
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "engine",
+        "text": "GATEWAY_ID_POOL_READY 7"
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "manager",
+        "text": "Session running; compatibility qualification is recorded separately in qa/."
+      },
+      {
+        "time": "2026-10-24T20:46:00+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"ready\",\"version\":\"0.1.0\",\"mode\":\"jk\",\"host_id\":16501124,\"canonical_host_id\":1,\"pool_count\":7,\"physical_capacity\":32,\"human_capacity\":7,\"checksum_seed\":3616648963}"
+      },
+      {
+        "time": "2026-10-24T20:46:10+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:46:20+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:46:30+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:46:40+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:46:50+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:47:00+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:47:10+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:47:20+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:47:30+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:47:40+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:47:50+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:48:00+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:48:10+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:48:20+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:48:30+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:48:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:48:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:49:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:49:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:49:18+00:00",
+        "source": "engine",
+        "text": "native has joined the game"
+      },
+      {
+        "time": "2026-10-24T20:49:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:49:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:49:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T20:49:44+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"retail_transport_join\",\"id\":16501135}"
+      },
+      {
+        "time": "2026-10-24T20:49:44+00:00",
+        "source": "manager",
+        "text": "Retail transport peer 16501135 registered"
+      },
+      {
+        "time": "2026-10-24T20:49:44+00:00",
+        "source": "engine",
+        "text": "GATEWAY_PEER_ADDED 16501135"
+      },
+      {
+        "time": "2026-10-24T20:49:46+00:00",
+        "source": "engine",
+        "text": "GATEWAY_PEER_ADDED 16501126"
+      },
+      {
+        "time": "2026-10-24T20:49:50+00:00",
+        "source": "engine",
+        "text": "podclient has joined the game"
+      },
+      {
+        "time": "2026-10-24T20:49:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":23,\"sent_packets\":317}"
+      },
+      {
+        "time": "2026-10-24T20:49:55+00:00",
+        "source": "engine",
+        "text": "WebClient has joined the game"
+      },
+      {
+        "time": "2026-10-24T20:50:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":78,\"sent_packets\":554}"
+      },
+      {
+        "time": "2026-10-24T20:50:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":125,\"sent_packets\":755}"
+      },
+      {
+        "time": "2026-10-24T20:50:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":167,\"sent_packets\":956}"
+      },
+      {
+        "time": "2026-10-24T20:50:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":209,\"sent_packets\":1155}"
+      },
+      {
+        "time": "2026-10-24T20:50:41+00:00",
+        "source": "engine",
+        "text": "WebClient says 'Browser mixed JK check'"
+      },
+      {
+        "time": "2026-10-24T20:50:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":248,\"sent_packets\":1359}"
+      },
+      {
+        "time": "2026-10-24T20:50:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":285,\"sent_packets\":1557}"
+      },
+      {
+        "time": "2026-10-24T20:51:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":321,\"sent_packets\":1758}"
+      },
+      {
+        "time": "2026-10-24T20:51:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":354,\"sent_packets\":1960}"
+      },
+      {
+        "time": "2026-10-24T20:51:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":390,\"sent_packets\":2160}"
+      },
+      {
+        "time": "2026-10-24T20:51:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":423,\"sent_packets\":2347}"
+      },
+      {
+        "time": "2026-10-24T20:51:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":453,\"sent_packets\":2551}"
+      },
+      {
+        "time": "2026-10-24T20:51:43+00:00",
+        "source": "engine",
+        "text": "podclient says 'retail_jk_crossplay_ok'"
+      },
+      {
+        "time": "2026-10-24T20:51:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":492,\"sent_packets\":2754}"
+      },
+      {
+        "time": "2026-10-24T20:52:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":534,\"sent_packets\":2952}"
+      },
+      {
+        "time": "2026-10-24T20:52:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":573,\"sent_packets\":3145}"
+      },
+      {
+        "time": "2026-10-24T20:52:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":615,\"sent_packets\":3335}"
+      },
+      {
+        "time": "2026-10-24T20:52:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":657,\"sent_packets\":3536}"
+      },
+      {
+        "time": "2026-10-24T20:52:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":693,\"sent_packets\":3733}"
+      },
+      {
+        "time": "2026-10-24T20:52:44+00:00",
+        "source": "engine",
+        "text": "WebClient says 'web_jk_crossplay_ok'"
+      },
+      {
+        "time": "2026-10-24T20:52:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":730,\"sent_packets\":3933}"
+      },
+      {
+        "time": "2026-10-24T20:53:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":769,\"sent_packets\":4133}"
+      },
+      {
+        "time": "2026-10-24T20:53:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":805,\"sent_packets\":4332}"
+      },
+      {
+        "time": "2026-10-24T20:53:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":847,\"sent_packets\":4533}"
+      },
+      {
+        "time": "2026-10-24T20:53:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":889,\"sent_packets\":4738}"
+      },
+      {
+        "time": "2026-10-24T20:53:35+00:00",
+        "source": "engine",
+        "text": "native says 'Native mixed JK check'"
+      },
+      {
+        "time": "2026-10-24T20:53:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":929,\"sent_packets\":4936}"
+      },
+      {
+        "time": "2026-10-24T20:53:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":968,\"sent_packets\":5131}"
+      },
+      {
+        "time": "2026-10-24T20:54:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1004,\"sent_packets\":5336}"
+      },
+      {
+        "time": "2026-10-24T20:54:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1046,\"sent_packets\":5538}"
+      },
+      {
+        "time": "2026-10-24T20:54:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1079,\"sent_packets\":5742}"
+      },
+      {
+        "time": "2026-10-24T20:54:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1118,\"sent_packets\":5943}"
+      },
+      {
+        "time": "2026-10-24T20:54:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1154,\"sent_packets\":6141}"
+      },
+      {
+        "time": "2026-10-24T20:54:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1214,\"sent_packets\":6349}"
+      },
+      {
+        "time": "2026-10-24T20:55:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1280,\"sent_packets\":6557}"
+      },
+      {
+        "time": "2026-10-24T20:55:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1343,\"sent_packets\":6769}"
+      },
+      {
+        "time": "2026-10-24T20:55:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1406,\"sent_packets\":6978}"
+      },
+      {
+        "time": "2026-10-24T20:55:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1469,\"sent_packets\":7190}"
+      },
+      {
+        "time": "2026-10-24T20:55:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1526,\"sent_packets\":7400}"
+      },
+      {
+        "time": "2026-10-24T20:55:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1571,\"sent_packets\":7599}"
+      },
+      {
+        "time": "2026-10-24T20:56:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1625,\"sent_packets\":7806}"
+      },
+      {
+        "time": "2026-10-24T20:56:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1676,\"sent_packets\":8010}"
+      },
+      {
+        "time": "2026-10-24T20:56:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1733,\"sent_packets\":8218}"
+      },
+      {
+        "time": "2026-10-24T20:56:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1790,\"sent_packets\":8430}"
+      },
+      {
+        "time": "2026-10-24T20:56:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1841,\"sent_packets\":8630}"
+      },
+      {
+        "time": "2026-10-24T20:56:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1895,\"sent_packets\":8838}"
+      },
+      {
+        "time": "2026-10-24T20:57:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1952,\"sent_packets\":9047}"
+      },
+      {
+        "time": "2026-10-24T20:57:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2006,\"sent_packets\":9247}"
+      },
+      {
+        "time": "2026-10-24T20:57:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2066,\"sent_packets\":9461}"
+      },
+      {
+        "time": "2026-10-24T20:57:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2123,\"sent_packets\":9672}"
+      },
+      {
+        "time": "2026-10-24T20:57:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2177,\"sent_packets\":9879}"
+      },
+      {
+        "time": "2026-10-24T20:57:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2231,\"sent_packets\":10094}"
+      },
+      {
+        "time": "2026-10-24T20:58:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2281,\"sent_packets\":10284}"
+      },
+      {
+        "time": "2026-10-24T20:58:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2306,\"sent_packets\":10473}"
+      },
+      {
+        "time": "2026-10-24T20:58:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2353,\"sent_packets\":10688}"
+      },
+      {
+        "time": "2026-10-24T20:58:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2402,\"sent_packets\":10895}"
+      },
+      {
+        "time": "2026-10-24T20:58:42+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2456,\"sent_packets\":11106}"
+      },
+      {
+        "time": "2026-10-24T20:58:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2513,\"sent_packets\":11316}"
+      },
+      {
+        "time": "2026-10-24T20:59:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2564,\"sent_packets\":11525}"
+      },
+      {
+        "time": "2026-10-24T20:59:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2609,\"sent_packets\":11734}"
+      },
+      {
+        "time": "2026-10-24T20:59:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2663,\"sent_packets\":11942}"
+      },
+      {
+        "time": "2026-10-24T20:59:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2720,\"sent_packets\":12147}"
+      },
+      {
+        "time": "2026-10-24T20:59:42+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2777,\"sent_packets\":12358}"
+      },
+      {
+        "time": "2026-10-24T20:59:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2840,\"sent_packets\":12569}"
+      },
+      {
+        "time": "2026-10-24T21:00:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2891,\"sent_packets\":12777}"
+      },
+      {
+        "time": "2026-10-24T21:00:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2945,\"sent_packets\":12985}"
+      },
+      {
+        "time": "2026-10-24T21:00:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":2996,\"sent_packets\":13185}"
+      },
+      {
+        "time": "2026-10-24T21:00:31+00:00",
+        "source": "manager",
+        "text": "DirectPlay adapter disconnected; mixed session must restart"
+      },
+      {
+        "time": "2026-10-24T21:00:31+00:00",
+        "source": "engine",
+        "text": "WebClient has left the game"
+      },
+      {
+        "time": "2026-10-24T21:00:31+00:00",
+        "source": "engine",
+        "text": "podclient has left the game"
+      },
+      {
+        "time": "2026-10-24T21:00:31+00:00",
+        "source": "manager",
+        "text": "directplay exited with code -15"
+      },
+      {
+        "time": "2026-10-24T21:00:32+00:00",
+        "source": "manager",
+        "text": "engine exited with code -15"
+      },
+      {
+        "time": "2026-10-24T21:00:32+00:00",
+        "source": "manager",
+        "text": "Session stopped"
+      },
+      {
+        "time": "2026-10-24T21:00:32+00:00",
+        "source": "manager",
+        "text": "Started engine (PID 109571)"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Recreating SDL2 Window!"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGob_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkRes_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: stdFileUtil_NewFind mods/*.goo"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: stdFileUtil_NewFind resource//*.goo"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/jkmres.goo`."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/jkmres.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/jkmsnd.goo`."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/jkmsnd.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/res1.gob`."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/res1.gob`..."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/res2.gob`."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/res2.gob`..."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Windows_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkStrings_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "(0x559c4bed2f70 .\\General\\stdStrTable.c:177) The key 'GUI_JEDIONLY_HINT' is in the string table 'ui\\jkstrings.uni' more than once."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": ">>>   \"GUI_JEDIONLY_HINT\"                 0 \"All players are Jedi; the maximum rank is determined by the server\""
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 1102 lines in 'ui\\jkstrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 1 lines in 'ui\\openjkdf2_i8n.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 100 lines in 'ui\\openjkdf2.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithCvar_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: rdStartup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGui_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiMultiplayer_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiNetHost_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiSetup_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiMain_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 26 lines in 'misc\\sithStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Loaded libGameNetworkingSockets.so successfully."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkDev_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGame_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkControl_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Free SDL joysticks..."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Free SDL joysticks..."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "SDL has 0 joysticks."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkHudInv_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkDSS_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkCutscene_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 187 lines in 'ui\\cutStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkCredits_Startup"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 375 lines in 'ui\\credits.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Autostarting level: `mdm02_freezer.jkl`"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithWorld_Load -> static.jkl"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section copyright."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section sounds."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section materials."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.010000 seconds to parse section soundclass."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.094000 seconds to parse section models."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.010000 seconds to parse section sprites."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section keyframes."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.062000 seconds to parse section animclass."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.002000 seconds to parse section cogscripts."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.543000 seconds to parse section cogs."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Updating texture cache..."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "GATEWAY_LISTEN 127.0.0.1:46000 protocol=1"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `episode/JKM_MP.goo`."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `episode/JKM_MP.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 37 lines in 'misc\\cogStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithWorld_Load -> mdm02_freezer.jkl"
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section jk."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section copyright."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section header."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.032000 seconds to parse section sounds."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.040000 seconds to parse section materials."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.030000 seconds to parse section georesource."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.005000 seconds to parse section sectors."
+      },
+      {
+        "time": "2026-10-24T21:00:34+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section aiclass."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.101000 seconds to parse section models."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.005000 seconds to parse section sprites."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.015000 seconds to parse section keyframes."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section animclass."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.009000 seconds to parse section soundclass."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.090000 seconds to parse section cogscripts."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.621000 seconds to parse section cogs."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.002000 seconds to parse section templates."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section things."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section archlighting."
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "manager",
+        "text": "Started directplay (PID 109598)"
+      },
+      {
+        "time": "2026-10-24T21:00:35+00:00",
+        "source": "engine",
+        "text": "Updating texture cache..."
+      },
+      {
+        "time": "2026-10-24T21:00:37+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"CoCreateInstance_IDirectPlay3A\"}"
+      },
+      {
+        "time": "2026-10-24T21:00:37+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"EnumConnections_TCPIP\"}"
+      },
+      {
+        "time": "2026-10-24T21:00:37+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"InitializeConnection_TCPIP\"}"
+      },
+      {
+        "time": "2026-10-24T21:00:38+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"Open_session\"}"
+      },
+      {
+        "time": "2026-10-24T21:00:38+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"Create_server_player\"}"
+      },
+      {
+        "time": "2026-10-24T21:00:38+00:00",
+        "source": "manager",
+        "text": "DirectPlay pool ready (7 surrogate identities)"
+      },
+      {
+        "time": "2026-10-24T21:00:38+00:00",
+        "source": "engine",
+        "text": "GATEWAY_ID_POOL_READY 7"
+      },
+      {
+        "time": "2026-10-24T21:00:38+00:00",
+        "source": "manager",
+        "text": "Session running; compatibility qualification is recorded separately in qa/."
+      },
+      {
+        "time": "2026-10-24T21:00:38+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"ready\",\"version\":\"0.1.0\",\"mode\":\"mots\",\"host_id\":17378663,\"canonical_host_id\":1,\"pool_count\":7,\"physical_capacity\":32,\"human_capacity\":7,\"checksum_seed\":1457171841}"
+      },
+      {
+        "time": "2026-10-24T21:00:48+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:00:58+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:01:08+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:01:18+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:01:28+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:01:38+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:01:48+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:01:58+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:02:08+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:02:18+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:02:28+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:02:38+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:02:48+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:02:58+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:03:00+00:00",
+        "source": "engine",
+        "text": "GATEWAY_PEER_ADDED 17378660"
+      },
+      {
+        "time": "2026-10-24T21:03:05+00:00",
+        "source": "engine",
+        "text": "WebMots has joined the game"
+      },
+      {
+        "time": "2026-10-24T21:03:08+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:03:18+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:03:28+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:03:38+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:03:48+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:03:58+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:04:08+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:04:18+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:04:28+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:04:32+00:00",
+        "source": "engine",
+        "text": "WebMots says 'web_mots_crossplay_ok'"
+      },
+      {
+        "time": "2026-10-24T21:04:38+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:04:48+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:04:52+00:00",
+        "source": "manager",
+        "text": "DirectPlay adapter disconnected; mixed session must restart"
+      },
+      {
+        "time": "2026-10-24T21:04:52+00:00",
+        "source": "engine",
+        "text": "WebMots has left the game"
+      },
+      {
+        "time": "2026-10-24T21:04:52+00:00",
+        "source": "manager",
+        "text": "directplay exited with code -15"
+      },
+      {
+        "time": "2026-10-24T21:04:52+00:00",
+        "source": "manager",
+        "text": "engine exited with code -15"
+      },
+      {
+        "time": "2026-10-24T21:04:52+00:00",
+        "source": "manager",
+        "text": "Session stopped"
+      },
+      {
+        "time": "2026-10-24T21:04:52+00:00",
+        "source": "manager",
+        "text": "Started engine (PID 112434)"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Recreating SDL2 Window!"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGob_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkRes_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: stdFileUtil_NewFind mods/*.goo"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: stdFileUtil_NewFind resource//*.goo"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/jkmres.goo`."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/jkmres.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/jkmsnd.goo`."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/jkmsnd.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/res1.gob`."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/res1.gob`..."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/res2.gob`."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/res2.gob`..."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Windows_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkStrings_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "(0x55ecaa3dff70 .\\General\\stdStrTable.c:177) The key 'GUI_JEDIONLY_HINT' is in the string table 'ui\\jkstrings.uni' more than once."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": ">>>   \"GUI_JEDIONLY_HINT\"                 0 \"All players are Jedi; the maximum rank is determined by the server\""
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 1102 lines in 'ui\\jkstrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 1 lines in 'ui\\openjkdf2_i8n.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 100 lines in 'ui\\openjkdf2.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithCvar_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: rdStartup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGui_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiMultiplayer_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiNetHost_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiSetup_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiMain_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 26 lines in 'misc\\sithStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Loaded libGameNetworkingSockets.so successfully."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkDev_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGame_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkControl_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Free SDL joysticks..."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Free SDL joysticks..."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "SDL has 0 joysticks."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkHudInv_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkDSS_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkCutscene_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 187 lines in 'ui\\cutStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkCredits_Startup"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 375 lines in 'ui\\credits.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Autostarting level: `mdm02_freezer.jkl`"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithWorld_Load -> static.jkl"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section copyright."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section sounds."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.002000 seconds to parse section materials."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.013000 seconds to parse section soundclass."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.026000 seconds to parse section models."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.003000 seconds to parse section sprites."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section keyframes."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.040000 seconds to parse section animclass."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section cogscripts."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.808000 seconds to parse section cogs."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Updating texture cache..."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "GATEWAY_LISTEN 127.0.0.1:46000 protocol=1"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `episode/JKM_MP.goo`."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `episode/JKM_MP.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 37 lines in 'misc\\cogStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithWorld_Load -> mdm02_freezer.jkl"
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section jk."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section copyright."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section header."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.005000 seconds to parse section sounds."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.150000 seconds to parse section materials."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.020000 seconds to parse section georesource."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.003000 seconds to parse section sectors."
+      },
+      {
+        "time": "2026-10-24T21:04:54+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section aiclass."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.150000 seconds to parse section models."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section sprites."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.010000 seconds to parse section keyframes."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section animclass."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section soundclass."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.013000 seconds to parse section cogscripts."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.373000 seconds to parse section cogs."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section templates."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section things."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section archlighting."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "engine",
+        "text": "Updating texture cache..."
+      },
+      {
+        "time": "2026-10-24T21:04:55+00:00",
+        "source": "manager",
+        "text": "Started directplay (PID 112470)"
+      },
+      {
+        "time": "2026-10-24T21:04:56+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"CoCreateInstance_IDirectPlay3A\"}"
+      },
+      {
+        "time": "2026-10-24T21:04:56+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"EnumConnections_TCPIP\"}"
+      },
+      {
+        "time": "2026-10-24T21:04:56+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"InitializeConnection_TCPIP\"}"
+      },
+      {
+        "time": "2026-10-24T21:04:56+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"Open_session\"}"
+      },
+      {
+        "time": "2026-10-24T21:04:57+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"Create_server_player\"}"
+      },
+      {
+        "time": "2026-10-24T21:04:57+00:00",
+        "source": "manager",
+        "text": "DirectPlay pool ready (7 surrogate identities)"
+      },
+      {
+        "time": "2026-10-24T21:04:57+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"ready\",\"version\":\"0.1.0\",\"mode\":\"mots\",\"host_id\":17637467,\"canonical_host_id\":1,\"pool_count\":7,\"physical_capacity\":32,\"human_capacity\":7,\"checksum_seed\":3409942019}"
+      },
+      {
+        "time": "2026-10-24T21:04:57+00:00",
+        "source": "manager",
+        "text": "Session running; compatibility qualification is recorded separately in qa/."
+      },
+      {
+        "time": "2026-10-24T21:04:57+00:00",
+        "source": "engine",
+        "text": "GATEWAY_ID_POOL_READY 7"
+      },
+      {
+        "time": "2026-10-24T21:05:07+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:05:17+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:05:27+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:05:37+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:05:47+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:05:57+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:06:07+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:06:17+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:06:27+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:06:37+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:06:47+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:06:54+00:00",
+        "source": "manager",
+        "text": "DirectPlay adapter disconnected; mixed session must restart"
+      },
+      {
+        "time": "2026-10-24T21:06:54+00:00",
+        "source": "manager",
+        "text": "directplay exited with code -15"
+      },
+      {
+        "time": "2026-10-24T21:06:54+00:00",
+        "source": "manager",
+        "text": "engine exited with code -15"
+      },
+      {
+        "time": "2026-10-24T21:06:54+00:00",
+        "source": "manager",
+        "text": "Session stopped"
+      },
+      {
+        "time": "2026-10-24T21:06:55+00:00",
+        "source": "manager",
+        "text": "Started engine (PID 113229)"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Recreating SDL2 Window!"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGob_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkRes_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: stdFileUtil_NewFind mods/*.goo"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: stdFileUtil_NewFind resource//*.goo"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/jkmres.goo`."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/jkmres.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/jkmsnd.goo`."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/jkmsnd.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/res1.gob`."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/res1.gob`..."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `resource/res2.gob`."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `resource/res2.gob`..."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Windows_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkStrings_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "(0x558d27b3ff70 .\\General\\stdStrTable.c:177) The key 'GUI_JEDIONLY_HINT' is in the string table 'ui\\jkstrings.uni' more than once."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": ">>>   \"GUI_JEDIONLY_HINT\"                 0 \"All players are Jedi; the maximum rank is determined by the server\""
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 1102 lines in 'ui\\jkstrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 1 lines in 'ui\\openjkdf2_i8n.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 100 lines in 'ui\\openjkdf2.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithCvar_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: rdStartup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGui_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiMultiplayer_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiNetHost_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiSetup_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGuiMain_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 26 lines in 'misc\\sithStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Loaded libGameNetworkingSockets.so successfully."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkDev_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkGame_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkControl_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Free SDL joysticks..."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Free SDL joysticks..."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "SDL has 0 joysticks."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkHudInv_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkDSS_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkCutscene_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 187 lines in 'ui\\cutStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: jkCredits_Startup"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 375 lines in 'ui\\credits.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Autostarting level: `mdm02_freezer.jkl`"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithWorld_Load -> static.jkl"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section copyright."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section sounds."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.002000 seconds to parse section materials."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.008000 seconds to parse section soundclass."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.049000 seconds to parse section models."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.002000 seconds to parse section sprites."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section keyframes."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.072000 seconds to parse section animclass."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.057000 seconds to parse section cogscripts."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "1.430000 seconds to parse section cogs."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Updating texture cache..."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "GATEWAY_LISTEN 127.0.0.1:46000 protocol=1"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob opened `episode/JKM_MP.goo`."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: Gob loaded GOB file `episode/JKM_MP.goo`..."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "Premature 'END' found after only 37 lines in 'misc\\cogStrings.uni'.  Check number in 'MSG xxx' header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "OpenJKDF2: sithWorld_Load -> mdm02_freezer.jkl"
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section jk."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section copyright."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section header."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.012000 seconds to parse section sounds."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.089000 seconds to parse section materials."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.063000 seconds to parse section georesource."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.011000 seconds to parse section sectors."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section aiclass."
+      },
+      {
+        "time": "2026-10-24T21:06:58+00:00",
+        "source": "engine",
+        "text": "0.066000 seconds to parse section models."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "0.006000 seconds to parse section sprites."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "0.019000 seconds to parse section keyframes."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section animclass."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section soundclass."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "0.098000 seconds to parse section cogscripts."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "1.218000 seconds to parse section cogs."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "0.005000 seconds to parse section templates."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "0.000000 seconds to parse section things."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "0.001000 seconds to parse section archlighting."
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "manager",
+        "text": "Started directplay (PID 113333)"
+      },
+      {
+        "time": "2026-10-24T21:07:00+00:00",
+        "source": "engine",
+        "text": "Updating texture cache..."
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"CoCreateInstance_IDirectPlay3A\"}"
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"EnumConnections_TCPIP\"}"
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"InitializeConnection_TCPIP\"}"
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"Open_session\"}"
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"initializing\",\"stage\":\"Create_server_player\"}"
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "manager",
+        "text": "DirectPlay pool ready (7 surrogate identities)"
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"ready\",\"version\":\"0.1.0\",\"mode\":\"mots\",\"host_id\":17764040,\"canonical_host_id\":1,\"pool_count\":7,\"physical_capacity\":32,\"human_capacity\":7,\"checksum_seed\":2930859266}"
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "engine",
+        "text": "GATEWAY_ID_POOL_READY 7"
+      },
+      {
+        "time": "2026-10-24T21:07:03+00:00",
+        "source": "manager",
+        "text": "Session running; compatibility qualification is recorded separately in qa/."
+      },
+      {
+        "time": "2026-10-24T21:07:13+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:07:23+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:07:33+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:07:43+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:07:53+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:08:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:08:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:08:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:08:43+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:08:53+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:09:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:09:13+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:09:23+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:09:29+00:00",
+        "source": "engine",
+        "text": "GATEWAY_PEER_ADDED 17764043"
+      },
+      {
+        "time": "2026-10-24T21:09:33+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:09:43+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:09:53+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:10:05+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:10:18+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:10:39+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:10:57+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:11:09+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:11:19+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:11:29+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:11:39+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:11:46+00:00",
+        "source": "engine",
+        "text": "native has joined the game"
+      },
+      {
+        "time": "2026-10-24T21:11:49+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:11:59+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:12:09+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:12:19+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:12:29+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:12:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:12:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:13:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:13:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:13:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:13:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:13:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:13:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:14:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:14:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:14:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:14:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:14:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:14:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:15:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:15:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:15:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:15:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"retail_transport_join\",\"id\":17764035}"
+      },
+      {
+        "time": "2026-10-24T21:15:31+00:00",
+        "source": "manager",
+        "text": "Retail transport peer 17764035 registered"
+      },
+      {
+        "time": "2026-10-24T21:15:31+00:00",
+        "source": "engine",
+        "text": "GATEWAY_PEER_ADDED 17764035"
+      },
+      {
+        "time": "2026-10-24T21:15:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":0,\"sent_packets\":0}"
+      },
+      {
+        "time": "2026-10-24T21:15:40+00:00",
+        "source": "engine",
+        "text": "GATEWAY_PEER_ADDED 17764043"
+      },
+      {
+        "time": "2026-10-24T21:15:41+00:00",
+        "source": "engine",
+        "text": "retailmots has joined the game"
+      },
+      {
+        "time": "2026-10-24T21:15:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":24,\"sent_packets\":247}"
+      },
+      {
+        "time": "2026-10-24T21:15:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":24,\"sent_packets\":437}"
+      },
+      {
+        "time": "2026-10-24T21:15:52+00:00",
+        "source": "engine",
+        "text": "WebMots has joined the game"
+      },
+      {
+        "time": "2026-10-24T21:16:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":24,\"sent_packets\":671}"
+      },
+      {
+        "time": "2026-10-24T21:16:11+00:00",
+        "source": "engine",
+        "text": "retailmots has left the game"
+      },
+      {
+        "time": "2026-10-24T21:16:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":24,\"sent_packets\":871}"
+      },
+      {
+        "time": "2026-10-24T21:16:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":101,\"sent_packets\":911}"
+      },
+      {
+        "time": "2026-10-24T21:16:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":119,\"sent_packets\":917}"
+      },
+      {
+        "time": "2026-10-24T21:16:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":119,\"sent_packets\":917}"
+      },
+      {
+        "time": "2026-10-24T21:16:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":153,\"sent_packets\":928}"
+      },
+      {
+        "time": "2026-10-24T21:16:55+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"retail_transport_leave\",\"id\":17764035}"
+      },
+      {
+        "time": "2026-10-24T21:17:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:17:11+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:17:21+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:17:30+00:00",
+        "source": "engine",
+        "text": "WebMots says ' 30'"
+      },
+      {
+        "time": "2026-10-24T21:17:31+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:17:41+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:17:51+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:18:01+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:18:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:18:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:18:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:18:42+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:18:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":273,\"sent_packets\":967}"
+      },
+      {
+        "time": "2026-10-24T21:18:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"retail_transport_join\",\"id\":17764034}"
+      },
+      {
+        "time": "2026-10-24T21:18:52+00:00",
+        "source": "manager",
+        "text": "Retail transport peer 17764034 registered"
+      },
+      {
+        "time": "2026-10-24T21:18:52+00:00",
+        "source": "engine",
+        "text": "GATEWAY_PEER_ADDED 17764034"
+      },
+      {
+        "time": "2026-10-24T21:19:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":281,\"sent_packets\":975}"
+      },
+      {
+        "time": "2026-10-24T21:19:05+00:00",
+        "source": "engine",
+        "text": "retailmots has joined the game"
+      },
+      {
+        "time": "2026-10-24T21:19:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":303,\"sent_packets\":1354}"
+      },
+      {
+        "time": "2026-10-24T21:19:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":303,\"sent_packets\":1561}"
+      },
+      {
+        "time": "2026-10-24T21:19:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":303,\"sent_packets\":1760}"
+      },
+      {
+        "time": "2026-10-24T21:19:42+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":367,\"sent_packets\":1979}"
+      },
+      {
+        "time": "2026-10-24T21:19:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":380,\"sent_packets\":2191}"
+      },
+      {
+        "time": "2026-10-24T21:20:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":386,\"sent_packets\":2398}"
+      },
+      {
+        "time": "2026-10-24T21:20:10+00:00",
+        "source": "engine",
+        "text": "native says 'Native_mots_crossplay_ok'"
+      },
+      {
+        "time": "2026-10-24T21:20:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":393,\"sent_packets\":2595}"
+      },
+      {
+        "time": "2026-10-24T21:20:14+00:00",
+        "source": "engine",
+        "text": "retailmots says 'retail_mots_crossplay_ok'"
+      },
+      {
+        "time": "2026-10-24T21:20:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":402,\"sent_packets\":2802}"
+      },
+      {
+        "time": "2026-10-24T21:20:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":408,\"sent_packets\":3009}"
+      },
+      {
+        "time": "2026-10-24T21:20:42+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":414,\"sent_packets\":3216}"
+      },
+      {
+        "time": "2026-10-24T21:20:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":423,\"sent_packets\":3419}"
+      },
+      {
+        "time": "2026-10-24T21:21:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":429,\"sent_packets\":3628}"
+      },
+      {
+        "time": "2026-10-24T21:21:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":435,\"sent_packets\":3835}"
+      },
+      {
+        "time": "2026-10-24T21:21:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":456,\"sent_packets\":4046}"
+      },
+      {
+        "time": "2026-10-24T21:21:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":477,\"sent_packets\":4252}"
+      },
+      {
+        "time": "2026-10-24T21:21:41+00:00",
+        "source": "engine",
+        "text": "native says 'native_to_retail_mots'"
+      },
+      {
+        "time": "2026-10-24T21:21:42+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":483,\"sent_packets\":4455}"
+      },
+      {
+        "time": "2026-10-24T21:21:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":489,\"sent_packets\":4660}"
+      },
+      {
+        "time": "2026-10-24T21:22:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":495,\"sent_packets\":4865}"
+      },
+      {
+        "time": "2026-10-24T21:22:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":501,\"sent_packets\":5037}"
+      },
+      {
+        "time": "2026-10-24T21:22:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":504,\"sent_packets\":5236}"
+      },
+      {
+        "time": "2026-10-24T21:22:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":522,\"sent_packets\":5440}"
+      },
+      {
+        "time": "2026-10-24T21:22:42+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":534,\"sent_packets\":5644}"
+      },
+      {
+        "time": "2026-10-24T21:22:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":543,\"sent_packets\":5846}"
+      },
+      {
+        "time": "2026-10-24T21:23:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":552,\"sent_packets\":6044}"
+      },
+      {
+        "time": "2026-10-24T21:23:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":552,\"sent_packets\":6132}"
+      },
+      {
+        "time": "2026-10-24T21:23:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":558,\"sent_packets\":6330}"
+      },
+      {
+        "time": "2026-10-24T21:23:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":567,\"sent_packets\":6536}"
+      },
+      {
+        "time": "2026-10-24T21:23:42+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":576,\"sent_packets\":6742}"
+      },
+      {
+        "time": "2026-10-24T21:23:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":585,\"sent_packets\":6949}"
+      },
+      {
+        "time": "2026-10-24T21:24:02+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":594,\"sent_packets\":7153}"
+      },
+      {
+        "time": "2026-10-24T21:24:12+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":600,\"sent_packets\":7368}"
+      },
+      {
+        "time": "2026-10-24T21:24:22+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":606,\"sent_packets\":7569}"
+      },
+      {
+        "time": "2026-10-24T21:24:27+00:00",
+        "source": "engine",
+        "text": "WebMots says 'WebMots_crossplay_ok'"
+      },
+      {
+        "time": "2026-10-24T21:24:32+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":614,\"sent_packets\":7775}"
+      },
+      {
+        "time": "2026-10-24T21:24:43+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":618,\"sent_packets\":7949}"
+      },
+      {
+        "time": "2026-10-24T21:24:52+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":624,\"sent_packets\":8110}"
+      },
+      {
+        "time": "2026-10-24T21:24:59+00:00",
+        "source": "engine",
+        "text": "native's destiny has been chosen"
+      },
+      {
+        "time": "2026-10-24T21:25:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":630,\"sent_packets\":8330}"
+      },
+      {
+        "time": "2026-10-24T21:25:13+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":649,\"sent_packets\":8533}"
+      },
+      {
+        "time": "2026-10-24T21:25:23+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":664,\"sent_packets\":8740}"
+      },
+      {
+        "time": "2026-10-24T21:25:33+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":673,\"sent_packets\":8947}"
+      },
+      {
+        "time": "2026-10-24T21:25:43+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":679,\"sent_packets\":9150}"
+      },
+      {
+        "time": "2026-10-24T21:25:53+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":688,\"sent_packets\":9354}"
+      },
+      {
+        "time": "2026-10-24T21:26:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":694,\"sent_packets\":9566}"
+      },
+      {
+        "time": "2026-10-24T21:26:13+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":703,\"sent_packets\":9770}"
+      },
+      {
+        "time": "2026-10-24T21:26:23+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":712,\"sent_packets\":9975}"
+      },
+      {
+        "time": "2026-10-24T21:26:33+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":715,\"sent_packets\":10183}"
+      },
+      {
+        "time": "2026-10-24T21:26:43+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":721,\"sent_packets\":10386}"
+      },
+      {
+        "time": "2026-10-24T21:26:53+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":724,\"sent_packets\":10588}"
+      },
+      {
+        "time": "2026-10-24T21:27:03+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":730,\"sent_packets\":10792}"
+      },
+      {
+        "time": "2026-10-24T21:27:13+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":736,\"sent_packets\":10992}"
+      },
+      {
+        "time": "2026-10-24T21:27:23+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":742,\"sent_packets\":11196}"
+      }
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-10-24T21:07:03+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"ready\",\"version\":\"0.1.0\",\"mode\":\"mots\",\"host_id\":17764040,\"canonical_host_id\":1,\"pool_count\":7,\"physical_capacity\":32,\"human_capacity\":7,\"checksum_seed\":2930859266}"
+    },
+    {
+      "time": "2026-10-24T21:07:03+00:00",
+      "source": "engine",
+      "text": "GATEWAY_ID_POOL_READY 7"
+    },
+    {
+      "time": "2026-10-24T21:11:46+00:00",
+      "source": "engine",
+      "text": "native has joined the game"
+    },
+    {
+      "time": "2026-10-24T21:15:31+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"retail_transport_join\",\"id\":17764035}"
+    },
+    {
+      "time": "2026-10-24T21:15:41+00:00",
+      "source": "engine",
+      "text": "retailmots has joined the game"
+    },
+    {
+      "time": "2026-10-24T21:15:52+00:00",
+      "source": "engine",
+      "text": "WebMots has joined the game"
+    },
+    {
+      "time": "2026-10-24T21:16:11+00:00",
+      "source": "engine",
+      "text": "retailmots has left the game"
+    },
+    {
+      "time": "2026-10-24T21:16:55+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"retail_transport_leave\",\"id\":17764035}"
+    },
+    {
+      "time": "2026-10-24T21:17:30+00:00",
+      "source": "engine",
+      "text": "WebMots says ' 30'"
+    },
+    {
+      "time": "2026-10-24T21:18:52+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"retail_transport_join\",\"id\":17764034}"
+    },
+    {
+      "time": "2026-10-24T21:19:05+00:00",
+      "source": "engine",
+      "text": "retailmots has joined the game"
+    },
+    {
+      "time": "2026-10-24T21:20:10+00:00",
+      "source": "engine",
+      "text": "native says 'Native_mots_crossplay_ok'"
+    },
+    {
+      "time": "2026-10-24T21:20:14+00:00",
+      "source": "engine",
+      "text": "retailmots says 'retail_mots_crossplay_ok'"
+    },
+    {
+      "time": "2026-10-24T21:21:41+00:00",
+      "source": "engine",
+      "text": "native says 'native_to_retail_mots'"
+    },
+    {
+      "time": "2026-10-24T21:24:27+00:00",
+      "source": "engine",
+      "text": "WebMots says 'WebMots_crossplay_ok'"
+    }
+  ],
+  "last_gateway_stats": [
+    {
+      "time": "2026-10-24T21:27:03+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":730,\"sent_packets\":10792}"
+    },
+    {
+      "time": "2026-10-24T21:27:13+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":736,\"sent_packets\":10992}"
+    },
+    {
+      "time": "2026-10-24T21:27:23+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":742,\"sent_packets\":11196}"
+    }
+  ],
+  "retail_snapshots": {
+    "mots_warm_join.json": {
+      "unix": 1792876761.1194212,
+      "pid": 114605,
+      "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+      "read_only": true,
+      "game_ms": 0,
+      "submode_flags": "0x1",
+      "server_id": 17764040,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 17764040,
+          "thing": {
+            "type": 10,
+            "position": [
+              7.927976131439209,
+              5.239065170288086,
+              -0.24605199694633484
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 152,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 17764042,
+          "thing": {
+            "type": 10,
+            "position": [
+              7.519839763641357,
+              0.5412650108337402,
+              1.6635593175888062
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 33,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "retailmots",
+          "network_id": 17764034,
+          "thing": {
+            "type": 10,
+            "position": [
+              1.3069599866867065,
+              -3.7083799839019775,
+              -0.10127200186252594
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 96,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebMots",
+          "network_id": 17764043,
+          "thing": {
+            "type": 10,
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635639667510986
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 231,
+            "flags": "0x20200501"
+          }
+        }
+      ],
+      "player": {
+        "type": 10,
+        "position": [
+          1.3069599866867065,
+          -3.7083799839019775,
+          -0.10127200186252594
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "sector": 96,
+        "flags": "0x20200401"
+      },
+      "local_player_index": 2,
+      "network_id": 17764034,
+      "world": {
+        "map": "mdm02_freezer.jkl"
+      }
+    },
+    "mots_warm_after_move.json": {
+      "unix": 1792876814.4019809,
+      "pid": 114605,
+      "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+      "read_only": true,
+      "game_ms": 5000,
+      "submode_flags": "0x1",
+      "server_id": 17764040,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 17764040,
+          "thing": {
+            "type": 10,
+            "position": [
+              7.927976131439209,
+              5.239065170288086,
+              -0.24605199694633484
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 152,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 17764042,
+          "thing": {
+            "type": 10,
+            "position": [
+              7.519839763641357,
+              0.5412650108337402,
+              1.6635689735412598
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 33,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "retailmots",
+          "network_id": 17764034,
+          "thing": {
+            "type": 10,
+            "position": [
+              1.3604042530059814,
+              -3.628290891647339,
+              -0.1398983597755432
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 96,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebMots",
+          "network_id": 17764043,
+          "thing": {
+            "type": 10,
+            "position": [
+              2.7180709838867188,
+              0.561365008354187,
+              1.6635596752166748
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 231,
+            "flags": "0x20300501"
+          }
+        }
+      ],
+      "player": {
+        "type": 10,
+        "position": [
+          1.3604042530059814,
+          -3.628290891647339,
+          -0.1398983597755432
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "sector": 96,
+        "flags": "0x20200401"
+      },
+      "local_player_index": 2,
+      "network_id": 17764034,
+      "world": {
+        "map": "mdm02_freezer.jkl"
+      }
+    },
+    "mots_after_native_chat.json": {
+      "unix": 1792876836.0685663,
+      "pid": 114605,
+      "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+      "read_only": true,
+      "game_ms": 7500,
+      "submode_flags": "0x1",
+      "server_id": 17764040,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 17764040,
+          "thing": {
+            "type": 10,
+            "position": [
+              7.927976131439209,
+              5.239065170288086,
+              -0.24605199694633484
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 152,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 17764042,
+          "thing": {
+            "type": 10,
+            "position": [
+              7.519839763641357,
+              0.5412650108337402,
+              1.6635689735412598
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 33,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "retailmots",
+          "network_id": 17764034,
+          "thing": {
+            "type": 10,
+            "position": [
+              1.3604042530059814,
+              -3.628290891647339,
+              -0.1398983597755432
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 96,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebMots",
+          "network_id": 17764043,
+          "thing": {
+            "type": 10,
+            "position": [
+              2.7180709838867188,
+              0.561365008354187,
+              1.6635596752166748
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 231,
+            "flags": "0x20300501"
+          }
+        }
+      ],
+      "player": {
+        "type": 10,
+        "position": [
+          1.3604042530059814,
+          -3.628290891647339,
+          -0.1398983597755432
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "sector": 96,
+        "flags": "0x20200401"
+      },
+      "local_player_index": 2,
+      "network_id": 17764034,
+      "world": {
+        "map": "mdm02_freezer.jkl"
+      }
+    },
+    "mots_sustained.json": {
+      "unix": 1792876904.5548182,
+      "pid": 114605,
+      "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+      "read_only": true,
+      "game_ms": 15000,
+      "submode_flags": "0x1",
+      "server_id": 17764040,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 17764040,
+          "thing": {
+            "type": 10,
+            "position": [
+              7.927976131439209,
+              5.239065170288086,
+              -0.24605199694633484
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 152,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 17764042,
+          "thing": {
+            "type": 10,
+            "position": [
+              7.519839763641357,
+              0.5412650108337402,
+              1.6635689735412598
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 33,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "retailmots",
+          "network_id": 17764034,
+          "thing": {
+            "type": 10,
+            "position": [
+              1.3604042530059814,
+              -3.628290891647339,
+              -0.1398983597755432
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 96,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebMots",
+          "network_id": 17764043,
+          "thing": {
+            "type": 10,
+            "position": [
+              2.7180709838867188,
+              0.561365008354187,
+              1.6635596752166748
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 231,
+            "flags": "0x20300501"
+          }
+        }
+      ],
+      "player": {
+        "type": 10,
+        "position": [
+          1.3604042530059814,
+          -3.628290891647339,
+          -0.1398983597755432
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "sector": 96,
+        "flags": "0x20200401"
+      },
+      "local_player_index": 2,
+      "network_id": 17764034,
+      "world": {
+        "map": "mdm02_freezer.jkl"
+      }
+    },
+    "mots_native_move_applied.json": {
+      "unix": 1792877126.756572,
+      "pid": 114605,
+      "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+      "read_only": true,
+      "game_ms": 39500,
+      "submode_flags": "0x1",
+      "server_id": 17764040,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 17764040,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "type": 10,
+            "position": [
+              7.927976131439209,
+              5.239065170288086,
+              -0.24605199694633484
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 152,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 17764042,
+          "thing": {
+            "index": 39,
+            "guid": 39,
+            "type": 10,
+            "position": [
+              5.953935623168945,
+              -1.644591212272644,
+              1.1588784456253052
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 32,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "retailmots",
+          "network_id": 17764034,
+          "thing": {
+            "index": 40,
+            "guid": 40,
+            "type": 10,
+            "position": [
+              1.3604042530059814,
+              -3.628290891647339,
+              -0.1398983597755432
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 96,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebMots",
+          "network_id": 17764043,
+          "thing": {
+            "index": 58,
+            "guid": 58,
+            "type": 10,
+            "position": [
+              2.7180709838867188,
+              0.561365008354187,
+              1.6635596752166748
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 231,
+            "flags": "0x20300501"
+          }
+        }
+      ],
+      "player": {
+        "index": 40,
+        "guid": 40,
+        "type": 10,
+        "position": [
+          1.3604042530059814,
+          -3.628290891647339,
+          -0.1398983597755432
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "sector": 96,
+        "flags": "0x20200401"
+      },
+      "local_player_index": 2,
+      "network_id": 17764034,
+      "world": {
+        "map": "mdm02_freezer.jkl",
+        "max_things": 308
+      },
+      "weapons": [
+        {
+          "index": 176,
+          "guid": 196859,
+          "type": 3,
+          "position": [
+            1.3739042282104492,
+            -1.465890884399414,
+            -0.1398983597755432
+          ],
+          "velocity": [
+            0.0,
+            4.0,
+            0.0
+          ],
+          "sector": 87,
+          "flags": "0x20100001"
+        },
+        {
+          "index": 181,
+          "guid": 196855,
+          "type": 3,
+          "position": [
+            1.3739042282104492,
+            -1.4224238395690918,
+            -0.1398983597755432
+          ],
+          "velocity": [
+            0.0,
+            4.0,
+            0.0
+          ],
+          "sector": 87,
+          "flags": "0x20100003"
+        }
+      ]
+    },
+    "mots_native_respawn_and_scores.json": {
+      "unix": 1792877187.5559618,
+      "pid": 114605,
+      "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+      "read_only": true,
+      "game_ms": 47000,
+      "submode_flags": "0x1",
+      "server_id": 17764040,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 17764040,
+          "scores": {
+            "kills": 0,
+            "deaths": 0,
+            "suicides": 0,
+            "team": 0,
+            "score": 0
+          },
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "type": 10,
+            "position": [
+              7.927976131439209,
+              5.239065170288086,
+              -0.24605199694633484
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 152,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 17764042,
+          "scores": {
+            "kills": 0,
+            "deaths": 1,
+            "suicides": 1,
+            "team": 0,
+            "score": -1
+          },
+          "thing": {
+            "index": 39,
+            "guid": 39,
+            "type": 10,
+            "position": [
+              5.953935623168945,
+              -1.644591212272644,
+              1.1588784456253052
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 32,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "retailmots",
+          "network_id": 17764034,
+          "scores": {
+            "kills": 0,
+            "deaths": 0,
+            "suicides": 0,
+            "team": 0,
+            "score": 0
+          },
+          "thing": {
+            "index": 40,
+            "guid": 40,
+            "type": 10,
+            "position": [
+              1.3604042530059814,
+              -3.628290891647339,
+              -0.1398983597755432
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 96,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebMots",
+          "network_id": 17764043,
+          "scores": {
+            "kills": 0,
+            "deaths": 0,
+            "suicides": 0,
+            "team": 0,
+            "score": 0
+          },
+          "thing": {
+            "index": 58,
+            "guid": 58,
+            "type": 10,
+            "position": [
+              2.7180709838867188,
+              0.561365008354187,
+              1.6635596752166748
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 231,
+            "flags": "0x20300501"
+          }
+        }
+      ],
+      "player": {
+        "index": 40,
+        "guid": 40,
+        "type": 10,
+        "position": [
+          1.3604042530059814,
+          -3.628290891647339,
+          -0.1398983597755432
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "sector": 96,
+        "flags": "0x20200401"
+      },
+      "local_player_index": 2,
+      "network_id": 17764034,
+      "world": {
+        "map": "mdm02_freezer.jkl",
+        "max_things": 308
+      },
+      "weapons": []
+    },
+    "mots_web_move_larger.json": {
+      "unix": 1792877468.9803662,
+      "pid": 114605,
+      "exe_sha256": "23cd064217f904d36d896f52d3cdd17635bb85441a12e0415c0637504191d974",
+      "read_only": true,
+      "game_ms": 74500,
+      "submode_flags": "0x1",
+      "server_id": 17764040,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 17764040,
+          "scores": {
+            "kills": 0,
+            "deaths": 0,
+            "suicides": 0,
+            "team": 0,
+            "score": 0
+          },
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "type": 10,
+            "position": [
+              7.927976131439209,
+              5.239065170288086,
+              -0.24605199694633484
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 152,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 17764042,
+          "scores": {
+            "kills": 0,
+            "deaths": 1,
+            "suicides": 1,
+            "team": 0,
+            "score": -1
+          },
+          "thing": {
+            "index": 39,
+            "guid": 39,
+            "type": 10,
+            "position": [
+              5.953935623168945,
+              -1.644591212272644,
+              1.1588784456253052
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 32,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "retailmots",
+          "network_id": 17764034,
+          "scores": {
+            "kills": 0,
+            "deaths": 0,
+            "suicides": 0,
+            "team": 0,
+            "score": 0
+          },
+          "thing": {
+            "index": 40,
+            "guid": 40,
+            "type": 10,
+            "position": [
+              1.3604042530059814,
+              -3.628290891647339,
+              -0.1398983597755432
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 96,
+            "flags": "0x20300401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebMots",
+          "network_id": 17764043,
+          "scores": {
+            "kills": 0,
+            "deaths": 0,
+            "suicides": 0,
+            "team": 0,
+            "score": 0
+          },
+          "thing": {
+            "index": 58,
+            "guid": 58,
+            "type": 10,
+            "position": [
+              3.786705732345581,
+              0.561365008354187,
+              1.3045231103897095
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "sector": 22,
+            "flags": "0x20300501"
+          }
+        }
+      ],
+      "player": {
+        "index": 40,
+        "guid": 40,
+        "type": 10,
+        "position": [
+          1.3604042530059814,
+          -3.628290891647339,
+          -0.1398983597755432
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "sector": 96,
+        "flags": "0x20300401"
+      },
+      "local_player_index": 2,
+      "network_id": 17764034,
+      "world": {
+        "map": "mdm02_freezer.jkl",
+        "max_things": 308
+      },
+      "weapons": []
+    }
+  },
+  "native_projectile_receipt": "retail-mots-projectiles.json",
+  "native_projectile_guids": [
+    136554,
+    136547,
+    136563,
+    136570,
+    136576,
+    136584,
+    136590,
+    136598,
+    136604,
+    136612
+  ],
+  "reverse_projectile": {
+    "retail_created_guid": 196859,
+    "retail_velocity": [
+      0,
+      4,
+      0
+    ],
+    "native_observer_confirmed_guid": 196859,
+    "native_observer_source": "research/native/baseline-mots/mots_projectiles_retail_fire.json"
+  },
+  "limitations": [
+    "Only one stock map in each mode was exercised; not exhaustive maps, Force powers, weapon damage combinations, private-recipient UI, team modes or long-duration soak.",
+    "Original MotS first join exceeded the30-second activity timeout during emulated rendering startup. The warmed rejoin with ordinary smaller view/system-memory backbuffer remained active for several minutes.",
+    "Original client ran slowly under Wine+qemu and intermittently captured black backbuffers. This test does not establish performance on native Windows hardware.",
+    "Remote movement is applied but exact coordinate equality is not claimed; measured small steady offsets are retained.",
+    "Native normal world death and respawn replicated scores and player state; direct player-versus-player lethal damage is not yet verified.",
+    "No Internet/NAT traversal qualification; tests used one isolated local network namespace.",
+    "Original retail HUD may include an unspawned dedicated host row; authoritative humans exclude it."
+  ],
+  "related_receipts": [
+    "retail-media-provenance.json",
+    "directplay-protocol-tests.json",
+    "native-mots-live.json",
+    "published-wasm-mots-three-client.json",
+    "retail-mots-hud-chat.json",
+    "retail-mots-chat-boundary.json",
+    "retail-mots-disconnect.json"
+  ],
+  "final_release_change": "Final gateway adds only stale DirectPlay destination cleanup for DPERR_INVALIDPLAYER. Protocol conversion unchanged; final-binary rejoin and ordinary departure continuity PASS in retail-mots-disconnect.json.",
+  "layout_notes": {
+    "roster": "Original stride0x13b4; flags+0x80; DPID+0x84; thing+0x1358; scores+0x139c..0x13ac verified at original handler0x519553.",
+    "world": "Original allocator0x51b280 verifies count+0xbc,array+0xc4,thingstride0x2c4.",
+    "thing": "Original DSS1 verifies GUID+8,type+0x10,sector+0x64,pos+0xc0,velocity+0x1e0; actor/player health+0x13c verified in original damage routine. Weapon union has no health interpretation."
+  },
+  "browser_to_retail_chat": {
+    "proof": "retail-mots-hud-chat.json",
+    "retained_original_text": "WebMots says, 'web_boundary_check'",
+    "transport_crosscheck": "retail-mots-chat-boundary.json"
+  }
+}

@@ -1,0 +1,1059 @@
+{
+  "result": "PASS: original US JK1.00 joined simultaneously with unchanged OpenJKDF2 and published JKDF2Web; valid roster, server Welcome, reciprocal movement and chat observed.",
+  "mode": "jk",
+  "clients": {
+    "retail": 16501135,
+    "openjkdf2": 16501127,
+    "jkdf2web": 16501126
+  },
+  "original_client": {
+    "size": 1387520,
+    "sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+    "modified": false
+  },
+  "method": "Normal UI/keyboard. Bounded O_RDONLY process snapshots checked against original executable hash; no writes, injection or engine changes.",
+  "server_status": {
+    "state": "running",
+    "error": null,
+    "uptime_seconds": 266,
+    "processes": {
+      "engine": {
+        "pid": 103692,
+        "returncode": null
+      },
+      "directplay": {
+        "pid": 103728,
+        "returncode": null
+      }
+    },
+    "native_connected": true,
+    "retail_ready": true,
+    "browser": {
+      "online": 3,
+      "lobby": [],
+      "byGame": {
+        "jk1": {
+          "online": 3,
+          "lobby": []
+        },
+        "mots": {
+          "online": 0,
+          "lobby": []
+        }
+      },
+      "games": [
+        {
+          "name": "Cross Server Retail Test",
+          "episode": "JK1MP",
+          "map": "m2.jkl",
+          "locked": false,
+          "max": 7,
+          "mod": "",
+          "id": 1,
+          "game": "jk1",
+          "players": 3,
+          "names": [
+            "WebClient"
+          ]
+        }
+      ]
+    },
+    "session": {
+      "name": "Cross Server Retail Test",
+      "episode": "JK1MP",
+      "map": "m2.jkl",
+      "locked": false,
+      "max": 7,
+      "transport_slots": 8,
+      "players": 3,
+      "mod": "",
+      "flags": 128,
+      "tick_ms": 100,
+      "game": "jk"
+    },
+    "run_directory": "/workspace/scratch/66b0203ff71a/research/retail/manager_state/runs/20261024T204543Z-6ca992"
+  },
+  "events": [
+    {
+      "time": "2026-10-24T20:46:00+00:00",
+      "source": "manager",
+      "text": "DirectPlay pool ready (7 surrogate identities)"
+    },
+    {
+      "time": "2026-10-24T20:46:00+00:00",
+      "source": "engine",
+      "text": "GATEWAY_ID_POOL_READY 7"
+    },
+    {
+      "time": "2026-10-24T20:46:00+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"ready\",\"version\":\"0.1.0\",\"mode\":\"jk\",\"host_id\":16501124,\"canonical_host_id\":1,\"pool_count\":7,\"physical_capacity\":32,\"human_capacity\":7,\"checksum_seed\":3616648963}"
+    },
+    {
+      "time": "2026-10-24T20:46:10+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:46:20+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:46:30+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:46:40+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:46:50+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:47:00+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:47:10+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:47:20+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:47:30+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:47:40+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:47:50+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:48:00+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:48:10+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:48:20+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:48:30+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:48:41+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:48:51+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:49:01+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:49:11+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:49:18+00:00",
+      "source": "engine",
+      "text": "native has joined the game"
+    },
+    {
+      "time": "2026-10-24T20:49:21+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:49:31+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:49:41+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":0,\"received_packets\":0,\"sent_packets\":0}"
+    },
+    {
+      "time": "2026-10-24T20:49:50+00:00",
+      "source": "engine",
+      "text": "podclient has joined the game"
+    },
+    {
+      "time": "2026-10-24T20:49:51+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":23,\"sent_packets\":317}"
+    },
+    {
+      "time": "2026-10-24T20:49:55+00:00",
+      "source": "engine",
+      "text": "WebClient has joined the game"
+    },
+    {
+      "time": "2026-10-24T20:50:01+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":78,\"sent_packets\":554}"
+    },
+    {
+      "time": "2026-10-24T20:50:11+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":125,\"sent_packets\":755}"
+    },
+    {
+      "time": "2026-10-24T20:50:21+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":167,\"sent_packets\":956}"
+    },
+    {
+      "time": "2026-10-24T20:50:31+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":209,\"sent_packets\":1155}"
+    },
+    {
+      "time": "2026-10-24T20:50:41+00:00",
+      "source": "engine",
+      "text": "WebClient says 'Browser mixed JK check'"
+    },
+    {
+      "time": "2026-10-24T20:50:41+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":248,\"sent_packets\":1359}"
+    },
+    {
+      "time": "2026-10-24T20:50:51+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":285,\"sent_packets\":1557}"
+    },
+    {
+      "time": "2026-10-24T20:51:01+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":321,\"sent_packets\":1758}"
+    },
+    {
+      "time": "2026-10-24T20:51:11+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":354,\"sent_packets\":1960}"
+    },
+    {
+      "time": "2026-10-24T20:51:21+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":390,\"sent_packets\":2160}"
+    },
+    {
+      "time": "2026-10-24T20:51:31+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":423,\"sent_packets\":2347}"
+    },
+    {
+      "time": "2026-10-24T20:51:41+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":453,\"sent_packets\":2551}"
+    },
+    {
+      "time": "2026-10-24T20:51:43+00:00",
+      "source": "engine",
+      "text": "podclient says 'retail_jk_crossplay_ok'"
+    },
+    {
+      "time": "2026-10-24T20:51:51+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":492,\"sent_packets\":2754}"
+    },
+    {
+      "time": "2026-10-24T20:52:01+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":534,\"sent_packets\":2952}"
+    },
+    {
+      "time": "2026-10-24T20:52:11+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":573,\"sent_packets\":3145}"
+    },
+    {
+      "time": "2026-10-24T20:52:21+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":615,\"sent_packets\":3335}"
+    },
+    {
+      "time": "2026-10-24T20:52:31+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":657,\"sent_packets\":3536}"
+    },
+    {
+      "time": "2026-10-24T20:52:41+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":693,\"sent_packets\":3733}"
+    },
+    {
+      "time": "2026-10-24T20:52:44+00:00",
+      "source": "engine",
+      "text": "WebClient says 'web_jk_crossplay_ok'"
+    },
+    {
+      "time": "2026-10-24T20:52:51+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":730,\"sent_packets\":3933}"
+    },
+    {
+      "time": "2026-10-24T20:53:01+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":769,\"sent_packets\":4133}"
+    },
+    {
+      "time": "2026-10-24T20:53:11+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":805,\"sent_packets\":4332}"
+    },
+    {
+      "time": "2026-10-24T20:53:21+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":847,\"sent_packets\":4533}"
+    },
+    {
+      "time": "2026-10-24T20:53:31+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":889,\"sent_packets\":4738}"
+    },
+    {
+      "time": "2026-10-24T20:53:35+00:00",
+      "source": "engine",
+      "text": "native says 'Native mixed JK check'"
+    },
+    {
+      "time": "2026-10-24T20:53:41+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":929,\"sent_packets\":4936}"
+    },
+    {
+      "time": "2026-10-24T20:53:51+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":968,\"sent_packets\":5131}"
+    },
+    {
+      "time": "2026-10-24T20:54:01+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1004,\"sent_packets\":5336}"
+    },
+    {
+      "time": "2026-10-24T20:54:11+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1046,\"sent_packets\":5538}"
+    },
+    {
+      "time": "2026-10-24T20:54:21+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1079,\"sent_packets\":5742}"
+    },
+    {
+      "time": "2026-10-24T20:54:31+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1118,\"sent_packets\":5943}"
+    },
+    {
+      "time": "2026-10-24T20:54:41+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1154,\"sent_packets\":6141}"
+    },
+    {
+      "time": "2026-10-24T20:54:51+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1214,\"sent_packets\":6349}"
+    },
+    {
+      "time": "2026-10-24T20:55:01+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1280,\"sent_packets\":6557}"
+    },
+    {
+      "time": "2026-10-24T20:55:11+00:00",
+      "source": "directplay",
+      "text": "{\"event\":\"stats\",\"retail_clients\":1,\"received_packets\":1343,\"sent_packets\":6769}"
+    }
+  ],
+  "retail_snapshots": {
+    "jk_wirefixed_initial.json": {
+      "unix": 1792874999.5195844,
+      "pid": 104424,
+      "exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "read_only": true,
+      "game_ms": 500,
+      "submode_flags": "0x1",
+      "local_player_index": 2,
+      "network_id": 16501135,
+      "server_id": 16501124,
+      "enum_gate": 1,
+      "checksum": 2320694975,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 16501124,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "type": 10,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 16501127,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "type": 10,
+            "position": [
+              -8.244999885559082,
+              -1.4499499797821045,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "podclient",
+          "network_id": 16501135,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "type": 10,
+            "position": [
+              1.0,
+              -1.5000499486923218,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebClient",
+          "network_id": 16501126,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "type": 10,
+            "position": [
+              -8.399999618530273,
+              -1.1599500179290771,
+              1.0349854230880737
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200501"
+          }
+        }
+      ],
+      "player": {
+        "index": 3,
+        "guid": 3,
+        "type": 10,
+        "position": [
+          1.0,
+          -1.5000499486923218,
+          1.4201140403747559
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "flags": "0x20200401"
+      },
+      "world": {
+        "map": "m2.jkl",
+        "sectors": 116,
+        "highest_thing_index": 139
+      }
+    },
+    "jk_before_reciprocal_move.json": {
+      "unix": 1792875022.393002,
+      "pid": 104424,
+      "exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "read_only": true,
+      "game_ms": 16500,
+      "submode_flags": "0x1",
+      "local_player_index": 2,
+      "network_id": 16501135,
+      "server_id": 16501124,
+      "enum_gate": 1,
+      "checksum": 2320694975,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 16501124,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "type": 10,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 16501127,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "type": 10,
+            "position": [
+              -8.244999885559082,
+              -1.4499499797821045,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "podclient",
+          "network_id": 16501135,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "type": 10,
+            "position": [
+              1.0,
+              -1.5000499486923218,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebClient",
+          "network_id": 16501126,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "type": 10,
+            "position": [
+              -8.399999618530273,
+              -1.1599500179290771,
+              0.9201120138168335
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200501"
+          }
+        }
+      ],
+      "player": {
+        "index": 3,
+        "guid": 3,
+        "type": 10,
+        "position": [
+          1.0,
+          -1.5000499486923218,
+          1.4201140403747559
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "flags": "0x20200401"
+      },
+      "world": {
+        "map": "m2.jkl",
+        "sectors": 116,
+        "highest_thing_index": 138
+      }
+    },
+    "jk_after_retail_move.json": {
+      "unix": 1792875025.4641666,
+      "pid": 104424,
+      "exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "read_only": true,
+      "game_ms": 18500,
+      "submode_flags": "0x1",
+      "local_player_index": 2,
+      "network_id": 16501135,
+      "server_id": 16501124,
+      "enum_gate": 1,
+      "checksum": 2320694975,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 16501124,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "type": 10,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 16501127,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "type": 10,
+            "position": [
+              -8.244999885559082,
+              -1.4499499797821045,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "podclient",
+          "network_id": 16501135,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "type": 10,
+            "position": [
+              0.5004937648773193,
+              -1.5000499486923218,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebClient",
+          "network_id": 16501126,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "type": 10,
+            "position": [
+              -8.399999618530273,
+              -1.1599500179290771,
+              0.9201120138168335
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200501"
+          }
+        }
+      ],
+      "player": {
+        "index": 3,
+        "guid": 3,
+        "type": 10,
+        "position": [
+          0.5004937648773193,
+          -1.5000499486923218,
+          1.4201140403747559
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "flags": "0x20200401"
+      },
+      "world": {
+        "map": "m2.jkl",
+        "sectors": 116,
+        "highest_thing_index": 138
+      }
+    },
+    "jk_after_native_move.json": {
+      "unix": 1792875061.0616179,
+      "pid": 104424,
+      "exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "read_only": true,
+      "game_ms": 41000,
+      "submode_flags": "0x1",
+      "local_player_index": 2,
+      "network_id": 16501135,
+      "server_id": 16501124,
+      "enum_gate": 1,
+      "checksum": 2320694975,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 16501124,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "type": 10,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 16501127,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "type": 10,
+            "position": [
+              -7.478274822235107,
+              -1.4499499797821045,
+              1.4201139211654663
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "podclient",
+          "network_id": 16501135,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "type": 10,
+            "position": [
+              0.5004937648773193,
+              -1.5000499486923218,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebClient",
+          "network_id": 16501126,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "type": 10,
+            "position": [
+              -8.399999618530273,
+              -1.1599500179290771,
+              0.9201120138168335
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200501"
+          }
+        }
+      ],
+      "player": {
+        "index": 3,
+        "guid": 3,
+        "type": 10,
+        "position": [
+          0.5004937648773193,
+          -1.5000499486923218,
+          1.4201140403747559
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "flags": "0x20200401"
+      },
+      "world": {
+        "map": "m2.jkl",
+        "sectors": 116,
+        "highest_thing_index": 138
+      }
+    },
+    "jk_after_browser_move.json": {
+      "unix": 1792875119.386705,
+      "pid": 104424,
+      "exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "read_only": true,
+      "game_ms": 74500,
+      "submode_flags": "0x1",
+      "local_player_index": 2,
+      "network_id": 16501135,
+      "server_id": 16501124,
+      "enum_gate": 1,
+      "checksum": 2320694975,
+      "roster": [
+        {
+          "slot": 0,
+          "flags": 5,
+          "name": "ServerDed",
+          "network_id": 16501124,
+          "thing": {
+            "index": 0,
+            "guid": 0,
+            "type": 10,
+            "position": [
+              1.2999999523162842,
+              -3.5500500202178955,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20280501"
+          }
+        },
+        {
+          "slot": 1,
+          "flags": 7,
+          "name": "native",
+          "network_id": 16501127,
+          "thing": {
+            "index": 1,
+            "guid": 1,
+            "type": 10,
+            "position": [
+              -7.478274822235107,
+              -1.4499499797821045,
+              1.4201139211654663
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20300501"
+          }
+        },
+        {
+          "slot": 2,
+          "flags": 7,
+          "name": "podclient",
+          "network_id": 16501135,
+          "thing": {
+            "index": 3,
+            "guid": 3,
+            "type": 10,
+            "position": [
+              0.5004937648773193,
+              -1.5000499486923218,
+              1.4201140403747559
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20300401"
+          }
+        },
+        {
+          "slot": 3,
+          "flags": 7,
+          "name": "WebClient",
+          "network_id": 16501126,
+          "thing": {
+            "index": 13,
+            "guid": 13,
+            "type": 10,
+            "position": [
+              -7.76220703125,
+              -1.1599500179290771,
+              0.4823218882083893
+            ],
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "health": 100.0,
+            "flags": "0x20200501"
+          }
+        }
+      ],
+      "player": {
+        "index": 3,
+        "guid": 3,
+        "type": 10,
+        "position": [
+          0.5004937648773193,
+          -1.5000499486923218,
+          1.4201140403747559
+        ],
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "health": 100.0,
+        "flags": "0x20300401"
+      },
+      "world": {
+        "map": "m2.jkl",
+        "sectors": 116,
+        "highest_thing_index": 138
+      }
+    }
+  },
+  "limitations": [
+    "One isolated local session on stock JK1MP/m2; not Internet/NAT or all-map qualification.",
+    "Small steady coordinate differences remained; exact coordinate convergence is not claimed.",
+    "Combat, all powers/items and extended stability are not exhaustively tested."
+  ],
+  "related_receipts": [
+    "native-jk-live.json",
+    "published-wasm-jk-three-client.json"
+  ]
+}

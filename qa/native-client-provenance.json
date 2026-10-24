@@ -1,0 +1,12 @@
+{
+  "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "unmodified_source": true,
+  "method": "Recompile all four edited source files from the pinned base, reuse unchanged base objects and dependencies.",
+  "sources": {
+    "src/Dss/sithDSSThing.c": "277c5ea276b8b6f0e2835e434eb3e3325159edb19e67e086890b9748f2f34b29",
+    "src/Main/Main.c": "104cb06987693164bc1aac6e01248176dc2343b3d9b1da0eae6c9ad2ccf1250a",
+    "src/Platform/Networking/GNS/stdComm_GNS.cpp": "60ec7b204b0e2a0aa2180fa9d2218b371bf6e78aaa683fc62ad897a2bb4e7fdd",
+    "src/Win95/Window.c": "b0ded0ea388d71b408f53097fc2ea71d512d4d8cd5934b7e78a1012b1578cb55"
+  },
+  "binary_sha256": "f3dad60ab0e4c387da4e13920b1930b18cb61e430f28036056da673d31737085"
+}

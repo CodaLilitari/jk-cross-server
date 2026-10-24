@@ -1,0 +1,1090 @@
+{
+  "qualification": "Final gateway build: original retail MotS normal leave preserves native and published browser session",
+  "recorded_utc": "2026-10-24T21:42:07.737038+00:00",
+  "game": "mots",
+  "episode": "JKM_MP",
+  "map": "mdm02_freezer.jkl",
+  "server_run": "20261024T213558Z-8a314e",
+  "directplay_gateway_sha256": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3",
+  "browser_client": {
+    "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+    "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+    "path": "cloudflare-38/public",
+    "displayed_engine_version": "v0.9.9 / 97f905da",
+    "engine_patched": false,
+    "bundle_patched": false,
+    "browser": "Chromium 140.0.7339.16",
+    "files": {
+      "index.html": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+      "openjkdf2.js": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+      "openjkdf2.wasm": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6"
+    },
+    "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c"
+  },
+  "browser_route": "WebSocket fallback",
+  "client_ids": {
+    "retail": 19503996,
+    "native": 19503988,
+    "browser": 19503989
+  },
+  "read_only_browser_observation": {
+    "kind": "mots_retail_leave_observation",
+    "read_only": true,
+    "started_unix": 1792877927.721,
+    "events": [
+      {
+        "unix": 1792877927.721,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9052,
+            "wsRecv": 23699,
+            "wsSkipped": 19079
+          }
+        }
+      },
+      {
+        "unix": 1792877935.3,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              7.519839763641357,
+              0.5412650108337402,
+              1.6635639667510986
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9106,
+            "wsRecv": 23863,
+            "wsSkipped": 19173
+          }
+        }
+      },
+      {
+        "unix": 1792877945.629,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              7.519839763641357,
+              0.5412650108337402,
+              1.6635639667510986
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9180,
+            "wsRecv": 24049,
+            "wsSkipped": 19338
+          }
+        }
+      },
+      {
+        "unix": 1792877955.685,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.3282243013381958,
+              -3.6871159076690674,
+              -0.12074919044971466
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9260,
+            "wsRecv": 24243,
+            "wsSkipped": 19509
+          }
+        }
+      },
+      {
+        "unix": 1792877969.427,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2842328548431396,
+              -3.731106996536255,
+              -0.10222448408603668
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9336,
+            "wsRecv": 24429,
+            "wsSkipped": 19683
+          }
+        }
+      },
+      {
+        "unix": 1792877980.295,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2842328548431396,
+              -3.731106996536255,
+              -0.10222448408603668
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9372,
+            "wsRecv": 24599,
+            "wsSkipped": 19785
+          }
+        }
+      },
+      {
+        "unix": 1792877990.457,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2923905849456787,
+              -3.722949266433716,
+              -0.10566239058971405
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9438,
+            "wsRecv": 24796,
+            "wsSkipped": 19959
+          }
+        }
+      },
+      {
+        "unix": 1792878000.862,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2923905849456787,
+              -3.722949266433716,
+              -0.10566239058971405
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9510,
+            "wsRecv": 25075,
+            "wsSkipped": 20151
+          }
+        }
+      },
+      {
+        "unix": 1792878010.996,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2923905849456787,
+              -3.722949266433716,
+              -0.10566239058971405
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9597,
+            "wsRecv": 25335,
+            "wsSkipped": 20304
+          }
+        }
+      },
+      {
+        "unix": 1792878022.126,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2923905849456787,
+              -3.722949266433716,
+              -0.10566239058971405
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9672,
+            "wsRecv": 25622,
+            "wsSkipped": 20490
+          }
+        }
+      },
+      {
+        "unix": 1792878033.293,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2923905849456787,
+              -3.722949266433716,
+              -0.10566239058971405
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9696,
+            "wsRecv": 25831,
+            "wsSkipped": 20559
+          }
+        }
+      },
+      {
+        "unix": 1792878044.393,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2923905849456787,
+              -3.722949266433716,
+              -0.10566239058971405
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9702,
+            "wsRecv": 25888,
+            "wsSkipped": 20580
+          }
+        }
+      },
+      {
+        "unix": 1792878054.533,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          },
+          {
+            "slot": 3,
+            "id": 19503996,
+            "flags": 7,
+            "name": "retailmots",
+            "position": [
+              1.2923905849456787,
+              -3.722949266433716,
+              -0.10566239058971405
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9780,
+            "wsRecv": 26241,
+            "wsSkipped": 20745
+          }
+        }
+      },
+      {
+        "unix": 1792878056.927,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9797,
+            "wsRecv": 26284,
+            "wsSkipped": 20782
+          }
+        }
+      },
+      {
+        "unix": 1792878067.115,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9851,
+            "wsRecv": 26472,
+            "wsSkipped": 20904
+          }
+        }
+      },
+      {
+        "unix": 1792878077.554,
+        "roster": [
+          {
+            "slot": 0,
+            "id": 1,
+            "flags": 4,
+            "name": "ServerDed",
+            "position": [
+              3.44704008102417,
+              -0.812978982925415,
+              1.1539440155029297
+            ],
+            "health": 100
+          },
+          {
+            "slot": 1,
+            "id": 19503988,
+            "flags": 7,
+            "name": "native",
+            "position": [
+              4.174016952514648,
+              0.4815939962863922,
+              1.153955340385437
+            ],
+            "health": 100
+          },
+          {
+            "slot": 2,
+            "id": 19503989,
+            "flags": 7,
+            "name": "WebMots",
+            "position": [
+              2.739840030670166,
+              0.561365008354187,
+              1.6635593175888062
+            ],
+            "health": 100
+          }
+        ],
+        "network": {
+          "state": 1,
+          "session": true,
+          "stats": {
+            "dcSent": 0,
+            "dcRecv": 0,
+            "wsSent": 9916,
+            "wsRecv": 26660,
+            "wsSkipped": 21017
+          }
+        }
+      }
+    ]
+  },
+  "after_leave_browser_snapshot": {
+    "kind": "mots_cleanup_after",
+    "roster": [
+      {
+        "slot": 0,
+        "id": 1,
+        "flags": 4,
+        "name": "ServerDed",
+        "position": [
+          3.44704008102417,
+          -0.812978982925415,
+          1.1539440155029297
+        ],
+        "health": 100
+      },
+      {
+        "slot": 1,
+        "id": 19503988,
+        "flags": 7,
+        "name": "native",
+        "position": [
+          4.174016952514648,
+          0.4815939962863922,
+          1.153955340385437
+        ],
+        "health": 100
+      },
+      {
+        "slot": 2,
+        "id": 19503989,
+        "flags": 7,
+        "name": "WebMots",
+        "position": [
+          2.739840030670166,
+          0.561365008354187,
+          1.6635593175888062
+        ],
+        "health": 100
+      }
+    ],
+    "network": {
+      "state": 1,
+      "session": true,
+      "stats": {
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 10004,
+        "wsRecv": 26948,
+        "wsSkipped": 21195
+      }
+    }
+  },
+  "post_leave_browser_chat": [
+    {
+      "unix": 1792878092.0652232,
+      "text": "You say, 'browser_continuity_probe'"
+    }
+  ],
+  "checks": {
+    "retail_fully_joined_before_leave": true,
+    "retail_row_removed": true,
+    "native_and_browser_remained_active": true,
+    "browser_network_session_remained_live": true,
+    "browser_received_packets_after_retail_leave": true,
+    "browser_sent_packets_after_retail_leave": true,
+    "normal_browser_chat_sent_after_retail_leave": true
+  },
+  "method": {
+    "retail_action": "Original client normal Escape/Abort leave, performed by retail fixture agent.",
+    "browser_observation": "Read-only game roster and transport counters sampled every 500ms; retained on roster changes and each 10 seconds. No engine-memory writes or client code changes.",
+    "browser_input": "Normal UI rejoin using the saved MotS multiplayer character; normal T, text, Return chat after the leave observation.",
+    "cleanup": "Browser context and browser process closed normally after the final snapshot."
+  },
+  "limits": [
+    "This checks one orderly retail departure on the final gateway binary, not every disconnect, network-loss, or reconnect pattern.",
+    "Full-game browser operation used the unchanged WebSocket fallback; separate RTC channel tests do not establish full-game WebRTC/WAN behavior."
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "qualification": "Live browser-download admin card at desktop and mobile widths",
+  "recorded_utc": "2026-10-24T22:47:51.785268+00:00",
+  "browser": "Chromium 140.0.7339.16",
+  "session": "MotS custom episode plus active downloaded mod after ordinary client restart/rejoin",
+  "samples": [
+    {
+      "width": 1280,
+      "height": 960,
+      "documentWidth": 1280,
+      "text": "LIVE / CONTENT\n\nBrowser downloads\nDownloads Enabled\nEpisode \u00b7 QAAssetMotS\n\nReady to send \u00b7 14.1 MiB installed \u00b7 39.7 KiB transfer \u00b7 85 original-content references\n\nSHA-256 4e8cc2402c38fb471bcf1223d26242f2934526b71d93e9c8189f0f8cf3e23c46\n\nActive mod \u00b7 MarkerMod-mots\n\nReady to send \u00b7 110.3 KiB installed \u00b7 25.2 KiB transfer \u00b7 1 original-content references\n\nSHA-256 eeaf256bec53abdd9e28d03286cd10d41cd0678091cd275d2983d914f7499e0f\n\n0 active transfers \u00b7 2 chunks sent \u00b7 64.9 KiB sent this session",
+      "policy": "Downloads Enabled",
+      "downloadsChecked": true,
+      "boxes": [
+        {
+          "className": "card",
+          "id": "asset-panel",
+          "x": 118,
+          "y": 1660.359375,
+          "width": 1044,
+          "height": 271.28125,
+          "scrollWidth": 1042,
+          "clientWidth": 1042
+        },
+        {
+          "className": "grid two",
+          "id": "asset-offers",
+          "x": 143,
+          "y": 1756.359375,
+          "width": 994,
+          "height": 120.6875,
+          "scrollWidth": 994,
+          "clientWidth": 994
+        },
+        {
+          "className": "asset-offer",
+          "id": "",
+          "x": 143,
+          "y": 1756.359375,
+          "width": 489,
+          "height": 120.6875,
+          "scrollWidth": 487,
+          "clientWidth": 487
+        },
+        {
+          "className": "asset-hash",
+          "id": "",
+          "x": 158,
+          "y": 1847.046875,
+          "width": 459,
+          "height": 15,
+          "scrollWidth": 459,
+          "clientWidth": 459
+        },
+        {
+          "className": "asset-offer",
+          "id": "",
+          "x": 648,
+          "y": 1756.359375,
+          "width": 489,
+          "height": 120.6875,
+          "scrollWidth": 487,
+          "clientWidth": 487
+        },
+        {
+          "className": "asset-hash",
+          "id": "",
+          "x": 663,
+          "y": 1847.046875,
+          "width": 459,
+          "height": 15,
+          "scrollWidth": 459,
+          "clientWidth": 459
+        }
+      ],
+      "errors": [],
+      "checks": {
+        "no_script_errors": true,
+        "no_document_horizontal_overflow": true,
+        "downloads_checkbox_enabled": true,
+        "policy_label_correct": true,
+        "episode_hash_visible": true,
+        "mod_hash_visible": true,
+        "both_offers_ready": true,
+        "actual_transfer_count_visible": true,
+        "completed_transfer_state_visible": true,
+        "asset_boxes_fit_viewport": true,
+        "hashes_and_cards_do_not_overflow": true
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "documentWidth": 390,
+      "text": "LIVE / CONTENT\n\nBrowser downloads\nDownloads Enabled\nEpisode \u00b7 QAAssetMotS\n\nReady to send \u00b7 14.1 MiB installed \u00b7 39.7 KiB transfer \u00b7 85 original-content references\n\nSHA-256 4e8cc2402c38fb471bcf1223d26242f2934526b71d93e9c8189f0f8cf3e23c46\n\nActive mod \u00b7 MarkerMod-mots\n\nReady to send \u00b7 110.3 KiB installed \u00b7 25.2 KiB transfer \u00b7 1 original-content references\n\nSHA-256 eeaf256bec53abdd9e28d03286cd10d41cd0678091cd275d2983d914f7499e0f\n\n0 active transfers \u00b7 2 chunks sent \u00b7 64.9 KiB sent this session",
+      "policy": "Downloads Enabled",
+      "downloadsChecked": true,
+      "boxes": [
+        {
+          "className": "card",
+          "id": "asset-panel",
+          "x": 16,
+          "y": 2610.5,
+          "width": 358,
+          "height": 499.0625,
+          "scrollWidth": 356,
+          "clientWidth": 356
+        },
+        {
+          "className": "grid two",
+          "id": "asset-offers",
+          "x": 35,
+          "y": 2726,
+          "width": 320,
+          "height": 317.375,
+          "scrollWidth": 320,
+          "clientWidth": 320
+        },
+        {
+          "className": "asset-offer",
+          "id": "",
+          "x": 35,
+          "y": 2726,
+          "width": 320,
+          "height": 150.6875,
+          "scrollWidth": 318,
+          "clientWidth": 318
+        },
+        {
+          "className": "asset-hash",
+          "id": "",
+          "x": 50,
+          "y": 2816.6875,
+          "width": 290,
+          "height": 45,
+          "scrollWidth": 290,
+          "clientWidth": 290
+        },
+        {
+          "className": "asset-offer",
+          "id": "",
+          "x": 35,
+          "y": 2892.6875,
+          "width": 320,
+          "height": 150.6875,
+          "scrollWidth": 318,
+          "clientWidth": 318
+        },
+        {
+          "className": "asset-hash",
+          "id": "",
+          "x": 50,
+          "y": 2983.375,
+          "width": 290,
+          "height": 45,
+          "scrollWidth": 290,
+          "clientWidth": 290
+        }
+      ],
+      "errors": [],
+      "checks": {
+        "no_script_errors": true,
+        "no_document_horizontal_overflow": true,
+        "downloads_checkbox_enabled": true,
+        "policy_label_correct": true,
+        "episode_hash_visible": true,
+        "mod_hash_visible": true,
+        "both_offers_ready": true,
+        "actual_transfer_count_visible": true,
+        "completed_transfer_state_visible": true,
+        "asset_boxes_fit_viewport": true,
+        "hashes_and_cards_do_not_overflow": true
+      }
+    }
+  ],
+  "method": "Opened the real private local admin page in the already running Chromium context; read visible card text and DOM bounds. Inspected local full-page screenshots, which are not distributed.",
+  "checks": {
+    "desktop_1280_passed": true,
+    "mobile_390_passed": true,
+    "no_ui_mutations_used": true
+  },
+  "limits": [
+    "Two viewport widths, not every browser or accessibility configuration.",
+    "The optional Remastered-pack row was not active in this fixture."
+  ]
+}
