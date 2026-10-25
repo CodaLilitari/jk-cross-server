@@ -1,0 +1,357 @@
+{
+  "status": "score_mapping_pass_with_departure_stability_failure",
+  "date_utc": "2026-10-25",
+  "scope": "Narrow original-JK1.00 DirectPlay scoreboard regression after a separate adapter correction; frozen bot executable and unchanged native/original retail humans.",
+  "gateway_sha256": "4ee4d6ab19b0f47ee61f7b6d7bcfdff5f552f06b1851b06df39c17c6106efd07",
+  "bot_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+  "native_human_binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+  "original_retail_executable_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+  "dedicated_engine_sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
+  "session": {
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "rank": 0,
+    "teams": false,
+    "bots": 4,
+    "human_clients": 2,
+    "human_names": [
+      "NativeHuman",
+      "RetailHuman"
+    ],
+    "native_and_retail_same_live_match": true
+  },
+  "baseline_failure_receipt": "bots-final-native-retail.json",
+  "original_binary_layout_proof": "retail-jk-score-layout-audit.json",
+  "normal_actions": [
+    "Joined both clients through ordinary graphical profile, discovery and character menus.",
+    "Allowed natural bot combat; no forced kills, respawn relocation or state writes.",
+    "Both clients left via Escape, Abort, Yes and displayed their ordinary final scoreboards."
+  ],
+  "read_only_comparison": {
+    "method": "Two consecutive paired bounded O_RDONLY observations of exact hash-pinned native and retail clients; no debugger, pause or writes.",
+    "consecutive_matches": 2,
+    "all_fields_compared": [
+      "kills",
+      "deaths",
+      "suicides",
+      "team",
+      "score"
+    ],
+    "players_compared": 6,
+    "native_scores": {
+      "Bot_BobaFett": {
+        "kills": 1,
+        "deaths": 1,
+        "suicides": 0,
+        "team": 0,
+        "score": 1
+      },
+      "Bot_Trooper": {
+        "kills": 2,
+        "deaths": 0,
+        "suicides": 0,
+        "team": 0,
+        "score": 2
+      },
+      "Bot_JanOrs": {
+        "kills": 1,
+        "deaths": 2,
+        "suicides": 0,
+        "team": 0,
+        "score": 1
+      },
+      "Bot_Katarn": {
+        "kills": 1,
+        "deaths": 1,
+        "suicides": 0,
+        "team": 0,
+        "score": 1
+      },
+      "NativeHuman": {
+        "kills": 0,
+        "deaths": 1,
+        "suicides": 0,
+        "team": 0,
+        "score": 0
+      },
+      "RetailHuman": {
+        "kills": 0,
+        "deaths": 0,
+        "suicides": 0,
+        "team": 0,
+        "score": 0
+      }
+    },
+    "retail_scores": {
+      "Bot_BobaFett": {
+        "kills": 1,
+        "deaths": 1,
+        "suicides": 0,
+        "team": 0,
+        "score": 1
+      },
+      "Bot_Trooper": {
+        "kills": 2,
+        "deaths": 0,
+        "suicides": 0,
+        "team": 0,
+        "score": 2
+      },
+      "Bot_JanOrs": {
+        "kills": 1,
+        "deaths": 2,
+        "suicides": 0,
+        "team": 0,
+        "score": 1
+      },
+      "Bot_Katarn": {
+        "kills": 1,
+        "deaths": 1,
+        "suicides": 0,
+        "team": 0,
+        "score": 1
+      },
+      "NativeHuman": {
+        "kills": 0,
+        "deaths": 1,
+        "suicides": 0,
+        "team": 0,
+        "score": 0
+      },
+      "RetailHuman": {
+        "kills": 0,
+        "deaths": 0,
+        "suicides": 0,
+        "team": 0,
+        "score": 0
+      }
+    },
+    "equal": true,
+    "native_snapshot_utc": "2026-10-25T04:07:20.646981+00:00",
+    "retail_snapshot_utc": "2026-10-25T04:07:20.697552+00:00",
+    "status": "passed"
+  },
+  "natural_human_death": {
+    "name": "NativeHuman",
+    "before_health": 100.0,
+    "after_health": 0.0,
+    "before_counters": {
+      "kills": 0,
+      "deaths": 0,
+      "score": 0
+    },
+    "matching_after_counters": {
+      "kills": 0,
+      "deaths": 1,
+      "suicides": 0,
+      "team": 0,
+      "score": 0
+    },
+    "normal_kill_feed": "NativeHuman was killed by Bot_Trooper",
+    "kill_feed_corroborated_in": [
+      "boba_fett/client.log",
+      "jan_ors/client.log",
+      "stormtrooper/client.log",
+      "kyle_katarn/client.log"
+    ]
+  },
+  "ordinary_rendered_scoreboards": {
+    "native": {
+      "Bot_Trooper": {
+        "score": 2,
+        "kills": 2,
+        "deaths": 0,
+        "suicides": 0
+      },
+      "Bot_BobaFett": {
+        "score": 2,
+        "kills": 2,
+        "deaths": 2,
+        "suicides": 0
+      },
+      "Bot_JanOrs": {
+        "score": 2,
+        "kills": 2,
+        "deaths": 3,
+        "suicides": 0
+      },
+      "Bot_Katarn": {
+        "score": 1,
+        "kills": 1,
+        "deaths": 1,
+        "suicides": 0
+      },
+      "RetailHuman": {
+        "score": 0,
+        "kills": 0,
+        "deaths": 0,
+        "suicides": 0
+      },
+      "NativeHuman": {
+        "score": 0,
+        "kills": 0,
+        "deaths": 1,
+        "suicides": 0
+      }
+    },
+    "retail": {
+      "Bot_JanOrs": {
+        "score": 4,
+        "kills": 4,
+        "deaths": 3,
+        "suicides": 0
+      },
+      "Bot_Trooper": {
+        "score": 2,
+        "kills": 2,
+        "deaths": 0,
+        "suicides": 0
+      },
+      "Bot_BobaFett": {
+        "score": 2,
+        "kills": 2,
+        "deaths": 4,
+        "suicides": 0
+      },
+      "Bot_Katarn": {
+        "score": 1,
+        "kills": 1,
+        "deaths": 1,
+        "suicides": 0
+      },
+      "RetailHuman": {
+        "score": 0,
+        "kills": 0,
+        "deaths": 0,
+        "suicides": 0
+      },
+      "NativeHuman": {
+        "score": 0,
+        "kills": 0,
+        "deaths": 1,
+        "suicides": 0
+      }
+    },
+    "human_row_correct_in_both": true,
+    "timing_note": "The UI scoreboards were captured after separate normal leave actions. Bots continued fighting between them, so later Jan/Boba totals advanced. The independent paired live tables above match exactly for every player and all five fields."
+  },
+  "incidental_chat_render_check": {
+    "native_and_original_retail_same_line": "Bot_BobaFett says 'That mistake will not be repeated.'",
+    "screenshots": [
+      "score-native-gameplay.png",
+      "score-retail-gameplay.png"
+    ]
+  },
+  "correction_scope": {
+    "jk_only": true,
+    "mots_conversion_changed": false,
+    "mots_live_qualification": false,
+    "reason": "No original MotS executable was available to prove its field semantics. Its existing converter branch is preserved pending independent qualification."
+  },
+  "evidence_sha256": {
+    "scoreboard-fixed-pairs.jsonl": "0a31632b557063e6b557970a36f60e7de23eb8daf55d5769c9d8b82231bcbaf2",
+    "scoreboard-fixed-comparison.json": "b6982cec9aab9461ee029f26899165741dea46cf4ef3c18f040da4aa3e4135ff",
+    "score-native-initial.json": "16068ee3a4b4f8c6d3497d7ebabd12142afb899f903c970e385fec29f41adcba",
+    "score-native-gameplay.png": "2907ff7b8ed3a8b5645faea5af8e7bdb99df5b8831be4b4a5b7dfc49991118cf",
+    "score-native-tally.png": "5976bbe042cd65823770dafedeea7227fea1e4ffc40281a852c21e2cbe878daa",
+    "score-retail-initial.json": "c0f7bfec034a1a0b7a754b17cea3406fdad2da3927ff835508fbebf6af086bee",
+    "score-retail-gameplay.png": "17b26264f2b82d8b997be35d1e61caa6f5d23cab2846826db9741fd2e22d438a",
+    "score-retail-tally.png": "1d3436aa349c13c19852ddc55f48785299908159538d55812a4595b39ca81f4e",
+    "human-cleanup.json": "8eb9575aabbe607dbc2e949fac6bf4a43091aafccff6da04e9c1105ff681f581",
+    "scoreboard-departure-observation.json": "dc22624e5ef2c56fdfa23f67001cf44d32de99b708d0532b74c57ea14fa6a675"
+  },
+  "cleanup": {
+    "native_and_retail_left_normally": true,
+    "native_and_retail_quit_normally": true,
+    "owned_game_and_display_processes_checked": 6,
+    "owned_game_and_display_processes_remaining": 0,
+    "qa_wine_processes_remaining": 0,
+    "shared_namespace_preserved_for_root": true,
+    "session_departure_continuity_passed": false
+  },
+  "departure_stability": {
+    "status": "failed",
+    "observed_event": "During the original retail human normal Escape > Abort > Yes departure, the adapter Send returned HRESULT0x80070057 and the adapter exited1. The manager then stopped the session.",
+    "error_utc": "2026-10-25T04:08:12Z",
+    "manager_observed_state": "failed",
+    "manager_observed_error": "directplay exited with code 1",
+    "ordinary_native_tally_screenshot_utc": "2026-10-25T04:07:56.194443+00:00",
+    "ordinary_retail_tally_screenshot_utc": "2026-10-25T04:08:14.557807+00:00",
+    "before_wine_x_cleanup": true,
+    "own_cleanup_verification_utc": "2026-10-25T04:10:26.765189+00:00",
+    "root_cause": "Not established by this receipt. The Send error is preserved as a separate observed lifecycle limitation, not masked or attributed to cleanup.",
+    "qualification": "Score-field conversion and rendered human death count pass. Continued session availability after original-retail departure failed in this run."
+  },
+  "build_and_unit_regressions": {
+    "gateway_sha256": "4ee4d6ab19b0f47ee61f7b6d7bcfdff5f552f06b1851b06df39c17c6106efd07",
+    "gateway_bytes": 289692,
+    "source_sha256": {
+      "directplay/gateway.c": "1a69f77610b0986efafc40fcbe57cc09a8fc127dec8ffb540804298a93283864",
+      "directplay/protocol.c": "1cfd68b2695d6faec44204a7b57ae443ffa632e013112f07778155886fcd5a30",
+      "directplay/protocol.h": "fb27292ecd563b2372cb31998d8db32ed618451c53c30236bd358090e5485e40",
+      "directplay/test_protocol.c": "a7c441c48083f0ba939eed5547be8ea1d08f51c79c08e606851fb5669dce15b2"
+    },
+    "compiler": "i686-w64-mingw32-gcc-posix (GCC) 13-posix",
+    "compiler_packages": [
+      {
+        "Package": "gcc-mingw-w64-i686-posix",
+        "Version": "13.2.0-6ubuntu1+26.1",
+        "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-i686-posix_13.2.0-6ubuntu1+26.1_amd64.deb",
+        "SHA256": "8c63daeb59c96044c2a5c26b5a3a2b793237f3e10d3428bb659401122b8e501c",
+        "Size": "35221632"
+      },
+      {
+        "Package": "gcc-mingw-w64-i686-posix-runtime",
+        "Version": "13.2.0-6ubuntu1+26.1",
+        "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-i686-posix-runtime_13.2.0-6ubuntu1+26.1_amd64.deb",
+        "SHA256": "650bcd76e0c56c713428950aec8823fd517f911eaad80406907379a69d36ad0a",
+        "Size": "13146552"
+      },
+      {
+        "Package": "mingw-w64-i686-dev",
+        "Version": "11.0.1-3build1",
+        "Filename": "pool/universe/m/mingw-w64/mingw-w64-i686-dev_11.0.1-3build1_all.deb",
+        "SHA256": "903e09f47c0e441f9476a32efc745430a0cc39b1c33a13ea1f1d0414a24b7970",
+        "Size": "3153084"
+      },
+      {
+        "Package": "binutils-mingw-w64-i686",
+        "Version": "2.41.90.20240122-1ubuntu1+11.4",
+        "Filename": "pool/universe/b/binutils-mingw-w64/binutils-mingw-w64-i686_2.41.90.20240122-1ubuntu1+11.4_amd64.deb",
+        "SHA256": "5236ef254532c1f4ebddbce898e884fe9cc1ac4803092211ec615cbdeba7aafb",
+        "Size": "2974884"
+      },
+      {
+        "Package": "gcc-mingw-w64-base",
+        "Version": "13.2.0-6ubuntu1+26.1",
+        "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-base_13.2.0-6ubuntu1+26.1_amd64.deb",
+        "SHA256": "a30c07e807e9874ea93909448c5d6d37f9569ebe60ad32de8e490aad198538a3",
+        "Size": "188046"
+      },
+      {
+        "Package": "mingw-w64-common",
+        "Version": "11.0.1-3build1",
+        "Filename": "pool/universe/m/mingw-w64/mingw-w64-common_11.0.1-3build1_all.deb",
+        "SHA256": "4a42fd30fbc3838c58c929d8a4882682fc12408bb7a0e6cafa913c0f0a57c187",
+        "Size": "5580230"
+      }
+    ],
+    "build_command": "make -C directplay gateway.exe CC=i686-w64-mingw32-gcc-posix",
+    "flags": "-std=c11 -O2 -Wall -Wextra -Werror -static-libgcc",
+    "rebuild_SOURCE_DATE_EPOCH": 1792901044,
+    "byte_identical_rebuild": true,
+    "regression_command": "make -C directplay test",
+    "regression_passed": true,
+    "baseline_expected_failure": {
+      "baseline_protocol_sha256": "8472a0b48ba69b1440136bd540ddc785a304dbe3967b1ce51c916088f5c484ff",
+      "compile_exit": 0,
+      "test_exit": -6,
+      "stdout": "",
+      "stderr": "test_protocol: test_protocol.c:44: score_fields: Assertion `!memcmp(p+38,cases[i].retail,sizeof(cases[i].retail))' failed.\n",
+      "expected_failure": true
+    },
+    "dedicated_engine_sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
+    "bot_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+    "scope": "JK roster correction only; native bot and dedicated engine unchanged. MotS roster branch preserved, semantics not newly qualified."
+  }
+}

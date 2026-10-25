@@ -162,3 +162,25 @@ These are specific interoperability tests, not exhaustive certification of
 all maps, weapon/Force interactions, private-chat UI combinations, or Internet
 NAT behavior. The emulated retail fixture was slow, and its first MotS attempt
 timed out during initial rendering; the warmed rejoin sustained the cohort.
+
+### Original JK roster statistics
+
+The bot-prototype qualification exposed a pre-existing JK scoreboard mapping
+error: an original retail client displayed a native player's four deaths as
+four kills. Original JK's roster stores team as one unsigned byte, followed by
+signed 16-bit kills, deaths, suicides and score. The native format instead puts
+team after the three counts and uses 16 bits for every field. The adapter now
+reorders those fields in both directions and narrows only team. This preserves
+kill counts above 255 as well as signed scores.
+
+The correction is limited to JK. The existing MotS roster conversion remains
+unchanged until its field semantics can be checked against an original MotS
+executable. Earlier gameplay receipts remain historical records and do not
+qualify the new correction. See `qa/retail-jk-score-layout-audit.json` for the
+original-executable evidence and `qa/retail-jk-scoreboard-regression.json` for
+the corrected gateway's build, regression and live scoreboard checks.
+
+Run `make -C directplay test` to exercise independent score-layout fixtures,
+both conversion directions, roster bounds, signed values and the existing
+management-message checks. Rebuild with `make -C directplay gateway.exe` using
+the documented MinGW toolchain. Human game executables need no patch.

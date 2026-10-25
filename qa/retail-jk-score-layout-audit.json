@@ -1,0 +1,102 @@
+{
+  "date_utc": "2026-10-25",
+  "scope": "Original JK1.00 active roster row used by DSS message32, compared with pinned native OpenJKDF2.",
+  "original_jk_exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+  "native_source_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "native_source": "src/Dss/sithMulti.c:sithMulti_SyncPlayers and sithMulti_ProcessSyncPlayers",
+  "original_player_fields": {
+    "team": "0x139c",
+    "kills": "0x13a0",
+    "deaths": "0x13a4",
+    "suicides": "0x13a8",
+    "score": "0x13ac"
+  },
+  "original_sender_proof": {
+    "routine": "0x4ca9c0",
+    "player_pointer": "edi = player base +0x80",
+    "team_read": "0x4caa37 loads U8 [edi+0x131c], equal player+0x139c",
+    "team_write": "0x4caa54 emits that one byte",
+    "following_s16_fields": "0x4caa5e/0x4caa6b/0x4caa71/0x4caa77 emit kills/deaths/suicides/score from player+0x13a0/0x13a4/0x13a8/0x13ac"
+  },
+  "original_receiver_proof": {
+    "routine": "0x4caaf0",
+    "stores": "0x4cad2d stores team byte at player+0x139c; 0x4cad33/0x4cad43/0x4cad51/0x4cad5a store subsequent signed16 values at +0x13a0/+0x13a4/+0x13a8/+0x13ac"
+  },
+  "semantic_proof": {
+    "routine": "0x4cbc50 original killed-player handling",
+    "victim_deaths": "0x4cbc66 reads and0x4cbc6f writes incremented victim+0x13a4",
+    "killer_kills": "0x4cbd76 increments killer+0x13a0"
+  },
+  "active_row_offsets_excluding_preceding_flags": {
+    "common": {
+      "network_id": {
+        "offset": 0,
+        "bytes": 4
+      },
+      "name": {
+        "offset": 4,
+        "bytes": 16
+      }
+    },
+    "native": {
+      "kills": {
+        "offset": 20,
+        "type": "S16"
+      },
+      "deaths": {
+        "offset": 22,
+        "type": "S16"
+      },
+      "suicides": {
+        "offset": 24,
+        "type": "S16"
+      },
+      "team": {
+        "offset": 26,
+        "type": "S16"
+      },
+      "score": {
+        "offset": 28,
+        "type": "S16"
+      },
+      "bytes": 30
+    },
+    "retail_jk1_00": {
+      "team": {
+        "offset": 20,
+        "type": "U8"
+      },
+      "kills": {
+        "offset": 21,
+        "type": "S16"
+      },
+      "deaths": {
+        "offset": 23,
+        "type": "S16"
+      },
+      "suicides": {
+        "offset": 25,
+        "type": "S16"
+      },
+      "score": {
+        "offset": 27,
+        "type": "S16"
+      },
+      "bytes": 29
+    }
+  },
+  "conversion": {
+    "native_to_retail": "Copy native team low byte26 to retail20; copy native20..25 to retail21..26; copy native28..29 to retail27..28. Kills remain full16-bit.",
+    "retail_to_native": "Copy retail21..26 to native20..25; zero-extend retail team byte20 into native26..27; copy retail27..28 to native28..29."
+  },
+  "live_gui_corroboration": {
+    "baseline_receipt": "bots-final-native-retail.json",
+    "native_human_before_fix": "Native GUI score0,kills0,deaths4; original retail GUI score0,kills4,deaths0.",
+    "explanation": "Previous converter copied native deaths into retail kills, suicides into deaths and team into suicides, while preserving score."
+  },
+  "mots": {
+    "verified": false,
+    "reason": "Original MotS executable is no longer present in available workspaces. Historical generic offsets do not establish semantic field order. Correction must remain JK-only pending independent MotS proof."
+  },
+  "no_executable_modified": true
+}

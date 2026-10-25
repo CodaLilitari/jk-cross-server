@@ -44,12 +44,26 @@ int jkdp_translate(uint8_t *raw,size_t *bytes,size_t capacity,uint32_t host,int 
             if(retail && i==0 && id==1u)put32(out+write_at-4,(flags|1u)&~2u);
             put32(out+write_at,alias(id,host,retail));
             memcpy(out+write_at+4,raw+read_at+4,16);
-            /* Original JK1.00: 4caa54 / 4cad23. Original MotS: 519284 /
-             * 519553. numKills is U8, then four S16 score fields. OpenJKDF2
-             * changed numKills to S16. Match the original low-byte behavior. */
-            out[write_at+20]=raw[read_at+20];
-            if(retail)memcpy(out+write_at+21,raw+read_at+22,8);
-            else {out[write_at+21]=0;memcpy(out+write_at+22,raw+read_at+21,8);}
+            if(!mots) {
+                /* Original JK1.00 4caa37/4caa54 and 4cad2d: team U8,
+                 * then kills/deaths/suicides/score S16. OpenJKDF2 sends
+                 * kills/deaths/suicides/team/score as five S16 fields.
+                 * Only team narrows; preserve both bytes of every count. */
+                if(retail) {
+                    out[write_at+20]=raw[read_at+26];
+                    memcpy(out+write_at+21,raw+read_at+20,6);
+                    memcpy(out+write_at+27,raw+read_at+28,2);
+                } else {
+                    memcpy(out+write_at+20,raw+read_at+21,6);
+                    out[write_at+26]=raw[read_at+20];out[write_at+27]=0;
+                    memcpy(out+write_at+28,raw+read_at+27,2);
+                }
+            } else {
+                /* Retain the legacy MotS mapping until separately verified. */
+                out[write_at+20]=raw[read_at+20];
+                if(retail)memcpy(out+write_at+21,raw+read_at+22,8);
+                else {out[write_at+21]=0;memcpy(out+write_at+22,raw+read_at+21,8);}
+            }
             read_at+=row;write_at+=retail?29u:30u;
         }
         /* Team scores are five S16 values. Refuse unexplained tail bytes. */

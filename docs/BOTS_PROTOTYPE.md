@@ -17,7 +17,9 @@ The bot executable uses engine commit
 `74e4657c4f1751d09af9ad9e056acb8f41997acb` plus `native/bot-client.patch`.
 It does not contain the dedicated-server patch. Its native connection joins the
 existing server, which retains its ordinary retail/native/browser adapters and
-player ID allocation. Human clients and the server are unchanged by this work.
+player ID allocation. Human clients and the dedicated engine are unchanged.
+A separate JK retail-scoreboard correction in the existing DirectPlay adapter
+is described below; it was discovered during final compatibility testing.
 
 Current scope is Linux x86-64, stock JK1MP, rank zero, free-for-all, with one to
 four distinct personas per launcher invocation. Automatic navigation uses
@@ -123,14 +125,23 @@ statistics with an unsigned-byte team field, followed by signed-16 kills,
 deaths, suicides and score; the existing adapter treated the byte as kills.
 The bot executable supplies normal native statistics. Its baseline retail
 receipt therefore qualifies gameplay while explicitly failing retail
-scoreboard parity. A narrow adapter correction and retest are tracked
-separately from the frozen bot executable.
+scoreboard parity. The accompanying narrow adapter correction translates the
+team byte and all four signed fields in their original JK order. It preserves
+16-bit kill counts and is gated to JK; the existing MotS conversion remains
+unchanged pending verification against an original MotS executable. Independent
+wire fixtures reproduce the observed failure and fail against the previous
+converter. The source audit and live retest are recorded separately from the
+frozen bot executable in `qa/retail-jk-score-layout-audit.json` and
+`qa/retail-jk-scoreboard-regression.json`.
 
 The retail test uses the original executable and original DirectPlay files in
 an isolated Wine runtime. Its launcher/provider paths were repaired to use
 the qualified original DLLs after Wine initialization replaced the system32
-copies. These are test-runtime settings; the dedicated server executable,
-gateway executable, native protocol and browser bundle remain unchanged.
+copies. These are test-runtime settings. The dedicated server executable,
+native and browser protocols, and browser bundle remain unchanged. The later
+gateway rebuild contains the JK roster correction above. The original mixed
+gameplay receipts retain the previous gateway hash and its scoreboard failure;
+the narrow retest names the corrected gateway hash.
 
 Each receipt names its exact binary hash; predecessor results are retained as
 predecessor evidence. The scope is one stock map and local transport. Physical

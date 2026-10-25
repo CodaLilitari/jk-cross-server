@@ -64,7 +64,9 @@ The `prototype/player-bots-recovery` work adds a separate Linux bot client and
 roster launcher. Each bot joins this server as an ordinary native player using
 the stock movement, weapon, inventory, damage and respawn code. Human retail,
 OpenJKDF2 and JKWeb executables remain unchanged. Bots consume normal player
-slots. The server executable and transport adapters are unchanged.
+slots. The dedicated engine remains unchanged. This branch also corrects a
+pre-existing JK retail-scoreboard field mapping in the DirectPlay adapter;
+the bot executable and that adapter fix have separate qualification records.
 
 This prototype accepts stock **JK1MP, rank 0, free-for-all** sessions. MotS,
 Force powers, teams, objectives, passwords and mods are outside its supported
