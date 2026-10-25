@@ -69,10 +69,11 @@ verify that a pasted nonce belongs to your own live connection. This manual
 workflow is not resistant to substituted-challenge phishing or relay. A trusted
 view of the live connection would be needed for that stronger guarantee.
 
-A challenge expires after two minutes and is consumed by a submitted proof,
-including an incorrect proof. Request a new challenge after a mistake.
+A challenge expires after two minutes. A syntactically complete proof submission
+consumes its challenge, including when the key ID or MAC is incorrect. Request
+a new challenge after a mistake.
 Successful authentication lasts 15 minutes on that connection. Disconnects,
-connection-generation changes, engine/IPC resets and level/session resets clear
+connection-generation changes, engine/IPC resets and level/session resets invalidate
 the relevant grants. Starting a new login replaces that connection's previous
 challenge and grant. The persistent credential itself remains available for a
 later login.
@@ -211,3 +212,84 @@ The store/policy/helper tests do not establish a successful live kick or map
 transition for a particular client build. Connected results must name the exact
 dedicated binary, unchanged clients present, command, target and observed result;
 an IPC acknowledgement or printed request is not sufficient gameplay evidence.
+
+### Live qualification by dedicated build
+
+The [final live receipt](../qa/chat-admin-live-4be9.json) records the completed
+fixture, with successful, incomplete, and unrun checks distinguished. It names
+dedicated binary `4be9e8fa`, DirectPlay adapter `a6ee4452`, bot client `50924ed7`,
+and the exact unchanged human-client artifacts.
+Historical results retain their own binary attribution:
+
+| Dedicated build | Recorded live evidence |
+|---|---|
+| `6c4c25dd` | Native and retail authentication; a native administrator kicked retail; native and bots reached the next map and native reauthenticated. Browser reconnect/authentication and automatic retail map continuation remained limited. See [round one](../qa/chat-admin-live-6c4c.json). |
+| `234edc4f` | The same persistent key authenticated after a new panel process. Native observed retail and both bots on the next map, followed by grant denial and reauthentication. Browser was closed during that transition. See [round two](../qa/chat-admin-native-round2.json). |
+| `4be9e8fa` | Same-key authentication after game-only restart; simultaneous authentication of all three unchanged human clients; retail-admin native kick followed by fresh-identity rejoin and reauthentication; recovered-browser rejoin and permission denial; live key revocation. The browser reauthentication retry was blocked by its input driver. See [round three](../qa/chat-admin-native-round3.json) and the current receipt. |
+
+In the final-build snapshot, original JK 1.00 retail, the pinned unchanged
+OpenJKDF2 client, and the published unchanged JKWeb client were fully joined on
+`JK1MP/m2.jkl` with Boba and Jan bots. Retail and browser rosters agreed on all
+five playing peers, and three connection-bound grants referenced the same
+persistent test credential. The native client had first received an actual
+denial after the game-only restart, then authenticated with that existing key;
+the panel process and credential were retained.
+
+The retail administrator subsequently kicked the native player. The target left
+the game through its ordinary tally/menu path while the server continued. The
+same unchanged native process rejoined with a different canonical identity and
+connection generation, received an actual permission denial, and authenticated
+again with the same key. Its normal discovery/join window recorded no surrogate
+replacement churn after the native discovery reservation refinement.
+
+These were bounded stages. The fixture later reached its 8 GiB memory limit;
+the browser process tree exited, and retail and Jan subsequently left during
+that interval. Cumulative OOM counters do not identify which process was killed
+or establish every departure's cause. Only Boba and the native player were
+observed at the native reauthentication checkpoint, so uninterrupted five-player
+participation through the later actions is not claimed.
+
+The unchanged browser was then restarted, its normal menu set to 30 FPS, and it
+rejoined through ordinary menus. At 08:23:25 UTC it was fully joined on `m2`
+with a fresh canonical identity, alongside Boba, native, and the rejoined retail
+player. Its prior grant did not transfer: the browser received an actual
+permission denial. A fresh login challenge reached it, but the private input
+helper reported completion without an observed proof chat or new grant. A
+sequential input retry later hit the 30-second watchdog and closed the browser
+context. Browser recovery/rejoin passed; this reauthentication retry is
+incomplete. The earlier successful browser authentication remains separately
+recorded. No privileged browser map or kick command was submitted.
+
+Live revocation passed on the final build. The native connection's existing
+grant was first verified, then the panel revoked the original test credential.
+Its `admin next level` command received an actual permission denial 131.378
+seconds before that grant's nominal expiry. A fresh `admin login` received "No active admin
+credentials have been issued." Native and retail remained in multiplayer on
+`m2` with Boba, the same server and adapter processes continued, and the safe
+manager observer reported no grants or queued commands. Login produced no new
+challenge, so no fresh revoked-key proof was attempted and no second QA key was
+issued. That narrower live result is distinct from the separate revoked-proof
+policy tests.
+
+An authorized next-level transition on final build `4be9e8fa` was not run; the
+last sampled map remained `m2`. The denied revocation command is not a successful
+map transition. The intermediate `234edc4f` native/retail transition to `m4`
+remains attributed to that earlier binary. Live MotS administration is also
+unqualified.
+
+Fixture cleanup completed with an outer exit status of zero and an empty process
+registry. All 18 recorded game, browser, retail, native, display, and namespace
+keeper processes were absent, with no processes left in the owned namespace.
+The test credential was revoked before its private key file, authority database
+directory, and panel token were removed.
+
+The separate [server Python regression receipt](../qa/server-final-python.json)
+records a passing result for all 149 distinct tests across 158 executions. Nine
+initial updater cases encountered the zero-free-disk guard; all nine unchanged
+cases passed after disk cleanup, including actual child-process crash recovery.
+The original disk failures remain in that receipt, and all 36 recorded source
+hashes were unchanged between the initial runs and the focused rerun.
+
+The manual copied-challenge workflow retains the substituted-challenge
+phishing/relay limitation described above; successful live authentication does
+not remove that limitation.

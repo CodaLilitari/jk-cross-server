@@ -40,9 +40,11 @@
     "src/Main/Main.c": "25898ff7d4a182f0f34c9abe68d640646f7e110c8b9caf406069a3591bcb3fcf",
     "src/Platform/Networking/GNS/AdminConnections.h": "b7547f2280270fb326f8544b8e604663bb0533f12c92b673f3ec7656bf440116",
     "src/Platform/Networking/GNS/GatewayBridge.h": "05d40c739f905b94da6a1fb48ec8a4afe90d684a86e704634c6fff772a30036d",
-    "src/Platform/Networking/GNS/stdComm_GNS.cpp": "22789350bb957bf0fce7484b41a776240b3b3a6db7980334ee1630a5326461a9",
+    "src/Platform/Networking/GNS/TransportIdentities.h": "40134c6e79f34502ee5f63b7ada50a5c40818944e73e2b7a5b99eb97ecef1840",
+    "src/Platform/Networking/GNS/stdComm_GNS.cpp": "292651441d2bb49614578fc10b81c57e361a02ffe106d043c79edd5dfd8105ba",
     "src/Platform/Networking/GNS/stdComm_GNS.h": "a1f5ddbdc5640d82ed4acbf588e497ea0c9adb564104adfa93e37531d8fe2045",
     "src/Tests/gateway_bridge_test.cpp": "3d5ad135ac16a12387bf917d009cd5af54eb84d295962bfb3a7627fe02118ce0",
+    "src/Tests/transport_identities_test.cpp": "4e212e68d3151fccaa9490d5c65e3c8da84869f13ab47b314c8fd9aaeb8a7482",
     "src/Win95/Window.c": "188d8e4e0ae76c807c9f04d4eaed3be05753fc649367d08629c1673849cf233a"
   },
   "build_environment": {
@@ -191,7 +193,7 @@
     "CMakeFiles/sith_engine.dir/src/Platform/GL/jkgm.cpp.o": "172a446aaa458ebfa34a42bb57a4ef0a9042ecd300b159a1c5c1393a06593360",
     "CMakeFiles/sith_engine.dir/src/Platform/GL/shader_utils.c.o": "963eca403159420b8ff7a5e26badb167bca7f2e5e0b6573595718a3977f19965",
     "CMakeFiles/sith_engine.dir/src/Platform/GL/std3D.c.o": "326f56ffd520b0c0ced0e8a10e281b1d99cf9de76dade581b967fe05bf74117a",
-    "CMakeFiles/sith_engine.dir/src/Platform/Networking/GNS/stdComm_GNS.cpp.o": "d86cab7a70d3995a024fab4deb494d49b9ac54e407465d06d3be6dabf380d53f",
+    "CMakeFiles/sith_engine.dir/src/Platform/Networking/GNS/stdComm_GNS.cpp.o": "818eade43eccde90d918ff1c3421b3d63ced86181927a78397141ffb9cff9d43",
     "CMakeFiles/sith_engine.dir/src/Platform/Posix/wuRegistry.c.o": "12e0606ed478574d0229171db0c10131df1cd2fa41d389bc596d98c15c919c07",
     "CMakeFiles/sith_engine.dir/src/Platform/SDL2/jkGUIDisplay.c.o": "25843a0a9b98f3adf97493c2eb51046bdaaf43c65a78138f140d7d410c887666",
     "CMakeFiles/sith_engine.dir/src/Platform/SDL2/stdControl.c.o": "3308673f78877ad4aa51b520ff8519d348abf8c29c7c12a3d101c081fa212ecd",
@@ -270,20 +272,20 @@
   },
   "files": {
     "bin/linux-x86_64/openjkdf2": {
-      "sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
-      "bytes": 8578104
+      "sha256": "4be9e8fa996065eb531f5a8693516d7f799e1cfc0dc9d81ff7d6573577fc392c",
+      "bytes": 8587704
     },
     "bin/linux-x86_64/libGameNetworkingSockets.so": {
       "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
       "bytes": 3644744
     },
     "native/crossplay-dedicated.patch": {
-      "sha256": "0147665539dac3e1ae7652e97e1afdde12e3a46188141de0796795272f1da369",
-      "bytes": 69149
+      "sha256": "4076a08c60bf985d7399d3631a96fb2f371f51e2d131cf2b5060551190fff5eb",
+      "bytes": 99144
     },
     "native/relink-linux-x86_64.tar.gz": {
-      "sha256": "3e342920b782eea38b422460f45b048e0c762f39beff81b60342ce9e69fc7fe9",
-      "bytes": 5972132
+      "sha256": "580947daf1c0ab9eefe999d97557874a9321589680b92296e092e50293480321",
+      "bytes": 5976699
     }
   }
 }

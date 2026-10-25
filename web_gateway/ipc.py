@@ -19,6 +19,7 @@ MAX_SITH_PAYLOAD = 2052
 HELLO, INFO, ADD_PEER, REMOVE_PEER, DATA, PING, SET_ID_POOL = 1, 2, 3, 4, 5, 7, 8
 HELLO_REPLY, INFO_REPLY, ADDED, REMOVED, DATA_REPLY, PONG, ID_POOL_REPLY, ERROR = 101, 102, 103, 104, 105, 107, 108, 199
 ADMIN_REQUEST, ADMIN_CHAT, ADMIN_REPLY, ADMIN_RESET = 9, 109, 110, 111
+REPLACE_POOL_ID, POOL_REPLACED, POOL_RETIRED = 10, 112, 113
 ADMIN_MESSAGE, ADMIN_PLAYERS, ADMIN_KICK, ADMIN_NEXT_LEVEL = 1, 2, 3, 4
 MAX_ADMIN_TEXT = 127
 
@@ -82,6 +83,7 @@ class NativeIPC:
         self._admin_pending: dict[int, tuple[asyncio.Future, int, int]] = {}
         self._info_waiters: list[asyncio.Future] = []
         self._pool_future: asyncio.Future | None = None
+        self._pool_replacements: dict[int, tuple[asyncio.Future, int, int]] = {}
         self._pool_lock = asyncio.Lock()
         self._data_callbacks: list[Callable] = []
         self._state_callbacks: list[Callable] = []
@@ -89,6 +91,7 @@ class NativeIPC:
         self._admin_callbacks: list[Callable] = []
         self._admin_reset_callbacks: list[Callable] = []
         self._removed_callbacks: list[Callable] = []
+        self._pool_retired_callbacks: list[Callable] = []
         self.last_error: str | None = None
 
     @property
@@ -123,9 +126,14 @@ class NativeIPC:
         self._removed_callbacks.append(callback)
         return lambda: self._removed_callbacks.remove(callback) if callback in self._removed_callbacks else None
 
+    def subscribe_pool_retired(self, callback: Callable) -> Callable:
+        self._pool_retired_callbacks.append(callback)
+        return lambda: self._pool_retired_callbacks.remove(callback) if callback in self._pool_retired_callbacks else None
+
     def _next_request(self) -> int:
         self._request_id = (self._request_id % 0xFFFFFFFF) + 1
-        while self._request_id in self._pending or self._request_id in self._admin_pending:
+        while (self._request_id in self._pending or self._request_id in self._admin_pending
+               or self._request_id in self._pool_replacements):
             self._request_id = (self._request_id % 0xFFFFFFFF) + 1
         return self._request_id
 
@@ -248,6 +256,26 @@ class NativeIPC:
             finally:
                 self._pool_future = None
 
+    async def replace_pool_id(self, old_id: int, new_id: int) -> int:
+        """Register a fresh ordinary DirectPlay identity for one retired slot.
+
+        Called by the pool-owning broker outside the IPC reader callbacks.
+        Serialize replacements with initial pool registration; normal data,
+        removals and INFO continue through the independent reader/write lock.
+        """
+        if (type(old_id) is not int or type(new_id) is not int or old_id == new_id
+                or not 65 <= old_id < 0xFFFFFFFE or not 65 <= new_id < 0xFFFFFFFE):
+            raise ValueError("Expected distinct valid DirectPlay identities")
+        async with self._pool_lock:
+            request_id = self._next_request()
+            future = asyncio.get_running_loop().create_future()
+            self._pool_replacements[request_id] = (future, old_id, new_id)
+            try:
+                await self._write(REPLACE_POOL_ID, old_id, request_id, struct.pack("<I", new_id))
+                return await asyncio.wait_for(future, self.request_timeout)
+            finally:
+                self._pool_replacements.pop(request_id, None)
+
     async def _dispatch(self, kind: int, source: int, destination: int, payload: bytes) -> None:
         if kind == INFO_REPLY:
             if len(payload) != 244:
@@ -276,6 +304,23 @@ class NativeIPC:
                     self._pool_future.set_result(struct.unpack("<I", payload)[0])
                 else:
                     self._pool_future.set_exception(ProtocolError("Invalid ID pool reply"))
+        elif kind == POOL_REPLACED:
+            if (not 65 <= source < 0xFFFFFFFE or not destination or len(payload) != 4):
+                raise ProtocolError("Invalid pool replacement reply")
+            new_id = struct.unpack("<I", payload)[0]
+            if not 65 <= new_id < 0xFFFFFFFE or new_id == source:
+                raise ProtocolError("Invalid replacement identity")
+            pending = self._pool_replacements.get(destination)
+            if pending:
+                future, expected_old, expected_new = pending
+                if source != expected_old or new_id != expected_new:
+                    raise ProtocolError("Pool replacement does not match its request")
+                if not future.done():
+                    future.set_result(new_id)
+        elif kind == POOL_RETIRED:
+            if not 65 <= source < 0xFFFFFFFE or destination or payload:
+                raise ProtocolError("Invalid pool retirement event")
+            await self._notify(self._pool_retired_callbacks, source)
         elif kind == DATA_REPLY:
             if not 4 <= len(payload) <= MAX_SITH_PAYLOAD:
                 raise ProtocolError("Engine emitted an invalid Sith payload length")
@@ -319,6 +364,10 @@ class NativeIPC:
                 for future, _, _ in self._admin_pending.values():
                     if not future.done():
                         future.set_exception(ProtocolError("Engine rejected an admin request"))
+            elif source == REPLACE_POOL_ID:
+                for future, _, _ in self._pool_replacements.values():
+                    if not future.done():
+                        future.set_exception(ProtocolError("Engine rejected a pool replacement"))
             else:
                 LOG.warning("%s", error)
         elif kind == REMOVED:
@@ -360,6 +409,9 @@ class NativeIPC:
                     if not future.done():
                         future.set_exception(EngineUnavailable("Engine IPC connection ended"))
                 for future, _, _ in tuple(self._admin_pending.values()):
+                    if not future.done():
+                        future.set_exception(EngineUnavailable("Engine IPC connection ended"))
+                for future, _, _ in tuple(self._pool_replacements.values()):
                     if not future.done():
                         future.set_exception(EngineUnavailable("Engine IPC connection ended"))
                 if self._pool_future and not self._pool_future.done():

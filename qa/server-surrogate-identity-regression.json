@@ -1,0 +1,136 @@
+{
+  "scope": "Focused source, compilation, and controlled IPC/dispatcher regressions for fresh transport incarnations. This receipt does not claim a successful live rejoin, map rotation, final server package, or changes to any game-client executable.",
+  "recorded_utc": "2026-10-25T07:47:21.505518+00:00",
+  "status": "PASS: strict adapter build, eleven new lifecycle wire tests plus twenty-six existing Python regressions, six adapter identity groups, six native identity groups, four actual engine message-dispatch groups, and the existing adapter protocol/departure regressions.",
+  "problem": "The engine reliable receive cache identifies a message by sender ID and 16-bit message number. An independently restarted client begins a new sequence; recycling its sender ID can ACK and discard new join/chat messages retained from its earlier incarnation. Changing only the host cache would leave unchanged peers with the same ambiguity.",
+  "retained_failure_evidence": {
+    "artifact": "bot-qa/stale-browser-dedup-6c4c.json",
+    "sha256": "7b0b741d77690e36f87b6819f2565afd99cd34478ab569ec397033b705a8cc98",
+    "server_sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+    "observation": "A bounded read-only snapshot of the exact owned server retained (sender 15163125, message IDs 1 through 24) after the failed browser attempts; that browser was absent from the host joined roster.",
+    "limit": "This is retained cache evidence after the failed attempts, not a capture of the exact failed WELCOME or chat message ID. Keep the old-server failure separate from later fixed-build live qualification."
+  },
+  "changes": [
+    "The native server quarantines an ended incarnation before removing membership and retains all issued canonical IDs, including direct retail peers, until the transport session ends.",
+    "The registered DirectPlay pool owner destroys only the retired local surrogate and creates a fresh ordinary DirectPlay player for that pool slot; game payloads and reliable sequence numbers are unchanged.",
+    "Replacement registration uses authenticated private IPC request 10, correlated success 112, and retirement notification 113. The native server and broker validate membership, retirement, and freshness before accepting it.",
+    "One serial broker worker processes at most fifteen queued/in-flight replacement requests without stalling the same adapter connection's DATA, REMOVE, INFO, or PING path. Adapter retirement FIFO is bounded at fifteen and only one physical replacement awaits acknowledgement at a time.",
+    "Exact completed replacements and matching acknowledgements are idempotent. Retirements arriving with the initial or replacement acknowledgement remain queued and are delivered in the required order.",
+    "A temporary held browser-seat resume retains its identity; explicit departure, administrative kick, or hold expiry ends the incarnation. Map transitions retain the issued-ID history."
+  ],
+  "bounds_and_failure_behavior": {
+    "issued_identity_limit_per_session": 65536,
+    "history_accounting": "Native and broker histories include canonical host 1, every reserved pool identity, and every direct retail identity accepted through their API. The adapter independently includes the physical DirectPlay host and all observed/created DirectPlay identities; the broker is not told the physical host ID.",
+    "exhaustion": "Fail closed with a session-restart error; never wrap, recycle, or silently evict an old identity.",
+    "normal_errors": "A replacement from a non-owner is denied without changing the real owner or other pool entries. Invalid native replacement validation leaves the pool unchanged. Duplicate acknowledgements do not change unrelated seats.",
+    "uncertain_owner_replacement": "A genuine pool-owner replacement error stops that adapter because its previous physical player may already have been destroyed. The session must restart; this is not promised to preserve every connected retail client on that failure path.",
+    "cleanup": "Adapter close cancels and awaits its worker. Native IPC disconnect or protocol rejection promptly fails its pending replacement future. No synchronous engine request is made by a retirement reader callback."
+  },
+  "repo_source_and_binary_sha256": {
+    "directplay/gateway.c": "af4ceece2c8861c607fe02adf084bc109b525cc0a15d37499401fb26cd81b91b",
+    "directplay/gateway.exe": "a6ee44527a7e60de8df02c6294a39e39a78c5e1745b2ed3c29b91e502f432082",
+    "directplay/protocol.c": "1cfd68b2695d6faec44204a7b57ae443ffa632e013112f07778155886fcd5a30",
+    "directplay/protocol.h": "fb27292ecd563b2372cb31998d8db32ed618451c53c30236bd358090e5485e40",
+    "directplay/departure_policy.h": "5655da67828b23088cc8227163501b8e5608f8a73bdea8de004ec9d51070bf27",
+    "directplay/surrogate_pool.h": "f4ab43795d5de53dce89beb56999ee281c437ed0b5afe5f984db425cd0957669",
+    "directplay/test_surrogate_pool.c": "751fd0f028843b453a441ee282d255755ad6b800932f19c82ba7a17d6cf96b32",
+    "directplay/Makefile": "a62f99a0513e4f7eee3c67bf62f19dcb973fff5bffacb1add6f7691f0ba4e394",
+    "manager/broker.py": "fb1c3df88bff3d5ce18cae659ac4ec6cce60fc99796eb6c12b5327c0c3b0edd6",
+    "web_gateway/ipc.py": "d0ea30f81e0f5d35a21f5c47cdf580de160a3fdc390884ca29fabeef1392d6e2",
+    "tests/test_surrogate_pool.py": "0b998b8191277729413da6ace06cdb7022cfdaad02a55780312586bc18e2984e",
+    "native/tests/test_server_reliable_identity.c": "6e1c53bf9e8bfd088ea2623b0a20759745a90adad443a90ef276299633eb8ace",
+    "native/tests/run_server_reliable_identity_tests.py": "110e0cefa15fe7b8cf0e809e93f7e0cf311acacd60f42ba49a93ec8f567b9cbd"
+  },
+  "strict_adapter_build": {
+    "binary": "directplay/gateway.exe",
+    "bytes": 295717,
+    "compiler": "i686-w64-mingw32-gcc-posix (GCC) 13-posix",
+    "command": "SOURCE_DATE_EPOCH=1792915500 make -C directplay gateway.exe CC=/workspace/scratch/3cdb8ff42680/bot-qa/mingw/root/usr/bin/i686-w64-mingw32-gcc-posix",
+    "flags": "-std=c11 -O2 -Wall -Wextra -Werror -static-libgcc; -ldplayx -lole32 -lws2_32 -luuid",
+    "exit_code": 0,
+    "build_log_sha256": "b6c67401cb54710c51bced5b50fee890782f1f46cb0494d4a336d960b6af0726",
+    "toolchain_provenance": "Same locally verified Ubuntu MinGW packages recorded in bot-qa/departure-build-metadata.json; no compiler download or dependency update for this change."
+  },
+  "python_wire_regressions": {
+    "command": "/workspace/scratch/3cdb8ff42680/bot-deps/bin/python -m unittest tests.test_surrogate_pool tests.test_manager.BrokerTests tests.test_chat_admin web_gateway.test_gateway -q",
+    "tests": 37,
+    "new_lifecycle_tests": 11,
+    "exit_code": 0,
+    "new_cases": [
+      "Fresh replacement and identical duplicate requests preserve other slots.",
+      "A retirement in the initial registration ACK batch is not lost.",
+      "The same adapter continues DATA, REMOVE, INFO and PING while replacement ACK is delayed; additional and newly replaced-seat retirements are retained.",
+      "Adapter replacement requests execute serially with bounded admission.",
+      "Only the registered pool owner can replace identities.",
+      "A departed retail identity cannot become a new surrogate.",
+      "The issued-history bound rejects further replacement without recycling an ID.",
+      "NativeIPC requires exact matching acknowledgement fields and serializes replacement requests.",
+      "Adapter close cancels its pending replacement worker.",
+      "Engine disconnect promptly fails a pending replacement.",
+      "Native error completes the request without stalling the IPC reader."
+    ],
+    "log_sha256": "eca495c565eacd54eb93b85826aa7820df2ad522a20abaab951637751c48da56",
+    "environment_note": "The initial generic python invocation lacked aiortc; the final passing run used the existing bot-deps interpreter with the project dependencies. Tests used owned ephemeral loopback endpoints, not public services."
+  },
+  "adapter_metadata_regressions": {
+    "command": "make -C directplay test",
+    "identity_groups": 6,
+    "exit_code": 0,
+    "coverage": "Freshness including physical host and departed retail IDs; FIFO/full-queue order; exact/duplicate/mismatched acknowledgements; retirement of a just-created identity; lifetime/correlation exhaustion; unknown events. Existing packet translation and departure-policy regressions also passed.",
+    "log_sha256": "f74bf1128d9d26244c49d89d6951edcdf1af06a49e0683645c85d73525fdbe6f"
+  },
+  "actual_engine_dispatch_regression": {
+    "source": "dedicated-engine/src/Devices/sithComm.c",
+    "source_sha256": "7e706b2c961b0cfa94faa9daa59593f6cea804db8364a0df18203989dfee5c54",
+    "test": "native/tests/test_server_reliable_identity.c",
+    "command": "python3 native/tests/run_server_reliable_identity_tests.py --source /workspace/scratch/3cdb8ff42680/dedicated-engine --build /tmp/bfp3_prototype/runtime_lane/OpenJKDF2-MotS-Fixes/build_runtime",
+    "groups": 4,
+    "exit_code": 0,
+    "result": "The actual sithMessage_ProcessMessages function ACKs but suppresses message IDs 6 and 10 already cached for the old sender, dispatches the identical numbers with a fresh sender, retains the earlier and unrelated sender histories, still suppresses duplicates, and preserves unreliable ID-zero delivery.",
+    "method_limit": "Inert bounded receive/ACK fixtures and counting WELCOME/chat handlers are linked to the actual engine dispatcher. This is not a full engine join or live network reproduction.",
+    "log_sha256": "68583639c49bd72da3ebafc69f642917a9054c714fe9455459b24127f004c5d3"
+  },
+  "native_source_regression": {
+    "scope": "native GNS identity lifecycle source and unit regression; no dedicated rebuild or live qualification in this receipt",
+    "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "files": {
+      "src/Platform/Networking/GNS/stdComm_GNS.cpp": "846c56d6425fa0d8421ff5ad9dfb6e1b411402ebf2a3461d0e6dbad0da185d24",
+      "src/Platform/Networking/GNS/TransportIdentities.h": "bfa46049f5ae65e46fddabb674ee18b1a4d8599eb1b2622f8e3685c579e08e20",
+      "src/Tests/transport_identities_test.cpp": "f1ec13d4e5f209cee2ba6aacbcfee62f2bc61c9b96b5fa6048e9b803ffe22a5e"
+    },
+    "native_helper_regression": {
+      "groups": 6,
+      "exit_code": 0,
+      "stdout": "PASS: 6 groups: pool claims; retired/pending-loss isolation; replacement replay/validation; assigned Connecting cleanup; fresh no-pool identities; bounded lifetime history\n",
+      "compile": [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-UNDEBUG",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I",
+        "src",
+        "src/Tests/transport_identities_test.cpp",
+        "-o",
+        "/tmp/jk_transport_identities_test"
+      ]
+    },
+    "gns_syntax_check": {
+      "exit_code": 0,
+      "flags": "Actual dedicated include/defines from build_bot_recovery.flags(CXX), dedicated src include first, -fsyntax-only; no linked artifact",
+      "log_sha256": "f2432cfe6e8082f582a8e5add7a6f426a98021d7e0c80c7fb8402abeb986dc8e"
+    },
+    "ipc": {
+      "replace_request": 10,
+      "success_reply": 112,
+      "retired_pool_event": 113
+    },
+    "lifetime_issued_limit_including_host": 65536,
+    "history_reset": "GNSServer Init only; ordinary AdminReset/map change leaves ledger intact",
+    "new_files_visible_to_git_diff": true
+  },
+  "remaining_qualification": "Root is separately testing unchanged native, retail and browser clients against the rebuilt dedicated server and adapter. A successful strict build and controlled regression do not by themselves establish live reconnect or map-transition compatibility."
+}

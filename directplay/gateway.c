@@ -15,6 +15,7 @@
 #include <string.h>
 #include "protocol.h"
 #include "departure_policy.h"
+#include "surrogate_pool.h"
 
 #define MAX_FRAME 65536u
 #define MAX_RAW 2052u
@@ -26,7 +27,8 @@ static LPDIRECTPLAY3A dp;
 static SOCKET broker = INVALID_SOCKET;
 static HANDLE dp_event;
 static volatile LONG stopping;
-static DPID host_id, pool[MAX_POOL], remote_ids[MAX_PEERS];
+static DPID host_id, remote_ids[MAX_PEERS];
+static uint32_t pool[MAX_POOL];
 static unsigned pool_count, remote_count, game_mode;
 static uint32_t slot_ids[32];
 static uint8_t stream[MAX_FRAME * 2u];
@@ -35,6 +37,8 @@ static unsigned long long incoming_packets, outgoing_packets;
 static uint8_t provider_connection[65536];
 static DWORD provider_connection_size;
 static uint8_t session_entry[240];
+static struct jkdp_identity_history identity_history;
+static struct jkdp_pool_rotation pool_rotation;
 
 static const GUID JK_GUID = {0xbf0613c0,0xde79,0x11d0,{0x99,0xc9,0x00,0xa0,0x24,0x76,0xad,0x4b}};
 static const GUID MOTS_GUID = {0xa4ff3960,0x3b4f,0x11d1,{0x96,0xcb,0x44,0x45,0x53,0x54,0x00,0x00}};
@@ -168,10 +172,14 @@ static int open_directplay(const uint8_t info[244],unsigned requested_pool) {
     stage("Create_server_player");
     hr=IDirectPlay3_CreatePlayer(dp,&host_id,&name,dp_event,NULL,0,0);
     if(FAILED(hr) || host_id<65){failure("Create_dedicated_host_player",FAILED(hr)?hr:E_UNEXPECTED);return 0;}
+    if(!jkdp_history_add(&identity_history,host_id)){failure("Host_identity_not_fresh",E_UNEXPECTED);return 0;}
     for(i=0;i<requested_pool;i++) {
+        DPID allocated=0;
         char label[48];snprintf(label,sizeof(label),"Transport slot %u",i+1);name.lpszShortNameA=label;name.lpszLongNameA="Reserved native/browser transport slot";
-        hr=IDirectPlay3_CreatePlayer(dp,&pool[i],&name,dp_event,NULL,0,0);
-        if(FAILED(hr) || pool[i]<65){failure("Create_surrogate",FAILED(hr)?hr:E_UNEXPECTED);return 0;}
+        hr=IDirectPlay3_CreatePlayer(dp,&allocated,&name,dp_event,NULL,0,0);
+        if(FAILED(hr) || allocated<65){failure("Create_surrogate",FAILED(hr)?hr:E_UNEXPECTED);return 0;}
+        pool[i]=allocated;
+        if(!jkdp_history_add(&identity_history,pool[i])){failure("Surrogate_identity_not_fresh",E_UNEXPECTED);return 0;}
         pool_count++;
     }
     { uint8_t payload[MAX_POOL*4],response[4];size_t response_size=sizeof(response);
@@ -182,6 +190,33 @@ static int open_directplay(const uint8_t info[244],unsigned requested_pool) {
     }
     printf("{\"event\":\"ready\",\"version\":\"%s\",\"mode\":\"%s\",\"host_id\":%lu,\"canonical_host_id\":1,\"pool_count\":%u,\"physical_capacity\":32,\"human_capacity\":%lu,\"checksum_seed\":%lu}\n",VERSION,mode?"mots":"jk",(unsigned long)host_id,pool_count,(unsigned long)(read32(entry+16)-1),(unsigned long)sd.dwUser1);
     memcpy(session_entry,entry,sizeof(session_entry));
+    fflush(stdout);return 1;
+}
+
+static int renew_retired_surrogate(void) {
+    int ready=jkdp_rotation_begin(&pool_rotation,pool,pool_count);
+    DPID fresh=0;DPNAME name;HRESULT hr;char label[48];uint8_t payload[4];
+    if(ready<0){failure("Unknown_surrogate_retirement",E_UNEXPECTED);return 0;}
+    if(!ready)return 1;
+    if(identity_history.count>=JKDP_IDENTITY_LIMIT) {
+        failure("Identity_lifetime_limit_restart_session",E_FAIL);return 0;
+    }
+    /* True incarnation end only. A transient relay resume never requests
+     * retirement. Keep every other local player and the DP session intact. */
+    hr=IDirectPlay3_DestroyPlayer(dp,pool_rotation.old_id);
+    if(FAILED(hr)){failure("Destroy_retired_surrogate",hr);return 0;}
+    memset(&name,0,sizeof(name));name.dwSize=sizeof(name);
+    snprintf(label,sizeof(label),"Transport slot %u",pool_rotation.slot+1);
+    name.lpszShortNameA=label;name.lpszLongNameA="Reserved native/browser transport slot";
+    hr=IDirectPlay3_CreatePlayer(dp,&fresh,&name,dp_event,NULL,0,0);
+    if(FAILED(hr)){failure("Create_fresh_surrogate",hr);return 0;}
+    if(!jkdp_rotation_created(&pool_rotation,&identity_history,pool,pool_count,fresh)) {
+        failure("Replacement_identity_not_fresh",E_UNEXPECTED);return 0;
+    }
+    write32(payload,fresh);
+    if(!send_frame(10,pool_rotation.old_id,pool_rotation.request,payload,sizeof(payload)))return 0;
+    printf("{\"event\":\"surrogate_replacement_requested\",\"old_id\":%lu,\"new_id\":%lu}\n",
+        (unsigned long)pool_rotation.old_id,(unsigned long)fresh);
     fflush(stdout);return 1;
 }
 
@@ -228,7 +263,14 @@ static int update_directplay_description(const uint8_t *info,size_t bytes) {
 }
 static void add_remote(DPID id) {
     if(owned_id(id) || remote_index(id)>=0)return;
+    /* Delayed local echoes/create notices and departed retail packets cannot
+     * resurrect any identity already issued during this transport session. */
+    if(jkdp_history_index(&identity_history,id)>=0)return;
     if(id<65 || remote_count>=MAX_PEERS){failure("remote_capacity_or_id",E_FAIL);return;}
+    if(!jkdp_history_add(&identity_history,id)) {
+        failure("Identity_lifetime_limit_or_invalid_id",E_FAIL);
+        InterlockedExchange(&stopping,1);return;
+    }
     remote_ids[remote_count++]=id;
     if(!send_frame(3,id,id,NULL,0))InterlockedExchange(&stopping,1);
     printf("{\"event\":\"retail_transport_join\",\"id\":%lu}\n",(unsigned long)id);fflush(stdout);
@@ -367,6 +409,7 @@ static int on_frame(const uint8_t *frame,size_t n) {
         if(bytes<4 || bytes>MAX_RAW) {failure("outbound_source_or_size",E_INVALIDARG);return 0;}
         if(!owned_id(from)) {
             if(remote_index(from)>=0)return 1; /* Retail peer copy already delivered by DP. */
+            if(jkdp_history_index(&identity_history,from)>=0)return 1; /* Retired sender copy. */
             failure("outbound_source_or_size",E_INVALIDARG);return 0;
         }
         if(to && remote_index(to)<0)return 1;
@@ -396,6 +439,19 @@ static int on_frame(const uint8_t *frame,size_t n) {
         return update_directplay_description(raw,bytes);
     } else if(type==103) {
         if(bytes<4 || read32(raw)!=0 || from!=to) {failure("canonical_retail_id_rejected",E_FAIL);return 0;}
+    } else if(type==113) {
+        if(to || bytes || !jkdp_rotation_enqueue(&pool_rotation,&identity_history,pool,pool_count,from)) {
+            failure("Invalid_surrogate_retirement",E_INVALIDARG);return 0;
+        }
+    } else if(type==112) {
+        int pending=pool_rotation.old_id==from;
+        if(bytes!=4 || !jkdp_rotation_ack(&pool_rotation,&identity_history,from,to,read32(raw))) {
+            failure("Invalid_surrogate_replacement_ack",E_INVALIDARG);return 0;
+        }
+        if(pending) {
+            printf("{\"event\":\"surrogate_replacement_registered\",\"old_id\":%lu,\"new_id\":%lu}\n",
+                (unsigned long)from,(unsigned long)read32(raw));fflush(stdout);
+        }
     } else if(type>=190) {failure("broker_error",E_FAIL);return 0;}
     return 1;
 }
@@ -440,7 +496,7 @@ int main(int argc,char **argv) {
     {u_long nonblock=1;ioctlsocket(broker,FIONBIO,&nonblock);}
     last_report=GetTickCount();
     while(!stopping) {
-        if(!pump_broker() || !pump_directplay())goto cleanup;
+        if(!pump_broker() || !pump_directplay() || !renew_retired_surrogate())goto cleanup;
         if(GetTickCount()-last_report>=10000) {
             printf("{\"event\":\"stats\",\"retail_clients\":%u,\"received_packets\":%llu,\"sent_packets\":%llu}\n",remote_count,incoming_packets,outgoing_packets);
             if(!send_frame(7,0,0,NULL,0))goto cleanup;

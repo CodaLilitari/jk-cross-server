@@ -1,0 +1,436 @@
+{
+  "schema_version": 1,
+  "status": "completed_with_navigation_limits",
+  "description": "Two serial solo stock-map checks of immutable bot5092 against dedicated6c4c; no original retail or browser human peer was part of these fixtures.",
+  "bot_sha256": "50924ed74935a06edfb7ee5e937f756ea0a68a7386534740f2e2917ac835779c",
+  "dedicated_server_sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+  "gns_library_sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+  "both_client_and_server_companion_libraries_verified": true,
+  "bot_source_sha256": {
+    "src/AI/jkBot.c": "a098e339d9aa69818dcd30f6fc2870e19d40d8a8193c7f9b72fb7cac263b30ed",
+    "src/AI/jkBot.h": "544d2f313734f61b5933601a330ab665b081d5773f18ad23b3177f14d372b5ba",
+    "src/AI/jkBotBehavior.h": "5cad5dc201e93c01d8dd5b72f6d3d9b425f29b528f83aeb4ec14c811da245e49",
+    "src/AI/jkBotBehavior.inc": "ef13f015be070f0658fa2f08a6b63066228168ee129f04a79747e4e6bab63a16",
+    "src/AI/jkBotCombat.inc": "1f0e2f30d041d9a78555492083460d2fe4be89e8ee69eb1fe65048b48be83630",
+    "src/AI/jkBotForce.inc": "52d60e354239da47584a6a3acfa9eaa8d4cda9bbde2665d160397887519fa8ba",
+    "src/AI/jkBotLoadout.h": "10c0846a8571b07037ae291903da9f10a07d83a1e357e03710a63c92dc06a593",
+    "src/AI/jkBotNavigate.inc": "50a106bd52c4783677daf7bf3082236867124a0a4986f47fddeebf1bcc8a18fe",
+    "src/AI/jkBotNavigation.inc": "ef6d9af90f5f4d016f9e40607e3ac84ac453ac70cd867090990e014660de88e7",
+    "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+    "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb"
+  },
+  "previous_nine_map_receipt": "qa/bots-feature-stock-maps.json",
+  "relationship_to_previous_receipt": "The d455 nine-map evidence and its seven C1/C2 captures remain source-specific. This focused5092 receipt neither replaces that evidence nor claims a fresh nine-map qualification of5092.",
+  "regression_receipts": [
+    "qa/bots-c3-grounded-clearance-regression.json",
+    "qa/bots-initial-anchor-regression.json"
+  ],
+  "method": {
+    "simultaneous_maps": 1,
+    "bot_players_per_match": 1,
+    "profile": "kyle_katarn",
+    "owned_private_network": true,
+    "ordinary_player_input": true,
+    "stock_level_and_player_cogs_unchanged": true,
+    "observer_read_only": true,
+    "observer_snapshot_non_atomic": true,
+    "game_state_injection": false,
+    "observer_interval_seconds": 0.5,
+    "exact_binary_hash_and_process_identity_checked": true
+  },
+  "summary": {
+    "maps": 2,
+    "valid_samples": 676,
+    "observation_errors": 0,
+    "parse_errors": 0,
+    "captures_observed": 0,
+    "all_fixtures_stopped": true,
+    "new_oom_kills": 0
+  },
+  "coverage_interpretation": "Classified means a pickup template/model is recognized. Anchored means it has a graph node. Reachable is a graph search from the logged origin with current policy; it is not proof of executed traversal or acquisition. C3 currently includes false reachability through keyed doors.",
+  "maps": [
+    {
+      "map": "c3.jkl",
+      "source_fixture": "bot-qa/focused-final-5092/ctf/c3",
+      "bot_sha256": "50924ed74935a06edfb7ee5e937f756ea0a68a7386534740f2e2917ac835779c",
+      "server_sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 476,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 239.679,
+      "max_sample_interval_seconds": 0.536,
+      "actual_teams": [
+        0,
+        1
+      ],
+      "team_assignment_seconds": 23.192,
+      "distinct_observed_sectors": 33,
+      "distinct_observed_arena_sectors": 30,
+      "observed_sector_ids": [
+        9,
+        13,
+        14,
+        15,
+        65,
+        66,
+        67,
+        68,
+        97,
+        106,
+        107,
+        108,
+        109,
+        112,
+        113,
+        114,
+        393,
+        397,
+        398,
+        447,
+        448,
+        452,
+        453,
+        455,
+        458,
+        459,
+        505,
+        636,
+        641,
+        648,
+        700,
+        721,
+        790
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "red_key": {
+          "bin": 83,
+          "increase_events": 1,
+          "first_increase_seconds": 23.192,
+          "max_observed_amount": 1.0
+        },
+        "stormtrooper_rifle": {
+          "bin": 3,
+          "increase_events": 1,
+          "first_increase_seconds": 24.201,
+          "max_observed_amount": 1.0
+        },
+        "energy_cells": {
+          "bin": 11,
+          "increase_events": 1,
+          "first_increase_seconds": 24.201,
+          "max_observed_amount": 74.0
+        },
+        "shields": {
+          "bin": 60,
+          "increase_events": 1,
+          "first_increase_seconds": 55.093,
+          "max_observed_amount": 120.0
+        },
+        "repeater": {
+          "bin": 6,
+          "increase_events": 1,
+          "first_increase_seconds": 55.595,
+          "max_observed_amount": 1.0
+        },
+        "power_cells": {
+          "bin": 12,
+          "increase_events": 1,
+          "first_increase_seconds": 55.595,
+          "max_observed_amount": 24.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "c3.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 648,
+          "nodes": 2739,
+          "reachable_nodes": 57,
+          "items_total": 161,
+          "classified_items": 161,
+          "anchored_items": 150,
+          "reachable_items": 0,
+          "missing_nodes": 11,
+          "truncated": 0
+        },
+        {
+          "map": "c3.jkl",
+          "name": "Bot_Katarn",
+          "team": 1,
+          "origin_sector": 459,
+          "nodes": 2739,
+          "reachable_nodes": 1473,
+          "items_total": 161,
+          "classified_items": 161,
+          "anchored_items": 150,
+          "reachable_items": 112,
+          "missing_nodes": 11,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "42db9b1e92560fa7e2447dcd84abbdd0b9c15cf3fa29556c08fce633d44911a3",
+      "client_log_sha256": "662bc9e6e0c64054c13221bf0e2daa33145a5aa8380af381bca0b6a61c84befe",
+      "started_at": "2026-10-25T06:38:42.953122+00:00",
+      "joined_at": "2026-10-25T06:38:58.494795+00:00",
+      "finished_at": "2026-10-25T06:42:59.389774+00:00",
+      "requested_seconds_after_join": 240,
+      "authored_map_sha256": "b4d804591cebebbd59f05ad42a8e059178dc468e24172bd6bc5b7d6ba1c2f0a7",
+      "episode_archive_sha256": "da98fe3fc769168f1bb562cc1f6532560b12d8e920fd6c34586d69b424b5b1fc",
+      "cleanup_verification": {
+        "fixture_exit_zero": true,
+        "manager_state": "stopped",
+        "registered_processes_remaining": 0,
+        "recorded_bot_engine_and_launcher_pids_absent": true,
+        "verified_process_id_count": 3,
+        "forced_cleanup": false
+      },
+      "movement_evidence": {
+        "first_observed_sector": 636,
+        "last_observed_sector": 393,
+        "sector_transitions_between_samples": 35,
+        "maximum_distance_from_first_sample": 26.978543,
+        "sampled_path_length": 95.448816,
+        "units": "JK world units; CTF movement includes ordinary team teleport and recovery jumps"
+      },
+      "outcome": "Partial navigation improvement; CTF pickup and capture remain unsupported on the observed route.",
+      "progress_confirmed": {
+        "real_team": 1,
+        "team_assignment_seconds": 23.192,
+        "previous_low_opening_sector_617_visited": false,
+        "alternate_arena_route_observed": true,
+        "final_objective": "capture",
+        "enemy_flag_pickups_observed": 0,
+        "captures_observed": 0,
+        "both_flags_remained_at_authored_home": true,
+        "first_arrival_at_stalled_sector_seconds": 55.093,
+        "same_sector_through_end": true,
+        "same_sector_duration_seconds": 184.586
+      },
+      "remaining_blocker": {
+        "kind": "stock keyed door excluded from the navigation policy",
+        "stock_script": "CTF_DOORGOLD.COG",
+        "script_sha256": "cdba0dce328ba7a88e15eef79716886f882cd676a84d738444b3151034382338",
+        "door_thing": 25,
+        "door_sector": 401,
+        "required_bin": 84,
+        "required_amount": 1,
+        "actual_red_key_amount": 1.0,
+        "actual_gold_key_amount": 0.0,
+        "observed_behavior": "Ordinary activation cannot open this stock door without the gold key. The static graph continues to plan through it.",
+        "geometry_probe": "Actual-engine world-geometry-only probe accepted ordinary walking and rejected a jump for the stalled segment; the live moving door is the remaining obstruction.",
+        "no_possession_or_door_state_writes": true
+      },
+      "read_only_route_feasibility": {
+        "method": "Clip passive graph edge center segments against the convex authored sectors of stock key-restricted doors, then run Dijkstra with those directed edges excluded.",
+        "scope": "Conservative graph analysis; not a proof that a human has no legal route in the level, and not a dynamic-door implementation.",
+        "snapshot_sha256": "027a42ee7320d2fc897cda08b1415d542a5f38f834c42c1ae15444930fb004ae",
+        "analysis_receipt_sha256": "5c725b3f9191c1a7bf8d11568ad9d939d92e5feab49055e93e69de9781f79936",
+        "analysis_script_sha256": "91a292c199b41abd430a651a96ba49db2cb5d4b826b0b1292140d63d95a7b042",
+        "start_node": 882,
+        "flag_approach_goal": 2558,
+        "gold_key_nodes": [
+          4
+        ],
+        "variants": [
+          {
+            "variant": "unfiltered",
+            "blocked_directed_edges": 0,
+            "reachable_nodes": 1473,
+            "goals": [
+              {
+                "node": 2558,
+                "reachable": true,
+                "distance": 24.711298525333405
+              },
+              {
+                "node": 4,
+                "reachable": true,
+                "distance": 29.49734604358673
+              }
+            ]
+          },
+          {
+            "variant": "standard_gold",
+            "blocked_directed_edges": 163,
+            "reachable_nodes": 456,
+            "goals": [
+              {
+                "node": 2558,
+                "reachable": false,
+                "distance": null
+              },
+              {
+                "node": 4,
+                "reachable": false,
+                "distance": null
+              }
+            ]
+          },
+          {
+            "variant": "all_gold",
+            "blocked_directed_edges": 191,
+            "reachable_nodes": 456,
+            "goals": [
+              {
+                "node": 2558,
+                "reachable": false,
+                "distance": null
+              },
+              {
+                "node": 4,
+                "reachable": false,
+                "distance": null
+              }
+            ]
+          }
+        ],
+        "decision": "No source change: a simple door exclusion would stop repeated attempts but supplies no currently usable alternative to either the enemy flag or gold key. Legal key acquisition routes remain unsupported."
+      }
+    },
+    {
+      "map": "m_boss17.jkl",
+      "source_fixture": "bot-qa/focused-final-5092/dm/m_boss17",
+      "bot_sha256": "50924ed74935a06edfb7ee5e937f756ea0a68a7386534740f2e2917ac835779c",
+      "server_sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 200,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 99.887,
+      "max_sample_interval_seconds": 0.512,
+      "actual_teams": [
+        0
+      ],
+      "team_assignment_seconds": null,
+      "distinct_observed_sectors": 9,
+      "distinct_observed_arena_sectors": 0,
+      "observed_sector_ids": [
+        18,
+        21,
+        22,
+        23,
+        27,
+        28,
+        29,
+        30,
+        32
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {},
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "m_boss17.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 27,
+          "nodes": 400,
+          "reachable_nodes": 358,
+          "items_total": 13,
+          "classified_items": 13,
+          "anchored_items": 11,
+          "reachable_items": 11,
+          "missing_nodes": 2,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "e02c23cb6d6aefb48cc031d8b79314b902740565ee4997065d7d977d00cdfef7",
+      "client_log_sha256": "7a9a18adb8dccc7086d42219fc08eaaf4ddb2402d02b9dbf01c0192bd497e4fd",
+      "started_at": "2026-10-25T06:45:50.602744+00:00",
+      "joined_at": "2026-10-25T06:45:55.019016+00:00",
+      "finished_at": "2026-10-25T06:47:36.508687+00:00",
+      "requested_seconds_after_join": 100,
+      "authored_map_sha256": "5c0795709ff3f2da525d0ad9ce4a3e41b13445febc1b5f88f727c864b606349f",
+      "episode_archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+      "cleanup_verification": {
+        "fixture_exit_zero": true,
+        "manager_state": "stopped",
+        "registered_processes_remaining": 0,
+        "recorded_bot_engine_and_launcher_pids_absent": true,
+        "verified_process_id_count": 3,
+        "forced_cleanup": false
+      },
+      "movement_evidence": {
+        "first_observed_sector": 27,
+        "last_observed_sector": 29,
+        "sector_transitions_between_samples": 35,
+        "maximum_distance_from_first_sample": 5.456795,
+        "sampled_path_length": 41.54959,
+        "units": "JK world units; CTF movement includes ordinary team teleport and recovery jumps"
+      },
+      "outcome": "Movement and spawn-area exit observed; no item acquisition observed in the bounded run.",
+      "progress_confirmed": {
+        "observed_start_sector": 27,
+        "left_observed_start_sector": true,
+        "distinct_observed_sectors": 9,
+        "inventory_acquisitions_observed": false,
+        "old_exact_spawn_reproduced": false,
+        "initial_anchor_fix_live_caveat": "This match first observed the player in sector27; the failing d455 match began in sector29. The 27-group regression demonstrates the formerly omitted initial ordinary jump, but this run does not isolate that same spawn/edge live.",
+        "remaining_acceptance": "Repeatable item acquisition and coverage of the previously failing sector29 spawn remain unqualified by this run."
+      }
+    }
+  ],
+  "limitations": [
+    "C3 enemy-flag pickup and capture remain unqualified; the observed route requires a gold key the bot does not possess, and excluding known gold-door crossings disconnects the available graph route.",
+    "Boss17 demonstrated movement across nine sectors but no ordinary inventory acquisition in100seconds; it did not reproduce the exact earlier sector29 starting edge.",
+    "These are bounded solo fixtures. Contested CTF defense/interception/escort, all item routes and all spawn variants are not exhaustively tested.",
+    "Retail/OpenJKDF2/JKWeb mixed-client and admin/nextlevel qualification is a separate test lane."
+  ],
+  "sanitization": "No credentials, administrator tokens, raw process memory, retail asset contents, or copyrighted level geometry are included."
+}

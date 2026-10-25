@@ -1,0 +1,680 @@
+{
+  "schema": 1,
+  "status": "complete: fixture closed; successful, incomplete and not-run checks are distinguished below",
+  "recorded_utc": "2026-10-25T08:36:16.043345+00:00",
+  "scope": "Owned JKDF2 mixed-client fixture. Each completed stage below is bounded to its evidence and exact binary; no uninterrupted five-player session is claimed.",
+  "method": "Existing unchanged client menus and ordinary chat with the production offline helper; read-only native/retail state and browser observations supplement UI evidence. No game-state writes, injected game packets or client patches.",
+  "artifacts": {
+    "dedicated_server_sha256": "4be9e8fa996065eb531f5a8693516d7f799e1cfc0dc9d81ff7d6573577fc392c",
+    "bot_client_sha256": "50924ed74935a06edfb7ee5e937f756ea0a68a7386534740f2e2917ac835779c",
+    "directplay_adapter_sha256": "a6ee44527a7e60de8df02c6294a39e39a78c5e1745b2ed3c29b91e502f432082",
+    "gns_library_sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+    "engine_base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "exact_relink_receipt": "qa/server-reconnect-build.json",
+    "source_regression_receipts": [
+      "qa/server-surrogate-identity-regression.json",
+      "qa/server-native-discovery-regression.json"
+    ],
+    "historical_adapter_build_receipt_is_not_current": "qa/chat-admin-adapter-build.json records an earlier adapter; its binary hash must not be substituted for the adapter identified here."
+  },
+  "human_clients": {
+    "retail": {
+      "name": "RetailHuman",
+      "sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "version": "Original JK 1.00",
+      "modified_for_bots": false
+    },
+    "native": {
+      "name": "NativeHuman",
+      "sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+      "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+      "modified_for_bots": false
+    },
+    "browser": {
+      "name": "WebHuman",
+      "provenance": {
+        "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+        "build": "cloudflare-38",
+        "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+        "files": [
+          {
+            "name": "index.html",
+            "size": 226513,
+            "sha256": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+            "modified": false
+          },
+          {
+            "name": "openjkdf2.js",
+            "size": 532943,
+            "sha256": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+            "modified": false
+          },
+          {
+            "name": "openjkdf2.wasm",
+            "size": 3681717,
+            "sha256": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6",
+            "modified": false
+          }
+        ],
+        "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c",
+        "retail_assets_included": false
+      },
+      "modified_for_bots": false,
+      "runtime": "Chromium 140.0.7339.16 with SwiftShader in an isolated QA profile"
+    }
+  },
+  "session": {
+    "name": "Admin Compatibility QA",
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "locked": false,
+    "max": 8,
+    "transport_slots": 9,
+    "players": 5,
+    "mod": "",
+    "flags": 0,
+    "tick_ms": 100,
+    "game": "jk",
+    "rank": 8,
+    "teams": false,
+    "bots": [
+      "Bot_BobaFett",
+      "Bot_JanOrs"
+    ],
+    "bot_behavior": {
+      "sabers_only": true,
+      "fists_peace": true,
+      "force_enabled": false
+    }
+  },
+  "persistent_credential": {
+    "key_id": "c18bc0bcad5841f9",
+    "server_id": "2d303dbec26a5343f4d7f4596ea3a7d7",
+    "explicit_original_issuance_receipt": "qa/chat-admin-live-6c4c.json",
+    "no_new_key_issued_for_panel_restart": true,
+    "no_new_key_issued_for_game_restart": true,
+    "same_key_id_across_rounds": "c18bc0bcad5841f9",
+    "credential_or_secret_material_included": false
+  },
+  "historical_lineage": [
+    {
+      "round": 1,
+      "server_sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+      "receipts": [
+        "qa/chat-admin-live-6c4c.json",
+        "qa/chat-admin-native-round1.json"
+      ],
+      "qualified": "Native and retail authentication; native-admin targeted retail kick; native and bots reached the next authored map; post-map native denial and same-key reauthentication.",
+      "limits": "Browser initially joined and received unauthorized denial but its later authentication/rejoin failed. Browser was absent during kick and map transition. Original retail reached a score screen then the main menu, not m4."
+    },
+    {
+      "round": 2,
+      "server_sha256": "234edc4f600f74986e21969644ad650876b9ead4a20cf61d6be38c0215605e70",
+      "receipt": "qa/chat-admin-native-round2.json",
+      "qualified": "Same-key native authentication after a new panel process; ordinary m2-to-m4 progression; native observed retail and both bots fully joined in the m4 roster; post-map denial and reauthentication.",
+      "limits": "Browser was closed during that transition. This intermediate dedicated binary exhibited native menu discovery identity churn; those observations do not qualify the final binary by themselves."
+    },
+    {
+      "round": 3,
+      "server_sha256": "4be9e8fa996065eb531f5a8693516d7f799e1cfc0dc9d81ff7d6573577fc392c",
+      "receipt": "qa/chat-admin-native-round3.json",
+      "qualified": "Final dedicated binary, same-key native authentication after game-only restart, bounded discovery without replacement churn, and retail-admin native kick followed by fresh-identity rejoin/reauthentication.",
+      "limits": "The later memory-pressure interval interrupted the mixed roster. Completed stages and remaining checks are recorded separately below."
+    }
+  ],
+  "game_only_restart": {
+    "status": "pass",
+    "same_panel_pid": 177841,
+    "manager_game_generation": 3,
+    "final_server_pid": 183244,
+    "same_native_process": 109076,
+    "map": "m2.jkl",
+    "new_credential_issued": false,
+    "old_grant_denial": {
+      "reply": "Admin permission required. Type admin login.",
+      "observed_utc": "2026-10-25T08:02:22.163861+00:00",
+      "grants_after_denial": []
+    },
+    "same_key_authentication": {
+      "reply": "Admin authenticated for 15 minutes on this connection.",
+      "observed_utc": "2026-10-25T08:02:39.840476+00:00",
+      "actor": {
+        "peer": 19294381,
+        "slot": 3,
+        "generation": 188
+      },
+      "grant": [
+        {
+          "peer": 19294381,
+          "generation": 188,
+          "key_id": "c18bc0bcad5841f9"
+        }
+      ]
+    },
+    "status_reply": "Admin verified for this connection.",
+    "source_receipt": "qa/chat-admin-native-round3.json"
+  },
+  "native_discovery": {
+    "status": "pass_in_bounded_window",
+    "window_start": 1792915246.093674,
+    "window_end": 1792915332,
+    "discovery_screenshot_epoch": 1792915289.6657279,
+    "normal_ui": "Opened saved GNS session browser, selected visible session row once, then loaded existing NativeHuman profile. No reconnect loop or manual retry sequence.",
+    "surrogate_replacement_event_count": 0,
+    "native_fully_joined_epoch": 1792915331.369592,
+    "native_peer": 19294381,
+    "limit": "The live log establishes no replacement churn in this bounded discovery/join window. Pristine reservation release/promotion semantics are also covered by the separate engine-source regressions; this observer did not inspect internal C++ containers."
+  },
+  "all_three_authenticated_snapshot": {
+    "status": "pass_at_recorded_snapshot",
+    "observed_utc": "2026-10-25T08:06:33.741362+00:00",
+    "read_only_and_non_atomic": true,
+    "retail_and_browser_rosters_agree": true,
+    "five_playing_peers_with_flags_7": [
+      {
+        "slot": 1,
+        "name": "Bot_BobaFett",
+        "flags": 7,
+        "peer": 19294378
+      },
+      {
+        "slot": 2,
+        "name": "Bot_JanOrs",
+        "flags": 7,
+        "peer": 19294379
+      },
+      {
+        "slot": 3,
+        "name": "NativeHuman",
+        "flags": 7,
+        "peer": 19294381
+      },
+      {
+        "slot": 4,
+        "name": "WebHuman",
+        "flags": 7,
+        "peer": 19294380
+      },
+      {
+        "slot": 5,
+        "name": "RetailHuman",
+        "flags": 7,
+        "peer": 19294370
+      }
+    ],
+    "dedicated_host_excluded_from_player_count": true,
+    "retail_multiplayer_active": true,
+    "browser_ready": true,
+    "browser_transport": "WebSocket; WebRTC counters were zero in this snapshot",
+    "three_connection_bound_grants_using_same_key": [
+      {
+        "peer": 19294381,
+        "generation": 188,
+        "key_id": "c18bc0bcad5841f9"
+      },
+      {
+        "peer": 19294380,
+        "generation": 189,
+        "key_id": "c18bc0bcad5841f9"
+      },
+      {
+        "peer": 19294370,
+        "generation": 190,
+        "key_id": "c18bc0bcad5841f9"
+      }
+    ],
+    "bot_processes_observed": [
+      {
+        "bot": "boba_fett",
+        "pid": 183386,
+        "epoch": 1792915627.0450375,
+        "map": "m2.jkl",
+        "held_weapon_model": "sabg.3do"
+      },
+      {
+        "bot": "jan_ors",
+        "pid": 183387,
+        "epoch": 1792915627.1875203,
+        "map": "m2.jkl",
+        "held_weapon_model": "sabg.3do"
+      }
+    ],
+    "continuity_limit": "These bounded observations establish simultaneous presence/authentication. Later browser, retail and Jan departures prevent a claim of continuous five-player participation through the subsequent actions.",
+    "private_evidence_sha256": "4a2cd46d6e6a505a85c5ff87145f289c0061428264bf875ca8963fe7956773e8"
+  },
+  "retail_admin_kick_native": {
+    "status": "pass_targeted_departure_and_fresh_identity_reauthentication",
+    "actor": {
+      "name": "RetailHuman",
+      "peer": 19294370,
+      "generation": 190
+    },
+    "command": "admin kick #3",
+    "target_before": {
+      "peer": 19294381,
+      "slot": 3,
+      "generation": 188
+    },
+    "last_active_utc": "2026-10-25T08:08:11.350541+00:00",
+    "first_inactive_utc": "2026-10-25T08:08:11.558118+00:00",
+    "native_departure": {
+      "multiplayer": 0,
+      "peer": 0,
+      "world_loaded": false,
+      "local_player": false
+    },
+    "visual_result": "Normal score tally with OK only, followed by normal menus; client process remained alive.",
+    "same_client_process": true,
+    "server_remained_running": true,
+    "immediate_remaining_player_count": 4,
+    "rejoin": {
+      "peer": 19294375,
+      "slot": 2,
+      "generation": 215,
+      "map": "m2.jkl",
+      "normal_ui": true,
+      "same_client_process": true,
+      "new_key_issued": false,
+      "same_key_id": "c18bc0bcad5841f9"
+    },
+    "old_grant_denial": {
+      "reply": "Admin permission required. Type admin login.",
+      "epoch": 1792916106.523578,
+      "grants": []
+    },
+    "new_authentication": {
+      "reply": "Admin authenticated for 15 minutes on this connection.",
+      "epoch": 1792916129.221719,
+      "grant": [
+        {
+          "peer": 19294375,
+          "generation": 215,
+          "key_id": "c18bc0bcad5841f9"
+        }
+      ]
+    },
+    "new_status": {
+      "reply": "Admin verified for this connection.",
+      "epoch": 1792916139.0331285
+    },
+    "roster_at_reauthentication": [
+      {
+        "slot": 1,
+        "peer": 19294378,
+        "name": "Bot_BobaFett",
+        "flags": 7
+      },
+      {
+        "slot": 2,
+        "peer": 19294375,
+        "name": "NativeHuman",
+        "flags": 7
+      }
+    ],
+    "scope_limit": "Immediate server snapshot retained four players after targeted native departure. By native reauthentication only Boba and NativeHuman were observed; this receipt does not claim continuous retail/browser/Jan survival through the later rejoin interval. Inactive native roster memory is historical and is not treated as a live roster.",
+    "metadata_limit": "Safe authority observer retained the old grant metadata briefly after transport departure. The new connection received an actual denial before new proof; engine live-incarnation gates remain required.",
+    "source_receipt": "qa/chat-admin-native-round3.json"
+  },
+  "resource_interruption": {
+    "status": "observed_fixture_memory_pressure_and_departures",
+    "observed_utc": "2026-10-25T08:18:23.643858+00:00",
+    "cgroup_limit_bytes": 8589934592,
+    "memory_current_bytes": 8589873152,
+    "cumulative_memory_events": {
+      "low": 0,
+      "high": 0,
+      "max": 2917078,
+      "oom": 4,
+      "oom_kill": 3,
+      "oom_group_kill": 0
+    },
+    "browser_controller_present": false,
+    "engine_adapter_bot_supervisor_running_at_pressure_snapshot": true,
+    "playing_peer_count_at_pressure_snapshot": 2,
+    "departures": [
+      {
+        "time": "2026-10-25T08:10:01+00:00",
+        "source": "engine",
+        "text": "WebHuman has left the game"
+      },
+      {
+        "time": "2026-10-25T08:13:25+00:00",
+        "source": "directplay",
+        "text": "{\"event\":\"retail_transport_leave\",\"id\":19294370}"
+      },
+      {
+        "time": "2026-10-25T08:13:26+00:00",
+        "source": "engine",
+        "text": "RetailHuman has left the game"
+      },
+      {
+        "time": "2026-10-25T08:13:26+00:00",
+        "source": "engine",
+        "text": "Bot_JanOrs has left the game"
+      }
+    ],
+    "attribution_limit": "Observed command delays and browser tree loss during memory pressure; counters alone do not establish which process the kernel killed. Historical browser children were identified by exact parent/profile.",
+    "inference_limit": "Resource pressure coincided with browser process-tree loss and later retail/Jan departures. Cumulative OOM counters do not identify the killed process or prove every departure had the same cause.",
+    "continuous_five_player_survival_qualified": false,
+    "private_evidence_sha256": "d849fe2d34a5e2ca38fb58115c5d6463bcd392ccad323f6d4cb259f91181a878"
+  },
+  "limitations": [
+    "Historical kick/map/persistence successes remain attributed to their own dedicated binary; this receipt does not carry an earlier all-client transition into 4be9.",
+    "The final-build evidence is JKDF2 on JK1MP/m2.jkl. An authorized next-level transition was not run on 4be9; live MotS administration and all stock maps are unqualified.",
+    "The complete five-player roster was observed before subsequent resource-pressure interruptions; survival of all five throughout native reauthentication is not claimed.",
+    "Normal unchanged peer chat can display a one-time proof. The offline manual challenge workflow cannot authenticate a pasted challenge sender and is not resistant to substituted-challenge phishing or relay.",
+    "A metadata grant remaining briefly in an observer is not authority for a departed incarnation. The fresh native connection received an actual denial before same-key reauthentication.",
+    "The recovered browser joined with a fresh identity and received an actual permission denial. Its later reauthentication retry is incomplete because the private input driver did not produce an observed proof chat or new grant and then closed under its watchdog.",
+    "After revoking the only issued credential, ordinary login refused a new challenge. Existing-grant revocation and login denial passed live; a fresh revoked-key proof was not attempted, and no second QA key was issued."
+  ],
+  "evidence_receipt_sha256": {
+    "qa/chat-admin-native-round1.json": "94d17cbd17f8a18710be9858a595cd292e8b754cae88a9a5aa8ea6fe7fd403af",
+    "qa/chat-admin-native-round2.json": "3d55bc005064e75d65054da13bf266011456f22bd39cd579391a93bd1c18cd55",
+    "qa/chat-admin-native-round3.json": "b69860f088e3bd94623f06fce3942a75e1692aa257309a3ca76b01fc1065b302",
+    "qa/chat-admin-live-6c4c.json": "c4055b819c111b186d2ad6607e224535605696ec56e6af9978a1bb3345c58fea",
+    "qa/server-reconnect-build.json": "7647a82a197fe193ace1a776e610a18d1017e3705730af9d2d4de49212d31473",
+    "qa/server-final-python.json": "b465a2709a617f6af0d938847a506115498ac9c723a647015c2420cd4925a92a"
+  },
+  "privacy": "No private credential file/database, secret, raw challenge, proof, raw proof chat log or process-memory dump is included. Only safe summaries and evidence hashes are published.",
+  "browser_recovery": {
+    "status": "pass_normal_menu_rejoin",
+    "normal_unchanged_client_menus": true,
+    "new_controller": {
+      "pid": 187233,
+      "started_utc": "2026-10-25T08:20:40+00:00"
+    },
+    "framerate_limit": {
+      "frames_per_second": 30,
+      "verified_in_normal_menu": true,
+      "private_screenshot": "browser/screenshots/admin-browser-recovery-fps30.png",
+      "sha256": "ab11183290bda05f317c1ba6866431701229b28c0d4f11b386b67de97267fedd"
+    },
+    "map": "m2.jkl",
+    "observed_utc": "2026-10-25T08:23:25.922Z",
+    "browser_ready": true,
+    "previous_connection": {
+      "peer": 19294380,
+      "generation": 189
+    },
+    "rejoined_connection": {
+      "peer": 19294373,
+      "slot": 4,
+      "generation": 217
+    },
+    "four_playing_peers_with_flags_7": [
+      {
+        "slot": 1,
+        "name": "Bot_BobaFett",
+        "peer": 19294378,
+        "flags": 7
+      },
+      {
+        "slot": 2,
+        "name": "NativeHuman",
+        "peer": 19294375,
+        "flags": 7
+      },
+      {
+        "slot": 3,
+        "name": "RetailHuman",
+        "peer": 19228843,
+        "flags": 7
+      },
+      {
+        "slot": 4,
+        "name": "WebHuman",
+        "peer": 19294373,
+        "flags": 7
+      }
+    ],
+    "dedicated_host_and_inactive_old_retail_slot_excluded": true,
+    "bot_jan_not_in_recovery_roster": true,
+    "browser_transport": "WebSocket; WebRTC counters were zero in this snapshot",
+    "pre_login_authority": {
+      "observed_utc": "2026-10-25T08:24:00.461839+00:00",
+      "panel_pid": 177841,
+      "game_generation": 3,
+      "grants": [
+        {
+          "peer": 19294375,
+          "generation": 215,
+          "key_id": "c18bc0bcad5841f9"
+        }
+      ],
+      "browser_grant_present": false
+    },
+    "actual_old_grant_denial": {
+      "at": "2026-10-25T08:23:48.372Z",
+      "reply": "Admin permission required. Type admin login.",
+      "source": "unchanged browser console",
+      "event_sha256": "7aec185a5e233cb83dd39715efb2c749afbdaba365e68435ed110d3c48aa0712"
+    },
+    "reauthentication_retry": {
+      "status": "incomplete_input_driver_blocked",
+      "qualified": false,
+      "fresh_login_challenge_reached_browser_utc": "2026-10-25T08:24:18.529Z",
+      "batch_helper_reported_input_complete_utc": "2026-10-25T08:24:45.538Z",
+      "new_proof_chat_observed": false,
+      "new_grant_observed": false,
+      "pending_challenge_remained_after_batch_attempt": true,
+      "sequential_login_retry": "A later attempt to type admin login sequentially reached the private input-driver watchdog at approximately 08:27 UTC.",
+      "private_watchdog_seconds": 30,
+      "browser_context_closed": true,
+      "controller_exit_status": 1,
+      "privileged_browser_map_or_kick_submitted": false,
+      "limit": "The input helper reporting completion is not evidence of game chat submission or authentication. This retry establishes neither successful reauthentication nor server rejection of a submitted proof. The earlier all-three authenticated snapshot remains a separate success.",
+      "stage_timing_source": "Parent operator observations; raw challenge/proof logs are not copied into this receipt."
+    },
+    "private_evidence_sha256": {
+      "browser-recovery-first-probe.json": "72213da511b8a00922a042c73580a434022f9eabc2e8e638bf942fff993d1c91",
+      "browser-recovery-before-login-authority.json": "36866d79d79770d681a85d54aaf3141cd1c68ba53ac01d30fec999c1ed3314a6",
+      "browser-recovery-denial-replies.json": "d624efcdebe362f52a1d65bf3e6ddf9bf261dffd83eae53f41fd5e76421704cd"
+    }
+  },
+  "final_build_next_level": {
+    "status": "not_run",
+    "qualified": false,
+    "authorized_transition_exercised": false,
+    "latest_observed_map": "m2.jkl",
+    "all_three_human_next_level_participation_qualified": false,
+    "reason": "The browser reauthentication retry was blocked by the input driver, then its watchdog closed the browser context. No privileged browser map or kick command was submitted.",
+    "scope": "The denied next-level command used to check revocation does not constitute an authorized map-transition run. Successful intermediate-build native/retail m2-to-m4 observations remain attributed to 234edc4f.",
+    "historical_transition_receipt": "qa/chat-admin-native-round2.json"
+  },
+  "live_key_revocation": {
+    "status": "pass_existing_live_grant_revocation_and_no_active_credential_login_denial",
+    "key_id": "c18bc0bcad5841f9",
+    "actor": {
+      "name": "NativeHuman",
+      "peer": 19294375,
+      "generation": 215,
+      "pid": 109076
+    },
+    "existing_grant_accepted_epoch": 1792916129.221719,
+    "existing_grant_nominal_expiry_epoch": 1792917029.221719,
+    "verified_immediately_before_revoke": {
+      "reply": "Admin verified for this connection.",
+      "epoch": 1792916854.2639227,
+      "grant": [
+        {
+          "peer": 19294375,
+          "generation": 215,
+          "key_id": "c18bc0bcad5841f9"
+        }
+      ]
+    },
+    "panel_revoked_epoch": 1792916868.150169,
+    "revoked_privileged_command": {
+      "command": "admin next level",
+      "submitted_epoch": 1792916896.8798962,
+      "reply": "Admin permission required for this command. Type admin login.",
+      "reply_epoch": 1792916897.8433747,
+      "grant": [],
+      "map": "m2.jkl"
+    },
+    "denial_before_nominal_expiry": true,
+    "fresh_login": {
+      "command": "admin login",
+      "submitted_epoch": 1792916911.5006568,
+      "reply": "No active admin credentials have been issued.",
+      "reply_epoch": 1792916916.5432525,
+      "new_challenge_received": false,
+      "grant": []
+    },
+    "fresh_revoked_key_proof": {
+      "attempted": false,
+      "qualified_in_this_live_run": false,
+      "reason": "All credentials were revoked, so ordinary admin login refused to create a fresh challenge. No second key was issued and no stale proof was submitted. Pure revoked-proof policy tests remain separate evidence."
+    },
+    "panel_action": "Real guarded panel Revoke action; original fixture credential only.",
+    "new_credential_issued": false,
+    "post_denial_state": {
+      "observed_epoch": 1792916968.7154624,
+      "native_multiplayer": 1,
+      "native_map": "m2.jkl",
+      "roster": [
+        {
+          "slot": 1,
+          "peer": 19294378,
+          "name": "Bot_BobaFett",
+          "flags": 7
+        },
+        {
+          "slot": 2,
+          "peer": 19294375,
+          "name": "NativeHuman",
+          "flags": 7
+        },
+        {
+          "slot": 3,
+          "peer": 19228843,
+          "name": "RetailHuman",
+          "flags": 7
+        }
+      ],
+      "server_state": "running",
+      "server_map": "m2.jkl",
+      "same_server_processes": {
+        "engine": {
+          "pid": 183244,
+          "returncode": null
+        },
+        "directplay": {
+          "pid": 183267,
+          "returncode": null
+        },
+        "bots": {
+          "pid": 183385,
+          "returncode": null
+        }
+      },
+      "manager_queued_commands": 0,
+      "authority": {
+        "pending_challenges": 0,
+        "authenticated_connections": 0
+      },
+      "retail_multiplayer_active": 1,
+      "retail_observation_epoch": 1792916958.0672781,
+      "grants": []
+    },
+    "queue_observation_scope": "Safe manager status reported queued_commands=0 and authenticated_connections=0; native and server remained m2 more than 70 seconds after denial with unchanged engine process. This observer did not inspect the C++ internal action queue.",
+    "source_receipt": "qa/chat-admin-native-round3.json",
+    "private_evidence_sha256": {
+      "revoked-key-gameplay-continued.json": "dac2eb4628b3e3fd8dc56538553558779fc488e80c02ff40d871b0b1c89871cf",
+      "authority-revoked-state.json": "1ab07f0cd3c565b6b1492e0706c28f7773f12cd08ec5f963801ec003cc75571a"
+    },
+    "permission_denial_seconds_before_nominal_grant_expiry": 131.378
+  },
+  "last_live_manager_snapshot": {
+    "recorded_utc": "2026-10-25T08:29:28.172568+00:00",
+    "state": "running",
+    "session": {
+      "name": "Admin Compatibility QA",
+      "episode": "JK1MP",
+      "map": "m2.jkl",
+      "locked": false,
+      "max": 8,
+      "transport_slots": 9,
+      "players": 3,
+      "mod": "",
+      "flags": 0,
+      "tick_ms": 100,
+      "game": "jk"
+    },
+    "native_connected": true,
+    "retail_ready": true,
+    "process_names": [
+      "engine",
+      "directplay",
+      "bots"
+    ],
+    "limit": "Manager availability and recorded launcher joins are not independent proof of current per-client world or authentication state. No continuous-roster claim is inferred from this status."
+  },
+  "fixture_cleanup": {
+    "status": "pass",
+    "complete": true,
+    "observed_utc": "2026-10-25T08:35:03.516246+00:00",
+    "fixture_exit_code": 0,
+    "final_state": "stopped",
+    "final_process_registry": {},
+    "tracked_process_count": 18,
+    "all_tracked_pids_absent": true,
+    "tracked_pids_absent": {
+      "177841": true,
+      "183244": true,
+      "183267": true,
+      "183385": true,
+      "183386": true,
+      "183387": true,
+      "113021": true,
+      "112814": true,
+      "112715": true,
+      "112716": true,
+      "109076": true,
+      "109064": true,
+      "109065": true,
+      "187233": true,
+      "187248": true,
+      "187351": true,
+      "187278": true,
+      "92091": true
+    },
+    "owned_namespace_remaining_pids": [],
+    "qa_key_revoked_before_removal": true,
+    "qa_key_file_absent": true,
+    "qa_authority_directory_absent": true,
+    "qa_panel_token_absent": true,
+    "free_disk_bytes_after_cleanup": 8002891776,
+    "private_evidence_sha256": {
+      "cleanup-complete.json": "c800fca1194bde6b5a3a6885ecd005d8f126fd8e752f247a500bc7bf18c3be34",
+      "cleanup-private-credential.json": "acd1b4a8e6aae84a9987ffa85832d333a7b1d54176c5d7d73b5ebc13d21b694f",
+      "cleanup-browser-cache.json": "d23f8877354875c649ea5d16a88af6255481eb1339d5fcd164c8ab8f5c328ae9",
+      "cleanup-finished-qa-copies.json": "b2fdc7bb9d2f798e76b8adacb7b981d37f844853105ec6b4b51cad54ec80346d"
+    }
+  },
+  "server_python_regression": {
+    "status": "pass_after_disk_cleanup_and_focused_rerun",
+    "receipt": "qa/server-final-python.json",
+    "initial_results": {
+      "tests_run": 149,
+      "passed": 140,
+      "failed": 7,
+      "errors": 2,
+      "skipped": 0
+    },
+    "final_results": {
+      "distinct_tests": 149,
+      "distinct_tests_with_a_passing_result": 149,
+      "outstanding_failures": 0,
+      "outstanding_errors": 0,
+      "skipped": 0,
+      "total_test_executions": 158,
+      "successful_test_executions": 149,
+      "initial_failed_or_error_executions_retained": 9
+    },
+    "focused_rerun_tests_passed": 9,
+    "source_hash_count": 36,
+    "source_hashes_unchanged_between_runs": true,
+    "qualification": "All 149 distinct tests have a passing result across 158 executions. The initial nine updater failures/errors hit the zero-free-disk guard and remain recorded; all nine unchanged cases passed after cleanup, including actual child-process crash recovery. These tests are separate from the connected live gameplay stages."
+  }
+}

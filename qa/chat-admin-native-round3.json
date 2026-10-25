@@ -1,0 +1,500 @@
+{
+  "phase": "same_key_after_game_only_restart",
+  "recorded_epoch": 1792915405.6856015,
+  "same_panel_pid": 177841,
+  "manager_game_generation": 3,
+  "engine_pid": 183244,
+  "engine_binary_sha256": "4be9e8fa996065eb531f5a8693516d7f799e1cfc0dc9d81ff7d6573577fc392c",
+  "adapter_pid": 183267,
+  "bot_supervisor_pid": 183385,
+  "native_pid": 109076,
+  "native_binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+  "actor": {
+    "peer": 19294381,
+    "slot": 3,
+    "generation": 188
+  },
+  "same_key_id": "c18bc0bcad5841f9",
+  "same_server_id": "2d303dbec26a5343f4d7f4596ea3a7d7",
+  "new_credential_issued": false,
+  "map": "m2.jkl",
+  "old_grant_denial": "Admin permission required. Type admin login.",
+  "old_grant_denial_epoch": 1792915342.1638613,
+  "grants_after_denial": [],
+  "authentication": "Admin authenticated for 15 minutes on this connection.",
+  "authentication_epoch": 1792915359.8404758,
+  "status": "Admin verified for this connection.",
+  "status_epoch": 1792915363.0247662,
+  "grant": [
+    {
+      "peer": 19294381,
+      "generation": 188,
+      "key_id": "c18bc0bcad5841f9"
+    }
+  ],
+  "pass": true,
+  "schema": 1,
+  "scope": "Final dedicated build, unchanged native client; coordinated live stages only",
+  "method": "Normal existing native UI and chat; production offline helper; O_RDONLY identity/chat-buffer observation; no client changes or memory/packet injection",
+  "roster_at_first_auth": [
+    {
+      "slot": 1,
+      "peer": 19294378,
+      "name": "Bot_BobaFett",
+      "flags": 7
+    },
+    {
+      "slot": 2,
+      "peer": 19294379,
+      "name": "Bot_JanOrs",
+      "flags": 7
+    },
+    {
+      "slot": 3,
+      "peer": 19294381,
+      "name": "NativeHuman",
+      "flags": 7
+    }
+  ],
+  "discovery": {
+    "window_start": 1792915246.093674,
+    "window_end": 1792915332,
+    "discovery_screenshot_epoch": 1792915289.6657279,
+    "normal_ui": "Opened saved GNS session browser, selected visible session row once, then loaded existing NativeHuman profile. No reconnect loop or manual retry sequence.",
+    "surrogate_replacement_event_count": 0,
+    "native_fully_joined_epoch": 1792915331.369592,
+    "native_peer": 19294381,
+    "limit": "The live log establishes no replacement churn in this bounded discovery/join window. Pristine reservation release/promotion semantics are also covered by the separate engine-source regressions; this observer did not inspect internal C++ containers."
+  },
+  "private_evidence_sha256": {
+    "pre-rejoin-server.json": "6b55e3947bb651de8949d8fb1f2900f6398978ec5d65ec4a3e5c545adb5066c7",
+    "game-restart-auth.json": "b1a43f658f211f052e525743aaaa0e05b433943951a61eb0e483d2fc8eec9182",
+    "discovery-log-window.json": "1c6fd68cb2128f0acd1bdc4d77a9addde198b1d5956ad2f0dfbdefb973a74f59",
+    "discovery.png": "00ce72805fd1e88eeb6a7e10827eeb6714b5c6cbdd4faaa7869402c23b6e6041",
+    "character.png": "4abd69be7fe79fa29bc213ec1f7f9f76156fef49ba1e7e4639ac455292dad4f8",
+    "before-retail-kick.json": "cc8b50d53e280e76af8c478d8cbe40075b1aac932fe5679cf29d3c837df10eb4",
+    "retail-kick-native-samples.jsonl": "6b8d329858e9700b961371c0028979da7a7efde2b32c8bc1953c0d665d5d14f4",
+    "after-retail-kick.json": "aea8d93ff8d3157b6bb112aec8885d5bde4e8760da6c7483d8e5d5de3da3d94b",
+    "server-after-retail-kick.json": "1dff6880f9fc4891ba8883234ea1d4d518d3e77affde7cd8aa986a8e2e789f1a",
+    "kicked-by-retail.png": "6c6eea0f811ec9aceec7e385001ce7cabe5d9294281a8c93968c5d3686e7e53a",
+    "post-kick-character.png": "4abd69be7fe79fa29bc213ec1f7f9f76156fef49ba1e7e4639ac455292dad4f8",
+    "retail-kick-and-rejoin.json": "eded54ac7fab7238ffc8c794f564f3995ae1aaf4d7eb7caa798d67df74a5eb60",
+    "passive-before-revoke.json": "1058956bc63848fca8f04580905e3ef02bf45aff5c9a22de05feba0ae90539ee",
+    "browser-next-native-observations.jsonl": "2e39cc71d8167bf6f75f86d540273bbe777f2129a766009efbcbec6a1a2b6690",
+    "browser-next-native-observation-report.json": "aeac8fe298a6205dc1e768978048805a82bdac5d45ca48fe0eb1185748cd4099",
+    "revoked-next-level-denial-state.json": "aefd2f552205cd159e05fc665253f79eb9bd8712e64260f3558b81a03dbc45f2",
+    "revocation-report.json": "678e7bb18b539ba2d69f3d190a440946a3b6f88f6c67355b16a853fdcb6fd336",
+    "native-close.json": "d3830048608e2f6c7916ac78be8a1412e5dca980fffaeb96821f15bf1dfe430f",
+    "display-cleanup.json": "bf448f586747264963498d8122a2a55cd28db6695fff49a2c52874d2f64c8cc1",
+    "post-exit-log-redaction.json": "a5efcb2e377aae719042f8bb085c7939b564f60ed3c5e71e0c48ecdce099ce4c",
+    "cleanup-menu.png": "c9b20bbbde9c4756790468799e220e199f99629881c797f78abc1bc6254497ae",
+    "cleanup-abort-confirm.png": "276eaf6abc6a64b04436023ba097b3e702ed810dbb8c2acc851fbe7d5b740719",
+    "native-round3-report.json": "8ba5c0032b9dc83024f1c4b498d6747296db379d0546f097fc2d817afbd4105c"
+  },
+  "privacy": "No credential, raw proof, challenge or raw chat log in this receipt; structured events are redacted. Owned native stdout is sanitized after actions and again after eventual client exit.",
+  "pending": [],
+  "last_updated_epoch": 1792917160.7689507,
+  "retail_kick_native": {
+    "phase": "retail_admin_kick_native_and_native_rejoin",
+    "method": "Retail actor issued the coordinated ordinary admin kick #3; native was observed read-only, then used only normal menus and ordinary status/login/proof chat.",
+    "target_before": {
+      "peer": 19294381,
+      "slot": 3,
+      "generation": 188
+    },
+    "native_pid_unchanged": 109076,
+    "native_binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+    "roster_before": [
+      {
+        "slot": 1,
+        "peer": 19294378,
+        "name": "Bot_BobaFett",
+        "flags": 7
+      },
+      {
+        "slot": 2,
+        "peer": 19294379,
+        "name": "Bot_JanOrs",
+        "flags": 7
+      },
+      {
+        "slot": 3,
+        "peer": 19294381,
+        "name": "NativeHuman",
+        "flags": 7
+      },
+      {
+        "slot": 4,
+        "peer": 19294380,
+        "name": "WebHuman",
+        "flags": 7
+      },
+      {
+        "slot": 5,
+        "peer": 19294370,
+        "name": "RetailHuman",
+        "flags": 7
+      }
+    ],
+    "sample_count": 41,
+    "last_active_epoch": 1792915691.350541,
+    "first_inactive_epoch": 1792915691.5581179,
+    "departure": {
+      "multiplayer": 0,
+      "peer": 0,
+      "world_loaded": false,
+      "local_player": false
+    },
+    "visual_result": "Normal score tally with OK only, followed by normal menus; client process remained alive.",
+    "server_immediately_after": {
+      "state": "running",
+      "processes": {
+        "engine": {
+          "pid": 183244,
+          "returncode": null
+        },
+        "directplay": {
+          "pid": 183267,
+          "returncode": null
+        },
+        "bots": {
+          "pid": 183385,
+          "returncode": null
+        }
+      },
+      "session": {
+        "name": "Admin Compatibility QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 8,
+        "transport_slots": 9,
+        "players": 4,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "native_connected": true,
+      "retail_ready": true
+    },
+    "rejoin": {
+      "peer": 19294375,
+      "slot": 2,
+      "generation": 215,
+      "map": "m2.jkl",
+      "normal_ui": true,
+      "same_client_process": true,
+      "new_key_issued": false,
+      "same_key_id": "c18bc0bcad5841f9"
+    },
+    "old_grant_denial": {
+      "reply": "Admin permission required. Type admin login.",
+      "epoch": 1792916106.523578,
+      "grants": []
+    },
+    "new_authentication": {
+      "reply": "Admin authenticated for 15 minutes on this connection.",
+      "epoch": 1792916129.221719,
+      "grant": [
+        {
+          "peer": 19294375,
+          "generation": 215,
+          "key_id": "c18bc0bcad5841f9"
+        }
+      ]
+    },
+    "new_status": {
+      "reply": "Admin verified for this connection.",
+      "epoch": 1792916139.0331285
+    },
+    "roster_at_reauthentication": [
+      {
+        "slot": 1,
+        "peer": 19294378,
+        "name": "Bot_BobaFett",
+        "flags": 7
+      },
+      {
+        "slot": 2,
+        "peer": 19294375,
+        "name": "NativeHuman",
+        "flags": 7
+      }
+    ],
+    "scope_limit": "Immediate server snapshot retained four players after targeted native departure. By native reauthentication only Boba and NativeHuman were observed; this receipt does not claim continuous retail/browser/Jan survival through the later rejoin interval. Inactive native roster memory is historical and is not treated as a live roster.",
+    "metadata_limit": "Safe authority observer retained the old grant metadata briefly after transport departure. The new connection received an actual denial before new proof; engine live-incarnation gates remain required.",
+    "native_privileged_actions_during_this_stage": [],
+    "pass_targeted_native_departure_and_fresh_identity_reauthentication": true,
+    "privacy": "No secret, raw challenge or proof is included. Proof input occurred through ordinary verified chat and is represented only as [redacted]."
+  },
+  "revocation": {
+    "same_key_id": "c18bc0bcad5841f9",
+    "same_peer": 19294375,
+    "same_generation": 215,
+    "same_native_pid": 109076,
+    "existing_grant_accepted_epoch": 1792916129.221719,
+    "existing_grant_nominal_expiry_epoch": 1792917029.221719,
+    "verified_immediately_before_revoke": {
+      "reply": "Admin verified for this connection.",
+      "epoch": 1792916854.2639227,
+      "grant": [
+        {
+          "peer": 19294375,
+          "generation": 215,
+          "key_id": "c18bc0bcad5841f9"
+        }
+      ]
+    },
+    "panel_revoked_epoch": 1792916868.150169,
+    "panel_revocation_evidence_owner": "Root coordinator; real guarded panel API, original fixture credential only.",
+    "revoked_privileged_command": {
+      "command": "admin next level",
+      "submitted_epoch": 1792916896.8798962,
+      "reply": "Admin permission required for this command. Type admin login.",
+      "reply_epoch": 1792916897.8433747,
+      "grant": [],
+      "map": "m2.jkl"
+    },
+    "denial_before_nominal_expiry": true,
+    "fresh_login": {
+      "command": "admin login",
+      "submitted_epoch": 1792916911.5006568,
+      "reply": "No active admin credentials have been issued.",
+      "reply_epoch": 1792916916.5432525,
+      "new_challenge_received": false,
+      "grant": []
+    },
+    "fresh_revoked_key_proof": {
+      "attempted": false,
+      "qualified_in_this_live_run": false,
+      "reason": "All credentials were revoked, so ordinary admin login refused to create a fresh challenge. No second key was issued and no stale proof was submitted. Pure revoked-proof policy tests remain separate evidence."
+    },
+    "post_denial_state": {
+      "time": 1792916968.7154624,
+      "native": {
+        "time": 1792916968.7063725,
+        "pid": 109076,
+        "binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+        "multiplayer": 1,
+        "server": 0,
+        "slot": 2,
+        "peer": 19294375,
+        "world_loaded": true,
+        "local_player": true,
+        "chat_open": 0,
+        "chat_mode": -1,
+        "chat_length": 0,
+        "last_reply": "No active admin credentials have been issued.",
+        "roster": [
+          {
+            "slot": 1,
+            "peer": 19294378,
+            "name": "Bot_BobaFett",
+            "flags": 7
+          },
+          {
+            "slot": 2,
+            "peer": 19294375,
+            "name": "NativeHuman",
+            "flags": 7
+          },
+          {
+            "slot": 3,
+            "peer": 19228843,
+            "name": "RetailHuman",
+            "flags": 7
+          }
+        ],
+        "own_record": {
+          "slot": 2,
+          "peer": 19294375,
+          "name": "NativeHuman",
+          "flags": 7
+        },
+        "map": "m2.jkl",
+        "end_level_scheduled": null
+      },
+      "server_status_file_epoch": 1792916968.1725676,
+      "server": {
+        "state": "running",
+        "processes": {
+          "engine": {
+            "pid": 183244,
+            "returncode": null
+          },
+          "directplay": {
+            "pid": 183267,
+            "returncode": null
+          },
+          "bots": {
+            "pid": 183385,
+            "returncode": null
+          }
+        },
+        "session": {
+          "name": "Admin Compatibility QA",
+          "episode": "JK1MP",
+          "map": "m2.jkl",
+          "locked": false,
+          "max": 8,
+          "transport_slots": 9,
+          "players": 3,
+          "mod": "",
+          "flags": 0,
+          "tick_ms": 100,
+          "game": "jk"
+        },
+        "chat_admin": {
+          "connected": true,
+          "queued_commands": 0,
+          "authority": {
+            "pending_challenges": 0,
+            "authenticated_connections": 0
+          }
+        },
+        "native_connected": true,
+        "retail_ready": true
+      }
+    },
+    "queue_observation_scope": "Safe manager status reported queued_commands=0 and authenticated_connections=0; native and server remained m2 more than 70 seconds after denial with unchanged engine process. This observer did not inspect the C++ internal action queue.",
+    "pass_existing_live_grant_revocation": true,
+    "pass_no_active_credentials_login_denial": true
+  },
+  "browser_transition_observation": {
+    "observer_start_epoch": 1792916686.3489726,
+    "observer_end_epoch": 1792916865.975015,
+    "samples": 710,
+    "maps_observed": [
+      "m2.jkl"
+    ],
+    "read_errors": 0,
+    "initial_roster": [
+      {
+        "slot": 1,
+        "peer": 19294378,
+        "name": "Bot_BobaFett",
+        "flags": 7
+      },
+      {
+        "slot": 2,
+        "peer": 19294375,
+        "name": "NativeHuman",
+        "flags": 7
+      },
+      {
+        "slot": 3,
+        "peer": 19228843,
+        "name": "RetailHuman",
+        "flags": 7
+      },
+      {
+        "slot": 4,
+        "peer": 19294373,
+        "name": "WebHuman",
+        "flags": 7
+      }
+    ],
+    "final_roster": [
+      {
+        "slot": 1,
+        "peer": 19294378,
+        "name": "Bot_BobaFett",
+        "flags": 7
+      },
+      {
+        "slot": 2,
+        "peer": 19294375,
+        "name": "NativeHuman",
+        "flags": 7
+      },
+      {
+        "slot": 3,
+        "peer": 19228843,
+        "name": "RetailHuman",
+        "flags": 7
+      }
+    ],
+    "browser_next_level_submitted": false,
+    "browser_next_level_submission_source": "Root coordinator explicitly reported UI watchdog and no submitted next-level command.",
+    "native_map_transition_observed": false,
+    "all_three_client_map_transition_qualified": false,
+    "scope": "No native map/rejoin/repair input was sent. After the browser attempt was abandoned, root requested ordinary native admin status for revocation qualification near the end of this capture. All sampled native maps remained m2; this is not an engine transition-failure claim."
+  },
+  "unqualified_live_stages": [
+    "Fresh revoked-key proof: login supplied no challenge after all keys were revoked.",
+    "Final all-three-client map transition: browser next-level command was not submitted."
+  ],
+  "cleanup": {
+    "completed_epoch": 1792917097.032326,
+    "native": {
+      "pid": 109076,
+      "expected_starttime": "1043919",
+      "expected_binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+      "identity_verified": true,
+      "method": "Ordinary WM_DELETE_WINDOW on the unique owned SDL window, after NativeView identity verification.",
+      "window_pid_property": 109076,
+      "close_event_epoch": 1792917076.6773179,
+      "pid_absent": true,
+      "completed_epoch": 1792917076.8775623
+    },
+    "display": {
+      "time": 1792917095.6588933,
+      "native_pid": 109076,
+      "native_pid_absent_before": true,
+      "display": ":0",
+      "before": {
+        "keeper": {
+          "pid": 109064,
+          "expected_starttime": "1043414",
+          "present": true,
+          "starttime": "1043414",
+          "state": "S",
+          "exe": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+          "netns": "net:[4026532208]"
+        },
+        "xvfb": {
+          "pid": 109065,
+          "expected_starttime": "1043417",
+          "present": true,
+          "starttime": "1043417",
+          "state": "S",
+          "exe": "/workspace/scratch/3cdb8ff42680/bot-qa/native-human/tools/Xvfb-local",
+          "netns": "net:[4026532208]"
+        }
+      },
+      "stop_requested_epoch": 1792917095.6590917,
+      "verified_absent": {
+        "native": true,
+        "keeper": true,
+        "xvfb": true
+      },
+      "shared_namespace_keeper_untouched": true,
+      "shared_namespace_keeper_pid_92091_present": true,
+      "completed_epoch": 1792917097.032326
+    },
+    "post_exit_log_redaction": {
+      "time": 1792917141.6163032,
+      "after_native_exit": true,
+      "native_private_log_before": {
+        "path": "qa/game.log",
+        "sha256": "9c193ff70c9fb88f43f614286dc1fb29ff574246ed0142a8c8e230f63a6ac711",
+        "bytes": 208387,
+        "raw_complete_proof_count": 0
+      },
+      "native_private_log_after": {
+        "path": "qa/game.log",
+        "sha256": "9c193ff70c9fb88f43f614286dc1fb29ff574246ed0142a8c8e230f63a6ac711",
+        "bytes": 208387,
+        "raw_complete_proof_count": 0
+      },
+      "post_exit_native_stdout_lines_redacted": 0,
+      "other_owned_evidence_redactions": [],
+      "owned_text_evidence_files_scanned": 94,
+      "remaining_complete_proof_files": [],
+      "method": "Length-preserving replacement of consumed proof text after normal native process exit. No raw proof backup or raw match was printed; historical evidence hashes remain historical and this report records the final log hash."
+    },
+    "ownership": "Only native109076, its display keeper109064 and Xvfb109065 were closed. Root retains shared fixture and namespace cleanup ownership."
+  },
+  "completed_native_scope": true
+}

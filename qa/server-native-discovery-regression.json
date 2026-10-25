@@ -1,0 +1,122 @@
+{
+  "scope": "Native pool-backed discovery optimization and independent tests of the actual server transport method bodies. Source/regression receipt only; no final rebuilt binary or live optimization claim.",
+  "recorded_utc": "2026-10-25T07:58:24.642859+00:00",
+  "status": "PASS: nine native lifecycle helper groups, a baseline and fixed comparison across 512 discoveries, seven independent actual-method traffic groups, and full GNS translation-unit syntax checking.",
+  "relation_to_previous_receipt": "Extends server-surrogate-identity-regression.json with a narrow exception for a native pool reservation that has never carried game traffic. The earlier receipt retains its original source hashes and test results; its embedded native helper predates this optimization. Adapter, broker, NativeIPC, IPC 10/112/113, and game-client binaries are unchanged by this step.",
+  "observed_problem": {
+    "interim_server_sha256": "234edc4f600f74986e21969644ad650876b9ead4a20cf61d6be38c0215605e70",
+    "adapter_sha256": "a6ee44527a7e60de8df02c6294a39e39a78c5e1745b2ed3c29b91e502f432082",
+    "native_discovery_burst": "160 fresh surrogate replacements from 07:48:17 through 07:48:38 UTC, at six to eight per second. Every request, native acceptance and adapter acknowledgement matched; all new IDs were unique.",
+    "joined_state": "Renewal stopped after 07:48:38. NativeHuman fully joined at 07:48:54, with no more replacements in the bounded observation through 07:50:29. Two earlier replacements were the bots' discovery exits.",
+    "cause": "The unchanged native GetServerInfo opens a real GNS connection, receives the transport descriptor and assigned ID, then closes. Its GUI-refresh adjustment causes another discovery poll after the enum thread's 100 ms delay. This was discovery-driven churn, not an adapter replacement acknowledgement loop.",
+    "private_bounded_audit": "bot-qa/round2-discovery-identity-audit.json",
+    "audit_sha256": "548794840158f7c4857b42e16e61780bf2c11533bd24f99c83a26f5decd2d5cf",
+    "limits": "The per-probe game packets were not captured. The observed timing, joined-state cessation and unchanged GetServerInfo source support the diagnosis; current optimization still requires separate live qualification."
+  },
+  "contract": [
+    "Only a native claim from the pre-registered DirectPlay pool may begin as a pristine discovery reservation.",
+    "The initial native GNSInfoPacket is transport discovery and does not consume a game identity.",
+    "Any incoming payload on the authenticated native connection commits the identity before size validation, local delivery or peer forwarding. Malformed payloads conservatively consume it too.",
+    "Any ordinary outbound Sith packet commits its native destination before transmission, including the all-clients helper. Legitimate initial traffic is not suppressed to preserve a reservation.",
+    "A terminal pristine reservation returns to its unused pool slot without a retirement notification or queued ProcessPlayerLost event. Its old GNS handle is removed; delayed input on that handle cannot affect a later reservation.",
+    "Used or uncertain connections retain permanent retirement and fresh DirectPlay replacement. Lack of WELCOME, an unjoined roster slot, or a Connecting callback state does not establish that a connection was unused.",
+    "Browser/retail ADD and no-pool native connections remain immediately committed. Session history and the limit of 65,536 identities remain; map transitions do not clear history."
+  ],
+  "production_source_sha256": {
+    "src/Platform/Networking/GNS/stdComm_GNS.cpp": "292651441d2bb49614578fc10b81c57e361a02ffe106d043c79edd5dfd8105ba",
+    "src/Platform/Networking/GNS/TransportIdentities.h": "40134c6e79f34502ee5f63b7ada50a5c40818944e73e2b7a5b99eb97ecef1840",
+    "src/Tests/transport_identities_test.cpp": "4e212e68d3151fccaa9490d5c65e3c8da84869f13ab47b314c8fd9aaeb8a7482"
+  },
+  "independent_actual_method_regression": {
+    "runner": "native/tests/run_native_probe_traffic_tests.py",
+    "fixture": "native/tests/test_native_probe_traffic.cpp",
+    "runner_sha256": "b40ba71e62b7da33a41e2ff1918168bb80733096572d189154c48e18e7c85b35",
+    "fixture_sha256": "fd3a5bf76ad68ee46242a8e7f721980a6aa3cec7581d0152ee323c47acc6757a",
+    "command": "python3 native/tests/run_native_probe_traffic_tests.py --source /workspace/scratch/3cdb8ff42680/dedicated-engine",
+    "compile_flags": "-std=c++17 -O2 -UNDEBUG -Wall -Wextra -Werror -Wno-sign-compare -pedantic",
+    "method": "Extracts production Client_t, Receive, Send, SendBytesToAllClients and RetireNativeConnection definitions verbatim. Compiles them with the actual TransportIdentities header against bounded inert transport/admin sinks; no network or game assets.",
+    "groups": 7,
+    "exit_code": 0,
+    "coverage": [
+      "Pristine departure releases its reservation without a game-loss event or retirement notification.",
+      "Incoming host delivery commits the actual authenticated sender before returning the payload.",
+      "Peer forwarding commits both the incoming source and outgoing destination before reaching the send sink.",
+      "Ordinary outbound traffic commits its destination before send and leaves unrelated reservations pristine.",
+      "Malformed inbound payload commits before validation rejection.",
+      "A removed old GNS handle cannot commit or retire a later connection using the same unused reservation.",
+      "The all-clients send helper commits every actual recipient and preserves an explicitly excluded connection."
+    ],
+    "stdout": "PASS actual native retirement releases pristine discovery without a queued game-loss event\nPASS actual native receive commits its authenticated sender before host delivery\nPASS actual peer forwarding commits incoming and outgoing native identities before the send sink\nPASS actual ordinary outbound game traffic commits only its native destination before transmission\nPASS even malformed inbound native payload commits before its validation rejection\nPASS actual receive drops a removed old handle without committing the newly reserved connection\nPASS actual broadcast helper commits every destination except the explicitly excluded connection\nPASS 7 actual-method native discovery traffic groups\n",
+    "log_sha256": "decdb2db5bbfa092da9a5280c3d84526548b040ba2d9d1fbb5cb071e6a00995d",
+    "limits": "The test exercises the actual production method bodies and helper, but replaces the GNS transport and does not represent a complete live client join or packet timing test."
+  },
+  "native_helper_and_baseline_regression": {
+    "scope": "Native pool discovery reservations, source/regression evidence only; no rebuilt or live candidate qualified by this receipt",
+    "files": {
+      "src/Platform/Networking/GNS/stdComm_GNS.cpp": "292651441d2bb49614578fc10b81c57e361a02ffe106d043c79edd5dfd8105ba",
+      "src/Platform/Networking/GNS/TransportIdentities.h": "40134c6e79f34502ee5f63b7ada50a5c40818944e73e2b7a5b99eb97ecef1840",
+      "src/Tests/transport_identities_test.cpp": "4e212e68d3151fccaa9490d5c65e3c8da84869f13ab47b314c8fd9aaeb8a7482"
+    },
+    "helper_regression": {
+      "groups": 9,
+      "exit_code": 0,
+      "stdout": "PASS: 9 groups: pool claims; retired/pending-loss isolation; replacement replay/validation; used Connecting cleanup; 512 pristine discoveries; stale handles/uncertain records; committed external/no-pool claims; fresh no-pool identities; bounded lifetime history\n",
+      "compile_flags": [
+        "-std=c++17",
+        "-O2",
+        "-UNDEBUG",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic"
+      ]
+    },
+    "baseline_fixed_discovery": {
+      "test_sha256": "f36b93d8fe1a29905878171d8f888f16b36cb015ff55ea515d240999ac9dc40c",
+      "results": [
+        {
+          "version": "baseline",
+          "header_sha256": "bfa46049f5ae65e46fddabb674ee18b1a4d8599eb1b2622f8e3685c579e08e20",
+          "compile_exit": 0,
+          "exit_code": -6,
+          "stdout": "",
+          "stderr": "jk_native_discovery_baseline: /workspace/scratch/3cdb8ff42680/bot-qa/native-discovery-baseline-test.cpp:18: int main(): Assertion `!ended.notifyPool' failed.\n"
+        },
+        {
+          "version": "fixed",
+          "header_sha256": "40134c6e79f34502ee5f63b7ada50a5c40818944e73e2b7a5b99eb97ecef1840",
+          "compile_exit": 0,
+          "exit_code": 0,
+          "stdout": "PASS 512 native descriptor-only lifetimes reuse one untouched pool reservation\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "full_gns_translation_unit_syntax_check": {
+      "exit_code": 0,
+      "uses_actual_dedicated_flags": true,
+      "log_sha256": "f2432cfe6e8082f582a8e5add7a6f426a98021d7e0c80c7fb8402abeb986dc8e"
+    },
+    "reservation_contract": {
+      "pool_native_only": true,
+      "descriptor_only_stays_pristine": true,
+      "incoming_payload_commits_before_validation_or_forwarding": true,
+      "ordinary_outbound_sith_commits_before_send": true,
+      "browser_retail_add_immediately_committed": true,
+      "no_pool_native_immediately_committed": true,
+      "pristine_terminal_release_emits_no_retirement_or_player_loss": true,
+      "used_or_uncertain_terminal_identity_retired": true,
+      "stale_transport_handles_drop_before_committing": true,
+      "lifetime_issued_limit": 65536,
+      "history_reset_on_map_change": false
+    },
+    "ipc_contract_unchanged": [
+      10,
+      112,
+      113
+    ],
+    "new_files_visible_to_build_inventory": true
+  },
+  "independent_read_only_review": "All native outbound sinks and incoming paths were inspected. Ordinary sends commit before SendBytesToClient; the sole descriptor-only bypass is the initial GNSInfoPacket. External peers stay committed. The pristine terminal path skips queued game loss, and stale GNS handles are rejected before identity commitment.",
+  "remaining_qualification": "Root will rebuild from these frozen sources and verify real unchanged-client discovery, join/rejoin, chat authorization, administrative kick and map progression. This receipt does not upgrade earlier intermediate live results to the new build."
+}

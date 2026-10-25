@@ -1,9 +1,9 @@
 diff --git a/docs/crossplay-gateway.md b/docs/crossplay-gateway.md
 new file mode 100644
-index 0000000..82ba1b7
+index 0000000..4f4c862
 --- /dev/null
 +++ b/docs/crossplay-gateway.md
-@@ -0,0 +1,144 @@
+@@ -0,0 +1,196 @@
 +# Dedicated-server transport gateway
 +
 +Server-only integration based on `codalilitari/OpenJKDF2-MotS-Fixes` commit
@@ -74,12 +74,64 @@ index 0000000..82ba1b7
 +| 7 | PING: payload up to 256 bytes | 107, payload echoed |
 +| 8 | SET_ID_POOL: payload 1–15 unique uint32 DirectPlay IDs; before clients join | 108, payload uint32 ID count |
 +| 9 | ADMIN_REQUEST: src=actor transport ID, dst=request ID; payload uint32 generation, uint32 operation, then up to 127 printable ASCII bytes | 110, actor/request echoed; payload uint32 generation, uint32 status (0 success), then bounded ASCII summary |
++| 10 | REPLACE_POOL_ID: src=retired surrogate ID, dst=nonzero request correlation; payload uint32 fresh DirectPlay ID | 112, old ID/correlation echoed; payload uint32 accepted new ID |
 +
 +Errors use type 199, src=request type, dst=error code, payload UTF-8 reason.
 +Without a DirectPlay pool, automatic external IDs begin at 65536 and native
-+GNS IDs retain their ordinary small-number allocation. ID 1 is always the
++GNS IDs begin at 2. New connections receive previously unused identities within
++that transport session. ID 1 is always the
 +engine host; a DirectPlay gateway must acquire the server-player ID 1 or
 +translate the host identity consistently.
++
++### Player identities across reconnects
++
++An ordinary client remembers recent reliable messages by sender ID and sequence
++number. Reusing a departed sender's ID for a restarted client can cause new
++messages to be acknowledged as duplicates without reaching the game handler.
++Player slots may be reused; transport identities must identify a new connection.
++
++The engine immediately retires a surrogate identity exposed to game traffic
++when its actual native or external connection ends, including an administrative
++kick. Type 113 is an
++unsolicited retirement event with `src=old ID`, zero `dst`, and no payload.
++The broker forwards it only to the adapter that registered the DirectPlay pool.
++The old identity remains unavailable while replacement is pending.
++
++There is one native discovery exception. A pool-backed native connection starts
++with a pristine reservation so the stock server browser can read its initial
++descriptor and disconnect without spending a player identity on every refresh.
++The first incoming payload commits that identity before validation or forwarding;
++any ordinary outbound Sith packet commits it before sending. Only a reservation
++that has carried neither inbound nor outbound game traffic may return to the
++unused pool on close, without event 113 or a queued player-loss event. Old
++connection handles cannot affect a later reservation. Used or uncertain
++connections are retired normally. Browser/retail registrations and native
++connections without a pool are committed immediately.
++
++The adapter uses ordinary DirectPlay `DestroyPlayer` and `CreatePlayer` calls
++to obtain a fresh ID for that reserved pool entry, then submits request 10.
++The engine accepts replacement only for an inactive, retired pool entry and
++a previously unused valid ID. Duplicate matching replacements and retirement
++notifications are idempotent. A conflicting acknowledgement or failed replacement
++ends the adapter session instead of recycling an old identity. Other slots are
++not rewritten.
++
++The adapter serializes a bounded retirement queue while continuing normal game,
++metadata, and departure processing. The broker preserves retirement notices
++that arrive alongside a registration or replacement acknowledgement. Delayed
++packets and DirectPlay notifications for retired identities cannot recreate a
++retail player or remove a replacement player.
++
++Identity history survives ordinary map changes. Brief browser connection
++resumptions that retain the same game connection also retain its ID. A new
++transport session clears history. The engine and broker bound the session
++history to 65,536 canonical identities, including the canonical host; the
++adapter independently tracks its physical DirectPlay host and issued IDs with
++the same limit. Exhaustion requires a session restart rather than ID reuse.
++
++Deploy the matching engine, manager, and DirectPlay adapter together. This
++protocol extension changes server-side membership management; human client
++executables and Sith packet formats remain unchanged.
 +
 +### Private administrator events and actions
 +
@@ -107,9 +159,9 @@ index 0000000..82ba1b7
 +requires episode progression. Updated INFO descriptors keep browser and
 +DirectPlay discovery synchronized with the actual map.
 +
-+The companion jk-cross-server package documents issuance, the inert key-file
++See [Chat administration](../docs/CHAT_ADMIN.md) for issuance, the inert key-file
 +container, offline proof workflow, and the limits of a human-pasted challenge
-+in docs/CHAT_ADMIN.md. No credential is loaded into world COG bytecode.
++on unchanged clients. No credential is loaded into world COG bytecode.
 +
 +### Sith packet representation
 +
@@ -845,8 +897,207 @@ index 0000000..3e04f24
 +};
 +}
 +#endif
+diff --git a/src/Platform/Networking/GNS/TransportIdentities.h b/src/Platform/Networking/GNS/TransportIdentities.h
+new file mode 100644
+index 0000000..780eb54
+--- /dev/null
++++ b/src/Platform/Networking/GNS/TransportIdentities.h
+@@ -0,0 +1,193 @@
++#ifndef OPENJKDF2_TRANSPORT_IDENTITIES_H
++#define OPENJKDF2_TRANSPORT_IDENTITIES_H
++// Server transport identities are session incarnations, not reusable seats.
++// Ordinary clients retain reliable (sender, sequence) pairs after a departure.
++#include <algorithm>
++#include <cstddef>
++#include <cstdint>
++#include <map>
++#include <set>
++#include <vector>
++
++namespace jk_gateway {
++
++struct RetiredNativeIdentity {
++    uint32_t peer = 0;
++    bool notifyPool = false;
++    bool processPlayerLost = true;
++};
++
++class TransportIdentities {
++public:
++    static constexpr std::size_t maxIssued = 65536;
++    enum class Replacement { Rejected, Applied, Replayed };
++
++    TransportIdentities() { reset(); }
++
++    // Only a new server transport session may forget previous identities.
++    void reset() {
++        issued_.clear(); pool_.clear(); replacements_.clear();
++        issued_.emplace(1, State::Active);
++        nextNative_ = 2; nextExternal_ = 65536;
++    }
++
++    static bool validPoolId(uint32_t peer) { return peer >= 65 && peer < 0xFFFFFFFEu; }
++    bool hasPool() const { return !pool_.empty(); }
++    std::size_t poolSize() const { return pool_.size(); }
++    std::size_t issuedCount() const { return issued_.size(); }
++    bool isPoolId(uint32_t peer) const {
++        return std::find(pool_.begin(), pool_.end(), peer) != pool_.end();
++    }
++    bool wasIssued(uint32_t peer) const { return issued_.count(peer) != 0; }
++    bool isActive(uint32_t peer) const {
++        return hasState(peer, State::Active) || hasState(peer, State::NativeReservation);
++    }
++    bool isPristineNative(uint32_t peer) const { return hasState(peer, State::NativeReservation); }
++    bool isRetired(uint32_t peer) const { return hasState(peer, State::Retired); }
++
++    bool setPool(const std::vector<uint32_t>& ids) {
++        // Repeating the same setup never resets a retired/active entry. A new
++        // pool after setup must use the explicit replacement operation.
++        if (!pool_.empty()) return pool_ == ids;
++        if (ids.empty() || ids.size() > 15 || ids.size() > maxIssued - issued_.size()) return false;
++        std::set<uint32_t> unique;
++        for (uint32_t peer : ids)
++            if (!validPoolId(peer) || wasIssued(peer) || !unique.insert(peer).second) return false;
++        pool_ = ids;
++        for (uint32_t peer : pool_) issued_.emplace(peer, State::Reserved);
++        return true;
++    }
++
++    uint32_t freePoolId() const {
++        for (uint32_t peer : pool_) if (hasState(peer, State::Reserved)) return peer;
++        return 0;
++    }
++
++    uint32_t acquireNative() {
++        if (hasPool()) {
++            const uint32_t peer = freePoolId();
++            // GetServerInfo uses a real GNS connection, reads only the initial
++            // transport descriptor, and closes. Until any game traffic, this
++            // is a reservation of an unused DP surrogate, not a game identity.
++            if (peer) issued_.find(peer)->second = State::NativeReservation;
++            return peer;
++        }
++        return fresh(nextNative_);
++    }
++
++    // Call before any received payload is validated/delivered/forwarded and
++    // before any ordinary Sith packet is sent to this native connection.
++    bool commitNativeTraffic(uint32_t peer) {
++        auto found = issued_.find(peer);
++        if (found == issued_.end()) return false;
++        if (found->second == State::NativeReservation) found->second = State::Active;
++        return found->second == State::Active;
++    }
++
++    uint32_t acquireExternal(uint32_t desired, bool requirePool) {
++        if (desired) return validPoolId(desired) && claim(desired) ? desired : 0;
++        if (hasPool() || requirePool) {
++            const uint32_t peer = freePoolId();
++            return claim(peer) ? peer : 0;
++        }
++        return fresh(nextExternal_);
++    }
++
++    // True exactly once for a claimed incarnation. Retiring a reserved seat,
++    // the host, an unknown ID, or an already retired ID changes nothing.
++    bool retire(uint32_t peer) {
++        auto found = issued_.find(peer);
++        if (peer <= 1 || found == issued_.end() || found->second != State::Active) return false;
++        found->second = State::Retired;
++        return true;
++    }
++
++    RetiredNativeIdentity finishNative(uint32_t peer) {
++        RetiredNativeIdentity result;
++        result.peer = peer;
++        if (peer <= 1 || peer >= 0xFFFFFFFEu) {
++            result.processPlayerLost = false;
++            return result;
++        }
++        auto found = issued_.find(peer);
++        if (found != issued_.end() && found->second == State::NativeReservation && isPoolId(peer)) {
++            found->second = State::Reserved;
++            result.processPlayerLost = false;
++            return result;
++        }
++        // Every used or uncertain assigned record is quarantined. A pristine
++        // reservation is the sole exception; callback phase/roster/WELCOME
++        // state are not evidence that a game identity was unused.
++        if (found != issued_.end()) {
++            result.notifyPool = found->second != State::Retired && isPoolId(peer);
++            found->second = State::Retired;
++        } else if (issued_.size() < maxIssued) {
++            issued_.emplace(peer, State::Retired);
++        }
++        return result;
++    }
++
++    Replacement replace(uint32_t oldPeer, uint32_t newPeer) {
++        const auto completed = replacements_.find(oldPeer);
++        if (completed != replacements_.end())
++            return completed->second == newPeer ? Replacement::Replayed : Replacement::Rejected;
++        auto slot = std::find(pool_.begin(), pool_.end(), oldPeer);
++        if (slot == pool_.end() || !isRetired(oldPeer) || !validPoolId(newPeer) ||
++            wasIssued(newPeer) || issued_.size() >= maxIssued) return Replacement::Rejected;
++        issued_.emplace(newPeer, State::Reserved);
++        replacements_.emplace(oldPeer, newPeer);
++        *slot = newPeer;
++        return Replacement::Applied;
++    }
++
++private:
++    enum class State { Reserved, NativeReservation, Active, Retired };
++    std::map<uint32_t, State> issued_;
++    std::vector<uint32_t> pool_;
++    std::map<uint32_t, uint32_t> replacements_;
++    uint32_t nextNative_ = 2, nextExternal_ = 65536;
++
++    bool hasState(uint32_t peer, State state) const {
++        const auto found = issued_.find(peer);
++        return found != issued_.end() && found->second == state;
++    }
++    bool claim(uint32_t peer) {
++        if (peer <= 1 || peer >= 0xFFFFFFFEu) return false;
++        auto found = issued_.find(peer);
++        if (found != issued_.end()) {
++            if (found->second != State::Reserved) return false;
++            found->second = State::Active;
++            return true;
++        }
++        if (issued_.size() >= maxIssued) return false;
++        issued_.emplace(peer, State::Active);
++        return true;
++    }
++    uint32_t fresh(uint32_t& next) {
++        if (issued_.size() >= maxIssued) return 0;
++        while (next < 0xFFFFFFFEu) {
++            const uint32_t peer = next++;
++            if (!wasIssued(peer)) return claim(peer) ? peer : 0;
++        }
++        return 0;
++    }
++};
++
++// A connection receives its record during the Connecting callback. Once that
++// record exists, a terminal callback must finish it regardless of its previous
++// transport state. Only a pristine native pool reservation skips player loss.
++template <class ClientMap>
++bool retireNativeIdentity(ClientMap& clients, typename ClientMap::key_type connection,
++                          uint64_t& occupiedSlots, TransportIdentities& identities,
++                          RetiredNativeIdentity& retired) {
++    auto found = clients.find(connection);
++    if (found == clients.end()) return false;
++    retired = identities.finishNative(found->second.m_id);
++    const unsigned slot = found->second.m_slot;
++    if (slot < 64) occupiedSlots &= ~(uint64_t(1) << slot);
++    clients.erase(found);
++    return true;
++}
++
++}
++#endif
 diff --git a/src/Platform/Networking/GNS/stdComm_GNS.cpp b/src/Platform/Networking/GNS/stdComm_GNS.cpp
-index c0c10f6..7095347 100644
+index c0c10f6..7107acf 100644
 --- a/src/Platform/Networking/GNS/stdComm_GNS.cpp
 +++ b/src/Platform/Networking/GNS/stdComm_GNS.cpp
 @@ -2,6 +2,7 @@
@@ -857,17 +1108,18 @@ index c0c10f6..7095347 100644
  #include "General/stdString.h"
  #include "stdPlatform.h"
  #include "jk.h"
-@@ -21,6 +22,9 @@
+@@ -21,6 +22,10 @@
  #include <queue>
  #include <map>
  #include <cctype>
 +#include <set>
 +#include "GatewayBridge.h"
 +#include "AdminConnections.h"
++#include "TransportIdentities.h"
  
  #include <steam/steamnetworkingsockets.h>
  #include <steam/isteamnetworkingmessages.h>
-@@ -74,6 +78,7 @@ extern char16_t jkGuiMultiplayer_ipText[256];
+@@ -74,6 +79,7 @@ extern char16_t jkGuiMultiplayer_ipText[256];
  char jkGuiMultiplayer_ipText_conv[256];
  static int sithDplayGNS_numEnumd = 0;
  extern int Main_bVerboseNetworking;
@@ -875,16 +1127,15 @@ index c0c10f6..7095347 100644
  
  typedef bool (*GameNetworkingSockets_Init_t)( const SteamNetworkingIdentity *pIdentity, SteamNetworkingErrMsg &errMsg );
  typedef ISteamNetworkingUtils* (*SteamNetworkingUtils_t)(void);
-@@ -319,10 +324,38 @@ public:
+@@ -319,10 +325,37 @@ public:
          // the next host's join handshake, which aborts the new client's sync (matching
          // sithMulti_sendto_id) and removes them -> they time out and never appear.
          std::queue<int>().swap(m_DisconnectedPeers);
 +        m_externalPeers.clear();
 +        m_adminConnections.clear();
 +        std::queue<jk_gateway::Frame>().swap(m_adminIncoming);
-+        m_idPool.clear();
++        m_identities.reset();
 +        m_requireIdPool = getenv("OPENJKDF2_REQUIRE_DP_POOL") && strcmp(getenv("OPENJKDF2_REQUIRE_DP_POOL"), "1") == 0;
-+        m_nextGatewayId = 65536;
 +        std::queue<jk_gateway::Frame>().swap(m_gatewayIncoming);
 +        m_gatewayIncomingBytes = 0;
 +        const char* gatewayPort = getenv("OPENJKDF2_GATEWAY_PORT");
@@ -957,7 +1208,7 @@ index c0c10f6..7095347 100644
          ISteamNetworkingMessage *pIncomingMsg = nullptr;
          int numMsgs = m_pInterface->ReceiveMessagesOnPollGroup( m_hPollGroup, &pIncomingMsg, 1 );
          if ( numMsgs == 0 )
-@@ -390,16 +444,20 @@ public:
+@@ -390,16 +444,27 @@ public:
          }
          assert( numMsgs == 1 && pIncomingMsg );
          auto itClient = m_mapClients.find( pIncomingMsg->m_conn );
@@ -967,6 +1218,13 @@ index c0c10f6..7095347 100644
 +        }
  
 -        if (pIncomingMsg->m_cbSize < 8) {
++        // Discovery reads only GNSInfoPacket and closes. Any payload from an
++        // assigned native handle commits its identity before even malformed
++        // input can be inspected, delivered locally, or forwarded to a peer.
++        if (!m_identities.commitNativeTraffic(itClient->second.m_id)) {
++            pIncomingMsg->Release(); return -1;
++        }
++
 +        if (pIncomingMsg->m_cbSize < 12 || pIncomingMsg->m_cbSize > 2060) {
              sithDplayGNS_infoPrintf("Bad packet size %x\n", pIncomingMsg->m_cbSize);
              pIncomingMsg->Release();
@@ -981,7 +1239,7 @@ index c0c10f6..7095347 100644
          int idTo = *(uint32_t*)&dataBuf[4];
          *pIdOut = idFrom;
  
-@@ -430,25 +488,288 @@ public:
+@@ -430,25 +495,304 @@ public:
  
      int Send(uint32_t idFrom, uint32_t idTo, void *lpData, uint32_t dwDataSize)
      {
@@ -1013,6 +1271,9 @@ index c0c10f6..7095347 100644
          for ( auto &c: m_mapClients )
          {
              if ( c.first != except && c.second.m_id == idTo ) {
++                // A legitimate early ordinary packet ends discovery-only
++                // status even before the native has sent its own join traffic.
++                if (!m_identities.commitNativeTraffic(c.second.m_id)) return 0;
                  sithDplayGNS_verbosePrintf("Sent %x bytes to %x (%s, %x)\n", dwDataSize+8, idTo, sithDSS_IdToStr(*(uint32_t*)lpData & 0xFF), *(uint32_t*)lpData);
 -                SendBytesToClient( c.first, sendBuffer, dwDataSize+8 );
 +                // Unmodified GNS clients enumerate a synthetic 1..32 player
@@ -1049,14 +1310,38 @@ index c0c10f6..7095347 100644
 +
 +    void DropGatewayPeers()
 +    {
-+        for (uint32_t peer : m_externalPeers) {
-+            m_DisconnectedPeers.push(int(peer));
-+            m_adminConnections.remove(peer);
-+        }
-+        m_externalPeers.clear();
++        while (!m_externalPeers.empty()) RetireExternalPeer(*m_externalPeers.begin());
 +        std::queue<jk_gateway::Frame>().swap(m_gatewayIncoming);
 +        m_gatewayIncomingBytes = 0;
 +        ResetAdmin();
++    }
++
++    bool RetireExternalPeer(uint32_t peer)
++    {
++        if (!m_externalPeers.count(peer)) return false;
++        // Quarantine before releasing membership. Old queued loss events and
++        // reliable-message caches must never name a later incarnation.
++        const bool notify = m_identities.retire(peer) && m_identities.isPoolId(peer);
++        m_externalPeers.erase(peer);
++        m_adminConnections.remove(peer);
++        PurgeGatewayPeer(peer);
++        m_DisconnectedPeers.push(int(peer));
++        if (notify) m_gateway.sendFrame(113, peer, 0);
++        return true;
++    }
++
++    bool RetireNativeConnection(HSteamNetConnection connection)
++    {
++        jk_gateway::RetiredNativeIdentity retired;
++        if (!jk_gateway::retireNativeIdentity(m_mapClients, connection, availableIds,
++                                               m_identities, retired)) return false;
++        m_adminConnections.remove(retired.peer);
++        // A used identity can end before reaching the fully joined roster;
++        // ProcessPlayerLost must cancel its unfinished stock join/sync. A
++        // pristine discovery reservation never entered that game lifecycle.
++        if (retired.processPlayerLost) m_DisconnectedPeers.push(int(retired.peer));
++        if (retired.notifyPool) m_gateway.sendFrame(113, retired.peer, 0);
++        return true;
 +    }
 +
 +    void AdminReply(const jk_gateway::Frame &request, uint32_t generation,
@@ -1143,19 +1428,13 @@ index c0c10f6..7095347 100644
 +    {
 +        // The ordinary DSS_QUIT was queued first. Retire membership immediately
 +        // so an uncooperative client cannot keep sending after a successful kick.
-+        if (m_externalPeers.erase(peer)) {
-+            m_adminConnections.remove(peer);
-+            PurgeGatewayPeer(peer);
-+            m_DisconnectedPeers.push(int(peer));
++        if (RetireExternalPeer(peer)) {
 +            m_gateway.sendFrame(104, peer, 0);
 +        } else {
 +            for (auto it = m_mapClients.begin(); it != m_mapClients.end(); ++it) {
 +                if (it->second.m_id != peer) continue;
 +                const HSteamNetConnection connection = it->first;
-+                availableIds &= ~(1ULL << it->second.m_slot);
-+                m_mapClients.erase(it);
-+                m_adminConnections.remove(peer);
-+                m_DisconnectedPeers.push(int(peer));
++                RetireNativeConnection(connection);
 +                m_pInterface->CloseConnection(connection, 0, "Kicked by server administrator", true);
 +                break;
 +            }
@@ -1184,16 +1463,9 @@ index c0c10f6..7095347 100644
 +            if (m_externalPeers.size() + m_mapClients.size() >= 31) {
 +                m_gateway.error(3, 2, "transport peer capacity reached"); return;
 +            }
-+            uint32_t peer = frame.src;
++            const uint32_t peer = m_identities.acquireExternal(frame.src, m_requireIdPool);
 +            if (!peer) {
-+                if (!m_idPool.empty() || m_requireIdPool) peer = FreePoolId();
-+                else {
-+                    while (PeerUsed(m_nextGatewayId)) ++m_nextGatewayId;
-+                    peer = m_nextGatewayId++;
-+                }
-+            }
-+            if (peer < 65 || peer >= 0xFFFFFFFEu || PeerUsed(peer)) {
-+                m_gateway.error(3, 3, "invalid or duplicate peer ID"); return;
++                m_gateway.error(3, 3, "invalid, previously issued, or exhausted peer ID"); return;
 +            }
 +            m_externalPeers.insert(peer);
 +            m_adminConnections.add(peer);
@@ -1202,11 +1474,7 @@ index c0c10f6..7095347 100644
 +            m_gateway.sendFrame(103, peer, frame.dst, status, sizeof(status));
 +            stdPlatform_Printf("GATEWAY_PEER_ADDED %u\n", peer);
 +        } else if (frame.type == 4) {
-+            if (m_externalPeers.erase(frame.src)) {
-+                m_adminConnections.remove(frame.src);
-+                PurgeGatewayPeer(frame.src);
-+                m_DisconnectedPeers.push(int(frame.src));
-+            }
++            RetireExternalPeer(frame.src);
 +            m_gateway.sendFrame(104, frame.src, frame.dst);
 +        } else if (frame.type == 5) {
 +            if (!m_externalPeers.count(frame.src) || frame.data.size() < 4 || frame.data.size() > 2052) {
@@ -1224,19 +1492,29 @@ index c0c10f6..7095347 100644
 +                m_gateway.error(8, 7, "ID pool requires 1..15 IDs before clients join"); return;
 +            }
 +            std::vector<uint32_t> ids;
-+            std::set<uint32_t> seen;
 +            for (size_t offset = 0; offset < frame.data.size(); offset += 4) {
 +                uint32_t peer = jk_gateway::read32(frame.data.data() + offset);
-+                if (peer < 65 || peer >= 0xFFFFFFFEu || !seen.insert(peer).second) {
-+                    m_gateway.error(8, 8, "invalid or duplicate pool ID"); return;
-+                }
 +                ids.push_back(peer);
 +            }
-+            m_idPool = std::move(ids);
++            if (!m_identities.setPool(ids)) {
++                m_gateway.error(8, 8, "invalid, previously issued, or already configured ID pool"); return;
++            }
 +            std::vector<uint8_t> result;
-+            jk_gateway::put32(result, uint32_t(m_idPool.size()));
++            jk_gateway::put32(result, uint32_t(m_identities.poolSize()));
 +            m_gateway.sendFrame(108, 1, frame.dst, result.data(), result.size());
-+            stdPlatform_Printf("GATEWAY_ID_POOL_READY %u\n", unsigned(m_idPool.size()));
++            stdPlatform_Printf("GATEWAY_ID_POOL_READY %u\n", unsigned(m_identities.poolSize()));
++        } else if (frame.type == 10) {
++            if (!frame.dst || frame.data.size() != 4 || PeerUsed(frame.src)) {
++                m_gateway.error(10, 10, "invalid pool replacement envelope or active identity"); return;
++            }
++            const uint32_t replacement = jk_gateway::read32(frame.data.data());
++            const auto result = m_identities.replace(frame.src, replacement);
++            if (result == jk_gateway::TransportIdentities::Replacement::Rejected) {
++                m_gateway.error(10, 11, "replacement requires a retired pool ID and fresh identity"); return;
++            }
++            m_gateway.sendFrame(112, frame.src, frame.dst, frame.data.data(), frame.data.size());
++            if (result == jk_gateway::TransportIdentities::Replacement::Applied)
++                stdPlatform_Printf("GATEWAY_ID_REPLACED %u %u\n", frame.src, replacement);
 +        } else if (frame.type == 9) {
 +            if (frame.src <= 1 || !frame.dst || frame.data.size() < 8 || frame.data.size() > 135) {
 +                m_gateway.error(9, 9, "invalid admin request envelope"); return;
@@ -1264,14 +1542,10 @@ index c0c10f6..7095347 100644
 +        for (const auto& c : m_mapClients) if (c.second.m_id == peer) return true;
 +        return false;
 +    }
-+    uint32_t FreePoolId() const {
-+        for (uint32_t peer : m_idPool) if (!PeerUsed(peer)) return peer;
-+        return 0;
-+    }
  private:
  
      HSteamListenSocket m_hListenSock;
-@@ -463,11 +784,23 @@ private:
+@@ -463,11 +807,22 @@ private:
      struct Client_t
      {
          uint32_t m_id;
@@ -1285,8 +1559,7 @@ index c0c10f6..7095347 100644
 +    std::set<uint32_t> m_externalPeers;
 +    std::queue<jk_gateway::Frame> m_gatewayIncoming;
 +    size_t m_gatewayIncomingBytes = 0;
-+    uint32_t m_nextGatewayId = 65536;
-+    std::vector<uint32_t> m_idPool;
++    jk_gateway::TransportIdentities m_identities;
 +    bool m_requireIdPool = false;
 +    jk_gateway::AdminConnections m_adminConnections;
 +    std::queue<jk_gateway::Frame> m_adminIncoming;
@@ -1295,7 +1568,16 @@ index c0c10f6..7095347 100644
  
      void SendBytesToClient( HSteamNetConnection conn, void *pData, uint32_t len)
      {
-@@ -493,9 +826,11 @@ private:
+@@ -478,7 +833,7 @@ private:
+     {
+         for ( auto &c: m_mapClients )
+         {
+-            if ( c.first != except )
++            if ( c.first != except && m_identities.commitNativeTraffic(c.second.m_id) )
+                 SendBytesToClient( c.first, pData, len );
+         }
+     }
+@@ -493,9 +848,11 @@ private:
          m_pInterface->SetConnectionName( hConn, nick );
      }
  
@@ -1308,34 +1590,88 @@ index c0c10f6..7095347 100644
      }
  
  #if 0
-@@ -529,7 +864,11 @@ private:
-                     // is the only codepath where we remove clients (except on shutdown),
-                     // and connection change callbacks are dispatched in queue order.
-                     auto itClient = m_mapClients.find( pInfo->m_hConn );
+@@ -508,8 +865,6 @@ private:
+ 
+     void OnSteamNetConnectionStatusChanged( SteamNetConnectionStatusChangedCallback_t *pInfo )
+     {
+-        char temp[1024];
+-
+         // What's the state of the connection?
+         switch ( pInfo->m_info.m_eState )
+         {
+@@ -520,59 +875,15 @@ private:
+             case k_ESteamNetworkingConnectionState_ClosedByPeer:
+             case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+             {
+-                // Ignore if they were not previously connected.  (If they disconnected
+-                // before we accepted the connection.)
+-                if ( pInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connected )
+-                {
+-
+-                    // Locate the client.  Note that it should have been found, because this
+-                    // is the only codepath where we remove clients (except on shutdown),
+-                    // and connection change callbacks are dispatched in queue order.
+-                    auto itClient = m_mapClients.find( pInfo->m_hConn );
 -                    assert( itClient != m_mapClients.end() );
-+                    if (itClient == m_mapClients.end()) {
-+                        // An administrative kick already retired this transport.
-+                        m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
-+                        break;
-+                    }
- 
-                     // Select appropriate log messages
-                     const char *pszDebugLogAction;
-@@ -567,7 +906,8 @@ private:
-                         }
-                     }
- 
+-
+-                    // Select appropriate log messages
+-                    const char *pszDebugLogAction;
+-                    if ( pInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ProblemDetectedLocally )
+-                    {
+-                        pszDebugLogAction = "problem detected locally";
+-                        snprintf( temp, sizeof(temp), "Problem detected with client %x (%s)", itClient->second.m_id, pInfo->m_info.m_szEndDebug );
+-                    }
+-                    else
+-                    {
+-                        // Note that here we could check the reason code to see if
+-                        // it was a "usual" connection or an "unusual" one.
+-                        pszDebugLogAction = "closed by peer";
+-                        snprintf( temp, sizeof(temp), "Client id %x has left.", itClient->second.m_id );
+-                    }
+-
+-                    // Spew something to our own log.  Note that because we put their nick
+-                    // as the connection description, it will show up, along with their
+-                    // transport-specific data (e.g. their IP address)
+-                    Printf( "Connection %s %s, reason %d: %s\n",
++                // Assignment happens in Connecting. A terminal callback can
++                // therefore own a peer even if it never reached Connected.
++                // Already rejected/kicked connections have no record to retire.
++                if (RetireNativeConnection(pInfo->m_hConn)) {
++                    Printf("Connection %s %s, reason %d: %s\n",
+                         pInfo->m_info.m_szConnectionDescription,
+-                        pszDebugLogAction,
+-                        pInfo->m_info.m_eEndReason,
+-                        pInfo->m_info.m_szEndDebug
+-                    );
+-
+-                    // Only send disconnect messages to fully connected clients.
+-                    for (int i = 0; i < jkPlayer_maxPlayers; i++)
+-                    {
+-                        if (!i && jkGuiNetHost_bIsDedicated) continue;
+-
+-                        if ( (jkPlayer_playerInfos[i].flags & 2) != 0 && jkPlayer_playerInfos[i].playerNetId == itClient->second.m_id) {
+-                            m_DisconnectedPeers.push(itClient->second.m_id);
+-                            break;
+-                        }
+-                    }
+-
 -                    availableIds &= ~(1ULL << (itClient->second.m_id-1));
-+                    availableIds &= ~(1ULL << itClient->second.m_slot);
-+                    m_adminConnections.remove(itClient->second.m_id);
-                     m_mapClients.erase( itClient );
+-                    m_mapClients.erase( itClient );
+-                }
+-                else
+-                {
+-                    assert( pInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connecting );
++                        pInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ProblemDetectedLocally ?
++                            "problem detected locally" : "closed by peer",
++                        pInfo->m_info.m_eEndReason, pInfo->m_info.m_szEndDebug);
                  }
-                 else
-@@ -591,9 +931,13 @@ private:
+ 
+                 // Clean up the connection.  This is important!
+@@ -591,9 +902,13 @@ private:
                  assert( m_mapClients.find( pInfo->m_hConn ) == m_mapClients.end() );
  
                  Printf( "Connection request from %s", pInfo->m_info.m_szConnectionDescription );
-+                if (m_requireIdPool && (!m_gateway.connected() || m_idPool.empty())) {
++                if (m_requireIdPool && (!m_gateway.connected() || !m_identities.hasPool())) {
 +                    m_pInterface->CloseConnection(pInfo->m_hConn, 0, "Retail gateway is starting", false);
 +                    break;
 +                }
@@ -1346,36 +1682,36 @@ index c0c10f6..7095347 100644
                      stdPlatform_Printf("Rejecting request too many players connected (%u)\n", ConnectedPlayers());
                      break;
                  }
-@@ -618,17 +962,27 @@ private:
+@@ -618,16 +933,25 @@ private:
                      break;
                  }
  
 -                int nextId = 0;
-+                uint32_t nextId = 0;
-+                unsigned slot = 0;
++                unsigned slot = 64;
                  for (int i = 0; i < 64; i++)
                  {
                      if (!(availableIds & (1ULL << i))) {
                          availableIds |= (1ULL << i);
-                         nextId = i+1;
+-                        nextId = i+1;
 +                        slot = i;
                          break;
                      }
                  }
- 
-                 sithDplayGNS_verbosePrintf("Assigning ID: %x\n", nextId);
-+                if (!m_idPool.empty()) {
-+                    nextId = FreePoolId();
-+                    if (!nextId) {
-+                        availableIds &= ~(1ULL << slot);
-+                        m_pInterface->CloseConnection(pInfo->m_hConn, 0, "Transport ID pool is full", false);
-+                        break;
-+                    }
+-
++                if (slot == 64) {
++                    m_pInterface->CloseConnection(pInfo->m_hConn, 0, "Transport slots are full", false);
++                    break;
 +                }
++                const uint32_t nextId = m_identities.acquireNative();
++                if (!nextId) {
++                    availableIds &= ~(1ULL << slot);
++                    m_pInterface->CloseConnection(pInfo->m_hConn, 0, "Transport identities are exhausted or awaiting replacement", false);
++                    break;
++                }
+                 sithDplayGNS_verbosePrintf("Assigning ID: %x\n", nextId);
  
                  sithDplayGNS_storedEntry.multiModeFlags = sithMulti_multiModeFlags;
- 
-@@ -638,7 +992,9 @@ private:
+@@ -638,17 +962,20 @@ private:
                  infoPkt.entry.numPlayers = RealConnectedPlayers();
                  infoPkt.entry.maxPlayers = sithDplayGNS_storedEntry.maxPlayers;
  
@@ -1385,17 +1721,21 @@ index c0c10f6..7095347 100644
 +                // separately in ProcessJoinRequest; never truncate spawn sync.
  
                  memcpy(sendBuffer2, &infoPkt, sizeof(infoPkt));
++                // Transport descriptor only: unchanged clients repeatedly
++                // request this for discovery without entering the Sith game.
                  SendBytesToClient( pInfo->m_hConn, sendBuffer2, sizeof(infoPkt)); 
-@@ -646,7 +1002,7 @@ private:
+ 
                  // Add them to the client list, using std::map wacky syntax
                  m_mapClients[ pInfo->m_hConn ];
                  SetClientNick( pInfo->m_hConn, "asdf" );
 -                SetClientId( pInfo->m_hConn, nextId);
 +                SetClientId( pInfo->m_hConn, nextId, slot);
  
-                 nextId++;
+-                nextId++;
                  break;
-@@ -704,11 +1060,9 @@ private:
+             }
+ 
+@@ -704,11 +1031,9 @@ private:
              if (!i && jkGuiNetHost_bIsDedicated) continue;
  
  
@@ -1410,7 +1750,7 @@ index c0c10f6..7095347 100644
                  amt++;
              }
          }
-@@ -1060,8 +1414,30 @@ char addrServerLast[256];
+@@ -1060,8 +1385,30 @@ char addrServerLast[256];
  GNSClient client;
  GNSServer server;
  
@@ -1441,7 +1781,7 @@ index c0c10f6..7095347 100644
      DirectPlay_numPlayers = 32;
      for (int i = 0; i < 32; i++)
      {
-@@ -1143,6 +1519,7 @@ int DirectPlay_Receive(int *pIdOut, int *pMsgIdOut, int *pLenOut)
+@@ -1143,6 +1490,7 @@ int DirectPlay_Receive(int *pIdOut, int *pMsgIdOut, int *pLenOut)
      if (stdComm_bIsServer)
      {
          server.RunStep();
@@ -1449,7 +1789,7 @@ index c0c10f6..7095347 100644
          return server.Receive(pIdOut, (void*)pMsgIdOut, pLenOut);
      }
      else 
-@@ -1239,6 +1616,9 @@ int DirectPlay_SendLobbyMessage(void* pPkt, uint32_t pktLen)
+@@ -1239,6 +1587,9 @@ int DirectPlay_SendLobbyMessage(void* pPkt, uint32_t pktLen)
  void DirectPlay_SetSessionDesc(const char* a1, DWORD maxPlayers)
  {
      _strncpy(sithDplayGNS_storedEntry.mapJklFname, jkMain_aLevelJklFname, 0x20);
@@ -1555,6 +1895,282 @@ index 0000000..bb81266
 +    bridge.poll(); assert(!bridge.connected() && lost == 1);
 +    close(client); bridge.stop();
 +    std::cout << "PASS: fragmented authentication, 200 coalesced frames, replies, oversized rejection, bad token, disconnect callback\n";
++}
+diff --git a/src/Tests/transport_identities_test.cpp b/src/Tests/transport_identities_test.cpp
+new file mode 100644
+index 0000000..c353e96
+--- /dev/null
++++ b/src/Tests/transport_identities_test.cpp
+@@ -0,0 +1,270 @@
++#include "Platform/Networking/GNS/TransportIdentities.h"
++#include <cassert>
++#include <iostream>
++#include <map>
++#include <queue>
++
++using jk_gateway::TransportIdentities;
++using Replacement = TransportIdentities::Replacement;
++
++static void pool_setup_and_claims()
++{
++    TransportIdentities ids;
++    assert(ids.issuedCount() == 1 && ids.wasIssued(1));
++    assert(!ids.setPool({}));
++    assert(!ids.setPool({64}));
++    assert(!ids.setPool({100, 100}));
++    assert(!ids.setPool({0xFFFFFFFEu}));
++    assert(!ids.setPool(std::vector<uint32_t>(16, 100)));
++    assert(ids.issuedCount() == 1);
++    assert(ids.setPool({100, 101}));
++    assert(ids.poolSize() == 2 && ids.issuedCount() == 3);
++    assert(ids.acquireNative() == 100);
++    assert(ids.acquireExternal(0, true) == 101);
++    assert(!ids.acquireNative() && !ids.acquireExternal(100, true));
++    assert(!ids.acquireExternal(1, false) && !ids.acquireExternal(64, false));
++    assert(!ids.retire(1) && !ids.retire(999));
++    assert(ids.setPool({100, 101}));
++    assert(!ids.freePoolId()); // Duplicate setup cannot free live identities.
++    assert(!ids.setPool({102, 103}));
++}
++
++static void retired_pool_ids_and_pending_loss()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({15163125, 15163126}));
++    const uint32_t old = ids.acquireExternal(0, true);
++    assert(old == 15163125 && ids.retire(old));
++    std::queue<uint32_t> pendingLoss;
++    pendingLoss.push(old);
++    assert(!ids.retire(old)); // One retirement notification per incarnation.
++    assert(!ids.acquireExternal(old, true));
++    assert(ids.acquireNative() == 15163126);
++    assert(!ids.acquireNative()); // Quarantine lasts until a fresh DP ID arrives.
++    assert(ids.replace(old, 15163127) == Replacement::Applied);
++    const uint32_t next = ids.acquireNative();
++    assert(next == 15163127 && next != pendingLoss.front());
++    assert(ids.isRetired(old) && ids.wasIssued(old));
++    assert(ids.isActive(next));
++    assert(!ids.acquireExternal(old, true));
++}
++
++static void replacement_validation_and_replay()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({100, 101}));
++    assert(!ids.retire(101)); // An unused reserved seat is not an incarnation end.
++    assert(ids.replace(101, 102) == Replacement::Rejected);
++    assert(ids.acquireNative() == 100);
++    assert(ids.replace(100, 102) == Replacement::Rejected);
++    assert(ids.commitNativeTraffic(100));
++    assert(ids.retire(100));
++    assert(ids.acquireExternal(900, false) == 900 && ids.retire(900));
++    for (uint32_t invalid : {0u, 1u, 64u, 100u, 101u, 900u, 0xFFFFFFFEu, 0xFFFFFFFFu})
++        assert(ids.replace(100, invalid) == Replacement::Rejected);
++    assert(ids.replace(900, 102) == Replacement::Rejected); // Not a pool member.
++    assert(ids.replace(999, 102) == Replacement::Rejected);
++    assert(ids.replace(100, 102) == Replacement::Applied);
++    assert(ids.replace(100, 102) == Replacement::Replayed);
++    assert(ids.replace(100, 103) == Replacement::Rejected);
++    assert(ids.acquireExternal(102, true) == 102);
++    assert(ids.replace(100, 102) == Replacement::Replayed); // ACK cannot reset active state.
++    assert(ids.isActive(102));
++    assert(ids.retire(102));
++    assert(ids.replace(102, 103) == Replacement::Applied);
++    assert(ids.replace(100, 102) == Replacement::Replayed); // Even after the next rotation.
++    assert(ids.isRetired(102) && !ids.acquireExternal(102, true));
++    assert(ids.acquireNative() == 103);
++    assert(ids.acquireNative() == 101);
++    assert(!ids.acquireNative());
++}
++
++struct NativeRecord {
++    uint32_t m_id;
++    unsigned m_slot;
++    bool reachedConnected;
++};
++
++static void assigned_connecting_terminal_cleanup()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({100, 101}));
++    const uint32_t assignedWhileConnecting = ids.acquireNative();
++    const uint32_t other = ids.acquireNative();
++    assert(ids.commitNativeTraffic(assignedWhileConnecting));
++    assert(ids.commitNativeTraffic(other));
++    std::map<unsigned, NativeRecord> clients;
++    clients.emplace(10, NativeRecord{assignedWhileConnecting, 3, false});
++    clients.emplace(11, NativeRecord{other, 5, true});
++    uint64_t occupied = 1 | (uint64_t(1) << 3) | (uint64_t(1) << 5);
++    jk_gateway::RetiredNativeIdentity retired;
++    assert(!clients.at(10).reachedConnected);
++    // This is the actual helper called for both native terminal callback states
++    // and administrative kicks. Its decision is the assigned record, not the
++    // callback's previous Connecting/Connected phase.
++    assert(jk_gateway::retireNativeIdentity(clients, 10u, occupied, ids, retired));
++    assert(retired.peer == assignedWhileConnecting && retired.notifyPool && retired.processPlayerLost);
++    assert(ids.isRetired(assignedWhileConnecting));
++    assert(clients.count(10) == 0 && clients.count(11) == 1);
++    assert(occupied == (1 | (uint64_t(1) << 5)));
++    assert(!jk_gateway::retireNativeIdentity(clients, 10u, occupied, ids, retired));
++    assert(!jk_gateway::retireNativeIdentity(clients, 99u, occupied, ids, retired));
++    assert(ids.isActive(other));
++    assert(ids.replace(assignedWhileConnecting, 102) == Replacement::Applied);
++    assert(ids.acquireNative() == 102);
++    clients.emplace(12, NativeRecord{102, 3, false});
++    occupied |= uint64_t(1) << 3;
++    assert(!jk_gateway::retireNativeIdentity(clients, 10u, occupied, ids, retired));
++    assert(clients.at(12).m_id == 102 && ids.isActive(102));
++    assert(ids.commitNativeTraffic(102));
++    assert(jk_gateway::retireNativeIdentity(clients, 12u, occupied, ids, retired));
++    assert(retired.peer == 102 && retired.notifyPool && retired.processPlayerLost);
++}
++
++static void pristine_pool_discovery_reservations()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({300, 301}));
++    assert(ids.acquireExternal(301, true) == 301);
++    std::map<unsigned, NativeRecord> clients;
++    std::queue<uint32_t> pendingLoss;
++    uint64_t occupied = 1;
++    for (unsigned handle = 1000; handle < 1512; ++handle) {
++        const uint32_t probe = ids.acquireNative();
++        assert(probe == 300 && ids.isPristineNative(probe));
++        assert(!ids.acquireNative() && !ids.acquireExternal(probe, true));
++        assert(!ids.retire(probe));
++        assert(ids.replace(probe, 302) == Replacement::Rejected);
++        clients.emplace(handle, NativeRecord{probe, 1, false});
++        occupied |= uint64_t(1) << 1;
++        jk_gateway::RetiredNativeIdentity ended;
++        assert(jk_gateway::retireNativeIdentity(clients, handle, occupied, ids, ended));
++        if (ended.processPlayerLost) pendingLoss.push(ended.peer);
++        assert(!ended.notifyPool && !ended.processPlayerLost);
++        assert(pendingLoss.empty() && clients.empty() && occupied == 1);
++        assert(ids.freePoolId() == probe && ids.issuedCount() == 3);
++        assert(!ids.isPristineNative(probe) && !ids.isRetired(probe));
++    }
++    // The same connection becomes irrevocable as soon as ordinary traffic is
++    // sent or received, even before a WELCOME or fully joined roster flag.
++    const uint32_t joining = ids.acquireNative();
++    assert(ids.commitNativeTraffic(joining));
++    assert(ids.commitNativeTraffic(joining) && !ids.isPristineNative(joining));
++    clients.emplace(2000, NativeRecord{joining, 1, false});
++    occupied |= uint64_t(1) << 1;
++    jk_gateway::RetiredNativeIdentity ended;
++    assert(jk_gateway::retireNativeIdentity(clients, 2000u, occupied, ids, ended));
++    assert(ended.notifyPool && ended.processPlayerLost && ids.isRetired(joining));
++    assert(!ids.acquireNative());
++    assert(ids.replace(joining, 302) == Replacement::Applied);
++    assert(ids.acquireNative() == 302 && ids.isPristineNative(302));
++}
++
++static void stale_handles_and_uncertain_records()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({600}));
++    std::map<unsigned, NativeRecord> clients;
++    uint64_t occupied = 3;
++    clients.emplace(17, NativeRecord{ids.acquireNative(), 1, false});
++    jk_gateway::RetiredNativeIdentity ended;
++    assert(jk_gateway::retireNativeIdentity(clients, 17u, occupied, ids, ended));
++    assert(!ended.processPlayerLost && !ended.notifyPool);
++    clients.emplace(18, NativeRecord{ids.acquireNative(), 1, false});
++    occupied |= 2;
++    assert(clients.at(18).m_id == 600 && ids.isPristineNative(600));
++    assert(!jk_gateway::retireNativeIdentity(clients, 17u, occupied, ids, ended));
++    assert(ids.isPristineNative(600) && occupied == 3);
++    assert(ids.commitNativeTraffic(600));
++    assert(!jk_gateway::retireNativeIdentity(clients, 17u, occupied, ids, ended));
++    assert(ids.isActive(600) && !ids.isRetired(600));
++    assert(jk_gateway::retireNativeIdentity(clients, 18u, occupied, ids, ended));
++    assert(ended.processPlayerLost && ended.notifyPool);
++    assert(ids.replace(600, 601) == Replacement::Applied);
++    // A map record without the explicit pristine lease state is uncertain:
++    // quarantine it instead of treating absence of game flags as discovery.
++    clients.emplace(19, NativeRecord{601, 1, false});
++    occupied |= 2;
++    assert(jk_gateway::retireNativeIdentity(clients, 19u, occupied, ids, ended));
++    assert(ended.processPlayerLost && ended.notifyPool && ids.isRetired(601));
++    assert(!ids.acquireNative() && !ids.commitNativeTraffic(601));
++}
++
++static void external_claims_are_immediately_committed()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({700, 701}));
++    assert(ids.acquireExternal(0, true) == 700);
++    assert(ids.acquireExternal(701, true) == 701);
++    assert(ids.acquireExternal(900, false) == 900);
++    for (uint32_t peer : {700u, 701u, 900u}) {
++        assert(!ids.isPristineNative(peer) && ids.isActive(peer));
++        assert(ids.retire(peer));
++        assert(!ids.acquireExternal(peer, true));
++    }
++    assert(!ids.freePoolId());
++    TransportIdentities nativeOnly;
++    const uint32_t noPool = nativeOnly.acquireNative();
++    assert(noPool == 2 && !nativeOnly.isPristineNative(noPool));
++    const auto ended = nativeOnly.finishNative(noPool);
++    assert(ended.processPlayerLost && !ended.notifyPool);
++    assert(nativeOnly.isRetired(noPool) && nativeOnly.acquireNative() == 3);
++}
++
++static void no_pool_fresh_native_and_external()
++{
++    TransportIdentities ids;
++    assert(!ids.acquireExternal(0, true));
++    const uint32_t a = ids.acquireNative(), b = ids.acquireNative();
++    assert(a == 2 && b == 3 && ids.retire(a));
++    assert(ids.acquireNative() == 4); // Freeing a native slot does not recycle ID2.
++    assert(ids.acquireExternal(65536, false) == 65536);
++    assert(ids.retire(65536));
++    assert(ids.acquireExternal(0, false) == 65537);
++    assert(!ids.acquireExternal(65536, false));
++    assert(ids.acquireExternal(500, false) == 500 && ids.retire(500));
++    uint32_t native = 0;
++    while (native < 501) native = ids.acquireNative();
++    assert(native == 501 && ids.isRetired(500));
++    // Only explicit creation of a new transport session resets the ledger.
++    ids.reset();
++    assert(ids.issuedCount() == 1 && ids.acquireNative() == 2);
++}
++
++static void bounded_lifetime_history_fails_closed()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({100}));
++    assert(ids.acquireNative() == 100 && ids.commitNativeTraffic(100) && ids.retire(100));
++    assert(ids.replace(100, 101) == Replacement::Applied);
++    for (uint32_t peer = 100000; ids.issuedCount() < TransportIdentities::maxIssued; ++peer) {
++        assert(ids.acquireExternal(peer, false) == peer);
++        assert(ids.retire(peer));
++    }
++    assert(ids.issuedCount() == 65536);
++    assert(!ids.acquireExternal(900000, false));
++    assert(ids.acquireNative() == 101); // Already issued but unused identity is safe.
++    assert(ids.commitNativeTraffic(101));
++    assert(ids.retire(101));
++    assert(!ids.acquireNative());
++    assert(ids.replace(101, 102) == Replacement::Rejected);
++    assert(ids.replace(100, 101) == Replacement::Replayed);
++    assert(ids.isRetired(100) && ids.isRetired(101));
++    assert(ids.issuedCount() == 65536);
++}
++
++int main()
++{
++    pool_setup_and_claims();
++    retired_pool_ids_and_pending_loss();
++    replacement_validation_and_replay();
++    assigned_connecting_terminal_cleanup();
++    pristine_pool_discovery_reservations();
++    stale_handles_and_uncertain_records();
++    external_claims_are_immediately_committed();
++    no_pool_fresh_native_and_external();
++    bounded_lifetime_history_fails_closed();
++    std::cout << "PASS: 9 groups: pool claims; retired/pending-loss isolation; replacement replay/validation; "
++                 "used Connecting cleanup; 512 pristine discoveries; stale handles/uncertain records; "
++                 "committed external/no-pool claims; fresh no-pool identities; bounded lifetime history\n";
 +}
 diff --git a/src/Win95/Window.c b/src/Win95/Window.c
 index 012b5cb..1d0a9c3 100644

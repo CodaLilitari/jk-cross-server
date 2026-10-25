@@ -68,12 +68,64 @@ required retail gateway is disconnected.
 | 7 | PING: payload up to 256 bytes | 107, payload echoed |
 | 8 | SET_ID_POOL: payload 1–15 unique uint32 DirectPlay IDs; before clients join | 108, payload uint32 ID count |
 | 9 | ADMIN_REQUEST: src=actor transport ID, dst=request ID; payload uint32 generation, uint32 operation, then up to 127 printable ASCII bytes | 110, actor/request echoed; payload uint32 generation, uint32 status (0 success), then bounded ASCII summary |
+| 10 | REPLACE_POOL_ID: src=retired surrogate ID, dst=nonzero request correlation; payload uint32 fresh DirectPlay ID | 112, old ID/correlation echoed; payload uint32 accepted new ID |
 
 Errors use type 199, src=request type, dst=error code, payload UTF-8 reason.
 Without a DirectPlay pool, automatic external IDs begin at 65536 and native
-GNS IDs retain their ordinary small-number allocation. ID 1 is always the
+GNS IDs begin at 2. New connections receive previously unused identities within
+that transport session. ID 1 is always the
 engine host; a DirectPlay gateway must acquire the server-player ID 1 or
 translate the host identity consistently.
+
+### Player identities across reconnects
+
+An ordinary client remembers recent reliable messages by sender ID and sequence
+number. Reusing a departed sender's ID for a restarted client can cause new
+messages to be acknowledged as duplicates without reaching the game handler.
+Player slots may be reused; transport identities must identify a new connection.
+
+The engine immediately retires a surrogate identity exposed to game traffic
+when its actual native or external connection ends, including an administrative
+kick. Type 113 is an
+unsolicited retirement event with `src=old ID`, zero `dst`, and no payload.
+The broker forwards it only to the adapter that registered the DirectPlay pool.
+The old identity remains unavailable while replacement is pending.
+
+There is one native discovery exception. A pool-backed native connection starts
+with a pristine reservation so the stock server browser can read its initial
+descriptor and disconnect without spending a player identity on every refresh.
+The first incoming payload commits that identity before validation or forwarding;
+any ordinary outbound Sith packet commits it before sending. Only a reservation
+that has carried neither inbound nor outbound game traffic may return to the
+unused pool on close, without event 113 or a queued player-loss event. Old
+connection handles cannot affect a later reservation. Used or uncertain
+connections are retired normally. Browser/retail registrations and native
+connections without a pool are committed immediately.
+
+The adapter uses ordinary DirectPlay `DestroyPlayer` and `CreatePlayer` calls
+to obtain a fresh ID for that reserved pool entry, then submits request 10.
+The engine accepts replacement only for an inactive, retired pool entry and
+a previously unused valid ID. Duplicate matching replacements and retirement
+notifications are idempotent. A conflicting acknowledgement or failed replacement
+ends the adapter session instead of recycling an old identity. Other slots are
+not rewritten.
+
+The adapter serializes a bounded retirement queue while continuing normal game,
+metadata, and departure processing. The broker preserves retirement notices
+that arrive alongside a registration or replacement acknowledgement. Delayed
+packets and DirectPlay notifications for retired identities cannot recreate a
+retail player or remove a replacement player.
+
+Identity history survives ordinary map changes. Brief browser connection
+resumptions that retain the same game connection also retain its ID. A new
+transport session clears history. The engine and broker bound the session
+history to 65,536 canonical identities, including the canonical host; the
+adapter independently tracks its physical DirectPlay host and issued IDs with
+the same limit. Exhaustion requires a session restart rather than ID reuse.
+
+Deploy the matching engine, manager, and DirectPlay adapter together. This
+protocol extension changes server-side membership management; human client
+executables and Sith packet formats remain unchanged.
 
 ### Private administrator events and actions
 

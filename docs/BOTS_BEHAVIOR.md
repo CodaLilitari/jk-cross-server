@@ -290,9 +290,32 @@ self-to-anchor segment using the existing collision-checked ordinary jump logic.
 [grounded-clearance regression](../qa/bots-c3-grounded-clearance-regression.json) and
 [initial-anchor regression](../qa/bots-initial-anchor-regression.json) reproduce the earlier failures.
 They do not establish successful connected traversal by themselves. Targeted current-build results
-are recorded separately when available; no all-map or complete CTF mastery is claimed.
+are recorded separately below; no all-map or complete CTF mastery is claimed.
 
 Earlier `acf75700` CTF runs and resource-limited attempts are retained as historical receipts. Startup
 attempts that never entered gameplay, including an out-of-memory fixture failure, are excluded from
 connected qualification. The [resource receipt](../qa/bots-feature-fixture-resources.json) records that
 boundary instead of treating a successful build or requested team as gameplay evidence.
+
+### Focused checks of bot 5092 with dedicated 6c4c
+
+Bot `50924ed7` and dedicated server `6c4c25dd` completed two serial solo matches, producing 676 valid
+observations with no observer errors. The [focused receipt](../qa/bots-feature-focused-5092.json)
+records the complete binary and source hashes, map evidence, and normal cleanup of both fixtures.
+There were no additional out-of-memory kills during these runs.
+
+On `c3`, the bot joined the red team and traversed 30 arena sectors using the alternate route around
+the previously rejected low opening. It then stalled at a stock gold-key door while holding only the
+red key. No enemy-flag pickup or capture occurred during the 240-second check. Read-only graph analysis
+found that excluding the known gold-door crossings disconnected the available routes to both the
+enemy-flag approach and the gold-key pickup. This identifies a current routing limitation, not an
+absence of legal human routes: the bot has no validated alternative key-acquisition or capture route
+there. A door exclusion alone would not complete CTF play, so no such source change was applied.
+
+On `m_boss17`, the bot left its observed starting area and moved through nine sectors during the
+100-second check, but no inventory pickup was recorded. This match first observed the bot in sector 27;
+the earlier failing match began in sector 29. It therefore demonstrates movement from the new observed
+spawn without establishing that the exact earlier starting edge was traversed successfully in live
+play. Item acquisition and all spawn variants remain unqualified by this run. These focused results
+supplement the source-specific `d45532cb` nine-map receipt; they do not replace it or establish a fresh
+nine-map qualification of `50924ed7`.

@@ -77,6 +77,26 @@ JK and MotS use separate session modes and corresponding assets. A JK executable
 
 `qa/native-client-provenance.json` proves that the native test client was built from the exact unmodified base: all four modified translation units were rebuilt from their original git contents and linked with the remaining unchanged base objects and dependencies. No server changes are included in that client. Its SHA-256 is recorded in that receipt.
 
+The current dedicated binary `4be9e8fa` and its byte-identical supplied-object
+relink are recorded in [server-reconnect-build.json](../qa/server-reconnect-build.json).
+The [identity lifecycle regression](../qa/server-surrogate-identity-regression.json)
+covers retirement of used canonical identities and replacement with fresh
+ordinary DirectPlay IDs, including repeated joins and delayed old messages.
+Used identities remain retired across map changes for the transport session.
+
+The [native discovery regression](../qa/server-native-discovery-regression.json)
+covers a separate case: a pool-backed native connection that has only read the
+initial transport descriptor may return its pristine reservation to the unused
+pool when it closes. Any incoming payload, including malformed input, or any
+ordinary outgoing Sith packet permanently commits that identity. A used or
+uncertain connection follows the retirement/replacement path. Browser and retail
+ADD operations commit immediately. Pristine discovery release emits neither a
+retirement event nor a queued player-loss event that could affect the next holder.
+These controlled checks and build results supplement the source-specific live
+receipts; the current [chat-admin live receipt](../qa/chat-admin-live-4be9.json)
+records completed stages and pending qualification separately. Historical client
+qualification and artifact hashes below remain unchanged.
+
 The unchanged native client discovered and joined the mixed server's stock JK `JK1MP/m2.jkl` session through GNS, was assigned a real reserved DirectPlay identity, and entered the live world alongside the original JK1.00 retail executable and published browser client. `qa/native-jk-live.json` records the simultaneous active roster and deliberate movement from all three clients reaching the native client, with reciprocal native movement observed in original retail. In the recorded snapshots, native versus original retail views differed by 0.127451 world units for the native player and 0.038729 world units for the retail player; exact coordinate convergence is not claimed. Both source implementations use thresholded velocity smoothing, but its role in these observed offsets was not isolated. These local checks do not certify every map, force power, mod, network condition, or engine release.
 
 The same unchanged native executable, launched with its existing `-motsCompat` option, also joined original retail MotS and the unchanged published browser build simultaneously on `JKM_MP/mdm02_freezer.jkl`. This check used free-for-all, rank 7, and the default Jedi personality. `qa/native-mots-live.json` records active rosters, applied movement, chat, and actual projectile entities in both directions between native and retail, and between native and browser. The browser independently observed six distinct native pistol projectiles; native independently observed five distinct browser pistol projectiles. A native world death and ordinary respawn during normal movement propagated to original retail, including health 100 after respawn and deaths 1 / suicides 1 / score −1. The recorded native-versus-retail position offset after respawn was 0.105607 world units; its cause was not isolated. Initial across-room shots did not reduce browser health or shields, so this evidence does not establish direct player-to-player damage or kill credit. MotS team/class models and other maps remain outside the qualification.
