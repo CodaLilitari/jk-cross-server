@@ -75,6 +75,8 @@ retail JK 1.00, native OpenJKDF2 and JKWeb clients together on `JK1MP/m2.jkl`.
 The final executable also has live evidence of escaping the low spawn tunnel
 that trapped the preceding build. See [qualification and exact build hashes](../docs/BOTS_PROTOTYPE.md)
 for the observed gameplay, runtime details and limits of this test.
+Subsequent DirectPlay adapter corrections have separate receipts from the
+frozen bot executable's mixed gameplay test.
 
 ## Roster and chat
 

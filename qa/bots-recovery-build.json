@@ -16,5 +16,5 @@
     "directplay/gateway.exe": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3"
   },
   "baseline_server_manager_and_adapter_source_unchanged": true,
-  "scope_note": "Native bot build and its original mixed-client validation used unchanged server artifacts listed here. A later separate JK retail roster correction rebuilds only directplay/gateway.exe; see qa/retail-jk-scoreboard-regression.json."
+  "scope_note": "Native bot build and its original mixed-client validation used unchanged server artifacts listed here. Later separate JK retail roster and verified departure handling changes rebuild only directplay/gateway.exe; see qa/retail-jk-scoreboard-regression.json and qa/retail-jk-departure-regression.json."
 }

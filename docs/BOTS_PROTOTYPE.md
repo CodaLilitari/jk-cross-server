@@ -18,8 +18,9 @@ The bot executable uses engine commit
 It does not contain the dedicated-server patch. Its native connection joins the
 existing server, which retains its ordinary retail/native/browser adapters and
 player ID allocation. Human clients and the dedicated engine are unchanged.
-A separate JK retail-scoreboard correction in the existing DirectPlay adapter
-is described below; it was discovered during final compatibility testing.
+Two separate changes to the existing DirectPlay adapter are described below:
+a JK retail-scoreboard correction and verified handling of obsolete sends
+during JK retail departure. Both arose during compatibility testing.
 
 Current scope is Linux x86-64, stock JK1MP, rank zero, free-for-all, with one to
 four distinct personas per launcher invocation. Automatic navigation uses
@@ -94,8 +95,9 @@ changes can include normal respawns.
 
 The packaged executable is
 `8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e`.
-Its fresh local session uses the existing retail, native and browser adapters
-together. Four bots and three unchanged human clients enter the same stock
+Its mixed gameplay test used the existing retail, native and browser adapters
+together, before the two adapter corrections described below. Four bots and
+three unchanged human clients enter the same stock
 world: original retail JK 1.00, native OpenJKDF2 at the pinned base, and the
 published JKWeb build. Real DirectPlay identities come from the existing
 adapter pool before joins; the bot implementation does not allocate them.
@@ -138,10 +140,28 @@ The retail test uses the original executable and original DirectPlay files in
 an isolated Wine runtime. Its launcher/provider paths were repaired to use
 the qualified original DLLs after Wine initialization replaced the system32
 copies. These are test-runtime settings. The dedicated server executable,
-native and browser protocols, and browser bundle remain unchanged. The later
-gateway rebuild contains the JK roster correction above. The original mixed
-gameplay receipts retain the previous gateway hash and its scoreboard failure;
-the narrow retest names the corrected gateway hash.
+native and browser protocols, and browser bundle remain unchanged. The original
+mixed gameplay receipts retain the baseline gateway hash and its scoreboard
+failure. The score-only gateway retest establishes matching statistics, but
+also records a later adapter failure during ordinary retail departure.
+
+The packaged gateway additionally checks JK sends that fail with
+`E_INVALIDARG` or `DPERR_INVALIDPLAYER`. It discards a frame only after fresh
+DirectPlay queries establish an owned local sender and a complete player list
+in which the destination is absent, or a broadcast has no remote recipients.
+Present destinations, live-remote broadcasts, invalid senders, incomplete
+queries and other errors still fail. Packets are neither changed nor retried;
+MotS retains its previous handling. The 15 compiled policy assertions and
+independent source review are recorded with the separate live departure test
+in `qa/retail-jk-departure-regression.json`.
+
+With the packaged gateway (`73158f1d...`), the original retail client completed
+join, leave, rejoin and leave while the same dedicated engine, gateway and four
+bot processes continued running. No `send_departure_check` event occurred in
+that test. It therefore establishes ordinary departure/rejoin continuity for
+that bounded run, but does not exercise the new failure-reconciliation branch
+against the real provider or establish the cause of the earlier failure. That
+branch's decision boundaries are covered by the compiled policy tests.
 
 Each receipt names its exact binary hash; predecessor results are retained as
 predecessor evidence. The scope is one stock map and local transport. Physical

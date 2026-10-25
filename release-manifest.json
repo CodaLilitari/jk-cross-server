@@ -2,7 +2,7 @@
   "files": {
     ".gitignore": {
       "mode": 420,
-      "sha256": "bf0e1b3418da1516cf0d00404e409f5303a4c1b475aa188948cb5e49cbc4815e"
+      "sha256": "a410b74ea0315ca0e29474ab7bc79f1c332e160e1e4f6c2090f476666d7eadef"
     },
     "CHANGELOG.md": {
       "mode": 420,
@@ -18,7 +18,7 @@
     },
     "README.md": {
       "mode": 420,
-      "sha256": "d7a2c978d5f333633dc1ad26310bbf5646fa0129aaba0f9b3a736ae85c921810"
+      "sha256": "72ba0a5ff2cf17a850edea29397ba9497432123b9618db05af779fcea0b5a3b4"
     },
     "VERSION": {
       "mode": 420,
@@ -28,6 +28,14 @@
       "mode": 420,
       "sha256": "18e0107a109f9d2cd41e45f0b36ebfdc72c62a4d08ce46e1dab6314312c00159"
     },
+    "bin/bots-linux-x86_64/jk-bot-client": {
+      "mode": 493,
+      "sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e"
+    },
+    "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
+      "mode": 493,
+      "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9"
+    },
     "bin/linux-x86_64/libGameNetworkingSockets.so": {
       "mode": 493,
       "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9"
@@ -36,13 +44,41 @@
       "mode": 493,
       "sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3"
     },
+    "bots/PROFILES_PROVENANCE.md": {
+      "mode": 420,
+      "sha256": "48398be9055d5d72d854ab589881d8a99b2c7d95e06f486b9bf84ba283d85ddd"
+    },
+    "bots/README.md": {
+      "mode": 420,
+      "sha256": "4f91d734d0503b5dbebf3569db658fae84f2c8133815af5216a32b3bd67de52a"
+    },
+    "bots/SOURCES.json": {
+      "mode": 420,
+      "sha256": "64b7b8bf8864806be0c29ff9e866d83a26037212cae54c82ec646fb8b09a1258"
+    },
+    "bots/__init__.py": {
+      "mode": 420,
+      "sha256": "bcb2d17ad45888a115146a9491ee107f968593ede7cc98a1163b15b69a653893"
+    },
+    "bots/profiles.json": {
+      "mode": 420,
+      "sha256": "f0df931c6dabf2d1c0b352cdbad1ba1d9cbe1753cc0fe5f6fd76f61ab6165b84"
+    },
+    "bots/run.py": {
+      "mode": 420,
+      "sha256": "f8128da6400bd0857bbeef8f32319352737de6fda69e4eefc800a5fb897f8a66"
+    },
     "directplay/Makefile": {
       "mode": 420,
-      "sha256": "dee5fd7a66a4c0491f22ad8517b88ae4a1adfb37df1109678284b83e58d98432"
+      "sha256": "7e8f8868564fbc42cfb893d2d1b8d28a68d20ce30551e37e127fffed2cd1bbac"
     },
     "directplay/README.md": {
       "mode": 420,
-      "sha256": "b89c38bb7149acb7a07e8c4c61556491ff6761579e201feebc286f1dc7bc00e3"
+      "sha256": "8887d9ea4090116daaa5b52f57e25f0b35cbcb485c455f55e940ea1ec5a6a9e8"
+    },
+    "directplay/departure_policy.h": {
+      "mode": 420,
+      "sha256": "5655da67828b23088cc8227163501b8e5608f8a73bdea8de004ec9d51070bf27"
     },
     "directplay/directplay5.reg": {
       "mode": 420,
@@ -50,27 +86,31 @@
     },
     "directplay/gateway.c": {
       "mode": 420,
-      "sha256": "1a69f77610b0986efafc40fcbe57cc09a8fc127dec8ffb540804298a93283864"
+      "sha256": "60f9626e6d64cab3acfbda7e8aa508089715cc288141b5cef8b23d601bae028a"
     },
     "directplay/gateway.exe": {
       "mode": 493,
-      "sha256": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3"
+      "sha256": "73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95"
     },
     "directplay/protocol.c": {
       "mode": 420,
-      "sha256": "8472a0b48ba69b1440136bd540ddc785a304dbe3967b1ce51c916088f5c484ff"
+      "sha256": "1cfd68b2695d6faec44204a7b57ae443ffa632e013112f07778155886fcd5a30"
     },
     "directplay/protocol.h": {
       "mode": 420,
-      "sha256": "55c2b8064bd1a58849da99f141a17509dbfcd1d35c8a20f0daa79cad37bfea9a"
+      "sha256": "fb27292ecd563b2372cb31998d8db32ed618451c53c30236bd358090e5485e40"
     },
     "directplay/setup_wine.py": {
       "mode": 420,
       "sha256": "d9a65c42f4a87da28423053149e70d86163da9857bfe3a4bc85221bf93b46f3e"
     },
+    "directplay/test_departure_policy.c": {
+      "mode": 420,
+      "sha256": "f698a8667436de9ad1f4b60654848c5ac16c4a1a5fa22de1e360af0808620354"
+    },
     "directplay/test_protocol.c": {
       "mode": 420,
-      "sha256": "91713c4550c662fd392f0e8bb14717973f501758a7ef9ecbb3a765edada41401"
+      "sha256": "a7c441c48083f0ba939eed5547be8ea1d08f51c79c08e606851fb5669dce15b2"
     },
     "directplay/wait_helper.c": {
       "mode": 420,
@@ -87,6 +127,10 @@
     "docs/ARCHITECTURE.md": {
       "mode": 420,
       "sha256": "bb8f335d5bf92898e69cf2bd3dc5d5e66b220e4aed99073f58b4b62867d1de85"
+    },
+    "docs/BOTS_PROTOTYPE.md": {
+      "mode": 420,
+      "sha256": "d5debbb01d153a58d0836d4102a29789d4baf70dffa78616f3c550ed2bbe89c3"
     },
     "docs/NETWORKING.md": {
       "mode": 420,
@@ -304,21 +348,41 @@
       "mode": 420,
       "sha256": "f9a127c11f6270d799523a8693702d4d1d513276d31e9a5b0a794ed7d8d6ebba"
     },
+    "native/BOT_BUILD.json": {
+      "mode": 420,
+      "sha256": "917a2fc84ae5922f46cbbae7f5cbe806903d94c75e9bca2861f97417704d06dc"
+    },
     "native/BUILD.json": {
       "mode": 420,
       "sha256": "3173b97dab27c2f63a267b677460b13344df893dc6dcd796f28d5a5a1cc80f1e"
     },
     "native/README.md": {
       "mode": 420,
-      "sha256": "f3c6faeb4e51c03e2a4b67c7afc6dbd777a6dc6fb80ee249129952cd01a8546d"
+      "sha256": "e9b1661a2fe1c97118970c80b26147de685a3227a6eed28b0a3bcc5c57e7cb50"
+    },
+    "native/bot-client.patch": {
+      "mode": 420,
+      "sha256": "02dc798472f00337373dc3336544335b8ee83e6ef62714ff656e388b10a67c43"
+    },
+    "native/bot-relink-linux-x86_64.tar.gz": {
+      "mode": 420,
+      "sha256": "650146a7ad10a5e243b397afa250c8dc1a916d37106630b17b61a98af41a8ed9"
     },
     "native/build.sh": {
       "mode": 493,
       "sha256": "5adc1e6cdb1e322bbd2f7e763b2d04c944b3c06ef1d7b947d4b8f95b1ee1b767"
     },
+    "native/build_bots.sh": {
+      "mode": 420,
+      "sha256": "e2e495e16a0f396e1d9eed1697713f9f44bf55ea3c2682ec554d3e5c9cd3d828"
+    },
     "native/crossplay-dedicated.patch": {
       "mode": 420,
       "sha256": "879dd33e4161815802d6fd7ce21b0f298e0ce9300197efab1ab75c7c2ffa8856"
+    },
+    "native/package_bots.py": {
+      "mode": 420,
+      "sha256": "6dce65fb5cbe967d5e56ffc18410d0bdffad5450b2618d8bd4be29337302d279"
     },
     "native/package_native.py": {
       "mode": 420,
@@ -332,9 +396,69 @@
       "mode": 420,
       "sha256": "7003e80ae105ebf1baee5b670922a2f3670559c31092c356e56b0d4ef81ae5e0"
     },
+    "native/tests/run_bot_driver_tests.py": {
+      "mode": 420,
+      "sha256": "bdac9790732dd061dc6ae6e7b635bbf60ebe19a9b53ba586d97e10ef02982095"
+    },
+    "native/tests/test_bot_driver.c": {
+      "mode": 420,
+      "sha256": "3884e0ab70a0c7e79fb788b0bf6cdf591db2e00cc51f3e2d7473f2a5125d4264"
+    },
     "qa/admin-browser-layout.json": {
       "mode": 420,
       "sha256": "d57e98e12452fdcb6b66c02c8c64868dccab4d155c02e28631ce7dff65e61ce4"
+    },
+    "qa/bots-final-human-fire.json": {
+      "mode": 420,
+      "sha256": "db7ff5ed2feeacc85f6c83a1ec33bf03c8e3115412530ce66e9de9ba38475774"
+    },
+    "qa/bots-final-jkweb.json": {
+      "mode": 420,
+      "sha256": "0a7d20bd4999e53e6aa852a5370371ba63a882b427fd5e957848ea4a71a706bf"
+    },
+    "qa/bots-final-live-gameplay.json": {
+      "mode": 420,
+      "sha256": "9dab67974cf9276c02fbf0a43d7a38feb388eb5972b8e378d8a455fb90c75297"
+    },
+    "qa/bots-final-native-retail.json": {
+      "mode": 420,
+      "sha256": "8ef8023c0ad985f1697503180e79022b6b92927d167afa85cca1ce02616bcee1"
+    },
+    "qa/bots-low-ceiling-regression.json": {
+      "mode": 420,
+      "sha256": "50bb8e1113d3b81311de3d2a545723a896b99163e31e7496d0c26d903192f82e"
+    },
+    "qa/bots-recovery-assets.json": {
+      "mode": 420,
+      "sha256": "f069f5d7a8635f69231c630d36e20ab4f9cc33e01bd349ac74f72aa80f554cc5"
+    },
+    "qa/bots-recovery-build.json": {
+      "mode": 420,
+      "sha256": "a87f4514d3acdf7c5aa78b328ee6587fce136f3aa886339b2c295b5770c0a76d"
+    },
+    "qa/bots-recovery-jkweb.json": {
+      "mode": 420,
+      "sha256": "8f4edee1776b06e8d9f21f49898dd952669d762d4a5dc1cfcbaa3188d26f9de5"
+    },
+    "qa/bots-recovery-live-gameplay.json": {
+      "mode": 420,
+      "sha256": "d88122e125462fb00d189f9ff45f9aba3e8c8713756a739a1e29a8d630c9aecf"
+    },
+    "qa/bots-recovery-native-human.json": {
+      "mode": 420,
+      "sha256": "afbef6f8aa938ddc1da6292c20b0f5755a6dda397fa443119600a779208fe353"
+    },
+    "qa/bots-recovery-native-smoke.json": {
+      "mode": 420,
+      "sha256": "a6bdf5435e8fdb2c22ee49a026cf9356735a2b9e5979cbb39a112db37923ee9b"
+    },
+    "qa/bots-recovery-respawn-targeting.json": {
+      "mode": 420,
+      "sha256": "c23ec080465e6f5cc9d7fdda8f32c1d3236ad650abc32a42e08caec098ec1149"
+    },
+    "qa/bots-recovery-unit-tests.json": {
+      "mode": 420,
+      "sha256": "c263e1f73888ef336ddc95470431a86323f427b553d312d4934bd10081e916c1"
     },
     "qa/browser-asset-admin-layout.json": {
       "mode": 420,
@@ -436,9 +560,21 @@
       "mode": 420,
       "sha256": "b0dd27b75765ae3ab295462f55fca6f2d9925341f9f50741ac930bcadcdf70ec"
     },
+    "qa/retail-jk-departure-regression.json": {
+      "mode": 420,
+      "sha256": "ee46513e97cd06fdbffe78bf91da7664354b7b16c1a47d0b8cd621255de56a1f"
+    },
     "qa/retail-jk-live.json": {
       "mode": 420,
       "sha256": "2f120b7a4c10431283e03cc2b811159585276bda38dc1d8ff34c59b58ded7147"
+    },
+    "qa/retail-jk-score-layout-audit.json": {
+      "mode": 420,
+      "sha256": "a2ae13046d2972ce89cbd460be9a38006c25dc4833e095a7d93845e5f94203be"
+    },
+    "qa/retail-jk-scoreboard-regression.json": {
+      "mode": 420,
+      "sha256": "e566e2acab1a2ae2027b992a54e079a2a87f082abf44489f4205176f00c29180"
     },
     "qa/retail-media-provenance.json": {
       "mode": 420,
@@ -491,6 +627,10 @@
     "scripts/build_release.py": {
       "mode": 420,
       "sha256": "b8923943777ced038faf6c8f193560e2955b56bdfe90fdf017fe5a0509ad94c9"
+    },
+    "tests/test_bots.py": {
+      "mode": 420,
+      "sha256": "494c74e77a042c05b44d0b08d7ded9ed4893d0d70516cf1e94e90e6040928797"
     },
     "tests/test_launcher.py": {
       "mode": 420,

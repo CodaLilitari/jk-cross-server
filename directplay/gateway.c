@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "protocol.h"
+#include "departure_policy.h"
 
 #define MAX_FRAME 65536u
 #define MAX_RAW 2052u
@@ -194,6 +195,43 @@ static void remove_remote(DPID id) {
     if(!send_frame(4,id,0,NULL,0))InterlockedExchange(&stopping,1);
     printf("{\"event\":\"retail_transport_leave\",\"id\":%lu}\n",(unsigned long)id);fflush(stdout);
 }
+static BOOL CALLBACK snapshot_player(DPID id,DWORD type,LPCDPNAME name,DWORD flags,LPVOID context) {
+    struct jkdp_player_snapshot *s=context;unsigned i;
+    (void)name;
+    if(type!=DPPLAYERTYPE_PLAYER || s->count>=JKDP_DEPARTURE_MAX_PLAYERS) {
+        s->complete=0;return FALSE;
+    }
+    for(i=0;i<s->count;i++)if(s->players[i].id==id) {s->complete=0;return FALSE;}
+    s->players[s->count].id=id;
+    s->players[s->count++].local=!!(flags&DPENUMPLAYERS_LOCAL);
+    return TRUE;
+}
+static int reconcile_departed_send(DPID from,DPID to,size_t bytes,HRESULT send_hr) {
+    struct jkdp_player_snapshot snapshot={0};DWORD flags=0;
+    HRESULT source_hr,enum_hr=E_UNEXPECTED;enum jkdp_departure_decision decision;unsigned i;
+    static const char *reasons[]={"invalid_source","incomplete_snapshot","target_present","live_remote_broadcast","verified_departure"};
+    source_hr=IDirectPlay3_GetPlayerFlags(dp,from,&flags);
+    if(SUCCEEDED(source_hr) && (flags&DPPLAYER_LOCAL) && owned_id(from)) {
+        snapshot.complete=1;
+        enum_hr=IDirectPlay3_EnumPlayers(dp,NULL,snapshot_player,&snapshot,DPENUMPLAYERS_ALL);
+        if(FAILED(enum_hr))snapshot.complete=0;
+    }
+    decision=jkdp_departure_policy(&snapshot,from,to,owned_id(from),SUCCEEDED(source_hr) && (flags&DPPLAYER_LOCAL));
+    printf("{\"event\":\"send_departure_check\",\"hresult\":\"0x%08lx\",\"from\":%lu,\"to\":%lu,\"bytes\":%lu,\"source_query\":\"0x%08lx\",\"source_flags\":%lu,\"enum_result\":\"0x%08lx\",\"snapshot_count\":%u,\"snapshot_complete\":%d,\"result\":\"%s\"}\n",
+        (unsigned long)send_hr,(unsigned long)from,(unsigned long)to,(unsigned long)bytes,
+        (unsigned long)source_hr,(unsigned long)flags,(unsigned long)enum_hr,snapshot.count,snapshot.complete,reasons[decision]);
+    fflush(stdout);
+    if(decision!=JKDP_DEPARTURE_DISCARD)return 0;
+    /* The callback only observes. Notify the broker after a complete snapshot
+     * has proved this frame obsolete; preserve every still-present remote. */
+    for(i=0;i<remote_count;) {
+        unsigned j;
+        for(j=0;j<snapshot.count;j++)if(snapshot.players[j].id==remote_ids[i])break;
+        if(j==snapshot.count)remove_remote(remote_ids[i]);else i++;
+        if(stopping)return -1;
+    }
+    return 1;
+}
 static void cache_roster(const uint8_t *raw,size_t bytes) {
     unsigned count,i;size_t at=14;
     if(bytes<14 || raw[0]!=32 || raw[1])return;
@@ -292,14 +330,23 @@ static int on_frame(const uint8_t *frame,size_t n) {
         if(!jkdp_translate(translated,&bytes,sizeof(translated),host_id,1,game_mode)){failure("outbound_management_layout",E_INVALIDARG);return 0;}
         cache_roster(raw,n-12);
         hr=IDirectPlay3_Send(dp,from,to,0,translated,(DWORD)bytes);
-        /* A peer can leave between the broker enqueue and the DP destroy
-         * notification. Local source players stay alive for this whole loop,
-         * so INVALIDPLAYER here identifies the stale remote destination. */
-        if(hr==DPERR_INVALIDPLAYER && to && remote_index(to)>=0) {
+        /* JK may report INVALIDPARAM during the destroy-notification race.
+         * Discard only after fresh DP queries prove the destination absent;
+         * a valid owned/local source and complete snapshot are mandatory. */
+        if(!game_mode && (hr==DPERR_INVALIDPLAYER || hr==E_INVALIDARG)) {
+            int reconciled=reconcile_departed_send(from,to,bytes,hr);
+            if(reconciled)return reconciled>0;
+        }
+        /* Preserve the separately qualified MotS behavior. */
+        if(game_mode && hr==DPERR_INVALIDPLAYER && to && remote_index(to)>=0) {
             printf("{\"event\":\"retail_stale_destination\",\"id\":%lu}\n",(unsigned long)to);
             fflush(stdout);remove_remote(to);return 1;
         }
-        if(FAILED(hr)){failure("Send",hr);return 0;}
+        if(FAILED(hr)) {
+            fprintf(stderr,"{\"event\":\"error\",\"stage\":\"Send\",\"hresult\":\"0x%08lx\",\"from\":%lu,\"to\":%lu,\"bytes\":%lu}\n",
+                (unsigned long)hr,(unsigned long)from,(unsigned long)to,(unsigned long)bytes);
+            fflush(stderr);return 0;
+        }
         outgoing_packets++;
     } else if(type==103) {
         if(bytes<4 || read32(raw)!=0 || from!=to) {failure("canonical_retail_id_rejected",E_FAIL);return 0;}

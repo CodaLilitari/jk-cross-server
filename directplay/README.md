@@ -115,9 +115,12 @@ leaving its spawn bit cleared and preserving its disabled world object.
 This lets the original client send its final welcome, reliable acknowledgments,
 movement, and other ordinary messages to the dedicated simulation.
 
-The pure converter in `protocol.c` also translates two original field widths
-that changed in OpenJKDF2. In both original JK and MotS, packet 32 stores the
-kill count as one byte; OpenJKDF2 uses two. Packet 49 stores the final three
+The pure converter in `protocol.c` also translates original field layouts that
+changed in OpenJKDF2. Original JK packet 32 stores team as one byte before four
+signed 16-bit statistics; the native layout uses five 16-bit fields and places
+team after the three counts. The JK converter reorders these fields and changes
+only the team's width. The existing MotS roster conversion is retained pending
+separate verification of its field semantics. Packet 49 stores the final three
 power-up flags as signed 16-bit values; OpenJKDF2 uses 32-bit values. Translation
 adjusts the packet length, preserves the reliable sequence, and leaves other
 fields intact. MotS packet 2 adds a 16-bit chat-recipient count before its list
@@ -137,10 +140,10 @@ browser includes those reserved objects in its player count. The control panel
 reports the human count separately. Native/browser sessions without the retail
 adapter do not require Wine or the surrogate pool.
 
-Normal peer departures are handled independently of the whole session. If a
-queued send reaches DirectPlay after its retail destination has disappeared,
-`DPERR_INVALIDPLAYER` removes that peer and drops the stale packet. Other send
-failures still surface as adapter errors.
+Normal peer-leave notifications are handled independently of the whole session.
+For failed JK sends, fresh DirectPlay queries must establish that a destination
+has disappeared before an obsolete frame can be discarded; see the departure
+policy below. The existing MotS `DPERR_INVALIDPLAYER` handling remains unchanged.
 
 ## Qualification
 
@@ -184,3 +187,29 @@ Run `make -C directplay test` to exercise independent score-layout fixtures,
 both conversion directions, roster bounds, signed values and the existing
 management-message checks. Rebuild with `make -C directplay gateway.exe` using
 the documented MinGW toolchain. Human game executables need no patch.
+
+### Queued sends during JK retail departure
+
+During normal retail departure in the scoreboard retest, the original provider
+returned `E_INVALIDARG` from a send and the adapter stopped the mixed match.
+That failure lacked a destination snapshot, so its cause was not established.
+The JK path now reconciles only `E_INVALIDARG` and
+`DPERR_INVALIDPLAYER` against fresh DirectPlay queries. The sender must still
+be owned and local, the bounded player enumeration must be complete, and the
+addressed destination must be absent. A broadcast can be discarded only when
+the enumeration contains no remote players.
+
+A present destination, a live remote broadcast, an invalid sender, failed or
+incomplete enumeration, or another error still stops the adapter. Packets are
+neither altered nor retried. Cached peers are removed only after their absence
+has been established, with normal leave notification to the broker. Diagnostic
+logs record the original error and the verification result. MotS retains its
+previous departure handling. See `qa/retail-jk-departure-regression.json` for
+the specific live test and `test_departure_policy.c` for the failure boundaries.
+
+The packaged gateway passed a bounded original-retail join, leave, rejoin and
+leave test with the same engine, gateway and four bots remaining alive. That
+run did not reproduce a send error or emit `send_departure_check`; it verifies
+ordinary session continuity but does not qualify the new reconciliation branch
+against a real provider failure. The branch's acceptance and rejection cases
+are covered by the compiled policy tests.
