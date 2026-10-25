@@ -2,7 +2,45 @@
 
 This report accompanies a development build of JK Cross Server. It distinguishes actual game-client behavior from transport fixtures and records the particular clients used. A compatibility result for one pinned build does not automatically qualify every release or mod.
 
+## Original JK adapter corrections — 2026-10-25
+
+The current packaged DirectPlay gateway has SHA-256
+`73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95`.
+This integration imports only the adapter's JK score-layout correction,
+verified-departure policy, binary, tests and supporting documentation. It does
+not change the native engine, browser transport, updater, dependencies or
+version, and does not include the separate bot prototype.
+
+| Check | Observed result and limit | Evidence |
+| --- | --- | --- |
+| Original JK roster field semantics | Original executable sender, receiver and death handling establish team U8 followed by kills/deaths/suicides/score S16. Native conversion preserves full counts and signed values. MotS semantics were not newly verified. | [Original layout audit](../qa/retail-jk-score-layout-audit.json) |
+| Corrected score display on intermediate gateway `4ee4d6ab…` | Paired native/retail tables agree, including the human death count. The same run later failed during normal retail departure with Send `0x80070057`; that failure remains recorded. | [Scoreboard regression](../qa/retail-jk-scoreboard-regression.json) |
+| Final gateway `73158f1d…` | Original retail joined, left, rediscovered, rejoined and left the same running session. Engine, gateway and four fixture-client processes remained unchanged. No failed Send or `send_departure_check` occurred, so live execution of the reconciliation branch remains unverified. | [Departure regression](../qa/retail-jk-departure-regression.json) |
+| Deterministic adapter checks | Independent score fixtures, both conversion directions, complete-prefix truncation/capacity checks and 15 departure-policy assertions pass. The policy rejects live destinations/remotes, invalid or absent sources, and incomplete/overflow snapshots. | `make -C directplay test`; build/test metadata in the departure receipt |
+
+These three receipts were produced in the separate prototype worktree at
+commit [`e7e1ed64128e95d0a091d169673b34194e80ea03`](https://gitlab.com/codalilitari/jk-cross-server/-/commit/e7e1ed64128e95d0a091d169673b34194e80ea03).
+Their test sessions used four bot clients as external fixture participants;
+the recorded bot names, binary hashes and process IDs are retained as test
+provenance, not as components of this main-branch integration. Adjacent
+provenance fields locate the excluded baseline bot receipt at that immutable
+source commit. Raw evidence inventories retain filenames and digests, rather
+than packaging the original screenshots, observations and runtime logs.
+Importing these receipts does not represent a fresh live test of main.
+
+The original failure's root cause was not established. The final natural
+departure test verifies continuity, and the compiled policy tests verify its
+acceptance/rejection decisions; neither establishes that every provider timing
+race is fixed. No new MotS or Windows-hardware qualification is claimed.
+Historical receipts below retain their original builds and conclusions.
+In particular, `qa/directplay-protocol-tests.json` records the earlier converter
+whose tests did not detect the JK score-field error; it is not the current JK
+layout specification.
+
 ## Sources and unchanged clients
+
+The pins in this section describe the retained baseline qualification. The
+three adapter receipts above identify their own exact test binaries separately.
 
 | Component | Exact source or identity |
 | --- | --- |
@@ -21,10 +59,12 @@ Retail qualification uses an isolated original DirectPlay 5 runtime under Wine. 
 
 ## Release updater acceptance in 0.3
 
-Version 0.3 adds release management to the Python control panel. The native
-engine, DirectPlay bridge, browser transport and asset-delivery implementations,
-and dependency lists retain their 0.2 contents. No new live game-client session
-is claimed for this updater change.
+The original 0.3 updater change added release management to the Python control
+panel. At that checkpoint, the native engine, DirectPlay bridge, browser
+transport, asset-delivery implementations and dependency lists retained their
+0.2 contents. Those component-preservation results are historical and do not
+describe the later adapter correction above. No new live game-client session
+was claimed for the updater change itself.
 
 | Check | Result | Evidence |
 | --- | --- | --- |
@@ -60,7 +100,7 @@ The following engineering and game-client records are retained from 0.1 and
 | Bundled native relinking materials | Rebuild from a clean extracted relink kit succeeded | `qa/native-relink-verified.json` |
 | Supervisor with actual JK content | Loaded the dedicated `JK1MP/m2.jkl` world, exposed real session metadata, opened the browser gateway, and stopped cleanly | `qa/controller_smoke.json` |
 | Headless engine and prepared Wine runtime | Started the packaged engine, original DirectPlay helper, real DirectPlay host and identity pool with no inherited display; stopped the owned session | `qa/wine-setup-headless-lifecycle.json` |
-| Retail packet conversion | Deterministic layout, truncation, capacity, identity, sequence, signed-field and chat-field checks passed | `qa/directplay-protocol-tests.json` |
+| Historical retail packet conversion | The earlier deterministic suite passed but did not detect the JK score-field mapping error; current JK correction and tests are described above | `qa/directplay-protocol-tests.json` |
 | Actual browser administration UI | Form, running-state controls, status and logs rendered without clipping or page errors | `qa/admin-browser-layout.json` |
 | Live browser-download panel in 0.2 | Offered episode/mod hashes, enabled policy and actual transfer counters rendered at 1280 px and 390 px without script errors or horizontal overflow | `qa/browser-asset-admin-layout.json` |
 | JK synthetic game peer | Actual engine world load, full synchronization, WELCOME, human count 0 → 1 → 0 | `qa/native-jk-synthetic.json` |

@@ -8,16 +8,19 @@ wait_helper.exe: wait_helper.c
 	$(CC) $(CFLAGS) -o $@.tmp wait_helper.c -luser32
 	mv -f $@.tmp $@
 
-gateway.exe: gateway.c protocol.c protocol.h
+gateway.exe: gateway.c protocol.c protocol.h departure_policy.h
 	$(CC) $(CFLAGS) -o $@.tmp gateway.c protocol.c $(LDLIBS)
 	mv -f $@.tmp $@
 
-test: protocol.c protocol.h test_protocol.c
+test: protocol.c protocol.h test_protocol.c departure_policy.h test_departure_policy.c
 	cc -std=c11 -O2 -Wall -Wextra -Werror -o test_protocol.tmp protocol.c test_protocol.c
 	./test_protocol.tmp
 	rm -f test_protocol.tmp
+	cc -std=c11 -O2 -Wall -Wextra -Werror -o test_departure_policy.tmp test_departure_policy.c
+	./test_departure_policy.tmp
+	rm -f test_departure_policy.tmp
 
 clean:
-	rm -f gateway.exe wait_helper.exe test_protocol.tmp
+	rm -f gateway.exe wait_helper.exe test_protocol.tmp test_departure_policy.tmp
 
 .PHONY: all clean test

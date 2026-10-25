@@ -1,0 +1,263 @@
+{
+  "historical_provenance": {
+    "repository": "https://gitlab.com/codalilitari/jk-cross-server",
+    "source_commit": "e7e1ed64128e95d0a091d169673b34194e80ea03",
+    "source_branch": "prototype/player-bots-recovery",
+    "source_path": "qa/retail-jk-departure-regression.json",
+    "source_url": "https://gitlab.com/codalilitari/jk-cross-server/-/blob/e7e1ed64128e95d0a091d169673b34194e80ea03/qa/retail-jk-departure-regression.json",
+    "original_receipt_sha256": "ee46513e97cd06fdbffe78bf91da7664354b7b16c1a47d0b8cd621255de56a1f",
+    "context": "Recorded during the separate bot-prototype qualification and retained as evidence for the adapter changes. The bot implementation, bot binary and bot-only support files are not included in this adapter-only integration. Importing this receipt does not represent a fresh live test of the main checkout. Original statuses, measurements, binary hashes and limitations are preserved."
+  },
+  "status": "join_leave_rejoin_leave_pass_with_error_branch_unobserved",
+  "date_utc": "2026-10-25",
+  "scope": "Focused original JK1.00 retail join, ordinary leave, normal rediscovery and rejoin, ordinary second leave into one unchanged running four-bot dedicated session. No additional native or browser gameplay regression was performed in this round.",
+  "gateway_sha256": "73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95",
+  "bot_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+  "original_retail_executable_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+  "dedicated_engine_sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
+  "baseline_failure_receipt": "retail-jk-scoreboard-regression.json",
+  "session": {
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "rank": 0,
+    "teams": false,
+    "bots": 4,
+    "human_clients": 1,
+    "human_name": "RetailHuman",
+    "configured_player_limit": 8,
+    "transport_slots_including_dedicated_host": 9,
+    "auto_restart": false
+  },
+  "ordinary_actions": [
+    "Joined via normal profile, Internet TCP/IP discovery and existing character menus.",
+    "Left through Escape, Abort, Yes; original game displayed its final score table.",
+    "Rediscovered the same running session and rejoined with the same human character.",
+    "Left again through Escape, Abort, Yes; original game displayed its final score table.",
+    "Quit the original game through Quit and Yes before stopping the owned client Wine prefix and display."
+  ],
+  "completed_player_joins": [
+    {
+      "join_number": 1,
+      "full_player_observed_utc": "2026-10-25T04:19:33.001672+00:00",
+      "network_id": 5934363,
+      "slot": 5,
+      "local_thing_type": 10,
+      "submode_flags": "0x1",
+      "map": "m2.jkl",
+      "bot_peer_ids": {
+        "Bot_Katarn": 5934357,
+        "Bot_Trooper": 5934355,
+        "Bot_BobaFett": 5934354,
+        "Bot_JanOrs": 5934356
+      }
+    },
+    {
+      "join_number": 2,
+      "full_player_observed_utc": "2026-10-25T04:23:09.331815+00:00",
+      "network_id": 5934364,
+      "slot": 5,
+      "local_thing_type": 10,
+      "submode_flags": "0x1",
+      "map": "m2.jkl",
+      "bot_peer_ids": {
+        "Bot_Katarn": 5934357,
+        "Bot_Trooper": 5934355,
+        "Bot_BobaFett": 5934354,
+        "Bot_JanOrs": 5934356
+      }
+    }
+  ],
+  "transport_events": [
+    {
+      "utc": "2026-10-25T04:17:37+00:00",
+      "event": "ready",
+      "version": "0.1.0",
+      "mode": "jk",
+      "host_id": 5934353,
+      "canonical_host_id": 1,
+      "pool_count": 8,
+      "physical_capacity": 32,
+      "human_capacity": 8,
+      "checksum_seed": 1351917825
+    },
+    {
+      "utc": "2026-10-25T04:19:22+00:00",
+      "event": "retail_transport_join",
+      "id": 5934363
+    },
+    {
+      "utc": "2026-10-25T04:20:24+00:00",
+      "event": "retail_transport_leave",
+      "id": 5934363
+    },
+    {
+      "utc": "2026-10-25T04:22:43+00:00",
+      "event": "retail_transport_join",
+      "id": 5934364
+    },
+    {
+      "utc": "2026-10-25T04:23:23+00:00",
+      "event": "retail_transport_leave",
+      "id": 5934364
+    }
+  ],
+  "continuity": {
+    "status": "passed",
+    "before_first_join_utc": "2026-10-25T04:18:31.692478+00:00",
+    "after_second_leave_utc": "2026-10-25T04:23:30.025242+00:00",
+    "final_state": "running",
+    "final_manager_error": null,
+    "final_retail_ready": true,
+    "engine_and_gateway_pids_unchanged": true,
+    "processes": {
+      "engine": {
+        "pid": 68075,
+        "returncode": null
+      },
+      "directplay": {
+        "pid": 68099,
+        "returncode": null
+      }
+    },
+    "supervisor_pid_observed_after_both_leaves": 68068,
+    "four_bot_pids_and_starttimes_unchanged": true,
+    "bot_pids": [
+      68684,
+      68685,
+      68686,
+      68687
+    ],
+    "all_four_bots_same_frozen_binary": true,
+    "final_manager_player_count": 4,
+    "uptime_before_seconds": 54,
+    "uptime_after_seconds": 352
+  },
+  "failed_send_reconciliation": {
+    "status": "not_observed",
+    "send_departure_check_event_count": 0,
+    "failed_send_event_count": 0,
+    "events": [],
+    "qualification": "Both natural retail departures succeeded, but this run logged no failed Send or send_departure_check. It does not demonstrate live execution of the new stale-destination reconciliation branch or prove that every provider timing race is eliminated. Its deterministic policy checks are reported separately by the build/test owner."
+  },
+  "fixture": {
+    "original_game_executable_unchanged": true,
+    "runtime": "Owned isolated Wine/QEMU i386 fixture and X display inside the existing private test network namespace.",
+    "directplay_runtime": "Qualified original DirectPlay DLLs/helper in an owned application-local directory and native overrides; separate client and gateway Wine prefixes.",
+    "fixture_changes": "Wine registry/provider paths and local Xvfb helper-path adaptation are test fixture changes. No game executable, game memory, player state, server engine, or bot binary was modified for this test.",
+    "observer": "Bounded mapped O_RDONLY process-memory reads with exact original-executable hash and process identity checks. All gameplay/menu actions used normal keyboard/mouse input.",
+    "mots_qualified": false,
+    "windows_hardware_qualification": false
+  },
+  "cleanup": {
+    "retail_left_and_quit_normally": true,
+    "owned_game_launcher_display_processes_remaining": 0,
+    "owned_client_prefix_processes_remaining": 0,
+    "shared_namespace_preserved_for_root": true,
+    "checked_utc": "2026-10-25T04:24:59.089267+00:00",
+    "root_owned_server": {
+      "state": "stopped",
+      "error": null,
+      "processes_remaining": 0,
+      "requested_after_last_live_checkpoint": true
+    },
+    "root_owned_bots": {
+      "launcher_result": "stopped",
+      "processes_remaining": 0
+    },
+    "root_stopped_private_namespace_after_fixture_cleanup": true,
+    "namespace_processes_before_final_stop": "Only the verified owned keeper remained; all game, Wine, display, engine, gateway and bot processes had exited."
+  },
+  "evidence_sha256": {
+    "leavecheck-bots-before.json": "cb761ec3e5ce88574a2d99c23db32e74e69933bcf0372aa8752ad006a1f1d70f",
+    "leavecheck-before-join.json": "9178c8f405c097964b47471aab47151f6d5a015034ee77510fa0744cdef40a9f",
+    "leavecheck-join1.json": "0d2f779ceb1f3e5398fa7a0c54c932ab8de338b0f4946cb175473b9f63c65184",
+    "leavecheck-server-joined1.json": "272b6a263491c5b497678e9a8ed9a3a23189eef1b9d6975df5ead1c0e22b2bfa",
+    "leavecheck-world1.png": "63373382cfa36078355ba24feb69e5e94474e40ec28f26bb01c8bfd7f4ed18e6",
+    "leavecheck-tally1.png": "184fa79f4f34981136ac7a924ea7064920887b28ac400f89360f66671de8144b",
+    "leavecheck-after-leave1.json": "51987a73cc534a94c51d19199510eba282009ea71fb63d1cd5704402420df71e",
+    "leavecheck-join2.json": "582a2465ddb18e44c69bfa2a34eecad0529b1c7c683c6e4fcbd2de8bbf20adfe",
+    "leavecheck-join2-settled.json": "8530de784aca00236e17768e17fed0f1ffc798490540c8c54de87858a4dbe11f",
+    "leavecheck-current2.png": "3f40b0c406e6aaa88674bfb6d6885dc995e47729e3b1e33fba64f49b19541bf2",
+    "leavecheck-server-joined2.json": "f61144b20c842a225f6b3c5ab95ed559411c94b9156e2d86b43588d547c0c9b9",
+    "leavecheck-tally2.png": "8c9cdeef512ada6f6dee8e0fd672cfedaa9e261b885820fbb81b30b0a462c89e",
+    "leavecheck-after-leave2.json": "cf49bf706f52ebc0fefc1ce03fc325c3556ee6fdf4f8b8909deaef8b51f0c902",
+    "leavecheck-after-leave2-settled.json": "a527585e59a57714ab61b353f8aefcc60425284905db0dd7135cf04070df6af7",
+    "leavecheck-processes-after.json": "73b2c0be25948cd9eb085f12f9c35e8db0fe3da90775786ac3cbfe03cfbc3462",
+    "leavecheck-ui-events.jsonl": "83910015d5925e1f0e139ed1fa0b19f66cbd6bf0745a5efed97fc47e8eab6a2d",
+    "leavecheck-log-observation.json": "cabd633c0363127d4593698bd0b14bd8f879b5444d1ed109df8ad0f8f50ffb7b",
+    "leavecheck-cleanup.json": "67a963e9f4cf2a13b0f86d0c3806939c80b8eef8ea90cce04dee6659827d6776"
+  },
+  "evidence_notes": [
+    "leavecheck-join2.json and its initial screenshot were captured during the normal receive-data stage; completed second-join proof is leavecheck-join2-settled.json with local type10 player, slot5, RetailHuman ID5934364 and submode0x1.",
+    "The settled second-join screenshot shows the normal Escape menu. Its independent read-only state confirms the full player join, and the subsequent ordinary score table records that session.",
+    "Raw runtime logs are retained in the task workspace; the sanitized log observation freezes only relevant lifecycle events through the last passing checkpoint, before the root-owned scheduled shutdown."
+  ],
+  "build_and_unit_regressions": {
+    "gateway_sha256": "73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95",
+    "gateway_bytes": 291295,
+    "source_sha256": {
+      "directplay/gateway.c": "60f9626e6d64cab3acfbda7e8aa508089715cc288141b5cef8b23d601bae028a",
+      "directplay/protocol.c": "1cfd68b2695d6faec44204a7b57ae443ffa632e013112f07778155886fcd5a30",
+      "directplay/protocol.h": "fb27292ecd563b2372cb31998d8db32ed618451c53c30236bd358090e5485e40",
+      "directplay/departure_policy.h": "5655da67828b23088cc8227163501b8e5608f8a73bdea8de004ec9d51070bf27",
+      "directplay/test_protocol.c": "a7c441c48083f0ba939eed5547be8ea1d08f51c79c08e606851fb5669dce15b2",
+      "directplay/test_departure_policy.c": "f698a8667436de9ad1f4b60654848c5ac16c4a1a5fa22de1e360af0808620354",
+      "directplay/Makefile": "7e8f8868564fbc42cfb893d2d1b8d28a68d20ce30551e37e127fffed2cd1bbac"
+    },
+    "compiler": "i686-w64-mingw32-gcc-posix (GCC) 13-posix",
+    "SOURCE_DATE_EPOCH": 1792901044,
+    "compiler_package_origin": "https://snapshot.ubuntu.com/ubuntu/20260828T000000Z/",
+    "compiler_packages": [
+      {
+        "Package": "gcc-mingw-w64-i686-posix",
+        "Version": "13.2.0-6ubuntu1+26.1",
+        "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-i686-posix_13.2.0-6ubuntu1+26.1_amd64.deb",
+        "SHA256": "8c63daeb59c96044c2a5c26b5a3a2b793237f3e10d3428bb659401122b8e501c",
+        "Size": "35221632"
+      },
+      {
+        "Package": "gcc-mingw-w64-i686-posix-runtime",
+        "Version": "13.2.0-6ubuntu1+26.1",
+        "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-i686-posix-runtime_13.2.0-6ubuntu1+26.1_amd64.deb",
+        "SHA256": "650bcd76e0c56c713428950aec8823fd517f911eaad80406907379a69d36ad0a",
+        "Size": "13146552"
+      },
+      {
+        "Package": "mingw-w64-i686-dev",
+        "Version": "11.0.1-3build1",
+        "Filename": "pool/universe/m/mingw-w64/mingw-w64-i686-dev_11.0.1-3build1_all.deb",
+        "SHA256": "903e09f47c0e441f9476a32efc745430a0cc39b1c33a13ea1f1d0414a24b7970",
+        "Size": "3153084"
+      },
+      {
+        "Package": "binutils-mingw-w64-i686",
+        "Version": "2.41.90.20240122-1ubuntu1+11.4",
+        "Filename": "pool/universe/b/binutils-mingw-w64/binutils-mingw-w64-i686_2.41.90.20240122-1ubuntu1+11.4_amd64.deb",
+        "SHA256": "5236ef254532c1f4ebddbce898e884fe9cc1ac4803092211ec615cbdeba7aafb",
+        "Size": "2974884"
+      },
+      {
+        "Package": "gcc-mingw-w64-base",
+        "Version": "13.2.0-6ubuntu1+26.1",
+        "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-base_13.2.0-6ubuntu1+26.1_amd64.deb",
+        "SHA256": "a30c07e807e9874ea93909448c5d6d37f9569ebe60ad32de8e490aad198538a3",
+        "Size": "188046"
+      },
+      {
+        "Package": "mingw-w64-common",
+        "Version": "11.0.1-3build1",
+        "Filename": "pool/universe/m/mingw-w64/mingw-w64-common_11.0.1-3build1_all.deb",
+        "SHA256": "4a42fd30fbc3838c58c929d8a4882682fc12408bb7a0e6cafa913c0f0a57c187",
+        "Size": "5580230"
+      }
+    ],
+    "command": "SOURCE_DATE_EPOCH=1792901044 make -C directplay gateway.exe CC=i686-w64-mingw32-gcc-posix",
+    "test_command": "make -C directplay test",
+    "strict_tests_passed": true,
+    "policy_assertions": 15,
+    "test_output": "cc -std=c11 -O2 -Wall -Wextra -Werror -o test_protocol.tmp protocol.c test_protocol.c\n./test_protocol.tmp\nPASS: JK team-first roster, independent scoreboard fixtures, full S16 counts/scores, U8 team zero extension, bidirectional truncation, capacity, host aliases, saber-info, MotS chat and opaque-payload checks\nrm -f test_protocol.tmp\ncc -std=c11 -O2 -Wall -Wextra -Werror -o test_departure_policy.tmp test_departure_policy.c\n./test_departure_policy.tmp\nPASS: verified departed destination and empty broadcast; reject live targets/remotes, invalid or absent sender, incomplete enumeration and overflow\nrm -f test_departure_policy.tmp\n",
+    "independent_source_review": "No blocking defect; actual MinGW DirectPlay API definitions and complete-snapshot failure cases reviewed by a separate agent.",
+    "bot_binary_unchanged_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e"
+  },
+  "evidence_availability": "Raw evidence filenames identify artifacts from the original qualification workspace. This receipt preserves their recorded hashes and summarized observations; the raw screenshots, observations and runtime logs are not included in this adapter-only integration."
+}

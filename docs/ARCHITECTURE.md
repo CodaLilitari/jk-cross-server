@@ -53,7 +53,23 @@ Several differences are visible only after a real client begins synchronization:
 
 The server also fixes an existing UpdateState light-field serialization mismatch. These changes are deliberately narrow and documented in the source patch. They do not establish that every mod, force-power interaction, or later client release has been qualified.
 
-The retail edge also translates the roster kill-count width (original U8 versus native S16), three power-up flag widths (original S16 versus native U32), and MotS's chat recipient-list prefix. The original recipient scope and reliable-message sequence are preserved. The converter validates complete layouts and capacity before committing changes; the corresponding source addresses and deterministic tests accompany the code.
+The retail edge reorders the original JK roster's team-first statistics and
+changes only the team field's width (original U8 versus native S16). Kills,
+deaths, suicides and score remain signed 16-bit values. The existing MotS
+roster conversion is retained pending separate verification of its field
+semantics. The adapter also translates three power-up flag widths (original
+S16 versus native U32) and MotS's chat recipient-list prefix. Original recipient
+scope and reliable-message sequence are preserved. The converter validates
+complete layouts and capacity before committing changes; the corrected JK
+field evidence is in `qa/retail-jk-score-layout-audit.json`.
+
+For JK, an eligible failed DirectPlay send may discard an obsolete frame only
+after fresh queries confirm an owned/local/present sender, a complete bounded
+player enumeration, and an absent destination. Broadcast disposal requires zero
+nonlocal players. Other errors remain fatal; packets are not retried. This
+policy does not change MotS handling. The final adapter passed ordinary retail
+leave/rejoin continuity, but that run did not exercise the failed-send branch;
+see `qa/retail-jk-departure-regression.json` and the deterministic policy tests.
 
 ## Administration and lifecycle
 

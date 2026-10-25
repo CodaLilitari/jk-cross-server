@@ -1,5 +1,27 @@
 # Changes
 
+## Unreleased — Original JK DirectPlay adapter corrections
+
+- Correct original JK roster statistics: team is U8 before signed 16-bit
+  kills, deaths, suicides and score. Reorder the native fields in both
+  directions without narrowing kills or changing the other signed values.
+- On eligible failed JK sends, query DirectPlay before discarding an obsolete
+  destination. Require a complete player snapshot and an owned, local, present
+  sender; reject present destinations and broadcasts with live remote players.
+  Keep other send failures fatal and log sender, destination and byte count.
+- Include the tested gateway `73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95`,
+  score-layout regressions and 15 departure-policy assertions. MotS handling
+  is unchanged; its roster field semantics were not newly verified.
+- Import three adapter QA receipts with their original fixture identities and
+  historical outcomes. The scoreboard retest passed field conversion but
+  failed on retail departure. The final gateway passed normal join, leave,
+  rejoin and leave; its failed-send reconciliation branch was not exercised
+  live. See `docs/QUALIFICATION.md` for exact scope and provenance.
+
+This integration changes the adapter and its documentation/tests only. The
+native engine, browser transport, updater, dependencies and version remain
+unchanged. The separate bot prototype used by the test fixture is not included.
+
 ## 0.3.0-dev — GitLab release updates
 
 - Check this project's public GitLab releases on startup and every six hours,
@@ -16,9 +38,10 @@
   and documented upgrade instructions. Git checkouts and dependency changes
   use an explicit manual upgrade path.
 
-The native engine, DirectPlay bridge, client transports, and dependency lists
-are unchanged from 0.2.0-dev. Updater qualification is separate from the
-retained stock-session and browser-download qualification.
+At the original 0.3 updater checkpoint, the native engine, DirectPlay bridge,
+client transports and dependency lists were unchanged from 0.2.0-dev. That
+historical updater qualification is separate from the adapter correction above
+and the retained stock-session and browser-download qualification.
 
 ## 0.2.0-dev — Browser asset delivery
 

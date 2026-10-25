@@ -6,7 +6,7 @@
     },
     "CHANGELOG.md": {
       "mode": 420,
-      "sha256": "4b14b7c092b6a2a5f1b0baaa8bb912409be4ad12da50971cd31d17cf41ecc33b"
+      "sha256": "67817c2155f521e39d18f283622ca2d2a9c4803d538f1bf095c8730a727561b2"
     },
     "LICENSE": {
       "mode": 420,
@@ -38,11 +38,15 @@
     },
     "directplay/Makefile": {
       "mode": 420,
-      "sha256": "dee5fd7a66a4c0491f22ad8517b88ae4a1adfb37df1109678284b83e58d98432"
+      "sha256": "7e8f8868564fbc42cfb893d2d1b8d28a68d20ce30551e37e127fffed2cd1bbac"
     },
     "directplay/README.md": {
       "mode": 420,
-      "sha256": "b89c38bb7149acb7a07e8c4c61556491ff6761579e201feebc286f1dc7bc00e3"
+      "sha256": "36cb796bc0e13b4130e684bd72f4b6e5dc1f27ce0816436f970eca243ff80f47"
+    },
+    "directplay/departure_policy.h": {
+      "mode": 420,
+      "sha256": "5655da67828b23088cc8227163501b8e5608f8a73bdea8de004ec9d51070bf27"
     },
     "directplay/directplay5.reg": {
       "mode": 420,
@@ -50,27 +54,31 @@
     },
     "directplay/gateway.c": {
       "mode": 420,
-      "sha256": "1a69f77610b0986efafc40fcbe57cc09a8fc127dec8ffb540804298a93283864"
+      "sha256": "60f9626e6d64cab3acfbda7e8aa508089715cc288141b5cef8b23d601bae028a"
     },
     "directplay/gateway.exe": {
       "mode": 493,
-      "sha256": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3"
+      "sha256": "73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95"
     },
     "directplay/protocol.c": {
       "mode": 420,
-      "sha256": "8472a0b48ba69b1440136bd540ddc785a304dbe3967b1ce51c916088f5c484ff"
+      "sha256": "1cfd68b2695d6faec44204a7b57ae443ffa632e013112f07778155886fcd5a30"
     },
     "directplay/protocol.h": {
       "mode": 420,
-      "sha256": "55c2b8064bd1a58849da99f141a17509dbfcd1d35c8a20f0daa79cad37bfea9a"
+      "sha256": "fb27292ecd563b2372cb31998d8db32ed618451c53c30236bd358090e5485e40"
     },
     "directplay/setup_wine.py": {
       "mode": 420,
       "sha256": "d9a65c42f4a87da28423053149e70d86163da9857bfe3a4bc85221bf93b46f3e"
     },
+    "directplay/test_departure_policy.c": {
+      "mode": 420,
+      "sha256": "f698a8667436de9ad1f4b60654848c5ac16c4a1a5fa22de1e360af0808620354"
+    },
     "directplay/test_protocol.c": {
       "mode": 420,
-      "sha256": "91713c4550c662fd392f0e8bb14717973f501758a7ef9ecbb3a765edada41401"
+      "sha256": "a7c441c48083f0ba939eed5547be8ea1d08f51c79c08e606851fb5669dce15b2"
     },
     "directplay/wait_helper.c": {
       "mode": 420,
@@ -86,7 +94,7 @@
     },
     "docs/ARCHITECTURE.md": {
       "mode": 420,
-      "sha256": "bb8f335d5bf92898e69cf2bd3dc5d5e66b220e4aed99073f58b4b62867d1de85"
+      "sha256": "b76afdf3f5a3ba19612d3a23c43b8ad0dc6dda4280d80c9cf118827d73703dc2"
     },
     "docs/NETWORKING.md": {
       "mode": 420,
@@ -94,7 +102,7 @@
     },
     "docs/QUALIFICATION.md": {
       "mode": 420,
-      "sha256": "edfe6703c54dec0c966e1a6e31b62e71ae07e5b2c7214c1ee684de5f2dccbd0f"
+      "sha256": "0e0d571a9718bbaa38025778c8f6e655a03abdadd1c633898676d8a158164466"
     },
     "docs/UPDATES.md": {
       "mode": 420,
@@ -436,9 +444,21 @@
       "mode": 420,
       "sha256": "b0dd27b75765ae3ab295462f55fca6f2d9925341f9f50741ac930bcadcdf70ec"
     },
+    "qa/retail-jk-departure-regression.json": {
+      "mode": 420,
+      "sha256": "c75c9cbc5367407237254482594943ddee661323b1a8c244bb4cd70a09e4f4cd"
+    },
     "qa/retail-jk-live.json": {
       "mode": 420,
       "sha256": "2f120b7a4c10431283e03cc2b811159585276bda38dc1d8ff34c59b58ded7147"
+    },
+    "qa/retail-jk-score-layout-audit.json": {
+      "mode": 420,
+      "sha256": "fc64114db253654feaca2d6b7371326abb9b7b7ba1ed207b22201cdc964508ef"
+    },
+    "qa/retail-jk-scoreboard-regression.json": {
+      "mode": 420,
+      "sha256": "cc13bd3df6013a2d99685a547caf1683cb01e2f35ff9b3cddc7f3b336ab72516"
     },
     "qa/retail-media-provenance.json": {
       "mode": 420,
