@@ -2,9 +2,11 @@
 const token=document.querySelector('meta[name="admin-token"]').content;
 const form=document.querySelector('#settings');
 const fields=document.querySelector('#settings-fields');
-let config=null, catalog=null, lastStatus=null, lastUpdate=null, busy=false, updateBusy=false, reconnecting=false;
+let config=null, catalog=null, lastStatus=null, lastUpdate=null, busy=false, updateBusy=false, reconnecting=false, authorityBusy=false;
 const numeric=['max_players','rank','tick_ms','score_limit','time_limit','native_port','ipc_port','broker_port','web_port','game_flags'];
-const bools=['teams','web_enabled','web_asset_downloads','retail_enabled','auto_restart'];
+const bools=['teams','web_enabled','web_asset_downloads','retail_enabled','auto_restart',
+  'bots_enabled','bots_taunts','bots_sabers_only','bots_fists_peace','bots_force_enabled'];
+const behaviorKeys=['bots_sabers_only','bots_fists_peace','bots_force_enabled'];
 const byId=id=>document.getElementById(id);
 
 async function api(path,method='GET',body){
@@ -26,6 +28,7 @@ function fill(value){
     if(bools.includes(key))input.checked=item;
     else input.value=key==='web_origins'?item.join('\n'):key==='web_ice_servers'?JSON.stringify(item,null,2):String(item);
   }
+  for(const input of byId('bot-profiles').querySelectorAll('input'))input.checked=value.bots_profiles.includes(input.value);
   updateRankHint();
 }
 function updateRankHint(){byId('rank-hint').hidden=form.elements.namedItem('game').value!=='mots';}
@@ -38,6 +41,7 @@ function current(){
       key==='web_ice_servers'?JSON.parse(input.value||'[]'):
       key==='password'?input.value:input.value.trim();
   }
+  value.bots_profiles=[...byId('bot-profiles').querySelectorAll('input:checked')].map(input=>input.value);
   return value;
 }
 function mapChoices(){
@@ -49,11 +53,14 @@ function updateControls(){
   const state=lastStatus?.state||'stopped';
   const editable=['stopped','failed'].includes(state);
   fields.disabled=!editable||busy;
+  const liveBots=state==='running'&&Boolean(lastStatus?.bots?.enabled);
+  byId('bot-behavior-fields').disabled=busy||(!editable&&!liveBots);
+  byId('bot-behavior-save').hidden=!liveBots;
   byId('save').disabled=!editable||busy;
   byId('preflight').disabled=!editable||busy;
   byId('start').disabled=!editable||busy||Boolean(lastUpdate?.installing||lastUpdate?.restart_required||lastUpdate?.restart_pending);
   byId('stop').disabled=editable||busy;
-  byId('edit-hint').textContent=editable?'Save settings, check the files, then start the session.':'Stop the session to change its settings.';
+  byId('edit-hint').textContent=editable?'Save settings, check the files, then start the session.':liveBots?'Bot combat rules can change live. Stop the session to change the roster or other settings.':'Stop the session to change its settings.';
   if(lastUpdate){
     const updating=lastUpdate.installing||lastUpdate.restart_pending;
     byId('update-check').disabled=busy||updateBusy||updating||lastUpdate.checking;
@@ -128,6 +135,9 @@ function renderStatus(value){
   byId('web-status').textContent=value.browser?'Listening':config?.web_enabled?'Offline':'Disabled';
   const game=value.browser?.games?.[0];
   byId('player-status').textContent=value.session?value.session.players+' / '+value.session.max:game?game.players+' / '+game.max:'—';
+  const bots=value.bots;
+  byId('bot-status').textContent=bots?.enabled?bots.joined_count+' / '+bots.configured_count+' · '+bots.state:'Disabled';
+  byId('bot-player-detail').textContent=bots?.error||bots?.players?.map(player=>player.name+(player.joined?' · joined':' · joining')).join('  /  ')||'';
   const log=byId('logs'), atBottom=log.scrollHeight-log.scrollTop-log.clientHeight<50;
   log.textContent=value.logs?.map(row=>row.time+' ['+row.source+'] '+row.text).join('\n')||'No server output yet.';
   if(atBottom)log.scrollTop=log.scrollHeight;
@@ -148,6 +158,69 @@ async function updateAction(fn){
   finally{updateBusy=false;updateControls();}
 }
 async function save(){const value=await api('config','PUT',current());fill(value);return value;}
+function authorityControls(){
+  for(const node of byId('admin-keys-panel').querySelectorAll('button,input'))node.disabled=authorityBusy;
+}
+async function loadAuthority(){
+  try{
+    const value=await api('admin-keys');
+    const active=value.credentials.filter(row=>row.status==='active').length;
+    byId('admin-authority-state').textContent=value.server_id?
+      active+' active credential(s) · Server '+value.server_id:'No keys issued. The first explicit issuance creates this server’s persistent authority.';
+    byId('admin-key-list').replaceChildren(...value.credentials.map(row=>{
+      const box=document.createElement('article');box.className='admin-key-row';
+      const title=document.createElement('strong');title.textContent=row.label;
+      const detail=document.createElement('p');detail.className='hint';
+      detail.textContent=row.id+' · '+row.status+' · '+row.capabilities.map(c=>c==='match.next'?'Next level':'Kick players').join(', ');
+      const dates=document.createElement('p');dates.className='hint';
+      dates.textContent='Issued '+new Date(row.created_at).toLocaleString()+(row.last_used_at?' · Last used '+new Date(row.last_used_at).toLocaleString():'')+(row.revoked_at?' · Revoked '+new Date(row.revoked_at).toLocaleString():'');
+      box.append(title,detail,dates);
+      if(row.status==='active'){
+        const controls=document.createElement('div');controls.className='admin-key-actions';
+        const rotate=document.createElement('button');rotate.type='button';rotate.className='quiet';rotate.textContent='Rotate and download';
+        rotate.addEventListener('click',()=>authorityAction(async()=>{await downloadCredential('admin-keys/'+row.id+'/rotate');notice('Replacement download prepared. The old key is revoked.');}));
+        const revoke=document.createElement('button');revoke.type='button';revoke.className='danger';revoke.textContent='Revoke key';
+        revoke.addEventListener('click',()=>authorityAction(async()=>{await api('admin-keys/'+row.id+'/revoke','POST');notice('Credential revoked. Further privileged commands using it are denied.');}));
+        controls.append(rotate,revoke);box.append(controls);
+      }
+      return box;
+    }));
+  }catch(error){byId('admin-authority-state').textContent='Authority unavailable: '+error.message;}
+}
+async function downloadCredential(path,body){
+  const headers={'Authorization':'Bearer '+token};
+  if(body!==undefined)headers['Content-Type']='application/json';
+  const response=await fetch('/api/'+path,{method:'POST',headers,body:body===undefined?undefined:JSON.stringify(body),cache:'no-store'});
+  if(!response.ok){const result=await response.json();throw new Error(result.error||'Credential action failed.');}
+  const match=/^attachment; filename="(jk-admin-key-[0-9a-f]{16}\.cog)"$/.exec(response.headers.get('Content-Disposition')||'');
+  if(!match)throw new Error('Credential download headers are invalid. Revoke or rotate the new key if the download was lost.');
+  const blob=await response.blob();
+  const url=URL.createObjectURL(blob), link=document.createElement('a');
+  link.href=url;link.download=match[1];document.body.append(link);
+  try{link.click();}finally{link.remove();setTimeout(()=>URL.revokeObjectURL(url),250);}
+  // No credential text is decoded, stored in DOM/config/storage, or logged.
+}
+async function authorityAction(fn){
+  if(authorityBusy)return;authorityBusy=true;authorityControls();
+  try{await fn();}catch(error){notice(error.message,'error');}
+  finally{await loadAuthority();authorityBusy=false;authorityControls();}
+}
+byId('admin-keys-refresh').addEventListener('click',()=>authorityAction(async()=>{}));
+byId('admin-key-form').addEventListener('submit',event=>{
+  event.preventDefault();if(!event.currentTarget.reportValidity())return;
+  const capabilities=[];if(byId('admin-cap-next').checked)capabilities.push('match.next');if(byId('admin-cap-kick').checked)capabilities.push('player.kick');
+  if(!capabilities.length){notice('Choose at least one admin capability.','error');return;}
+  authorityAction(async()=>{
+    await downloadCredential('admin-keys',{label:byId('admin-key-label').value,capabilities});
+    byId('admin-key-form').reset();notice('Private key download prepared. Keep it outside game content; it cannot be downloaded again.');
+  });
+});
+byId('bot-behavior-save').addEventListener('click',()=>action(async()=>{
+  const values=Object.fromEntries(behaviorKeys.map(key=>[key,form.elements.namedItem(key).checked]));
+  const saved=await api('bots/behavior','PUT',values);
+  Object.assign(config,saved);
+  notice('Bot combat rules saved. Running bots reload the rules within one second.');
+}));
 form.addEventListener('submit',event=>{event.preventDefault();action(async()=>{await save();notice('Settings saved.');});});
 form.elements.namedItem('episode').addEventListener('input',mapChoices);
 form.elements.namedItem('game').addEventListener('change',()=>{
@@ -197,4 +270,12 @@ for(const id of ['updates-enabled','updates-auto-install'])byId(id).addEventList
   notice('Update preferences saved.');
 }));
 async function poll(){try{renderStatus(await api('status'));}catch(error){byId('state').textContent=reconnecting?'Restarting':'Disconnected';notice(reconnecting?'Reconnecting after the update…':error.message,reconnecting?'success':'error');}}
-(async()=>{try{fill(await api('config'));await poll();setInterval(poll,1500);}catch(error){notice(error.message,'error');}})();
+(async()=>{try{
+  const profiles=await api('bots/profiles');
+  byId('bot-profiles').replaceChildren(...profiles.map(profile=>{
+    const label=document.createElement('label'),input=document.createElement('input');
+    input.type='checkbox';input.value=profile.id;input.name='bot_profile';
+    label.append(input,document.createTextNode(profile.name.replace(/^Bot_/,'')));return label;
+  }));
+  fill(await api('config'));await poll();setInterval(poll,1500);await loadAuthority();
+}catch(error){notice(error.message,'error');}})();

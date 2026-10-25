@@ -1,9 +1,9 @@
 diff --git a/docs/crossplay-gateway.md b/docs/crossplay-gateway.md
 new file mode 100644
-index 0000000..27e4eaf
+index 0000000..82ba1b7
 --- /dev/null
 +++ b/docs/crossplay-gateway.md
-@@ -0,0 +1,111 @@
+@@ -0,0 +1,144 @@
 +# Dedicated-server transport gateway
 +
 +Server-only integration based on `codalilitari/OpenJKDF2-MotS-Fixes` commit
@@ -28,8 +28,8 @@ index 0000000..27e4eaf
 +The existing registry options are plain JSON: `gameName`, `serverPassword`,
 +`portNum`, `maxPlayers`, `maxRank`, `tickRate`, `scoreLimit`, `timeLimit`,
 +`bIsDedicated`, `bUseScoreLimit`, `bUseTimeLimit`, `bIsSingleLevel`, and
-+`bIsTeams`. Set `bIsDedicated` to true before startup. `maxPlayers` is the human
-+limit; the engine reserves one additional host slot. Use 100 ms tick intervals
++`bIsTeams`. Set `bIsDedicated` to true before startup. `maxPlayers` includes the
++dedicated host slot; humans and bots share the remaining slots. Use 100 ms tick intervals
 +for the original retail default (the retail interface supports 100–300 ms).
 +
 +## Transports
@@ -51,7 +51,7 @@ index 0000000..27e4eaf
 +DirectPlay IDs. This preserves IDs embedded inside game packets and allows
 +unmodified retail clients to address those peers. A pool of at most 15 IDs,
 +15 real retail players and a host fit within DirectPlay's 32 physical slots.
-+Use at most 15 human slots for this mixed configuration. The original retail
++Use at most 15 configured slots, including the host, for this mixed configuration. The original retail
 +session browser may count unused surrogate transport slots; the control panel
 +should display the engine's actual player count.
 +
@@ -73,12 +73,45 @@ index 0000000..27e4eaf
 +| 5 | DATA: src=registered peer, dst=recipient (0 or 1 means engine host) | Game output uses type 105 with canonical src/dst |
 +| 7 | PING: payload up to 256 bytes | 107, payload echoed |
 +| 8 | SET_ID_POOL: payload 1–15 unique uint32 DirectPlay IDs; before clients join | 108, payload uint32 ID count |
++| 9 | ADMIN_REQUEST: src=actor transport ID, dst=request ID; payload uint32 generation, uint32 operation, then up to 127 printable ASCII bytes | 110, actor/request echoed; payload uint32 generation, uint32 status (0 success), then bounded ASCII summary |
 +
 +Errors use type 199, src=request type, dst=error code, payload UTF-8 reason.
 +Without a DirectPlay pool, automatic external IDs begin at 65536 and native
 +GNS IDs retain their ordinary small-number allocation. ID 1 is always the
 +engine host; a DirectPlay gateway must acquire the server-player ID 1 or
 +translate the host identity consistently.
++
++### Private administrator events and actions
++
++Type 9 exists only on the dedicated engine's authenticated supervisor socket.
++The public adapter broker rejects it. Operations are 1 (private chat reply),
++2 (private current player list), 3 (kick by `#slot` or exact unambiguous name),
++and 4 (ordinary next authored level). List/next-level take no argument. There
++is no arbitrary console or script operation. The engine rechecks a fully joined
++actor's transport identity and nonzero connection generation before execution.
++
++Type 109 is a verified host-directed admin chat event: src is the actual
++transport ID, dst its generation, and payload is at most 127 printable ASCII
++characters. It is emitted after ordinary message deduplication. A player name
++or speaker field inside chat does not identify the actor. Type 111, with zero
++src/dst and no payload, clears manager grants when the map or IPC context resets.
++Generations change on reconnect/reset. A bounded recent-request cache also
++rejects accidental duplicate supervisor actions.
++
++The manager verifies persistent credentials outside the game and authorizes
++typed requests; the engine executes normal host actions. A kick sends the
++ordinary quit packet and retires transport membership. An unsolicited 104
++event instructs the relevant adapter to retire its corresponding seat. Late
++packets from that retired seat do not affect other players in the shared
++DirectPlay adapter. A level change uses stock end-level/tally messages and
++requires episode progression. Updated INFO descriptors keep browser and
++DirectPlay discovery synchronized with the actual map.
++
++The companion jk-cross-server package documents issuance, the inert key-file
++container, offline proof workflow, and the limits of a human-pasted challenge
++in docs/CHAT_ADMIN.md. No credential is loaded into world COG bytecode.
++
++### Sith packet representation
 +
 +The Sith packet header is uint16 message type plus uint16 reliability sequence;
 +it is not a uint32 message type. Player enumeration is message 41, with body
@@ -115,6 +148,302 @@ index 0000000..27e4eaf
 +transport validation; it does not by itself prove a retail, browser or native
 +client has completed a game join. Runtime and multi-client observations must
 +be recorded separately, with the exact engine and asset identities.
+diff --git a/src/Dss/sithAdmin.c b/src/Dss/sithAdmin.c
+new file mode 100644
+index 0000000..7dd64fe
+--- /dev/null
++++ b/src/Dss/sithAdmin.c
+@@ -0,0 +1,252 @@
++#include "sithAdmin.h"
++
++#include "Devices/sithComm.h"
++#include "Dss/jkDSS.h"
++#include "Dss/sithMulti.h"
++#include "Main/Main.h"
++#include "Main/jkEpisode.h"
++#include "Platform/Networking/GNS/stdComm_GNS.h"
++#include "Win95/stdComm.h"
++#include "jk.h"
++
++#include <stdio.h>
++#include <string.h>
++
++int sithAdmin_Printable(const char *text, size_t length)
++{
++    if (!text || length > SITH_ADMIN_TEXT_MAX) return 0;
++    for (size_t i = 0; i < length; ++i)
++        if ((unsigned char)text[i] < 32 || (unsigned char)text[i] > 126) return 0;
++    return 1;
++}
++
++int sithAdmin_DecodeChat(const SithMessage *message, char text[128], int32_t *speaker)
++{
++    uint32_t length;
++    const unsigned char *payload;
++    if (!message || !text || !speaker || message->netMsg.msg_size < 13 ||
++        message->netMsg.msg_size > sizeof(message->pktData)) return 0;
++    payload = (const unsigned char *)message->pktData;
++    memcpy(speaker, payload + 4, sizeof(*speaker));
++    memcpy(&length, payload + 8, sizeof(length));
++    if (!length || length > 128 || length > message->netMsg.msg_size - 12 ||
++        payload[12 + length - 1] || memchr(payload + 12, 0, length - 1)) return 0;
++    /* Preserve ordinary extended-character chat, but reject embedded control
++     * characters before any display/log path. Admin IPC itself is ASCII only. */
++    for (uint32_t i = 0; i + 1 < length; ++i)
++        if (payload[12 + i] < 32 || payload[12 + i] == 127) return 0;
++    memcpy(text, payload + 12, length);
++    return 1;
++}
++
++int sithAdmin_IsCommand(const char *text)
++{
++    static const char prefix[] = "admin";
++    if (!text) return 0;
++    while (*text == ' ') ++text;
++    for (unsigned i = 0; i < sizeof(prefix) - 1; ++i) {
++        unsigned char c = (unsigned char)text[i];
++        if (c >= 'A' && c <= 'Z') c += 'a' - 'A';
++        if (c != (unsigned char)prefix[i]) return 0;
++    }
++    return text[5] == 0 || text[5] == ' ';
++}
++
++int sithAdmin_JoinedSlot(uint32_t peer)
++{
++    int found = -1;
++    unsigned count = jkPlayer_maxPlayers;
++    if (!Main_bDedicatedServer || !stdComm_bIsServer || !sithNet_isServer ||
++        !sithNet_isMulti || !sith_bOpen || !sithWorld_g_pCurrentWorld ||
++        peer <= 1 || peer == (uint32_t)sithNet_serverNetId ||
++        peer == (uint32_t)stdComm_dplayIdSelf) return -1;
++    if (count > JKPLAYER_NUM_INFOS) count = JKPLAYER_NUM_INFOS;
++    for (unsigned i = 1; i < count; ++i) {
++        const SithPlayer *player = &jkPlayer_playerInfos[i];
++        if (player->playerNetId == peer && (player->flags & 3) == 3 && player->pLocalPlayer) {
++            if (found >= 0) return -1; /* A corrupt duplicate identity is not authority. */
++            found = (int)i;
++        }
++    }
++    return found;
++}
++
++static int sithAdmin_Reply(uint32_t actor, const char *text)
++{
++    SithMessage message;
++    const size_t length = strlen(text);
++    if (!length || !sithAdmin_Printable(text, length)) return 0;
++    memset(&message, 0, sizeof(message));
++    message.netMsg.cogMsgId = DSS_CHAT;
++    message.netMsg.msg_size = (uint32_t)(12 + length + 1);
++    message.pktData[0] = 0;
++    message.pktData[1] = (uint32_t)-1;
++    message.pktData[2] = (uint32_t)(length + 1);
++    memcpy((unsigned char *)message.pktData + 12, text, length + 1);
++    return sithComm_SendMsgToPlayer(&message, (int)actor, 1, 1);
++}
++
++static void sithAdmin_Name(const SithPlayer *player, char name[33])
++{
++    unsigned i;
++    for (i = 0; i < 32 && player->player_name[i]; ++i) {
++        const unsigned c = player->player_name[i];
++        name[i] = c >= 32 && c <= 126 ? (char)c : '?';
++    }
++    name[i] = 0;
++}
++
++static int sithAdmin_ExactName(const SithPlayer *player, const char *name)
++{
++    unsigned i;
++    for (i = 0; i < 32 && player->player_name[i]; ++i)
++        if (!name[i] || (unsigned char)name[i] != player->player_name[i]) return 0;
++    return i < 32 && name[i] == 0;
++}
++
++static int sithAdmin_KickSlot(uint32_t actor, const char *selector, char summary[128])
++{
++    int target = -1;
++    unsigned count = jkPlayer_maxPlayers;
++    if (count > JKPLAYER_NUM_INFOS) count = JKPLAYER_NUM_INFOS;
++    if (selector[0] == '#') {
++        unsigned slot = 0;
++        if (!selector[1]) goto badSelector;
++        for (size_t i = 1; selector[i]; ++i) {
++            if (selector[i] < '0' || selector[i] > '9') goto badSelector;
++            slot = slot * 10 + (unsigned)(selector[i] - '0');
++            if (slot >= JKPLAYER_NUM_INFOS) goto badSelector;
++        }
++        if (slot < count) target = (int)slot;
++    } else {
++        for (unsigned i = 0; i < count; ++i) {
++            const SithPlayer *player = &jkPlayer_playerInfos[i];
++            if (player->playerNetId && (player->flags & 2) && sithAdmin_ExactName(player, selector)) {
++                if (target >= 0) {
++                    strcpy(summary, "That name is ambiguous. Use admin players and kick #slot.");
++                    return -1;
++                }
++                target = (int)i;
++            }
++        }
++    }
++    if (target < 0 || !jkPlayer_playerInfos[target].playerNetId) {
++        strcpy(summary, "No connected player matches that selector.");
++        return -1;
++    }
++    const uint32_t peer = jkPlayer_playerInfos[target].playerNetId;
++    if (!target || peer <= 1 || peer == (uint32_t)sithNet_serverNetId ||
++        peer == (uint32_t)stdComm_dplayIdSelf || peer == actor) {
++        strcpy(summary, "The host and your own connection cannot be kicked.");
++        return -1;
++    }
++    if (sithAdmin_JoinedSlot(peer) != target) {
++        strcpy(summary, "That player is no longer fully joined.");
++        return -1;
++    }
++#ifdef PLATFORM_GNS
++    if (!stdComm_GNS_AdminPeerConnected(peer)) {
++        strcpy(summary, "That player's transport has already disconnected.");
++        return -1;
++    }
++#else
++    strcpy(summary, "This transport does not support dedicated administration.");
++    return -1;
++#endif
++    return target;
++badSelector:
++    strcpy(summary, "Use #slot from admin players, or an exact player name.");
++    return -1;
++}
++
++static int sithAdmin_NextLevel(char summary[128])
++{
++    const jkEpisodeLoad *episode = &jkEpisode_mLoad;
++    const jkEpisodeEntry *current, *next = NULL;
++    if (sithMulti_quitGameState || sithMain_bEndLevel) {
++        strcpy(summary, "A level or session transition is already pending.");
++        return 5;
++    }
++    if (sithNet_MultiModeFlags & MULTIMODEFLAG_SINGLE_LEVEL) {
++        strcpy(summary, "Single-level sessions cannot advance. Enable episode progression before starting the server.");
++        return 5;
++    }
++    if (!episode->paEntries || episode->numSeq <= 0 ||
++        episode->currentEpisodeEntryIdx < 0 || episode->currentEpisodeEntryIdx >= episode->numSeq) {
++        strcpy(summary, "The loaded episode has no valid current level.");
++        return 5;
++    }
++    current = &episode->paEntries[episode->currentEpisodeEntryIdx];
++    if (current->gotoA >= 0) {
++        for (int i = 0; i < episode->numSeq; ++i)
++            if (episode->paEntries[i].lineNum == current->gotoA) {
++                if (next) { next = NULL; break; }
++                next = &episode->paEntries[i];
++            }
++    }
++    if (!next || next->type != 0 || !next->fileName[0] ||
++        !memchr(next->fileName, 0, sizeof(next->fileName)) ||
++        !sithAdmin_Printable(next->fileName, strlen(next->fileName)) ||
++        !strncmp(current->fileName, next->fileName, sizeof(current->fileName))) {
++        strcpy(summary, "The episode does not define a different next multiplayer level.");
++        return 5;
++    }
++    /* The exact same host action as the game's endlevel command: normal
++     * DSS_ENDLEVEL, ten-second timer, tally, authored episode and join/sync. */
++    jkDSS_SendEndLevel();
++    snprintf(summary, 128, "Next level scheduled: %.31s (normal 10-second transition).", next->fileName);
++    return 0;
++}
++
++int sithAdmin_Execute(uint32_t actor, uint32_t operation, const char *argument,
++                      uint32_t *kickedPeer, char summary[128])
++{
++    size_t length;
++    if (!summary || !kickedPeer) return 1;
++    *kickedPeer = 0;
++    strcpy(summary, "Invalid admin request.");
++    if (!argument) return 1;
++    length = strnlen(argument, SITH_ADMIN_TEXT_MAX + 1);
++    if (!sithAdmin_Printable(argument, length) || operation < SITH_ADMIN_MESSAGE ||
++        operation > SITH_ADMIN_NEXT_LEVEL ||
++        ((operation == SITH_ADMIN_MESSAGE || operation == SITH_ADMIN_KICK) ? !length : length != 0)) return 1;
++    if (sithAdmin_JoinedSlot(actor) < 0) {
++        strcpy(summary, "Your connection is no longer fully joined. Authenticate again after joining.");
++        return 2;
++    }
++    if (operation == SITH_ADMIN_MESSAGE) {
++        if (!sithAdmin_Reply(actor, argument)) {
++            strcpy(summary, "The private reply could not be sent.");
++            return 6;
++        }
++        strcpy(summary, "Private reply sent.");
++    } else if (operation == SITH_ADMIN_PLAYERS) {
++        unsigned count = jkPlayer_maxPlayers;
++        if (count > JKPLAYER_NUM_INFOS) count = JKPLAYER_NUM_INFOS;
++        for (unsigned i = 0; i < count; ++i) {
++            const SithPlayer *player = &jkPlayer_playerInfos[i];
++            char name[33], line[128];
++            if (!player->playerNetId || (!i ? !(player->flags & 2) : sithAdmin_JoinedSlot(player->playerNetId) != (int)i)) continue;
++            sithAdmin_Name(player, name);
++            snprintf(line, sizeof(line), "#%u %s%s", i, name,
++                     !i ? " [host]" : player->playerNetId == actor ? " [you]" : "");
++            if (!sithAdmin_Reply(actor, line)) {
++                strcpy(summary, "The player list could not be completely sent.");
++                return 6;
++            }
++        }
++        strcpy(summary, "Player list sent. Use an exact name or #slot to kick.");
++    } else if (operation == SITH_ADMIN_KICK) {
++        int target;
++        if (sithMulti_quitGameState || sithMain_bEndLevel) {
++            strcpy(summary, "A level or session transition is already pending.");
++            return 5;
++        }
++        target = sithAdmin_KickSlot(actor, argument, summary);
++        if (target < 0) return 3;
++        *kickedPeer = jkPlayer_playerInfos[target].playerNetId;
++        sithMulti_QuitPlayer((int)*kickedPeer);
++        snprintf(summary, 128, "Kicked player in slot #%d.", target);
++    } else return sithAdmin_NextLevel(summary);
++    return 0;
++}
+diff --git a/src/Dss/sithAdmin.h b/src/Dss/sithAdmin.h
+new file mode 100644
+index 0000000..89a7260
+--- /dev/null
++++ b/src/Dss/sithAdmin.h
+@@ -0,0 +1,32 @@
++#ifndef _SITH_ADMIN_H
++#define _SITH_ADMIN_H
++
++#include "types.h"
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++#define SITH_ADMIN_TEXT_MAX 127
++
++enum sithAdminOperation {
++    SITH_ADMIN_MESSAGE = 1,
++    SITH_ADMIN_PLAYERS = 2,
++    SITH_ADMIN_KICK = 3,
++    SITH_ADMIN_NEXT_LEVEL = 4
++};
++
++/* These are typed operations from the authenticated local manager. No game
++ * packet, player name, console string or COG grants administrative authority. */
++int sithAdmin_DecodeChat(const SithMessage *message,
++                         char text[SITH_ADMIN_TEXT_MAX + 1], int32_t *speaker);
++int sithAdmin_IsCommand(const char *text);
++int sithAdmin_Printable(const char *text, size_t length);
++int sithAdmin_JoinedSlot(uint32_t peer);
++int sithAdmin_Execute(uint32_t actor, uint32_t operation, const char *argument,
++                      uint32_t *kickedPeer, char summary[SITH_ADMIN_TEXT_MAX + 1]);
++
++#ifdef __cplusplus
++}
++#endif
++#endif
 diff --git a/src/Dss/sithDSSThing.c b/src/Dss/sithDSSThing.c
 index b05fe1a..8f33ea7 100644
 --- a/src/Dss/sithDSSThing.c
@@ -139,6 +468,120 @@ index b05fe1a..8f33ea7 100644
              if ( !pSector )
                  return 0;
              rdVector3 pos = NETMSG_POPVEC3();
+diff --git a/src/Dss/sithMulti.c b/src/Dss/sithMulti.c
+index 92f6076..ae1e3ae 100644
+--- a/src/Dss/sithMulti.c
++++ b/src/Dss/sithMulti.c
+@@ -13,6 +13,8 @@
+ #include "Dss/sithDSSThing.h"
+ #include "Dss/sithDSS.h"
+ #include "Dss/sithDSSCog.h"
++#include "Dss/sithAdmin.h"
++#include "Platform/Networking/GNS/stdComm_GNS.h"
+ #include "World/sithSoundClass.h"
+ #include "stdPlatform.h"
+ #include "World/sithSector.h"
+@@ -60,19 +62,22 @@ void sithMulti_SendChat(const char *pStr, int arg0, int arg1)
+ // MOTS altered
+ int sithMulti_ProcessChat(SithMessage *pMsg)
+ {
+-    // Added: 132 -> 256
+-    char v5[256];
+-
+-    NETMSG_IN_START(pMsg);
+-
+-    int arg0 = NETMSG_POPS32();
+-    int arg1 = NETMSG_POPS32();
+-    int arg2 = NETMSG_POPS32();
++    char v5[128];
++    int32_t arg1;
++    if (!sithAdmin_DecodeChat(pMsg, v5, &arg1)) return 0;
++
++#ifdef PLATFORM_GNS
++    if (Main_bDedicatedServer && sithAdmin_IsCommand(v5)) {
++        /* ProcessMessages already deduplicated this host-directed copy. The
++         * transport set netMsg.idx; the chat's name/index grants no authority.
++         * Consume before any console/formatting path, including invalid proofs
++         * during loading. The hook separately requires an active joined host. */
++        stdComm_GNS_AdminChat(pMsg->netMsg.idx, v5);
++        return 1;
++    }
++#endif
+ 
+-    if ( arg2 >= 0x80 )
+-        arg2 = 128;
+-    NETMSG_POPSTR(v5, arg2);
+-    v5[arg2 + 1] = 0;
++    if (arg1 >= (int32_t)jkPlayer_maxPlayers || arg1 >= JKPLAYER_NUM_INFOS) return 0;
+ 
+     if ( arg1 < 0 )
+         jk_snwprintf(sithMulti_chatWStrTmp, 256, u"%S", v5); // Added: char -> wchar
+@@ -208,6 +213,9 @@ int sithMulti_Startup()
+     SithThing **v5; // ebp
+     int v7; // ecx
+ 
++#ifdef PLATFORM_GNS
++    if (Main_bDedicatedServer && stdComm_bIsServer) stdComm_GNS_AdminReset();
++#endif
+     g_submodeFlags |= 1u;
+     sithMulti_quitGameState = 0;
+     sithMulti_bTimelimitMet = 0;
+@@ -1039,13 +1047,30 @@ void sithMulti_InitTick(uint32_t tickrate)
+     sithNet_dword_8C4BA8 = 0;
+ }
+ 
++/* The map's player records also contain spawn positions. Keep that complete
++ * count for respawn masks and SyncPlayers, but admit only the configured
++ * session capacity. idx_13b4_related already includes a dedicated host slot.
++ * Every transport reaches this common game-layer allocation gate. */
++static int sithMulti_FindJoinSlot(void)
++{
++    if (idx_13b4_related <= 0) return -1;
++    uint32_t limit = (uint32_t)idx_13b4_related;
++    if (limit > jkPlayer_maxPlayers) limit = jkPlayer_maxPlayers;
++    if (limit > JKPLAYER_NUM_INFOS) limit = JKPLAYER_NUM_INFOS;
++    for (uint32_t slot = 0; slot < limit; slot++)
++    {
++        SithPlayer *player = &jkPlayer_playerInfos[slot];
++        if ((player->flags & 2) != 0 && !player->playerNetId) return (int)slot;
++    }
++    return -1;
++}
++
+ int sithMulti_ProcessJoinRequest(SithMessage *pMsg)
+ {
+     int v1; // esi
+     uint32_t v3; // eax
+     SithPlayer* v4; // ecx
+-    uint32_t v5; // ecx
+-    SithPlayer* v6; // eax
++    int v5; // ecx
+     uint32_t v7; // eax
+     int *v8; // ecx
+     uint32_t v9; // eax
+@@ -1122,13 +1147,8 @@ int sithMulti_ProcessJoinRequest(SithMessage *pMsg)
+                 return 1;
+             }
+         }
+-        for (v5 = 0; v5 < jkPlayer_maxPlayers; v5++)
+-        {
+-            v6 = &jkPlayer_playerInfos[v5];
+-            if ( (v6->flags & 2) != 0 && !v6->playerNetId )
+-                break;
+-        }
+-        if ( v5 == jkPlayer_maxPlayers )
++        v5 = sithMulti_FindJoinSlot();
++        if (v5 < 0)
+         {
+             sithMulti_verbosePrintf("Too many players\n");
+             NETMSG_START;
+@@ -1596,4 +1616,4 @@ void sithMulti_FinishJoining(int code, int param2, int playerId)
+     NETMSG_END(0x24);
+ 
+     sithComm_SendMsgToPlayer(&sithComm_netMsgTmp, playerId, 1, 0);
+-}
+\ No newline at end of file
++}
 diff --git a/src/Main/Main.c b/src/Main/Main.c
 index fd2c8ac..aee025d 100644
 --- a/src/Main/Main.c
@@ -161,6 +604,69 @@ index fd2c8ac..aee025d 100644
  
      wuRegistry_Startup(HKEY_LOCAL_MACHINE, "Software\\LucasArts Entertainment Company\\JediKnight\\v1.0", (BYTE*)"0.1");
      //stdStartup(&hs); // Moved
+diff --git a/src/Platform/Networking/GNS/AdminConnections.h b/src/Platform/Networking/GNS/AdminConnections.h
+new file mode 100644
+index 0000000..fcecd70
+--- /dev/null
++++ b/src/Platform/Networking/GNS/AdminConnections.h
+@@ -0,0 +1,57 @@
++#ifndef JK_GNS_ADMIN_CONNECTIONS_H
++#define JK_GNS_ADMIN_CONNECTIONS_H
++
++#include <cstdint>
++#include <deque>
++#include <limits>
++#include <map>
++#include <utility>
++
++namespace jk_gateway {
++
++/* Engine-owned incarnations: a transport reconnect, map transition or IPC
++ * disconnect invalidates every old actor binding. No name or chat field can
++ * choose a generation. Exhaustion fails closed instead of reusing a value. */
++class AdminConnections {
++    struct Connection {
++        uint32_t generation = 0;
++        std::deque<uint32_t> recentRequests;
++    };
++    uint32_t serial_ = 0;
++    std::map<uint32_t, Connection> connections_;
++    uint32_t next() {
++        return serial_ == std::numeric_limits<uint32_t>::max() ? 0 : ++serial_;
++    }
++public:
++    void add(uint32_t peer) {
++        if (peer <= 1 || (!connections_.count(peer) && connections_.size() >= 31)) return;
++        Connection connection;
++        connection.generation = next();
++        connections_[peer] = std::move(connection);
++    }
++    void remove(uint32_t peer) { connections_.erase(peer); }
++    void clear() { connections_.clear(); }
++    void renew() {
++        for (auto &entry : connections_) {
++            entry.second.generation = next();
++            entry.second.recentRequests.clear();
++        }
++    }
++    uint32_t generation(uint32_t peer) const {
++        const auto found = connections_.find(peer);
++        return found == connections_.end() ? 0 : found->second.generation;
++    }
++    bool matches(uint32_t peer, uint32_t generation) const {
++        return generation && this->generation(peer) == generation;
++    }
++    bool consume(uint32_t peer, uint32_t generation, uint32_t request) {
++        if (!request || !matches(peer, generation)) return false;
++        auto &recent = connections_.find(peer)->second.recentRequests;
++        for (uint32_t previous : recent) if (previous == request) return false;
++        if (recent.size() >= 64) recent.pop_front();
++        recent.push_back(request);
++        return true;
++    }
++};
++}
++#endif
 diff --git a/src/Platform/Networking/GNS/GatewayBridge.h b/src/Platform/Networking/GNS/GatewayBridge.h
 new file mode 100644
 index 0000000..3e04f24
@@ -340,19 +846,28 @@ index 0000000..3e04f24
 +}
 +#endif
 diff --git a/src/Platform/Networking/GNS/stdComm_GNS.cpp b/src/Platform/Networking/GNS/stdComm_GNS.cpp
-index c0c10f6..38855e3 100644
+index c0c10f6..7095347 100644
 --- a/src/Platform/Networking/GNS/stdComm_GNS.cpp
 +++ b/src/Platform/Networking/GNS/stdComm_GNS.cpp
-@@ -21,6 +21,8 @@
+@@ -2,6 +2,7 @@
+ 
+ #include "Win95/stdComm.h"
+ #include "Dss/sithMulti.h"
++#include "Dss/sithAdmin.h"
+ #include "General/stdString.h"
+ #include "stdPlatform.h"
+ #include "jk.h"
+@@ -21,6 +22,9 @@
  #include <queue>
  #include <map>
  #include <cctype>
 +#include <set>
 +#include "GatewayBridge.h"
++#include "AdminConnections.h"
  
  #include <steam/steamnetworkingsockets.h>
  #include <steam/isteamnetworkingmessages.h>
-@@ -74,6 +76,7 @@ extern char16_t jkGuiMultiplayer_ipText[256];
+@@ -74,6 +78,7 @@ extern char16_t jkGuiMultiplayer_ipText[256];
  char jkGuiMultiplayer_ipText_conv[256];
  static int sithDplayGNS_numEnumd = 0;
  extern int Main_bVerboseNetworking;
@@ -360,11 +875,13 @@ index c0c10f6..38855e3 100644
  
  typedef bool (*GameNetworkingSockets_Init_t)( const SteamNetworkingIdentity *pIdentity, SteamNetworkingErrMsg &errMsg );
  typedef ISteamNetworkingUtils* (*SteamNetworkingUtils_t)(void);
-@@ -319,10 +322,34 @@ public:
+@@ -319,10 +324,38 @@ public:
          // the next host's join handshake, which aborts the new client's sync (matching
          // sithMulti_sendto_id) and removes them -> they time out and never appear.
          std::queue<int>().swap(m_DisconnectedPeers);
 +        m_externalPeers.clear();
++        m_adminConnections.clear();
++        std::queue<jk_gateway::Frame>().swap(m_adminIncoming);
 +        m_idPool.clear();
 +        m_requireIdPool = getenv("OPENJKDF2_REQUIRE_DP_POOL") && strcmp(getenv("OPENJKDF2_REQUIRE_DP_POOL"), "1") == 0;
 +        m_nextGatewayId = 65536;
@@ -388,14 +905,22 @@ index c0c10f6..38855e3 100644
  
      void Shutdown()
      {
++        ResetAdmin();
 +        m_gateway.stop();
 +        m_externalPeers.clear();
++        m_adminConnections.clear();
 +        std::queue<jk_gateway::Frame>().swap(m_gatewayIncoming);
 +        m_gatewayIncomingBytes = 0;
          // Close all the connections
          Printf( "Closing connections...\n" );
          for ( auto it: m_mapClients )
-@@ -350,6 +377,7 @@ public:
+@@ -347,9 +380,13 @@ public:
+ 
+     void RunStep()
+     {
++        // Typed host actions send ordinary game messages. Do not reenter the
++        // connection callbacks or gateway while their actor/target is in use.
++        if (m_adminExecuting) return;
          //printf("Server runstep\n");
          //PollIncomingMessages();
          PollConnectionStateChanges();
@@ -403,7 +928,16 @@ index c0c10f6..38855e3 100644
          //TickBroadcastOut();
      }
  
-@@ -380,6 +408,19 @@ public:
+@@ -375,11 +412,28 @@ public:
+             int dis_id = m_DisconnectedPeers.front();
+             m_DisconnectedPeers.pop();
+ 
++            // ProcessPlayerLost will clear this roster slot; let the ordinary
++            // next update publish the change without waiting for score polling.
++            if (sithNet_isServer) sithNet_bSyncScores = 1;
++
+             *pIdOut = dis_id;
+ 
              return 2;
          }
  
@@ -423,7 +957,7 @@ index c0c10f6..38855e3 100644
          ISteamNetworkingMessage *pIncomingMsg = nullptr;
          int numMsgs = m_pInterface->ReceiveMessagesOnPollGroup( m_hPollGroup, &pIncomingMsg, 1 );
          if ( numMsgs == 0 )
-@@ -390,16 +431,20 @@ public:
+@@ -390,16 +444,20 @@ public:
          }
          assert( numMsgs == 1 && pIncomingMsg );
          auto itClient = m_mapClients.find( pIncomingMsg->m_conn );
@@ -447,7 +981,7 @@ index c0c10f6..38855e3 100644
          int idTo = *(uint32_t*)&dataBuf[4];
          *pIdOut = idFrom;
  
-@@ -430,25 +475,154 @@ public:
+@@ -430,25 +488,288 @@ public:
  
      int Send(uint32_t idFrom, uint32_t idTo, void *lpData, uint32_t dwDataSize)
      {
@@ -515,24 +1049,137 @@ index c0c10f6..38855e3 100644
 +
 +    void DropGatewayPeers()
 +    {
-+        for (uint32_t peer : m_externalPeers) m_DisconnectedPeers.push(int(peer));
++        for (uint32_t peer : m_externalPeers) {
++            m_DisconnectedPeers.push(int(peer));
++            m_adminConnections.remove(peer);
++        }
 +        m_externalPeers.clear();
 +        std::queue<jk_gateway::Frame>().swap(m_gatewayIncoming);
 +        m_gatewayIncomingBytes = 0;
++        ResetAdmin();
++    }
++
++    void AdminReply(const jk_gateway::Frame &request, uint32_t generation,
++                    uint32_t status, const char *summary)
++    {
++        std::vector<uint8_t> payload;
++        jk_gateway::put32(payload, generation);
++        jk_gateway::put32(payload, status);
++        const size_t length = strlen(summary);
++        if (sithAdmin_Printable(summary, length))
++            payload.insert(payload.end(), summary, summary + length);
++        m_gateway.sendFrame(110, request.src, request.dst, payload.data(), payload.size());
++    }
++
++    void ResetAdmin()
++    {
++        if (m_adminResetting) return;
++        m_adminResetting = true;
++        while (!m_adminIncoming.empty()) {
++            const jk_gateway::Frame request = std::move(m_adminIncoming.front());
++            m_adminIncoming.pop();
++            AdminReply(request, jk_gateway::read32(request.data.data()), 2,
++                       "Map or connection changed. Authenticate again.");
++        }
++        m_adminConnections.renew();
++        m_gateway.sendFrame(111, 0, 0);
++        m_adminResetting = false;
++    }
++
++    void PurgeGatewayPeer(uint32_t peer)
++    {
++        // Do not deliver already queued data to a later occupant of a reused
++        // external ID after an administrative kick or adapter disconnect.
++        std::queue<jk_gateway::Frame> keep;
++        while (!m_gatewayIncoming.empty()) {
++            auto frame = std::move(m_gatewayIncoming.front());
++            m_gatewayIncoming.pop();
++            if (frame.src == peer) m_gatewayIncomingBytes -= frame.data.size();
++            else keep.push(std::move(frame));
++        }
++        m_gatewayIncoming.swap(keep);
++    }
++
++    void AdminChat(uint32_t actualPeer, const char *text)
++    {
++        const size_t length = strlen(text);
++        const uint32_t generation = m_adminConnections.generation(actualPeer);
++        if (!m_gateway.connected() || !generation || !PeerUsed(actualPeer) ||
++            sithAdmin_JoinedSlot(actualPeer) < 0 || !length ||
++            !sithAdmin_Printable(text, length) || !sithAdmin_IsCommand(text)) return;
++        m_gateway.sendFrame(109, actualPeer, generation, text, length);
++    }
++
++    void ProcessAdminRequests()
++    {
++        if (m_adminExecuting) return;
++        m_adminExecuting = true;
++        for (unsigned handled = 0; handled < 8 && !m_adminIncoming.empty(); ++handled) {
++            const jk_gateway::Frame request = std::move(m_adminIncoming.front());
++            m_adminIncoming.pop();
++            const uint32_t generation = jk_gateway::read32(request.data.data());
++            const uint32_t operation = jk_gateway::read32(request.data.data() + 4);
++            if (!m_gateway.connected() || !PeerUsed(request.src) ||
++                !m_adminConnections.matches(request.src, generation) ||
++                sithAdmin_JoinedSlot(request.src) < 0) {
++                AdminReply(request, generation, 2, "Your connection changed. Authenticate again after joining.");
++                continue;
++            }
++            if (!m_adminConnections.consume(request.src, generation, request.dst)) {
++                AdminReply(request, generation, 1, "Duplicate admin request.");
++                continue;
++            }
++            const std::string argument(request.data.begin() + 8, request.data.end());
++            char summary[128];
++            uint32_t kickedPeer = 0;
++            const int status = sithAdmin_Execute(request.src, operation, argument.c_str(), &kickedPeer, summary);
++            if (!status && kickedPeer) KickTransport(kickedPeer);
++            AdminReply(request, generation, uint32_t(status), summary);
++        }
++        m_adminExecuting = false;
++    }
++
++    void KickTransport(uint32_t peer)
++    {
++        // The ordinary DSS_QUIT was queued first. Retire membership immediately
++        // so an uncooperative client cannot keep sending after a successful kick.
++        if (m_externalPeers.erase(peer)) {
++            m_adminConnections.remove(peer);
++            PurgeGatewayPeer(peer);
++            m_DisconnectedPeers.push(int(peer));
++            m_gateway.sendFrame(104, peer, 0);
++        } else {
++            for (auto it = m_mapClients.begin(); it != m_mapClients.end(); ++it) {
++                if (it->second.m_id != peer) continue;
++                const HSteamNetConnection connection = it->first;
++                availableIds &= ~(1ULL << it->second.m_slot);
++                m_mapClients.erase(it);
++                m_adminConnections.remove(peer);
++                m_DisconnectedPeers.push(int(peer));
++                m_pInterface->CloseConnection(connection, 0, "Kicked by server administrator", true);
++                break;
++            }
++        }
++        EnumeratePlayers();
++    }
++
++    void PublishSessionInfo(uint32_t request = 0)
++    {
++        static_assert(sizeof(jkMultiEntry) == 240, "IPC session ABI");
++        std::vector<uint8_t> info;
++        jk_gateway::put32(info, Main_bMotsCompat ? 1 : 0);
++        jkMultiEntry entry = sithDplayGNS_storedEntry;
++        entry.numPlayers = RealConnectedPlayers();
++        entry.multiModeFlags = sithMulti_multiModeFlags;
++        const auto* p = reinterpret_cast<const uint8_t*>(&entry);
++        info.insert(info.end(), p, p + sizeof(entry));
++        m_gateway.sendFrame(102, 1, request, info.data(), info.size());
 +    }
 +
 +    void HandleGateway(const jk_gateway::Frame& frame)
 +    {
 +        if (frame.type == 2) {
-+            static_assert(sizeof(jkMultiEntry) == 240, "IPC session ABI");
-+            std::vector<uint8_t> info;
-+            jk_gateway::put32(info, Main_bMotsCompat ? 1 : 0);
-+            jkMultiEntry entry = sithDplayGNS_storedEntry;
-+            entry.numPlayers = RealConnectedPlayers();
-+            entry.multiModeFlags = sithMulti_multiModeFlags;
-+            const auto* p = reinterpret_cast<const uint8_t*>(&entry);
-+            info.insert(info.end(), p, p + sizeof(entry));
-+            m_gateway.sendFrame(102, 1, frame.dst, info.data(), info.size());
++            PublishSessionInfo(frame.dst);
 +        } else if (frame.type == 3) {
 +            if (m_externalPeers.size() + m_mapClients.size() >= 31) {
 +                m_gateway.error(3, 2, "transport peer capacity reached"); return;
@@ -549,12 +1196,17 @@ index c0c10f6..38855e3 100644
 +                m_gateway.error(3, 3, "invalid or duplicate peer ID"); return;
 +            }
 +            m_externalPeers.insert(peer);
++            m_adminConnections.add(peer);
 +            EnumeratePlayers();
 +            const uint8_t status[4] = {0, 0, 0, 0};
 +            m_gateway.sendFrame(103, peer, frame.dst, status, sizeof(status));
 +            stdPlatform_Printf("GATEWAY_PEER_ADDED %u\n", peer);
 +        } else if (frame.type == 4) {
-+            if (m_externalPeers.erase(frame.src)) m_DisconnectedPeers.push(int(frame.src));
++            if (m_externalPeers.erase(frame.src)) {
++                m_adminConnections.remove(frame.src);
++                PurgeGatewayPeer(frame.src);
++                m_DisconnectedPeers.push(int(frame.src));
++            }
 +            m_gateway.sendFrame(104, frame.src, frame.dst);
 +        } else if (frame.type == 5) {
 +            if (!m_externalPeers.count(frame.src) || frame.data.size() < 4 || frame.data.size() > 2052) {
@@ -585,6 +1237,22 @@ index c0c10f6..38855e3 100644
 +            jk_gateway::put32(result, uint32_t(m_idPool.size()));
 +            m_gateway.sendFrame(108, 1, frame.dst, result.data(), result.size());
 +            stdPlatform_Printf("GATEWAY_ID_POOL_READY %u\n", unsigned(m_idPool.size()));
++        } else if (frame.type == 9) {
++            if (frame.src <= 1 || !frame.dst || frame.data.size() < 8 || frame.data.size() > 135) {
++                m_gateway.error(9, 9, "invalid admin request envelope"); return;
++            }
++            const uint32_t generation = jk_gateway::read32(frame.data.data());
++            const uint32_t operation = jk_gateway::read32(frame.data.data() + 4);
++            const size_t length = frame.data.size() - 8;
++            if (!generation || operation < 1 || operation > 4 ||
++                !sithAdmin_Printable(reinterpret_cast<const char *>(frame.data.data() + 8), length) ||
++                ((operation == 1 || operation == 3) ? !length : length != 0)) {
++                AdminReply(frame, generation, 1, "Invalid typed admin operation."); return;
++            }
++            if (m_adminIncoming.size() >= 64) {
++                AdminReply(frame, generation, 1, "Admin request queue is full."); return;
++            }
++            m_adminIncoming.push(frame);
 +        } else if (frame.type == 7 && frame.data.size() <= 256) {
 +            m_gateway.sendFrame(107, frame.src, frame.dst, frame.data.data(), frame.data.size());
 +        } else m_gateway.error(frame.type, 6, "unknown request");
@@ -603,7 +1271,7 @@ index c0c10f6..38855e3 100644
  private:
  
      HSteamListenSocket m_hListenSock;
-@@ -463,11 +637,19 @@ private:
+@@ -463,11 +784,23 @@ private:
      struct Client_t
      {
          uint32_t m_id;
@@ -620,10 +1288,14 @@ index c0c10f6..38855e3 100644
 +    uint32_t m_nextGatewayId = 65536;
 +    std::vector<uint32_t> m_idPool;
 +    bool m_requireIdPool = false;
++    jk_gateway::AdminConnections m_adminConnections;
++    std::queue<jk_gateway::Frame> m_adminIncoming;
++    bool m_adminExecuting = false;
++    bool m_adminResetting = false;
  
      void SendBytesToClient( HSteamNetConnection conn, void *pData, uint32_t len)
      {
-@@ -493,9 +675,10 @@ private:
+@@ -493,9 +826,11 @@ private:
          m_pInterface->SetConnectionName( hConn, nick );
      }
  
@@ -632,19 +1304,34 @@ index c0c10f6..38855e3 100644
      {
          m_mapClients[hConn].m_id = id;
 +        m_mapClients[hConn].m_slot = slot;
++        m_adminConnections.add(uint32_t(id));
      }
  
  #if 0
-@@ -567,7 +750,7 @@ private:
+@@ -529,7 +864,11 @@ private:
+                     // is the only codepath where we remove clients (except on shutdown),
+                     // and connection change callbacks are dispatched in queue order.
+                     auto itClient = m_mapClients.find( pInfo->m_hConn );
+-                    assert( itClient != m_mapClients.end() );
++                    if (itClient == m_mapClients.end()) {
++                        // An administrative kick already retired this transport.
++                        m_pInterface->CloseConnection(pInfo->m_hConn, 0, nullptr, false);
++                        break;
++                    }
+ 
+                     // Select appropriate log messages
+                     const char *pszDebugLogAction;
+@@ -567,7 +906,8 @@ private:
                          }
                      }
  
 -                    availableIds &= ~(1ULL << (itClient->second.m_id-1));
 +                    availableIds &= ~(1ULL << itClient->second.m_slot);
++                    m_adminConnections.remove(itClient->second.m_id);
                      m_mapClients.erase( itClient );
                  }
                  else
-@@ -591,9 +774,13 @@ private:
+@@ -591,9 +931,13 @@ private:
                  assert( m_mapClients.find( pInfo->m_hConn ) == m_mapClients.end() );
  
                  Printf( "Connection request from %s", pInfo->m_info.m_szConnectionDescription );
@@ -659,7 +1346,7 @@ index c0c10f6..38855e3 100644
                      stdPlatform_Printf("Rejecting request too many players connected (%u)\n", ConnectedPlayers());
                      break;
                  }
-@@ -618,17 +805,27 @@ private:
+@@ -618,17 +962,27 @@ private:
                      break;
                  }
  
@@ -688,7 +1375,18 @@ index c0c10f6..38855e3 100644
  
                  sithDplayGNS_storedEntry.multiModeFlags = sithMulti_multiModeFlags;
  
-@@ -646,7 +843,7 @@ private:
+@@ -638,7 +992,9 @@ private:
+                 infoPkt.entry.numPlayers = RealConnectedPlayers();
+                 infoPkt.entry.maxPlayers = sithDplayGNS_storedEntry.maxPlayers;
+ 
+-                jkPlayer_maxPlayers = sithDplayGNS_storedEntry.maxPlayers; // Hack?
++                // PlacePlayers owns the map's player/spawn count. CTF needs
++                // starts 16..31 even in a smaller session. Admission is capped
++                // separately in ProcessJoinRequest; never truncate spawn sync.
+ 
+                 memcpy(sendBuffer2, &infoPkt, sizeof(infoPkt));
+                 SendBytesToClient( pInfo->m_hConn, sendBuffer2, sizeof(infoPkt)); 
+@@ -646,7 +1002,7 @@ private:
                  // Add them to the client list, using std::map wacky syntax
                  m_mapClients[ pInfo->m_hConn ];
                  SetClientNick( pInfo->m_hConn, "asdf" );
@@ -697,7 +1395,7 @@ index c0c10f6..38855e3 100644
  
                  nextId++;
                  break;
-@@ -704,11 +901,9 @@ private:
+@@ -704,11 +1060,9 @@ private:
              if (!i && jkGuiNetHost_bIsDedicated) continue;
  
  
@@ -712,8 +1410,27 @@ index c0c10f6..38855e3 100644
                  amt++;
              }
          }
-@@ -1062,6 +1257,11 @@ GNSServer server;
+@@ -1060,8 +1414,30 @@ char addrServerLast[256];
+ GNSClient client;
+ GNSServer server;
  
++void stdComm_GNS_AdminChat(uint32_t actualPeer, const char *text)
++{
++    if (!stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer)
++        server.AdminChat(actualPeer, text);
++}
++
++void stdComm_GNS_AdminReset(void)
++{
++    if (!stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer)
++        server.ResetAdmin();
++}
++
++int stdComm_GNS_AdminPeerConnected(uint32_t peer)
++{
++    return !stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer && server.PeerUsed(peer);
++}
++
  void Hack_ResetClients()
  {
 +    if (stdComm_bIsServer) {
@@ -724,6 +1441,54 @@ index c0c10f6..38855e3 100644
      DirectPlay_numPlayers = 32;
      for (int i = 0; i < 32; i++)
      {
+@@ -1143,6 +1519,7 @@ int DirectPlay_Receive(int *pIdOut, int *pMsgIdOut, int *pLenOut)
+     if (stdComm_bIsServer)
+     {
+         server.RunStep();
++        server.ProcessAdminRequests();
+         return server.Receive(pIdOut, (void*)pMsgIdOut, pLenOut);
+     }
+     else 
+@@ -1239,6 +1616,9 @@ int DirectPlay_SendLobbyMessage(void* pPkt, uint32_t pktLen)
+ void DirectPlay_SetSessionDesc(const char* a1, DWORD maxPlayers)
+ {
+     _strncpy(sithDplayGNS_storedEntry.mapJklFname, jkMain_aLevelJklFname, 0x20);
++    sithDplayGNS_storedEntry.mapJklFname[0x1f] = 0;
++    if (!stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer)
++        server.PublishSessionInfo();
+ }
+ 
+ BOOL DirectPlay_SetSessionFlagidk(int a1)
+diff --git a/src/Platform/Networking/GNS/stdComm_GNS.h b/src/Platform/Networking/GNS/stdComm_GNS.h
+index 9567814..4367c85 100644
+--- a/src/Platform/Networking/GNS/stdComm_GNS.h
++++ b/src/Platform/Networking/GNS/stdComm_GNS.h
+@@ -1,6 +1,8 @@
+ #ifndef _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
+ #define _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
+ 
++#include <stdint.h>
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -10,10 +12,14 @@ extern "C" {
+ void stdComm_GNS_Startup();
+ void stdComm_GNS_Shutdown();
+ 
++void stdComm_GNS_AdminChat(uint32_t actualPeer, const char *text);
++void stdComm_GNS_AdminReset(void);
++int stdComm_GNS_AdminPeerConnected(uint32_t peer);
++
+ #endif // PLATFORM_GNS
+ 
+ #ifdef __cplusplus
+ }
+ #endif
+ 
+-#endif // _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
+\ No newline at end of file
++#endif // _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
 diff --git a/src/Tests/gateway_bridge_test.cpp b/src/Tests/gateway_bridge_test.cpp
 new file mode 100644
 index 0000000..bb81266

@@ -6,6 +6,7 @@ import json
 import os
 import re
 from pathlib import Path
+from bots.settings import PROFILE_IDS, check_scope, engine_path
 
 DEFAULT = {
     "version": 1, "game": "jk", "name": "JK Cross Server",
@@ -18,6 +19,9 @@ DEFAULT = {
     "web_bind": "127.0.0.1", "web_port": 8787,
     "web_origins": [], "web_ice_servers": [], "retail_enabled": False, "directplay_bridge": "",
     "wine": "", "wine_prefix": "", "auto_restart": False,
+    "bots_enabled": False, "bots_profiles": ["boba_fett", "jan_ors"],
+    "bots_sabers_only": False, "bots_fists_peace": True,
+    "bots_force_enabled": True, "bots_taunts": True, "bots_engine": "",
 }
 
 class ConfigError(ValueError):
@@ -64,12 +68,23 @@ def validate(value: dict, *, require_paths: bool = False) -> dict:
         raise ConfigError("MotS personality sessions need advertised rank 7 or 8 for unchanged native clients. Use rank 7, or enable ranked-Jedi flag 4096 for a ranked session.")
     if len({out[x] for x in ("ipc_port", "broker_port", "web_port")}) != 3:
         raise ConfigError("IPC, broker, and browser ports must be distinct.")
-    for key in ("teams", "web_enabled", "web_asset_downloads", "retail_enabled", "auto_restart"):
+    for key in ("teams", "web_enabled", "web_asset_downloads", "retail_enabled", "auto_restart",
+                "bots_enabled", "bots_sabers_only", "bots_fists_peace", "bots_force_enabled", "bots_taunts"):
         if type(out[key]) is not bool:
             raise ConfigError(f"{key} must be true or false.")
+    profiles = out["bots_profiles"]
+    if (not isinstance(profiles, list) or not 1 <= len(profiles) <= 4
+            or any(not isinstance(item, str) or item not in PROFILE_IDS for item in profiles)
+            or len(set(profiles)) != len(profiles)):
+        raise ConfigError("bots_profiles must select one to four distinct stock bot profile ids.")
+    if out["bots_enabled"]:
+        try:
+            check_scope(out, len(profiles))
+        except ValueError as exc:
+            raise ConfigError(str(exc)) from None
     if out["retail_enabled"]:
         if out["max_players"] > 15:
-            raise ConfigError("Mixed retail sessions support at most 15 human slots.")
+            raise ConfigError("Mixed retail sessions support at most 15 configured slots, including the dedicated host.")
         if not 100 <= out["tick_ms"] <= 300:
             raise ConfigError("Retail session tick interval must be 100–300 ms.")
     try:
@@ -93,12 +108,19 @@ def validate(value: dict, *, require_paths: bool = False) -> dict:
         if any(not isinstance(server.get(key, ""), str) or len(server.get(key, "")) > 1024
                for key in ("username", "credential")):
             raise ConfigError("ICE usernames and credentials must be strings of at most 1024 characters.")
-    for key in ("engine", "game_data", "mod_dir", "web_client", "directplay_bridge", "wine", "wine_prefix"):
+    for key in ("engine", "game_data", "mod_dir", "web_client", "directplay_bridge", "wine", "wine_prefix", "bots_engine"):
         if not isinstance(out[key], str) or "\0" in out[key]:
             raise ConfigError(f"{key} must be a filesystem path.")
         if out[key]:
             out[key] = str(Path(out[key]).expanduser().resolve())
     if require_paths:
+        if out["bots_enabled"]:
+            import sys
+            if sys.platform != "linux":
+                raise ConfigError("The packaged bot clients currently require a Linux server host.")
+            bot_engine = engine_path(out)
+            if not bot_engine.is_file() or not os.access(bot_engine, os.X_OK):
+                raise ConfigError(f"Bot executable is missing or not executable: {bot_engine}")
         if not Path(out["engine"]).is_file():
             raise ConfigError("Choose a built JK Cross Server engine executable.")
         if not out["game_data"] or not Path(out["game_data"]).is_dir():
@@ -133,6 +155,6 @@ def registry(config: dict) -> dict:
         "portNum": config["native_port"], "gameFlags": config["game_flags"],
         "sessionFlags": 0, "timeLimit": config["time_limit"], "scoreLimit": config["score_limit"],
         "bUseScoreLimit": bool(config["score_limit"]), "bUseTimeLimit": bool(config["time_limit"]),
-        "bIsSingleLevel": True, "bIsTeams": config["teams"], "bIsCoop": False, "bIsEpisodeCoop": False,
+        "bIsSingleLevel": False, "bIsTeams": config["teams"], "bIsCoop": False, "bIsEpisodeCoop": False,
         "enableVsync": False, "enableBloom": False, "enableSSAO": False, "fpslimit": 60,
     }

@@ -1,0 +1,1581 @@
+{
+  "schema": 1,
+  "evidence": "nine_owned_serial_connected_stock_JKDF2_matches_with_read_only_non_atomic_observers",
+  "created_utc": "2026-10-25T06:32:56.619605+00:00",
+  "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+  "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+  "network_library_sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+  "observed_navigation_source_sha256": "4118d0ffd92f44346d4d2762978641fdde5c512939ad3b51304d9f7691bfdd87",
+  "ordinary_gameplay": true,
+  "observer_process_memory_writes": false,
+  "human_clients_present": [],
+  "fixture_policy": {
+    "concurrent_maps": 1,
+    "bots_per_map": 1,
+    "ctf_seconds_after_join": 180,
+    "deathmatch_seconds_after_join": 100,
+    "namespace": "existing owned isolated local transport",
+    "taunts_enabled": false
+  },
+  "maps": [
+    {
+      "map": "c1.jkl",
+      "source_fixture": "bot-qa/ctf-final-d455/c1",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 359,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 179.896,
+      "max_sample_interval_seconds": 0.522,
+      "actual_teams": [
+        0,
+        1
+      ],
+      "team_assignment_seconds": 10.052,
+      "distinct_observed_sectors": 29,
+      "distinct_observed_arena_sectors": 26,
+      "observed_sector_ids": [
+        6,
+        7,
+        9,
+        10,
+        33,
+        34,
+        37,
+        38,
+        48,
+        86,
+        107,
+        116,
+        117,
+        119,
+        127,
+        132,
+        138,
+        139,
+        141,
+        162,
+        163,
+        164,
+        165,
+        169,
+        224,
+        237,
+        272,
+        278,
+        286
+      ],
+      "final_personal_score": 57,
+      "final_team_scores": [
+        0,
+        57,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "stormtrooper_rifle": {
+          "bin": 3,
+          "increase_events": 1,
+          "first_increase_seconds": 19.09,
+          "max_observed_amount": 1.0
+        },
+        "energy_cells": {
+          "bin": 11,
+          "increase_events": 8,
+          "first_increase_seconds": 19.09,
+          "max_observed_amount": 242.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "c1.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 237,
+          "nodes": 1036,
+          "reachable_nodes": 45,
+          "items_total": 90,
+          "classified_items": 90,
+          "anchored_items": 86,
+          "reachable_items": 0,
+          "missing_nodes": 4,
+          "truncated": 0
+        },
+        {
+          "map": "c1.jkl",
+          "name": "Bot_Katarn",
+          "team": 1,
+          "origin_sector": 6,
+          "nodes": 1036,
+          "reachable_nodes": 606,
+          "items_total": 90,
+          "classified_items": 90,
+          "anchored_items": 86,
+          "reachable_items": 76,
+          "missing_nodes": 4,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 21.601,
+          "personal_score": 3,
+          "team_score": 3,
+          "score_delta": 3,
+          "sector": 116,
+          "enemy_flag_carried_by_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_authored_home": false,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 6.800343,
+          "local_flag_icon_active": true
+        },
+        {
+          "event": "capture",
+          "seconds": 48.733,
+          "personal_score": 18,
+          "team_score": 18,
+          "score_delta": 15,
+          "sector": 37,
+          "enemy_flag_carried_by_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_authored_home": true,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 0.102227,
+          "local_flag_icon_active": false
+        },
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 65.821,
+          "personal_score": 21,
+          "team_score": 21,
+          "score_delta": 3,
+          "sector": 116,
+          "enemy_flag_carried_by_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_authored_home": false,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 6.800465,
+          "local_flag_icon_active": true
+        },
+        {
+          "event": "capture",
+          "seconds": 93.486,
+          "personal_score": 36,
+          "team_score": 36,
+          "score_delta": 15,
+          "sector": 37,
+          "enemy_flag_carried_by_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_authored_home": true,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 0.099652,
+          "local_flag_icon_active": false
+        },
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 110.576,
+          "personal_score": 39,
+          "team_score": 39,
+          "score_delta": 3,
+          "sector": 116,
+          "enemy_flag_carried_by_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_authored_home": false,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 6.800743,
+          "local_flag_icon_active": true
+        },
+        {
+          "event": "capture",
+          "seconds": 138.668,
+          "personal_score": 54,
+          "team_score": 54,
+          "score_delta": 15,
+          "sector": 37,
+          "enemy_flag_carried_by_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_authored_home": true,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 0.117009,
+          "local_flag_icon_active": false
+        },
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 155.753,
+          "personal_score": 57,
+          "team_score": 57,
+          "score_delta": 3,
+          "sector": 116,
+          "enemy_flag_carried_by_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_authored_home": false,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 6.800557,
+          "local_flag_icon_active": true
+        }
+      ],
+      "captures_observed": 3,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "dc09269eef0849a3d1f3eeedf0f12d30bf4f5d3ff5492dc145fefb65fd75a1c2",
+      "client_log_sha256": "21a74b29214c820ac002135fd604d79e159fc994fc02b2304dfb0e0d90a93ee6",
+      "map_source": {
+        "episode": "jk1ctf",
+        "archive_sha256": "da98fe3fc769168f1bb562cc1f6532560b12d8e920fd6c34586d69b424b5b1fc",
+        "jkl_sha256": "349fb5beffba7c84fd573fe1184f3fbb569d4fcdad07d2d9b26fcb8afdb849e0",
+        "authored_pickups": 90,
+        "authored_sectors": 289
+      },
+      "motion_evidence": {
+        "first_observed_sector": 237,
+        "last_observed_sector": 33,
+        "longest_continuous_sector_observation": {
+          "sector": 237,
+          "duration_seconds": 8.548,
+          "started_seconds": 0.0
+        },
+        "last_30_seconds_sectors": [
+          7,
+          9,
+          10,
+          33,
+          116,
+          119,
+          132,
+          138,
+          164,
+          165,
+          169,
+          272
+        ],
+        "last_30_seconds_horizontal_extent": 6.585376,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      }
+    },
+    {
+      "map": "c2.jkl",
+      "source_fixture": "bot-qa/ctf-final-d455/c2",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 358,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 179.545,
+      "max_sample_interval_seconds": 0.52,
+      "actual_teams": [
+        0,
+        1
+      ],
+      "team_assignment_seconds": 19.668,
+      "distinct_observed_sectors": 38,
+      "distinct_observed_arena_sectors": 34,
+      "observed_sector_ids": [
+        6,
+        7,
+        11,
+        18,
+        20,
+        37,
+        51,
+        52,
+        57,
+        58,
+        59,
+        62,
+        63,
+        65,
+        66,
+        193,
+        194,
+        195,
+        196,
+        197,
+        200,
+        201,
+        202,
+        210,
+        212,
+        213,
+        214,
+        217,
+        218,
+        245,
+        246,
+        254,
+        299,
+        301,
+        306,
+        310,
+        329,
+        337
+      ],
+      "final_personal_score": 72,
+      "final_team_scores": [
+        0,
+        72,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "stormtrooper_rifle": {
+          "bin": 3,
+          "increase_events": 1,
+          "first_increase_seconds": 26.734,
+          "max_observed_amount": 1.0
+        },
+        "energy_cells": {
+          "bin": 11,
+          "increase_events": 9,
+          "first_increase_seconds": 26.734,
+          "max_observed_amount": 266.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "c2.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 299,
+          "nodes": 1717,
+          "reachable_nodes": 57,
+          "items_total": 133,
+          "classified_items": 133,
+          "anchored_items": 124,
+          "reachable_items": 0,
+          "missing_nodes": 9,
+          "truncated": 0
+        },
+        {
+          "map": "c2.jkl",
+          "name": "Bot_Katarn",
+          "team": 1,
+          "origin_sector": 11,
+          "nodes": 1717,
+          "reachable_nodes": 1081,
+          "items_total": 133,
+          "classified_items": 133,
+          "anchored_items": 124,
+          "reachable_items": 104,
+          "missing_nodes": 9,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 33.281,
+          "personal_score": 3,
+          "team_score": 3,
+          "score_delta": 3,
+          "sector": 217,
+          "enemy_flag_carried_by_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_authored_home": false,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 3.155011,
+          "local_flag_icon_active": true
+        },
+        {
+          "event": "capture",
+          "seconds": 51.897,
+          "personal_score": 18,
+          "team_score": 18,
+          "score_delta": 15,
+          "sector": 62,
+          "enemy_flag_carried_by_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_authored_home": true,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 0.052129,
+          "local_flag_icon_active": false
+        },
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 70.057,
+          "personal_score": 21,
+          "team_score": 21,
+          "score_delta": 3,
+          "sector": 217,
+          "enemy_flag_carried_by_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_authored_home": false,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 3.270851,
+          "local_flag_icon_active": true
+        },
+        {
+          "event": "capture",
+          "seconds": 88.677,
+          "personal_score": 36,
+          "team_score": 36,
+          "score_delta": 15,
+          "sector": 62,
+          "enemy_flag_carried_by_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_authored_home": true,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 0.148658,
+          "local_flag_icon_active": false
+        },
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 106.744,
+          "personal_score": 39,
+          "team_score": 39,
+          "score_delta": 3,
+          "sector": 217,
+          "enemy_flag_carried_by_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_authored_home": false,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 3.205103,
+          "local_flag_icon_active": true
+        },
+        {
+          "event": "capture",
+          "seconds": 125.319,
+          "personal_score": 54,
+          "team_score": 54,
+          "score_delta": 15,
+          "sector": 62,
+          "enemy_flag_carried_by_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_authored_home": true,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 0.081492,
+          "local_flag_icon_active": false
+        },
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 143.406,
+          "personal_score": 57,
+          "team_score": 57,
+          "score_delta": 3,
+          "sector": 217,
+          "enemy_flag_carried_by_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_authored_home": false,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 3.28517,
+          "local_flag_icon_active": true
+        },
+        {
+          "event": "capture",
+          "seconds": 161.981,
+          "personal_score": 72,
+          "team_score": 72,
+          "score_delta": 15,
+          "sector": 62,
+          "enemy_flag_carried_by_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_authored_home": true,
+          "own_flag_at_authored_home": true,
+          "distance_to_own_flag": 0.07993,
+          "local_flag_icon_active": false
+        }
+      ],
+      "captures_observed": 4,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "58cc7ea36522db961ca52a587d97966c8182ddaf1aac3232705e2ce70b8b507d",
+      "client_log_sha256": "f0b2f50e3c76fe4411359f78a6d21c1bb22c8fa4ad95e46a599d41b69eca37ea",
+      "map_source": {
+        "episode": "jk1ctf",
+        "archive_sha256": "da98fe3fc769168f1bb562cc1f6532560b12d8e920fd6c34586d69b424b5b1fc",
+        "jkl_sha256": "bc9975eb3c93ee45e83928307d27dfd5d8f94ad4eea3216fa3fecf784e593ade",
+        "authored_pickups": 133,
+        "authored_sectors": 359
+      },
+      "motion_evidence": {
+        "first_observed_sector": 299,
+        "last_observed_sector": 218,
+        "longest_continuous_sector_observation": {
+          "sector": 299,
+          "duration_seconds": 6.059,
+          "started_seconds": 9.584
+        },
+        "last_30_seconds_sectors": [
+          6,
+          18,
+          20,
+          37,
+          51,
+          57,
+          58,
+          59,
+          62,
+          65,
+          66,
+          193,
+          195,
+          196,
+          197,
+          201,
+          202,
+          210,
+          218
+        ],
+        "last_30_seconds_horizontal_extent": 8.893652,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      }
+    },
+    {
+      "map": "c3.jkl",
+      "source_fixture": "bot-qa/ctf-final-d455/c3",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 359,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 179.787,
+      "max_sample_interval_seconds": 0.518,
+      "actual_teams": [
+        0,
+        1
+      ],
+      "team_assignment_seconds": 16.604,
+      "distinct_observed_sectors": 18,
+      "distinct_observed_arena_sectors": 16,
+      "observed_sector_ids": [
+        447,
+        448,
+        452,
+        453,
+        455,
+        458,
+        459,
+        529,
+        530,
+        617,
+        636,
+        648,
+        700,
+        702,
+        704,
+        705,
+        790,
+        791
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "red_key": {
+          "bin": 83,
+          "increase_events": 1,
+          "first_increase_seconds": 16.604,
+          "max_observed_amount": 1.0
+        },
+        "stormtrooper_rifle": {
+          "bin": 3,
+          "increase_events": 1,
+          "first_increase_seconds": 17.609,
+          "max_observed_amount": 1.0
+        },
+        "energy_cells": {
+          "bin": 11,
+          "increase_events": 2,
+          "first_increase_seconds": 17.609,
+          "max_observed_amount": 98.0
+        },
+        "shields": {
+          "bin": 60,
+          "increase_events": 1,
+          "first_increase_seconds": 40.715,
+          "max_observed_amount": 120.0
+        },
+        "repeater": {
+          "bin": 6,
+          "increase_events": 1,
+          "first_increase_seconds": 41.218,
+          "max_observed_amount": 1.0
+        },
+        "power_cells": {
+          "bin": 12,
+          "increase_events": 1,
+          "first_increase_seconds": 41.218,
+          "max_observed_amount": 24.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "c3.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 636,
+          "nodes": 2739,
+          "reachable_nodes": 57,
+          "items_total": 161,
+          "classified_items": 161,
+          "anchored_items": 150,
+          "reachable_items": 0,
+          "missing_nodes": 11,
+          "truncated": 0
+        },
+        {
+          "map": "c3.jkl",
+          "name": "Bot_Katarn",
+          "team": 1,
+          "origin_sector": 459,
+          "nodes": 2739,
+          "reachable_nodes": 1475,
+          "items_total": 161,
+          "classified_items": 161,
+          "anchored_items": 150,
+          "reachable_items": 112,
+          "missing_nodes": 11,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "7b3e0971cd0031d8dbb1b295f52d861243611433406225c276f9c227bdb34d82",
+      "client_log_sha256": "26896e621acbf4daeb033c5a1be32d26aad3b9529feef89b44335ed0373514d0",
+      "map_source": {
+        "episode": "jk1ctf",
+        "archive_sha256": "da98fe3fc769168f1bb562cc1f6532560b12d8e920fd6c34586d69b424b5b1fc",
+        "jkl_sha256": "b4d804591cebebbd59f05ad42a8e059178dc468e24172bd6bc5b7d6ba1c2f0a7",
+        "authored_pickups": 161,
+        "authored_sectors": 794
+      },
+      "motion_evidence": {
+        "first_observed_sector": 636,
+        "last_observed_sector": 617,
+        "longest_continuous_sector_observation": {
+          "sector": 617,
+          "duration_seconds": 127.022,
+          "started_seconds": 52.765
+        },
+        "last_30_seconds_sectors": [
+          617
+        ],
+        "last_30_seconds_horizontal_extent": 0.0,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      },
+      "acceptance_limit": "No enemy flag pickup or capture. The bot rides the upper lift, then stalls on a false standing route through a low raised opening.",
+      "subsequent_source_fix": "qa/bots-c3-grounded-clearance-regression.json; not included in this observed binary",
+      "corrected_606_to_513_bend": "A route through the corrected anchor exists in the passive graph snapshot; live crossing was not reached in this run."
+    },
+    {
+      "map": "m2.jkl",
+      "source_fixture": "bot-qa/dm-final-d455/m2",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 200,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 99.752,
+      "max_sample_interval_seconds": 0.511,
+      "actual_teams": [
+        0
+      ],
+      "team_assignment_seconds": null,
+      "distinct_observed_sectors": 11,
+      "distinct_observed_arena_sectors": 0,
+      "observed_sector_ids": [
+        10,
+        11,
+        19,
+        20,
+        22,
+        29,
+        30,
+        31,
+        32,
+        34,
+        61
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "stormtrooper_rifle": {
+          "bin": 3,
+          "increase_events": 1,
+          "first_increase_seconds": 11.023,
+          "max_observed_amount": 1.0
+        },
+        "energy_cells": {
+          "bin": 11,
+          "increase_events": 2,
+          "first_increase_seconds": 11.023,
+          "max_observed_amount": 134.0
+        },
+        "rail_charges": {
+          "bin": 15,
+          "increase_events": 2,
+          "first_increase_seconds": 13.027,
+          "max_observed_amount": 9.0
+        },
+        "power_cells": {
+          "bin": 12,
+          "increase_events": 1,
+          "first_increase_seconds": 22.552,
+          "max_observed_amount": 75.0
+        },
+        "bacta": {
+          "bin": 40,
+          "increase_events": 1,
+          "first_increase_seconds": 25.563,
+          "max_observed_amount": 1.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "m2.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 11,
+          "nodes": 640,
+          "reachable_nodes": 552,
+          "items_total": 46,
+          "classified_items": 46,
+          "anchored_items": 45,
+          "reachable_items": 34,
+          "missing_nodes": 1,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "f1bed67eff966e5b0a02df45dcb7e44ed042df5ecda185095fcc47e1d70b37ba",
+      "client_log_sha256": "a78f5737ac1e3fce2184d420a02bd7682012a7474d17719c5823d900da6ee9e0",
+      "map_source": {
+        "episode": "jk1mp",
+        "archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+        "jkl_sha256": "938f8a892bcdc90a7f54f25aed4fd58baba750293c5d01ac2dec68ef170eef9a",
+        "authored_pickups": 46,
+        "authored_sectors": 116
+      },
+      "motion_evidence": {
+        "first_observed_sector": 11,
+        "last_observed_sector": 34,
+        "longest_continuous_sector_observation": {
+          "sector": 61,
+          "duration_seconds": 22.054,
+          "started_seconds": 8.018
+        },
+        "last_30_seconds_sectors": [
+          29,
+          30,
+          31,
+          34
+        ],
+        "last_30_seconds_horizontal_extent": 3.027335,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      }
+    },
+    {
+      "map": "m4.jkl",
+      "source_fixture": "bot-qa/dm-final-d455/m4",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 200,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 99.789,
+      "max_sample_interval_seconds": 0.521,
+      "actual_teams": [
+        0
+      ],
+      "team_assignment_seconds": null,
+      "distinct_observed_sectors": 9,
+      "distinct_observed_arena_sectors": 0,
+      "observed_sector_ids": [
+        0,
+        11,
+        12,
+        63,
+        65,
+        68,
+        69,
+        89,
+        119
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "repeater": {
+          "bin": 6,
+          "increase_events": 1,
+          "first_increase_seconds": 17.553,
+          "max_observed_amount": 1.0
+        },
+        "power_cells": {
+          "bin": 12,
+          "increase_events": 2,
+          "first_increase_seconds": 17.553,
+          "max_observed_amount": 48.0
+        },
+        "stormtrooper_rifle": {
+          "bin": 3,
+          "increase_events": 1,
+          "first_increase_seconds": 42.123,
+          "max_observed_amount": 1.0
+        },
+        "energy_cells": {
+          "bin": 11,
+          "increase_events": 1,
+          "first_increase_seconds": 42.123,
+          "max_observed_amount": 74.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "m4.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 68,
+          "nodes": 696,
+          "reachable_nodes": 519,
+          "items_total": 70,
+          "classified_items": 70,
+          "anchored_items": 59,
+          "reachable_items": 42,
+          "missing_nodes": 11,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "a37e86b5308c56e3d46d9f6b9382d6261659ba2e268d1dfe2a62dcbfda96bb31",
+      "client_log_sha256": "3b2150a6a4fe6165474e9d5d2fa2e3ebd1417f25eae1cb9260c6635b08f9d59a",
+      "map_source": {
+        "episode": "jk1mp",
+        "archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+        "jkl_sha256": "150eda1c2e6c7f316c8b76a0f2f060ce5d49dcc9ae24bb43e4fb42a5df20d89c",
+        "authored_pickups": 70,
+        "authored_sectors": 164
+      },
+      "motion_evidence": {
+        "first_observed_sector": 68,
+        "last_observed_sector": 11,
+        "longest_continuous_sector_observation": {
+          "sector": 69,
+          "duration_seconds": 12.049,
+          "started_seconds": 44.63
+        },
+        "last_30_seconds_sectors": [
+          0,
+          11,
+          12,
+          68,
+          89
+        ],
+        "last_30_seconds_horizontal_extent": 3.244249,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      }
+    },
+    {
+      "map": "m5.jkl",
+      "source_fixture": "bot-qa/dm-final-d455/m5",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 199,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 99.583,
+      "max_sample_interval_seconds": 0.52,
+      "actual_teams": [
+        0
+      ],
+      "team_assignment_seconds": null,
+      "distinct_observed_sectors": 35,
+      "distinct_observed_arena_sectors": 0,
+      "observed_sector_ids": [
+        0,
+        11,
+        13,
+        14,
+        15,
+        16,
+        19,
+        20,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        29,
+        44,
+        46,
+        50,
+        51,
+        52,
+        53,
+        54,
+        69,
+        70,
+        71,
+        72,
+        206,
+        228,
+        229,
+        267,
+        269,
+        287,
+        307,
+        308,
+        313
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "stormtrooper_rifle": {
+          "bin": 3,
+          "increase_events": 1,
+          "first_increase_seconds": 7.556,
+          "max_observed_amount": 1.0
+        },
+        "energy_cells": {
+          "bin": 11,
+          "increase_events": 6,
+          "first_increase_seconds": 7.556,
+          "max_observed_amount": 294.0
+        },
+        "shields": {
+          "bin": 60,
+          "increase_events": 4,
+          "first_increase_seconds": 18.619,
+          "max_observed_amount": 180.0
+        },
+        "repeater": {
+          "bin": 6,
+          "increase_events": 1,
+          "first_increase_seconds": 39.72,
+          "max_observed_amount": 1.0
+        },
+        "power_cells": {
+          "bin": 12,
+          "increase_events": 9,
+          "first_increase_seconds": 39.72,
+          "max_observed_amount": 206.0
+        },
+        "bowcaster": {
+          "bin": 5,
+          "increase_events": 1,
+          "first_increase_seconds": 59.861,
+          "max_observed_amount": 1.0
+        },
+        "power_boost": {
+          "bin": 63,
+          "increase_events": 1,
+          "first_increase_seconds": 69.921,
+          "max_observed_amount": 2.0
+        },
+        "thermal_detonators": {
+          "bin": 4,
+          "increase_events": 1,
+          "first_increase_seconds": 71.937,
+          "max_observed_amount": 6.0
+        },
+        "light_surge": {
+          "bin": 65,
+          "increase_events": 1,
+          "first_increase_seconds": 72.946,
+          "max_observed_amount": 1.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "m5.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 228,
+          "nodes": 1282,
+          "reachable_nodes": 594,
+          "items_total": 129,
+          "classified_items": 129,
+          "anchored_items": 125,
+          "reachable_items": 73,
+          "missing_nodes": 4,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "8a0488a7f7528e67cb3e871e57d0b77b447feede5f9d09efe78754bdefa7b083",
+      "client_log_sha256": "2f9f32c0fd28d275137e0a5b3cf7b6b092ff7e21c576beb26abecad0def096b8",
+      "map_source": {
+        "episode": "jk1mp",
+        "archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+        "jkl_sha256": "61713ac79aa60bba1b558f8457a1351f720b076c242469110975ac26b2dcff38",
+        "authored_pickups": 129,
+        "authored_sectors": 379
+      },
+      "motion_evidence": {
+        "first_observed_sector": 228,
+        "last_observed_sector": 46,
+        "longest_continuous_sector_observation": {
+          "sector": 50,
+          "duration_seconds": 5.536,
+          "started_seconds": 25.658
+        },
+        "last_30_seconds_sectors": [
+          0,
+          11,
+          13,
+          14,
+          15,
+          16,
+          19,
+          20,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          46,
+          267
+        ],
+        "last_30_seconds_horizontal_extent": 2.667576,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      }
+    },
+    {
+      "map": "m10.jkl",
+      "source_fixture": "bot-qa/dm-final-d455/m10",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 200,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 99.976,
+      "max_sample_interval_seconds": 0.517,
+      "actual_teams": [
+        0
+      ],
+      "team_assignment_seconds": null,
+      "distinct_observed_sectors": 15,
+      "distinct_observed_arena_sectors": 0,
+      "observed_sector_ids": [
+        8,
+        10,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        21,
+        31,
+        32,
+        33,
+        38,
+        39
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "rail_charges": {
+          "bin": 15,
+          "increase_events": 4,
+          "first_increase_seconds": 3.016,
+          "max_observed_amount": 18.0
+        },
+        "rail_detonator": {
+          "bin": 7,
+          "increase_events": 1,
+          "first_increase_seconds": 4.018,
+          "max_observed_amount": 1.0
+        },
+        "energy_cells": {
+          "bin": 11,
+          "increase_events": 2,
+          "first_increase_seconds": 9.537,
+          "max_observed_amount": 90.0
+        },
+        "power_cells": {
+          "bin": 12,
+          "increase_events": 2,
+          "first_increase_seconds": 12.043,
+          "max_observed_amount": 50.0
+        },
+        "shields": {
+          "bin": 60,
+          "increase_events": 4,
+          "first_increase_seconds": 72.831,
+          "max_observed_amount": 180.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "m10.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 39,
+          "nodes": 550,
+          "reachable_nodes": 500,
+          "items_total": 42,
+          "classified_items": 42,
+          "anchored_items": 38,
+          "reachable_items": 18,
+          "missing_nodes": 4,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "7c7c0337f78233f80d522d9122ab14708fadb4f1dcc500fa8144ff8aa8a02eb3",
+      "client_log_sha256": "dc43bddbf29957e815358fe1c0c0a1cac59061642dae908ef7fbb3137730b487",
+      "map_source": {
+        "episode": "jk1mp",
+        "archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+        "jkl_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+        "authored_pickups": 42,
+        "authored_sectors": 69
+      },
+      "motion_evidence": {
+        "first_observed_sector": 39,
+        "last_observed_sector": 32,
+        "longest_continuous_sector_observation": {
+          "sector": 10,
+          "duration_seconds": 9.554,
+          "started_seconds": 61.771
+        },
+        "last_30_seconds_sectors": [
+          8,
+          10,
+          12,
+          32,
+          33,
+          39
+        ],
+        "last_30_seconds_horizontal_extent": 5.694584,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      }
+    },
+    {
+      "map": "m_boss15.jkl",
+      "source_fixture": "bot-qa/dm-final-d455/m_boss15",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 200,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 99.898,
+      "max_sample_interval_seconds": 0.512,
+      "actual_teams": [
+        0
+      ],
+      "team_assignment_seconds": null,
+      "distinct_observed_sectors": 14,
+      "distinct_observed_arena_sectors": 0,
+      "observed_sector_ids": [
+        4,
+        7,
+        15,
+        19,
+        20,
+        24,
+        25,
+        26,
+        27,
+        28,
+        49,
+        52,
+        55,
+        66
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {
+        "shields": {
+          "bin": 60,
+          "increase_events": 1,
+          "first_increase_seconds": 2.514,
+          "max_observed_amount": 200.0
+        },
+        "bacta": {
+          "bin": 40,
+          "increase_events": 2,
+          "first_increase_seconds": 22.09,
+          "max_observed_amount": 3.0
+        }
+      },
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "m_boss15.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 4,
+          "nodes": 335,
+          "reachable_nodes": 53,
+          "items_total": 16,
+          "classified_items": 16,
+          "anchored_items": 14,
+          "reachable_items": 4,
+          "missing_nodes": 2,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "0d5595b1ee6bbfcf27cc88a6c77a72cafa5a1b42e425c715e483a91f53cc1236",
+      "client_log_sha256": "64abd55adde695f65825dc519119a4fb9f31c4f9b847bec1d1949877ca37a8c2",
+      "map_source": {
+        "episode": "jk1mp",
+        "archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+        "jkl_sha256": "1f8502deba0220a3f39a2a3fb2f638ecf71b214f127b74d47ac482194e907458",
+        "authored_pickups": 16,
+        "authored_sectors": 68
+      },
+      "motion_evidence": {
+        "first_observed_sector": 66,
+        "last_observed_sector": 28,
+        "longest_continuous_sector_observation": {
+          "sector": 28,
+          "duration_seconds": 18.088,
+          "started_seconds": 20.08
+        },
+        "last_30_seconds_sectors": [
+          20,
+          25,
+          26,
+          27,
+          28,
+          52,
+          55
+        ],
+        "last_30_seconds_horizontal_extent": 3.627229,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      },
+      "landing_pad_exit": {
+        "first_sector": 66,
+        "first_different_sector_seconds": 0.501,
+        "previously_blocked_sector_66_left": true
+      }
+    },
+    {
+      "map": "m_boss17.jkl",
+      "source_fixture": "bot-qa/dm-final-d455/m_boss17",
+      "bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+      "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+      "rules": {
+        "rank": 8,
+        "bots_profiles": [
+          "kyle_katarn"
+        ],
+        "bots_sabers_only": false,
+        "bots_fists_peace": true,
+        "bots_force_enabled": true
+      },
+      "samples": 200,
+      "observation_errors": 0,
+      "parse_errors": 0,
+      "observed_seconds": 99.912,
+      "max_sample_interval_seconds": 0.514,
+      "actual_teams": [
+        0
+      ],
+      "team_assignment_seconds": null,
+      "distinct_observed_sectors": 2,
+      "distinct_observed_arena_sectors": 0,
+      "observed_sector_ids": [
+        28,
+        29
+      ],
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "suicides": 0,
+      "inventory_increases_without_observed_death": {},
+      "inventory_evidence_caveat": "Ordinary local inventory increases between living samples with unchanged identity/death count; mana regeneration and health healing are excluded. Not exhaustive item collection coverage.",
+      "coverage": [
+        {
+          "map": "m_boss17.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 29,
+          "nodes": 400,
+          "reachable_nodes": 330,
+          "items_total": 13,
+          "classified_items": 13,
+          "anchored_items": 11,
+          "reachable_items": 8,
+          "missing_nodes": 2,
+          "truncated": 0
+        }
+      ],
+      "ctf_events": [],
+      "captures_observed": 0,
+      "fixture_status": "observed",
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "observation_sha256": "776531c6ba872d2fb3eae17b92a34ff48bbc17d87d9fa1cd34d8860cc80edca3",
+      "client_log_sha256": "b6a84ff0fa9e4f4c0d77ae811b477bf8f7268651f834fe0be4b94d78029915ce",
+      "map_source": {
+        "episode": "jk1mp",
+        "archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+        "jkl_sha256": "5c0795709ff3f2da525d0ad9ce4a3e41b13445febc1b5f88f727c864b606349f",
+        "authored_pickups": 13,
+        "authored_sectors": 62
+      },
+      "motion_evidence": {
+        "first_observed_sector": 29,
+        "last_observed_sector": 28,
+        "longest_continuous_sector_observation": {
+          "sector": 28,
+          "duration_seconds": 61.271,
+          "started_seconds": 38.641
+        },
+        "last_30_seconds_sectors": [
+          28
+        ],
+        "last_30_seconds_horizontal_extent": 0.010269,
+        "interpretation": "Sampled movement and sector residence; not proof that every route or item was traversed."
+      },
+      "acceptance_limit": "No item acquisition; the bot remains near its spawn while repeatedly approaching an unreached nearest graph anchor. The actual initial segment needs an executable jump connection.",
+      "diagnostic_evidence": "A bounded actual-engine geometry probe accepts an ordinary jump from the sampled position to the anchor while grounded steering rejects it. No game-state writes were used."
+    }
+  ],
+  "totals": {
+    "maps_observed": 9,
+    "valid_samples": 2275,
+    "observation_errors": 0,
+    "authored_pickups_catalogued": 700,
+    "ctf_captures_observed": 7
+  },
+  "coverage_interpretation": {
+    "classified_items": "Pickup templates recognized in the loaded world; this includes flags and pickups the bot does not currently choose to use.",
+    "anchored_items": "Pickup positions with a valid graph anchor; not proof of a route from every spawn.",
+    "reachable_items": "Graph anchors reached by the planner from the logged current origin; not all items actually collected or all routes physically validated.",
+    "ctf_lobby": "The ordinary team-selection lobby is intentionally separate; post-team coverage is reported independently.",
+    "item_increases": "Observed ordinary inventory increases without a sampled death; incidental pickups count, and CTF keys can be team grants."
+  },
+  "ctf_scoring": {
+    "enemy_flag_pickup": 3,
+    "solo_capture_award": 15,
+    "capture_evidence": "Self-carried enemy flag becomes detached and home, own flag is home, and personal/team scores both rise by15. Flag icon and local distance are recorded."
+  },
+  "cleanup": {
+    "all_fixtures_stopped": true,
+    "all_reported_process_maps_empty": true,
+    "recorded_bot_pids_absent": [
+      134902,
+      136463,
+      138429,
+      140442,
+      141376,
+      142341,
+      143015,
+      144099,
+      144592
+    ],
+    "private_namespace_keeper_retained": true
+  },
+  "resource_evidence": {
+    "oom_kill_before_serial": 2,
+    "oom_kill_after_serial": 2,
+    "new_oom_kills_during_serial": 0
+  },
+  "setup_attempts_excluded": "Earlier d455 attempts lacked the companion network library or coincided with an incomplete manager import; they had no gameplay samples. Corrected serial runs above used the verified companion. The earlier parallel startup was stopped to avoid resource overload.",
+  "limitations": [
+    "C3 capture remains unqualified for this binary; the later grounded-clearance correction requires a new live candidate test.",
+    "The boss17 run exposes a blocked initial graph connection and does not qualify item acquisition from that spawn.",
+    "This is one bounded solo run per map and does not establish every spawn, item route, door puzzle, lift, or combat scenario.",
+    "No retail, OpenJKDF2 human, or JKWeb human participated in these nine fixtures; mixed-client qualification is a separate receipt.",
+    "Enemy interception, contested flag recovery, escort, and defense behavior require opponent-based live tests in addition to the controlled regressions.",
+    "The observed binary predates the subsequent navigation source correction; source-specific hashes must be retained when comparing results."
+  ]
+}

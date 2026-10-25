@@ -34,6 +34,7 @@ static size_t stream_used;
 static unsigned long long incoming_packets, outgoing_packets;
 static uint8_t provider_connection[65536];
 static DWORD provider_connection_size;
+static uint8_t session_entry[240];
 
 static const GUID JK_GUID = {0xbf0613c0,0xde79,0x11d0,{0x99,0xc9,0x00,0xa0,0x24,0x76,0xad,0x4b}};
 static const GUID MOTS_GUID = {0xa4ff3960,0x3b4f,0x11d1,{0x96,0xcb,0x44,0x45,0x53,0x54,0x00,0x00}};
@@ -180,7 +181,50 @@ static int open_directplay(const uint8_t info[244],unsigned requested_pool) {
       }
     }
     printf("{\"event\":\"ready\",\"version\":\"%s\",\"mode\":\"%s\",\"host_id\":%lu,\"canonical_host_id\":1,\"pool_count\":%u,\"physical_capacity\":32,\"human_capacity\":%lu,\"checksum_seed\":%lu}\n",VERSION,mode?"mots":"jk",(unsigned long)host_id,pool_count,(unsigned long)(read32(entry+16)-1),(unsigned long)sd.dwUser1);
+    memcpy(session_entry,entry,sizeof(session_entry));
     fflush(stdout);return 1;
+}
+
+static int update_directplay_description(const uint8_t *info,size_t bytes) {
+    DPSESSIONDESC2 current,updated;HRESULT hr;DWORD needed=0;
+    uint8_t *buffer;const uint8_t *entry;
+    char title[96],episode[33],map[33],session[196],password[96];WCHAR titlew[33],passwordw[33];
+    if(bytes!=244 || read32(info)!=game_mode || !dp) {
+        failure("updated_session_descriptor",E_INVALIDARG);return 0;
+    }
+    entry=info+4;
+    /* Counts fluctuate during ordinary joins. Publish only content/settings
+     * changes, without recreating the session or its surrogate player pool. */
+    if(!memcmp(session_entry+24,entry+24,sizeof(session_entry)-24))return 1;
+    memcpy(titlew,entry+24,64);titlew[32]=0;memcpy(passwordw,entry+152,64);passwordw[32]=0;
+    if(!WideCharToMultiByte(CP_ACP,0,titlew,-1,title,sizeof(title),NULL,NULL) ||
+       !WideCharToMultiByte(CP_ACP,0,passwordw,-1,password,sizeof(password),NULL,NULL)) {
+        failure("updated_session_text",E_INVALIDARG);return 0;
+    }
+    memcpy(episode,entry+88,32);episode[32]=0;memcpy(map,entry+120,32);map[32]=0;
+    snprintf(session,sizeof(session),"%s:%s:%s",title,episode,map);
+    hr=IDirectPlay3_GetSessionDesc(dp,NULL,&needed);
+    if(hr!=DPERR_BUFFERTOOSMALL || needed<sizeof(current) || needed>65536) {
+        failure("GetSessionDesc_size",FAILED(hr)?hr:E_UNEXPECTED);return 0;
+    }
+    buffer=(uint8_t*)malloc(needed);
+    if(!buffer){failure("GetSessionDesc_buffer",E_OUTOFMEMORY);return 0;}
+    hr=IDirectPlay3_GetSessionDesc(dp,buffer,&needed);
+    if(FAILED(hr) || needed<sizeof(current)) {
+        free(buffer);failure("GetSessionDesc",FAILED(hr)?hr:E_UNEXPECTED);return 0;
+    }
+    memcpy(&current,buffer,sizeof(current));updated=current;
+    /* Keep the runtime's instance/application GUIDs, flags, physical capacity,
+     * player count and reserved fields. Only ordinary host metadata changes. */
+    updated.lpszSessionNameA=session;updated.lpszPasswordA=password[0]?password:NULL;
+    updated.dwUser1=read32(entry+220);updated.dwUser2=read32(entry+228);
+    updated.dwUser3=(read32(entry+224)&0xffffu)|(read32(entry+236)<<16);
+    updated.dwUser4=read32(entry+232);
+    hr=IDirectPlay3_SetSessionDesc(dp,&updated,0);
+    free(buffer);
+    if(FAILED(hr)){failure("SetSessionDesc",hr);return 0;}
+    memcpy(session_entry,entry,sizeof(session_entry));
+    printf("{\"event\":\"session_descriptor_updated\"}\n");fflush(stdout);return 1;
 }
 static void add_remote(DPID id) {
     if(owned_id(id) || remote_index(id)>=0)return;
@@ -348,6 +392,8 @@ static int on_frame(const uint8_t *frame,size_t n) {
             fflush(stderr);return 0;
         }
         outgoing_packets++;
+    } else if(type==102) {
+        return update_directplay_description(raw,bytes);
     } else if(type==103) {
         if(bytes<4 || read32(raw)!=0 || from!=to) {failure("canonical_retail_id_rejected",E_FAIL);return 0;}
     } else if(type>=190) {failure("broker_error",E_FAIL);return 0;}

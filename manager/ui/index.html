@@ -33,7 +33,7 @@
           </div>
           <p class="hint">All players need matching game content. JK and MotS run as separate sessions. The legacy password prompt is not an access-control boundary across these transports.</p>
           <div class="grid five compact">
-            <label>Player slots<input name="max_players" type="number" min="1" max="31" required></label>
+            <label>Player slots (including host)<input name="max_players" type="number" min="1" max="31" required></label>
             <label>Force rank<input name="rank" type="number" min="0" max="8" required></label>
             <label>Tick interval · ms<input name="tick_ms" type="number" min="10" max="1000" required></label>
             <label>Score limit<input name="score_limit" type="number" min="0" max="9999" required></label>
@@ -41,7 +41,7 @@
           </div>
           <p id="rank-hint" class="hint" hidden>MotS defaults to personality mode. Use rank 7 for compatibility with all clients; lower ranks require ranked Jedi mode (additional game flag 4096).</p>
           <div class="checks"><label><input name="teams" type="checkbox"> Team game</label><label><input name="auto_restart" type="checkbox"> Restart after a component failure</label></div>
-          <p class="hint">A limit of 0 disables that limit. Retail sessions allow up to 15 human slots and a 100–300 ms tick interval.</p>
+          <p class="hint">A limit of 0 disables that limit. Retail sessions allow up to 15 configured slots, including the host, and a 100–300 ms tick interval.</p>
         </section>
         <section class="card"><div class="section-heading"><div><p class="eyebrow">02 / CONTENT</p><h2>Local files</h2></div></div>
           <div class="grid two">
@@ -72,9 +72,45 @@
             <label class="span-two">Browser STUN / TURN servers · JSON<textarea name="web_ice_servers" rows="3" placeholder='[]' spellcheck="false"></textarea><span class="hint">Optional. Each entry has urls and, for TURN, username and credential. Empty [] uses direct connections.</span></label>
           </div></details>
         </section>
+        <section class="card"><div class="section-heading"><div><p class="eyebrow">04 / PLAYER BOTS</p><h2>Bot roster</h2></div><span id="bot-status" class="badge">Disabled</span></div>
+          <div class="checks"><label><input name="bots_enabled" type="checkbox"> Add bots when the server starts</label><label><input name="bots_taunts" type="checkbox"> Occasional character chat</label></div>
+          <p class="hint">Choose one to four bots. Player slots include the dedicated host: allow at least the bot count plus two slots for the host and one human. Roster changes apply when the next session starts.</p>
+          <div id="bot-profiles" class="bot-profile-grid" aria-label="Bot profiles"></div>
+          <p id="bot-player-detail" class="hint" aria-live="polite"></p>
+          <p class="hint">Stock JK1MP and JK1CTF on Linux. For CTF, enable Team game; bots enter the red and gold team corridors. JK1MP team games also need additional game flag 256. Team modes use the game's team skins.</p>
+          <details><summary>Bot executable</summary><label>Bot client executable<input name="bots_engine" placeholder="Use the packaged Linux bot client" spellcheck="false"></label></details>
+        </section>
+      </fieldset>
+      <fieldset id="bot-behavior-fields">
+        <section class="card"><div class="section-heading"><div><p class="eyebrow">BOT BEHAVIOR / LIVE RULES</p><h2>Combat rules</h2></div><button type="button" id="bot-behavior-save" class="quiet" hidden>Apply bot rules</button></div>
+          <div class="checks bot-rules">
+            <label><input name="bots_sabers_only" type="checkbox"> Sabers only <span class="hint">Bots do not use guns or explosives.</span></label>
+            <label><input name="bots_fists_peace" type="checkbox"> Fists = peace <span class="hint">Respect players with fists out, unless they provoke that bot.</span></label>
+            <label><input name="bots_force_enabled" type="checkbox"> Use Force powers <span class="hint">Use powers available to the bot's rank and character build.</span></label>
+          </div>
+          <p class="hint">Peace ends temporarily after attacks, hostile Force use, persistent body blocking, or rapid weapon switching nearby. Saber-only and Force use are independent settings. During play, Apply bot rules updates the running bots without restarting the match.</p>
+        </section>
       </fieldset>
       <div class="actions"><p id="edit-hint">Save settings, check the files, then start the session.</p><div><button type="button" id="preflight" class="quiet">Check files</button><button type="submit" id="save" class="quiet">Save settings</button><button type="button" id="start" class="primary">Start server</button><button type="button" id="stop" class="danger" disabled>Stop</button></div></div>
     </form>
+    <section id="admin-keys-panel" class="card">
+      <div class="section-heading"><div><p class="eyebrow">PERSISTENT / CHAT ADMIN</p><h2>Admin credentials</h2></div><button id="admin-keys-refresh" type="button" class="quiet">Refresh keys</button></div>
+      <p class="hint">Issue a separate key for each administrator or device. Keys survive game starts and panel restarts. Revoking a key removes its authority on the next command.</p>
+      <p id="admin-authority-state" class="hint" role="status" aria-live="polite">Reading credential metadata…</p>
+      <form id="admin-key-form" class="admin-key-form">
+        <label>Credential label<input id="admin-key-label" maxlength="80" placeholder="Operator or device label" autocomplete="off" required></label>
+        <div class="checks"><label><input id="admin-cap-next" type="checkbox"> Advance to the next level</label><label><input id="admin-cap-kick" type="checkbox"> Kick players</label></div>
+        <button id="admin-key-issue" type="submit" class="primary">Issue and download key</button>
+      </form>
+      <p class="hint">The download is a private credential container with a .cog extension. Keep it outside game folders and archives; do not load it as a game script. It is shown only through this download. Rotate a lost key to revoke it and download a replacement.</p>
+      <div id="admin-key-list" class="admin-key-list" aria-label="Issued admin credentials"></div>
+      <details><summary>Use a key in retail, OpenJKDF2, or JKWeb</summary>
+        <ol class="admin-steps"><li>Download and extract the offline helper, then open admin-helper.html locally.</li><li>In the game, enter <code>admin login</code>. Copy the server's private JKADMIN1 challenge.</li><li>Select your key file in the offline helper and paste the challenge. Copy its generated <code>admin prove …</code> line into game chat.</li><li>After authentication, use <code>admin help</code>, <code>admin players</code>, <code>admin next level</code>, or <code>admin kick #slot</code> (or an exact name), according to your key's capabilities. Use <code>admin logout</code> when finished.</li></ol>
+        <div class="update-actions"><a href="/admin-helper.zip" download>Download offline browser helper</a><a href="/admin-helper.py" download>Download Python helper</a></div>
+        <p class="hint">The helpers work offline and never send the key. Ordinary peer chat may display the one-time proof. A challenge lasts two minutes; authentication lasts 15 minutes on the same connection and ends on a session reset.</p>
+        <p class="hint">Use only the response to your own login. Never answer a challenge forwarded by another player; the offline helper cannot authenticate the chat sender.</p>
+      </details>
+    </section>
     <section id="update-panel" class="card" hidden>
       <div class="section-heading"><div><p class="eyebrow">RELEASES / GITLAB</p><h2>Server updates</h2></div><span id="update-version" class="badge">—</span></div>
       <p id="update-status" class="update-status" role="status" aria-live="polite">Waiting for an update check…</p>

@@ -24,6 +24,7 @@ from dataclasses import dataclass
 from typing import BinaryIO
 
 from manager import config as server_config
+from .settings import behavior_values, check_scope, write_behavior
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_FILE = Path(__file__).with_name("profiles.json")
@@ -55,6 +56,8 @@ def load_profiles(path: Path = PROFILE_FILE) -> dict[str, dict]:
             if (not isinstance(item, str) or len(item) > 31
                     or not re.fullmatch(r"[A-Za-z0-9_-]+\." + extension, item)):
                 raise ValueError(f"{ident}: {key} must be a plain ASCII .{extension} basename, at most 31 characters.")
+        if row.get("force_side", "light") not in ("light", "dark") or row.get("force_style", "balanced") not in ("balanced", "master"):
+            raise ValueError(f"{ident}: invalid Force side or style.")
         taunts = row.get("taunts")
         if not isinstance(taunts, dict) or set(taunts) != set(EVENTS):
             raise ValueError(f"{ident}: taunts must contain exactly spawn, kill, death, and ambient.")
@@ -79,15 +82,6 @@ def select_profiles(profiles: dict[str, dict], selection: str) -> list[dict]:
     if unknown:
         raise ValueError("Unknown profiles: " + ", ".join(sorted(unknown)))
     return [profiles[x] for x in selected]
-
-
-def check_scope(config: dict, count: int) -> None:
-    if (config["game"] != "jk" or config["rank"] != 0 or config["teams"]
-            or config["game_flags"] or config["password"] or config["mod_dir"]
-            or config["episode"].casefold() != "jk1mp"):
-        raise ValueError("This prototype supports stock JK1MP, rank 0, free-for-all, no password, no mod, and game_flags 0.")
-    if count >= config["max_players"]:
-        raise ValueError("Select fewer bots than max_players to leave at least one configured place for a human.")
 
 
 def endpoint(value: str) -> str:
@@ -125,6 +119,8 @@ def stage_tree(source: Path, destination: Path, ancestors: frozenset[Path] = fro
     for child in source.iterdir():
         name = child.name.casefold()
         if name == "video":
+            continue
+        if name == "authority" or (name.startswith("jk-admin-key-") and name.endswith(".cog")):
             continue
         if name in used:
             raise ValueError(f"Ambiguous filename case in {source}: {child.name}")
@@ -166,7 +162,8 @@ def prepare_bot(data: Path, directory: Path, profile: dict) -> None:
 
 
 def bot_environment(engine: Path, directory: Path, run_directory: Path, index: int,
-                    display: str, taunts: bool) -> dict[str, str]:
+                    display: str, taunts: bool, *, behavior_file: Path | None = None,
+                    team: int = 0, force_side: str = "light", force_style: str = "balanced") -> dict[str, str]:
     env = {k: v for k, v in os.environ.items()
            if not k.startswith(("OPENJKDF2_GATEWAY_", "JK_GATEWAY_", "JK_BOT_"))
            and k != "OPENJKDF2_REQUIRE_DP_POOL"}
@@ -175,7 +172,10 @@ def bot_environment(engine: Path, directory: Path, run_directory: Path, index: i
                ALSOFT_DRIVERS="null", SDL_AUDIODRIVER="dummy", LIBGL_ALWAYS_SOFTWARE="1",
                JK_BOT_PERSONA_FILE=str(directory / "persona.tsv"),
                JK_BOT_CHAT_LOCK=str(run_directory / "chat.lock"),
-               JK_BOT_CHAT_PHASE=str(15 + 40 * index), JK_BOT_TAUNTS="1" if taunts else "0")
+               JK_BOT_CHAT_PHASE=str(15 + 40 * index), JK_BOT_TAUNTS="1" if taunts else "0",
+               JK_BOT_TEAM=str(team), JK_BOT_FORCE_SIDE=force_side, JK_BOT_FORCE_STYLE=force_style)
+    if behavior_file is not None:
+        env["JK_BOT_BEHAVIOR_FILE"] = str(behavior_file)
     env["LD_LIBRARY_PATH"] = str(engine.parent) + (os.pathsep + env["LD_LIBRARY_PATH"] if env.get("LD_LIBRARY_PATH") else "")
     return env
 
@@ -223,7 +223,7 @@ def stop_group(process: subprocess.Popen, grace: float = STOP_GRACE) -> None:
         raise RuntimeError(f"Owned process {process.pid} did not exit after SIGKILL.") from error
 
 
-def start_display(run_directory: Path, children: list[Child]) -> tuple[str, int]:
+def start_display(run_directory: Path, children: list[Child], *, managed: bool = False) -> tuple[str, int]:
     executable = shutil.which("Xvfb")
     if not executable:
         raise ValueError("Install Xvfb or set DISPLAY: the bot client needs X at bootstrap.")
@@ -232,7 +232,7 @@ def start_display(run_directory: Path, children: list[Child]) -> tuple[str, int]
     try:
         process = subprocess.Popen([executable, "-displayfd", str(write_fd), "-screen", "0", "640x480x24", "-nolisten", "tcp"],
                                    stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
-                                   pass_fds=(write_fd,), start_new_session=True)
+                                   pass_fds=(write_fd,), start_new_session=not managed)
         children.append(Child("Xvfb", process, log))
     except BaseException:
         log.close()
@@ -296,10 +296,13 @@ def utc_now() -> str:
 
 
 def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
-           runtime: Path, seconds: float, taunts: bool) -> tuple[int, Path]:
+           runtime: Path, seconds: float, taunts: bool, behavior_file: Path | None = None,
+           status_file: Path | None = None, managed: bool = False) -> tuple[int, Path]:
     check_scope(config, len(profiles))
     if sys.platform != "linux":
         raise ValueError("The packaged bot prototype currently supports Linux only.")
+    if managed and os.getpgrp() != os.getpid():
+        raise ValueError("Managed bot runner must own its process group.")
     if not engine.is_file() or not os.access(engine, os.X_OK):
         raise ValueError(f"Bot executable is missing or not executable: {engine}")
     if not math.isfinite(seconds) or not 0 <= seconds <= 86400:
@@ -313,11 +316,27 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     run_directory = runtime / (stamp + "-" + secrets.token_hex(4))
     run_directory.mkdir(parents=True, mode=0o700)
+    if behavior_file is None:
+        behavior_file = run_directory / "behavior.cfg"
+        write_behavior(behavior_file, config)
+    else:
+        behavior_file = behavior_file.resolve()
+        if not behavior_file.is_file():
+            raise ValueError("The supplied live bot behavior file does not exist.")
+    if status_file is not None:
+        status_file = status_file.resolve()
     session = {"version": 1, "started_at": utc_now(), "server": connect,
                "engine": str(engine), "game": "jk", "result": "starting", "bots": [],
+               "behavior_file": str(behavior_file), "initial_behavior": behavior_values(config),
+               "episode": config["episode"], "map": config["map"], "rank": config["rank"],
+               "teams": config["teams"], "managed": managed,
                "seat_policy": "Static count check only; no live human reservation or cross-run coordination."}
     receipt = run_directory / "session.json"
-    write_json(receipt, session)
+    def publish():
+        write_json(receipt, session)
+        if status_file is not None:
+            write_json(status_file, session)
+    publish()
     print(f"Bot run: {run_directory}", flush=True)
     children: list[Child] = []
     display_read_fd = None
@@ -330,29 +349,35 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
             previous_signals[sig] = signal.signal(sig, lambda signum, frame: stopped.append(signum))
         display = os.environ.get("DISPLAY", "")
         if not display:
-            display, display_read_fd = start_display(run_directory, children)
+            display, display_read_fd = start_display(run_directory, children, managed=managed)
         for index, profile in enumerate(profiles):
             directory = run_directory / profile["id"]
             prepare_bot(data, directory, profile)
+            team = 1 + index % 2 if config["teams"] else 0
+            force_side = profile.get("force_side", "light")
+            force_style = profile.get("force_style", "balanced")
             record = {"id": profile["id"], "name": profile["name"], "model": profile["model"],
-                      "sound": profile["sound"], "directory": str(directory), "joined": False}
+                      "sound": profile["sound"], "directory": str(directory), "joined": False,
+                      "requested_team": team, "force_side": force_side, "force_style": force_style}
             session["bots"].append(record)
             log = (directory / "client.log").open("wb")
             command = [str(engine), "-headless", "-botConnect", connect,
                        "-botName", profile["name"], "-botSkin", profile["model"], "-botSound", profile["sound"]]
             try:
                 process = subprocess.Popen(command, cwd=directory, stdin=subprocess.DEVNULL,
-                                           stdout=log, stderr=subprocess.STDOUT, start_new_session=True,
-                                           env=bot_environment(engine, directory, run_directory, index, display, taunts))
+                                           stdout=log, stderr=subprocess.STDOUT, start_new_session=not managed,
+                                           env=bot_environment(engine, directory, run_directory, index, display, taunts,
+                                                               behavior_file=behavior_file, team=team, force_side=force_side,
+                                                               force_style=force_style))
             except BaseException:
                 log.close()
                 raise
             record["pid"] = process.pid
             children.append(Child(profile["name"], process, log, record, time.monotonic()))
-            write_json(receipt, session)
+            publish()
         started = time.monotonic()
         session["result"] = "running"
-        write_json(receipt, session)
+        publish()
         while not stopped:
             changed = False
             for child in children:
@@ -366,7 +391,7 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
                     child.record["error"] = "join watchdog expired"
                     raise RuntimeError(f"{child.label} did not join within {JOIN_TIMEOUT:g} seconds.")
             if changed:
-                write_json(receipt, session)
+                publish()
             if seconds and time.monotonic() - started >= seconds:
                 if not all(row["joined"] for row in session["bots"]):
                     raise RuntimeError("Requested duration ended before all bots joined; increase --seconds or check logs.")
@@ -384,7 +409,19 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
         # another bot alive merely because a sibling was already gone.
         for child in reversed(children):
             try:
-                stop_group(child.process)
+                if managed:
+                    # The manager owns the common process group. The runner
+                    # stops its direct children; manager teardown also kills
+                    # the group, even if this runner exits unexpectedly.
+                    if child.process.poll() is None:
+                        child.process.terminate()
+                        try:
+                            child.process.wait(timeout=STOP_GRACE)
+                        except subprocess.TimeoutExpired:
+                            child.process.kill()
+                            child.process.wait(timeout=2)
+                else:
+                    stop_group(child.process)
             except Exception as error:
                 errors.append(f"Cleanup {child.label}: {error}")
             if child.record is not None:
@@ -404,7 +441,7 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
             exit_code = 1
             session.update(result="failed", errors=errors)
         session["finished_at"] = utc_now()
-        write_json(receipt, session)
+        publish()
     for error in errors:
         print("Bot run failed: " + error, file=sys.stderr, flush=True)
     return exit_code, run_directory
@@ -414,12 +451,15 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--list-profiles", action="store_true")
     parser.add_argument("--server-config", type=Path)
-    parser.add_argument("--profiles", default="boba_fett,jan_ors")
+    parser.add_argument("--profiles", help="Comma-separated stock profile ids; defaults to bots_profiles in the server config")
     parser.add_argument("--engine", type=Path, default=ROOT / "bin/bots-linux-x86_64/jk-bot-client")
     parser.add_argument("--connect", help="HOST:PORT, default 127.0.0.1:<native_port> from server config")
     parser.add_argument("--runtime", type=Path, default=ROOT / "runtime/bots")
     parser.add_argument("--seconds", type=float, default=0, help="Stop after this many seconds; 0 runs until interrupted")
     parser.add_argument("--no-taunts", action="store_true")
+    parser.add_argument("--behavior-file", type=Path, help="Read live behavior settings from this existing file")
+    parser.add_argument("--status-file", type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--managed", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     try:
         profiles = load_profiles()
@@ -430,10 +470,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.server_config is None or not args.server_config.is_file():
             raise ValueError("Supply an existing --server-config JSON file for your running server.")
         config = server_config.validate(json.loads(args.server_config.read_text(encoding="utf-8")))
-        selected = select_profiles(profiles, args.profiles)
+        selected = select_profiles(profiles, args.profiles or ",".join(config["bots_profiles"]))
         code, _ = launch(config, selected, engine=args.engine,
                          connect=args.connect or f"127.0.0.1:{config['native_port']}",
-                         runtime=args.runtime, seconds=args.seconds, taunts=not args.no_taunts)
+                         runtime=args.runtime, seconds=args.seconds,
+                         taunts=config["bots_taunts"] and not args.no_taunts,
+                         behavior_file=args.behavior_file, status_file=args.status_file, managed=args.managed)
         return code
     except (OSError, ValueError, RuntimeError) as error:
         print("Bot launcher: " + str(error), file=sys.stderr)

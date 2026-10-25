@@ -1,0 +1,1951 @@
+{
+  "kind": "JKDF2 cd64 candidate combat, Force, items and live-rule qualification",
+  "generated_at_utc": "2026-10-25T05:49:59.935+00:00",
+  "scope": "This receipt describes the immutable cd64 candidate only. It makes no claim that a later or final packaged bot binary was tested here. Human peace and cross-transport qualification are recorded separately.",
+  "candidate": {
+    "binary": {
+      "path": "bot-qa/candidate-cd64/jk-bot-client",
+      "sha256": "cd64c7b9bac33e65b274fe82ca7cf5cfc5f32b06ac5dd66c632234b37c24412a",
+      "bytes": 8592976
+    },
+    "build_record": {
+      "path": "bot-qa/candidate-cd64/build.json",
+      "sha256": "838807a39a24ea1731a0a4e25748c7e21604cc13893bbb16d476db98934fa2e9",
+      "bytes": 16853
+    },
+    "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "recorded_build_method": "Recompile changed units and all server-only units back to the client base; reuse verified published unchanged objects/static dependencies.",
+    "recorded_compiled_sources_sha256": {
+      "src/AI/jkBot.c": "01ed7c08f7877d2a532daacfcea79cab1c6220ce05d78a5ea08f82813a89ff1a",
+      "src/AI/jkBot.h": "544d2f313734f61b5933601a330ab665b081d5773f18ad23b3177f14d372b5ba",
+      "src/AI/jkBotBehavior.h": "5cad5dc201e93c01d8dd5b72f6d3d9b425f29b528f83aeb4ec14c811da245e49",
+      "src/AI/jkBotBehavior.inc": "ef13f015be070f0658fa2f08a6b63066228168ee129f04a79747e4e6bab63a16",
+      "src/AI/jkBotCombat.inc": "1f0e2f30d041d9a78555492083460d2fe4be89e8ee69eb1fe65048b48be83630",
+      "src/AI/jkBotForce.inc": "52d60e354239da47584a6a3acfa9eaa8d4cda9bbde2665d160397887519fa8ba",
+      "src/AI/jkBotLoadout.h": "10c0846a8571b07037ae291903da9f10a07d83a1e357e03710a63c92dc06a593",
+      "src/AI/jkBotNavigate.inc": "69e4fd940b6dcb30ac7f22c9fc26d5f9612e89501a501691902e78fc55c80077",
+      "src/AI/jkBotNavigation.inc": "9108a55b90c9dd59af940b043ef285d661ebdd3181b5703cf3dd7279e90136ea",
+      "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+      "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+      "src/Cog/sithCog.c": "34b9448cdff18673cca38aab7efc920496ecc23508190b506506da2bac42b7cd",
+      "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+      "src/Dss/jkDSS.c": "df627a4cef64a62862aebb6704e107ff75527294cf4687a3474ef6112ac02f2e",
+      "src/Dss/sithDSSThing.c": "277c5ea276b8b6f0e2835e434eb3e3325159edb19e67e086890b9748f2f34b29",
+      "src/Dss/sithMulti.c": "971511d3167ca2ddca113a2d3e84018feba7c967991654dda99d344718b18b26",
+      "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+      "src/Gui/jkGUIDialog.c": "bd776034955f26eba782fb2cf90aef7131962f451ccc03b5aa01ca7ec8f9af20",
+      "src/Gui/jkGUIMultiplayer.c": "3abec9dd31d4a5fca1e92fb6cb8f90b3f1a510dffdd2f4e94f6c2921132e5660",
+      "src/Gui/jkGUIMultiplayer.h": "481bbb0c95918cd146f520c62ec3840b35750652b866377e6220d64973a09d55",
+      "src/Main/Main.c": "70858936110dc34cdf237444358f4aa8b596983cb84fdb706ae6e671b37ff233",
+      "src/Platform/Networking/GNS/stdComm_GNS.cpp": "60ec7b204b0e2a0aa2180fa9d2218b371bf6e78aaa683fc62ad897a2bb4e7fdd",
+      "src/Win95/Window.c": "87295dbf8c529ba003c2d0f3a9d50de2e4954f597a4ea790fd1314ec5df186fa",
+      "src/Win95/Windows.c": "4914b71eb839ce14aa5ffb99eb38127c015a138a8c789376c162d40482e61345",
+      "src/World/sithThing.c": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec",
+      "src/World/sithWeapon.c": "e9682e53a12ab3d18c1c8950692713fa484fae7364490fbac84302905dc2dc8c"
+    },
+    "network_library": {
+      "path": "bot-qa/candidate-cd64/libGameNetworkingSockets.so",
+      "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+      "bytes": 3644744
+    }
+  },
+  "method": {
+    "observer": {
+      "path": "bot-qa/observe_features.py",
+      "sha256": "63b3de63e037f59fdb27ea1e6bda9ff7b0d2fb63834241c45c11a7aa7cc301d0",
+      "bytes": 9399
+    },
+    "layout": {
+      "path": "bot-qa/features_layout.json",
+      "sha256": "8b9ec92057d0e27dd3634827526bd43bc639005a439f130aca64cf6bd22a3166",
+      "bytes": 868
+    },
+    "description": "The observer verifies executable hash and process start identity and reads game memory without writing it. Samples are non-atomic at approximately half-second intervals.",
+    "resource_deltas": "Compare endpoints that are both alive and in the same recorded life, excluding observed death/respawn resets.",
+    "gun_provenance": "Saber deflection can change projectile parent. Firing witnesses combine selected gun, ammunition depletion, own parent, and creator GUID upper 16 bits equal to local slot+1, following sithThing_Create.",
+    "force_evidence": "BOT_FORCE_INPUT is a request. Pull and Blinding active flags include targeting time. Effects, costs and stock COG semantics are distinguished."
+  },
+  "mixed_session": {
+    "record": {
+      "path": "bot-qa/mixed-cd64-state/runtime/runs/20261025T053537Z-9d6c8e/bots-status.json",
+      "sha256": "f1256dcca694c2177f246f9d54fd5a7c98f40432030cc3fe027432c8bc6e1bb4",
+      "bytes": 2832
+    },
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "rank": 8,
+    "initial_rules": {
+      "sabers_only": false,
+      "fists_peace": true,
+      "force_enabled": true
+    },
+    "completed_observers": [
+      {
+        "path": "bot-qa/mixed-cd64-observations.jsonl",
+        "sha256": "465996ff4b953492f1cd550ed2ffd739554710375fe6f38de90c08192a73e0bc",
+        "bytes": 25186860,
+        "samples": 3488,
+        "errors": [],
+        "from_utc": "2026-10-25T05:36:46.093+00:00",
+        "through_utc": "2026-10-25T05:44:15.132+00:00",
+        "span_seconds": 449.04,
+        "stop_reason": "Reached the 24 MiB output bound; the 600-second time limit was not reached."
+      },
+      {
+        "path": "bot-qa/mixed-cd64-sabers-observations.jsonl",
+        "sha256": "59694a984f52033ac7b2ce0904d5fb6718aaa76ef5748766ed62995f335680f7",
+        "bytes": 5288223,
+        "samples": 708,
+        "errors": [],
+        "from_utc": "2026-10-25T05:43:44.691+00:00",
+        "through_utc": "2026-10-25T05:45:14.533+00:00",
+        "span_seconds": 89.843,
+        "stop_reason": "The bounded 90-second observation completed cleanly."
+      }
+    ]
+  },
+  "legal_profiles": {
+    "boba_fett": {
+      "side": "dark",
+      "style": "balanced",
+      "samples": 1049,
+      "rank": 8,
+      "base_stars_spent": 24,
+      "unspent": 0,
+      "expected_power_ranks": {
+        "21": 3,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "30": 3,
+        "31": 3,
+        "32": 3,
+        "33": 3
+      },
+      "mismatches": 0,
+      "mana_range": [
+        0.0,
+        400.0
+      ],
+      "explanation": "Three stars per rank, at most four per base power. Masters retain eight unspent stars and receive the stock derived master power. The saved profile is prepared before joining; no runtime grants were used."
+    },
+    "jan_ors": {
+      "side": "light",
+      "style": "master",
+      "samples": 1049,
+      "rank": 8,
+      "base_stars_spent": 16,
+      "unspent": 8,
+      "expected_power_ranks": {
+        "25": 4,
+        "26": 4,
+        "27": 4,
+        "28": 4,
+        "29": 4
+      },
+      "mismatches": 0,
+      "mana_range": [
+        0.0,
+        400.0
+      ],
+      "explanation": "Three stars per rank, at most four per base power. Masters retain eight unspent stars and receive the stock derived master power. The saved profile is prepared before joining; no runtime grants were used."
+    },
+    "kyle_katarn": {
+      "side": "light",
+      "style": "balanced",
+      "samples": 1049,
+      "rank": 8,
+      "base_stars_spent": 24,
+      "unspent": 0,
+      "expected_power_ranks": {
+        "21": 3,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 3,
+        "26": 3,
+        "27": 3,
+        "28": 3
+      },
+      "mismatches": 0,
+      "mana_range": [
+        2.0,
+        400.0
+      ],
+      "explanation": "Three stars per rank, at most four per base power. Masters retain eight unspent stars and receive the stock derived master power. The saved profile is prepared before joining; no runtime grants were used."
+    },
+    "sariss": {
+      "side": "dark",
+      "style": "master",
+      "samples": 1049,
+      "rank": 8,
+      "base_stars_spent": 16,
+      "unspent": 8,
+      "expected_power_ranks": {
+        "30": 4,
+        "31": 4,
+        "32": 4,
+        "33": 4,
+        "34": 4
+      },
+      "mismatches": 0,
+      "mana_range": [
+        2.0,
+        400.0
+      ],
+      "explanation": "Three stars per rank, at most four per base power. Masters retain eight unspent stars and receive the stock derived master power. The saved profile is prepared before joining; no runtime grants were used."
+    }
+  },
+  "dm_maps": {
+    "m10": {
+      "outcome": "Traversed 13 observed sectors, acquired ammunition and rail detonator, and remained moving at the end.",
+      "observations": {
+        "path": "bot-qa/dm-matrix-cd64/m10/observations.jsonl",
+        "sha256": "1bb2738051a2c3165692a47ff563ed4fb5e83f97c4fe83adc6726d41caa79b22",
+        "bytes": 876840
+      },
+      "samples": 159,
+      "span_seconds": 79.545,
+      "distinct_sectors": 13,
+      "positive_inventory_deltas_while_alive": {
+        "12": 100.0,
+        "11": 60.0,
+        "15": 12.0,
+        "7": 1.0
+      },
+      "final_horizontal_stall_seconds": 0.0,
+      "graph_ready": [
+        "BOT_NAV_READY nodes=549 directed_edges=7675 name=Bot_Katarn map=m10.jkl item_nodes=38 missing_item_nodes=4 truncated=0"
+      ],
+      "initial_graph_coverage": [
+        "BOT_NAV_COVERAGE map=m10.jkl name=Bot_Katarn team=0 origin_sector=14 nodes=549 reachable_nodes=499 items_total=42 classified_items=42 anchored_items=38 reachable_items=18 missing_nodes=4 truncated=0"
+      ],
+      "fault_lines": [],
+      "result_record": {
+        "path": "bot-qa/dm-matrix-cd64/m10/result.json",
+        "sha256": "2e8a52bbbd6e7a1fb79697b87d32482d7dcd8b3874d23dde2a9af40fe0985eda",
+        "bytes": 461
+      },
+      "client_log": {
+        "path": "bot-qa/dm-matrix-cd64/m10/state/runtime/runs/20261025T053704Z-5943cf/bots/20261025T053705Z-676c7b2d/kyle_katarn/client.log",
+        "sha256": "041d28debe1979fb4075ef3d548e58baf4982b8875eb91c079a5c177cab57f0e",
+        "bytes": 8725
+      },
+      "observation_errors": 0,
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      }
+    },
+    "m2": {
+      "outcome": "Acquired concussion, rail detonator, ammunition and shields. One ordinary death/respawn; the final 44.8 seconds stayed within 0.05 horizontal units in sector 10.",
+      "observations": {
+        "path": "bot-qa/dm-matrix-cd64/m2/observations.jsonl",
+        "sha256": "81728129b60b2a386527c573d33529d6237432923137f4de59c1f3ccf0fe0e82",
+        "bytes": 876330
+      },
+      "samples": 159,
+      "span_seconds": 79.536,
+      "distinct_sectors": 5,
+      "positive_inventory_deltas_while_alive": {
+        "9": 1.0,
+        "12": 32.0,
+        "11": 60.0,
+        "60": 80.0,
+        "7": 1.0,
+        "15": 6.0
+      },
+      "final_horizontal_stall_seconds": 44.815,
+      "graph_ready": [
+        "BOT_NAV_READY nodes=639 directed_edges=9162 name=Bot_Katarn map=m2.jkl item_nodes=45 missing_item_nodes=1 truncated=0"
+      ],
+      "initial_graph_coverage": [
+        "BOT_NAV_COVERAGE map=m2.jkl name=Bot_Katarn team=0 origin_sector=78 nodes=639 reachable_nodes=24 items_total=46 classified_items=46 anchored_items=45 reachable_items=9 missing_nodes=1 truncated=0"
+      ],
+      "fault_lines": [],
+      "result_record": {
+        "path": "bot-qa/dm-matrix-cd64/m2/result.json",
+        "sha256": "1f892b64d43a49e68eee4570f7ceb284e44893278d31fa00ef463c06eb80d9b2",
+        "bytes": 458
+      },
+      "client_log": {
+        "path": "bot-qa/dm-matrix-cd64/m2/state/runtime/runs/20261025T053533Z-5fae53/bots/20261025T053534Z-67b74fca/kyle_katarn/client.log",
+        "sha256": "af2d66025e9ef9cfcca01230472cf30527688948491716c0230b0dafdecc7f22",
+        "bytes": 9026
+      },
+      "observation_errors": 0,
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      }
+    },
+    "m4": {
+      "outcome": "Acquired rifle, ammunition and shields and performed Force Jump. The final 55.0 seconds stayed within 0.05 horizontal units in sector 15; complete routing is not demonstrated.",
+      "observations": {
+        "path": "bot-qa/dm-matrix-cd64/m4/observations.jsonl",
+        "sha256": "a9302eef21768d104b67184abba176ea6deb8022babb70e63d273c4bd4f20cd9",
+        "bytes": 880749
+      },
+      "samples": 159,
+      "span_seconds": 79.702,
+      "distinct_sectors": 13,
+      "positive_inventory_deltas_while_alive": {
+        "3": 1.0,
+        "11": 24.0,
+        "8": 5.0,
+        "60": 50.0
+      },
+      "final_horizontal_stall_seconds": 55.009,
+      "graph_ready": [
+        "BOT_NAV_READY nodes=610 directed_edges=7774 name=Bot_Katarn map=m4.jkl item_nodes=59 missing_item_nodes=11 truncated=0"
+      ],
+      "initial_graph_coverage": [
+        "BOT_NAV_COVERAGE map=m4.jkl name=Bot_Katarn team=0 origin_sector=64 nodes=610 reachable_nodes=482 items_total=70 classified_items=70 anchored_items=59 reachable_items=42 missing_nodes=11 truncated=0"
+      ],
+      "fault_lines": [],
+      "result_record": {
+        "path": "bot-qa/dm-matrix-cd64/m4/result.json",
+        "sha256": "34f7e1351ee53da29003d00d9a4cc147f49692cd0d4c56c395fe60da282efcc3",
+        "bytes": 459
+      },
+      "client_log": {
+        "path": "bot-qa/dm-matrix-cd64/m4/state/runtime/runs/20261025T053533Z-2333b0/bots/20261025T053535Z-e54d3851/kyle_katarn/client.log",
+        "sha256": "cc5f2044e4ece6f6917dd8aa127f279658042dc02a3202e146615fd42a2006bc",
+        "bytes": 8687
+      },
+      "observation_errors": 0,
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      }
+    },
+    "m5": {
+      "outcome": "Traversed 16 observed sectors and acquired rifle and shields; still moving at the end, within a limited reachable region.",
+      "observations": {
+        "path": "bot-qa/dm-matrix-cd64/m5/observations.jsonl",
+        "sha256": "25cb4364e4aa86b80a65e9b1708a877c0970a4ce3e0a287850d11a636ef0e9df",
+        "bytes": 877440
+      },
+      "samples": 159,
+      "span_seconds": 79.797,
+      "distinct_sectors": 16,
+      "positive_inventory_deltas_while_alive": {
+        "3": 1.0,
+        "11": 48.0,
+        "60": 40.0
+      },
+      "final_horizontal_stall_seconds": 0.0,
+      "graph_ready": [
+        "BOT_NAV_READY nodes=1228 directed_edges=14627 name=Bot_Katarn map=m5.jkl item_nodes=125 missing_item_nodes=4 truncated=0"
+      ],
+      "initial_graph_coverage": [
+        "BOT_NAV_COVERAGE map=m5.jkl name=Bot_Katarn team=0 origin_sector=68 nodes=1228 reachable_nodes=62 items_total=129 classified_items=129 anchored_items=125 reachable_items=6 missing_nodes=4 truncated=0"
+      ],
+      "fault_lines": [],
+      "result_record": {
+        "path": "bot-qa/dm-matrix-cd64/m5/result.json",
+        "sha256": "0f6eeb5212992b8b417984aa57c8dd5ef08cf9f510b849c4eb9cafa2bf01c0c2",
+        "bytes": 458
+      },
+      "client_log": {
+        "path": "bot-qa/dm-matrix-cd64/m5/state/runtime/runs/20261025T053533Z-cf4d3e/bots/20261025T053534Z-11d85d3d/kyle_katarn/client.log",
+        "sha256": "3fe3f03323e80d4960293f3d5abf5072b1ec73378f01b50cc8b97da21ac7a1bb",
+        "bytes": 8455
+      },
+      "observation_errors": 0,
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      }
+    },
+    "m_boss15": {
+      "outcome": "Stayed in sector 66 while moving locally; no pickup was observed. This is a route-coverage failure, not a crash.",
+      "observations": {
+        "path": "bot-qa/dm-matrix-cd64/m_boss15/observations.jsonl",
+        "sha256": "499a26ac0a05588a0df5bc1090de2f74b14cbff591c1aacb95bb27fb7d142025",
+        "bytes": 876238
+      },
+      "samples": 159,
+      "span_seconds": 79.598,
+      "distinct_sectors": 1,
+      "positive_inventory_deltas_while_alive": {},
+      "final_horizontal_stall_seconds": 0.0,
+      "graph_ready": [
+        "BOT_NAV_READY nodes=282 directed_edges=3969 name=Bot_Katarn map=m_boss15.jkl item_nodes=13 missing_item_nodes=3 truncated=0"
+      ],
+      "initial_graph_coverage": [
+        "BOT_NAV_COVERAGE map=m_boss15.jkl name=Bot_Katarn team=0 origin_sector=66 nodes=282 reachable_nodes=5 items_total=16 classified_items=16 anchored_items=13 reachable_items=1 missing_nodes=3 truncated=0"
+      ],
+      "fault_lines": [],
+      "result_record": {
+        "path": "bot-qa/dm-matrix-cd64/m_boss15/result.json",
+        "sha256": "0950a169fdb65e8e6c300853089b866bba4353afaa468a9884f98ce4e3996897",
+        "bytes": 471
+      },
+      "client_log": {
+        "path": "bot-qa/dm-matrix-cd64/m_boss15/state/runtime/runs/20261025T053704Z-b0ab6c/bots/20261025T053706Z-a1b27c64/kyle_katarn/client.log",
+        "sha256": "22a90d0d98f896745fbf17cd4792aabda8ecb63ef34a3f1c8d8740326eae0a82",
+        "bytes": 7889
+      },
+      "observation_errors": 0,
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      }
+    },
+    "m_boss17": {
+      "outcome": "Traversed 7 observed sectors, acquired one bacta tank, and remained moving at the end.",
+      "observations": {
+        "path": "bot-qa/dm-matrix-cd64/m_boss17/observations.jsonl",
+        "sha256": "72d91e33fa237eb9bea105b62075519266f28e13ca87815d25a3e7a525f1ee20",
+        "bytes": 883779
+      },
+      "samples": 160,
+      "span_seconds": 79.924,
+      "distinct_sectors": 7,
+      "positive_inventory_deltas_while_alive": {
+        "40": 1.0
+      },
+      "final_horizontal_stall_seconds": 0.0,
+      "graph_ready": [
+        "BOT_NAV_READY nodes=361 directed_edges=5398 name=Bot_Katarn map=m_boss17.jkl item_nodes=11 missing_item_nodes=2 truncated=0"
+      ],
+      "initial_graph_coverage": [
+        "BOT_NAV_COVERAGE map=m_boss17.jkl name=Bot_Katarn team=0 origin_sector=20 nodes=361 reachable_nodes=300 items_total=13 classified_items=13 anchored_items=11 reachable_items=8 missing_nodes=2 truncated=0"
+      ],
+      "fault_lines": [],
+      "result_record": {
+        "path": "bot-qa/dm-matrix-cd64/m_boss17/result.json",
+        "sha256": "8754976403b2f0cd6f36b0417bddcde4abb3f2d0eafdbdb2db6a31611b4c6f60",
+        "bytes": 470
+      },
+      "client_log": {
+        "path": "bot-qa/dm-matrix-cd64/m_boss17/state/runtime/runs/20261025T053706Z-6cdec4/bots/20261025T053707Z-d10f8d1a/kyle_katarn/client.log",
+        "sha256": "783669c44f308e269432456afb46f667b6fe6ceae582c7542d5e16a860908e67",
+        "bytes": 6787
+      },
+      "observation_errors": 0,
+      "fixture_exit": 0,
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      }
+    }
+  },
+  "force_witnesses": {
+    "Healing": {
+      "bot": "jan_ors",
+      "conclusion": "Stock Healing activated, deducted 200 mana, and raised local health from about 55.39 to 100 in the same life.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:38:16.230+00:00",
+          "health": 55.38702392578125,
+          "deaths": 0,
+          "weapon": 3,
+          "sector": 112,
+          "position": [
+            -4.820323467254639,
+            -1.9302188158035278,
+            -0.1304890215396881
+          ],
+          "inventory": {
+            "14": {
+              "amount": 308.0,
+              "state": 1,
+              "activated": false
+            },
+            "25": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:38:16.744+00:00",
+          "health": 55.38702392578125,
+          "deaths": 0,
+          "weapon": 3,
+          "sector": 112,
+          "position": [
+            -4.56541633605957,
+            -1.921926498413086,
+            -0.1304897665977478
+          ],
+          "inventory": {
+            "14": {
+              "amount": 108.0,
+              "state": 1,
+              "activated": false
+            },
+            "25": {
+              "amount": 4.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 132701,
+              "signature": 1768,
+              "parent_slot": 1,
+              "own_parent": true,
+              "model": "str0.3do"
+            },
+            {
+              "guid": 132704,
+              "signature": 1771,
+              "parent_slot": 1,
+              "own_parent": true,
+              "model": "str0.3do"
+            }
+          ]
+        },
+        {
+          "utc": "2026-10-25T05:38:17.251+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 3,
+          "sector": 112,
+          "position": [
+            -4.3930230140686035,
+            -1.8696023225784302,
+            -0.1304897665977478
+          ],
+          "inventory": {
+            "14": {
+              "amount": 112.0,
+              "state": 1,
+              "activated": false
+            },
+            "25": {
+              "amount": 4.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        }
+      ]
+    },
+    "Protection": {
+      "bot": "jan_ors",
+      "conclusion": "The legal light master activated Protection after recent damage; mana fell from 400 to 100 and bin 29 became active.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:41:02.024+00:00",
+          "health": 93.30558776855469,
+          "deaths": 3,
+          "weapon": 2,
+          "sector": 12,
+          "position": [
+            -0.9142071008682251,
+            -2.404695987701416,
+            1.4195102453231812
+          ],
+          "inventory": {
+            "14": {
+              "amount": 400.0,
+              "state": 1,
+              "activated": false
+            },
+            "29": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            },
+            "61": {
+              "amount": 0.0,
+              "state": 0,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 133962,
+              "signature": 3029,
+              "parent_slot": 1,
+              "own_parent": true,
+              "model": "bry0.3do"
+            }
+          ]
+        },
+        {
+          "utc": "2026-10-25T05:41:02.539+00:00",
+          "health": 69.39195251464844,
+          "deaths": 3,
+          "weapon": 2,
+          "sector": 12,
+          "position": [
+            -0.9548662304878235,
+            -2.2506041526794434,
+            1.4195102453231812
+          ],
+          "inventory": {
+            "14": {
+              "amount": 100.0,
+              "state": 1,
+              "activated": false
+            },
+            "29": {
+              "amount": 4.0,
+              "state": 14,
+              "activated": true
+            },
+            "61": {
+              "amount": 200.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        }
+      ]
+    },
+    "Grip": {
+      "bot": "sariss",
+      "conclusion": "Mana fell from 400 to 350 and Grip became active. Stock Grip sets this state after release and SkillTarget; particular victim damage is not isolated.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:37:03.516+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 10,
+          "sector": 44,
+          "position": [
+            -8.404073715209961,
+            -1.3041725158691406,
+            1.4195102453231812
+          ],
+          "inventory": {
+            "14": {
+              "amount": 400.0,
+              "state": 1,
+              "activated": false
+            },
+            "31": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:37:04.026+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 10,
+          "sector": 44,
+          "position": [
+            -8.314573287963867,
+            -1.3120009899139404,
+            1.4201043844223022
+          ],
+          "inventory": {
+            "14": {
+              "amount": 350.0,
+              "state": 1,
+              "activated": false
+            },
+            "31": {
+              "amount": 4.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:37:04.548+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 10,
+          "sector": 44,
+          "position": [
+            -8.314573287963867,
+            -1.3120009899139404,
+            1.4201043844223022
+          ],
+          "inventory": {
+            "14": {
+              "amount": 354.0,
+              "state": 1,
+              "activated": false
+            },
+            "31": {
+              "amount": 4.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        }
+      ]
+    },
+    "Seeing": {
+      "bot": "kyle_katarn",
+      "conclusion": "Seeing became active with the stock 30-mana deduction, 32 to 2.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:36:46.623+00:00",
+          "health": 94.0,
+          "deaths": 0,
+          "weapon": 2,
+          "sector": 10,
+          "position": [
+            0.6582051515579224,
+            -2.05143404006958,
+            0.5195115804672241
+          ],
+          "inventory": {
+            "14": {
+              "amount": 32.0,
+              "state": 1,
+              "activated": false
+            },
+            "23": {
+              "amount": 3.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:36:47.126+00:00",
+          "health": 94.0,
+          "deaths": 0,
+          "weapon": 2,
+          "sector": 10,
+          "position": [
+            0.705661416053772,
+            -2.043675422668457,
+            0.5742565393447876
+          ],
+          "inventory": {
+            "14": {
+              "amount": 2.0,
+              "state": 1,
+              "activated": false
+            },
+            "23": {
+              "amount": 3.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        }
+      ]
+    },
+    "Absorb": {
+      "bot": "jan_ors",
+      "conclusion": "Absorb was active after normal respawn. This proves the COG entered its effect, but does not independently measure the activation deduction or damage conversion.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:38:44.518+00:00",
+          "health": 0.0,
+          "deaths": 1,
+          "weapon": 10,
+          "sector": 112,
+          "position": [
+            -4.15977668762207,
+            -1.744101643562317,
+            -0.12988600134849548
+          ],
+          "inventory": {
+            "14": {
+              "amount": 100.0,
+              "state": 1,
+              "activated": false
+            },
+            "28": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:38:45.035+00:00",
+          "health": 100.0,
+          "deaths": 1,
+          "weapon": 2,
+          "sector": 1,
+          "position": [
+            1.1209362745285034,
+            -3.6647660732269287,
+            0.119510218501091
+          ],
+          "inventory": {
+            "14": {
+              "amount": 200.0,
+              "state": 1,
+              "activated": false
+            },
+            "28": {
+              "amount": 4.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:38:45.556+00:00",
+          "health": 100.0,
+          "deaths": 1,
+          "weapon": 2,
+          "sector": 1,
+          "position": [
+            1.2276852130889893,
+            -3.576401710510254,
+            0.119510218501091
+          ],
+          "inventory": {
+            "14": {
+              "amount": 204.0,
+              "state": 1,
+              "activated": false
+            },
+            "28": {
+              "amount": 4.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        }
+      ]
+    },
+    "Pull": {
+      "bot": "kyle_katarn",
+      "conclusion": "Targeting ended and mana fell from 400 to 380; the stock release/cost path ran. Victim disarm is not established by these samples.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:38:08.508+00:00",
+          "health": 85.65423583984375,
+          "deaths": 2,
+          "weapon": 10,
+          "sector": 20,
+          "position": [
+            -1.226151704788208,
+            -1.3680250644683838,
+            0.119510218501091
+          ],
+          "inventory": {
+            "14": {
+              "amount": 400.0,
+              "state": 1,
+              "activated": false
+            },
+            "24": {
+              "amount": 3.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:38:09.024+00:00",
+          "health": 85.65423583984375,
+          "deaths": 2,
+          "weapon": 10,
+          "sector": 20,
+          "position": [
+            -1.2978039979934692,
+            -1.5109305381774902,
+            0.11979392170906067
+          ],
+          "inventory": {
+            "14": {
+              "amount": 380.0,
+              "state": 1,
+              "activated": false
+            },
+            "24": {
+              "amount": 3.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        }
+      ]
+    },
+    "Blinding": {
+      "bot": "kyle_katarn",
+      "conclusion": "Targeting ended and mana fell from 400 to 300. This observer does not record victim actor blind flags, so a particular player being blinded is not independently proven.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:37:07.122+00:00",
+          "health": 100.0,
+          "deaths": 1,
+          "weapon": 2,
+          "sector": 61,
+          "position": [
+            0.21413546800613403,
+            -3.1310341358184814,
+            0.1195102259516716
+          ],
+          "inventory": {
+            "14": {
+              "amount": 400.0,
+              "state": 1,
+              "activated": false
+            },
+            "27": {
+              "amount": 3.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 196998,
+              "signature": 529,
+              "parent_slot": 2,
+              "own_parent": true,
+              "model": "bry0.3do"
+            }
+          ]
+        },
+        {
+          "utc": "2026-10-25T05:37:07.649+00:00",
+          "health": 100.0,
+          "deaths": 1,
+          "weapon": 2,
+          "sector": 61,
+          "position": [
+            0.03929867595434189,
+            -2.9015510082244873,
+            0.1195102259516716
+          ],
+          "inventory": {
+            "14": {
+              "amount": 300.0,
+              "state": 1,
+              "activated": false
+            },
+            "27": {
+              "amount": 3.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 197029,
+              "signature": 560,
+              "parent_slot": 2,
+              "own_parent": true,
+              "model": "bry0.3do"
+            },
+            {
+              "guid": 196998,
+              "signature": 529,
+              "parent_slot": 2,
+              "own_parent": true,
+              "model": "bry0.3do"
+            }
+          ]
+        }
+      ]
+    },
+    "Destruction": {
+      "bot": "boba_fett",
+      "conclusion": "Own-parent/own-creator Destruction projectile GUID 329258, signature 1717, appeared; mana fell 400 to 204, consistent with 200 cost and 4 regeneration. Impact damage is not isolated.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:38:13.637+00:00",
+          "health": 100.0,
+          "deaths": 2,
+          "weapon": 2,
+          "sector": 110,
+          "position": [
+            -2.0439505577087402,
+            -1.8336762189865112,
+            -0.1304878443479538
+          ],
+          "inventory": {
+            "14": {
+              "amount": 400.0,
+              "state": 1,
+              "activated": false
+            },
+            "33": {
+              "amount": 3.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:38:14.151+00:00",
+          "health": 100.0,
+          "deaths": 2,
+          "weapon": 2,
+          "sector": 110,
+          "position": [
+            -2.2938592433929443,
+            -1.7787113189697266,
+            -0.1304897665977478
+          ],
+          "inventory": {
+            "14": {
+              "amount": 204.0,
+              "state": 1,
+              "activated": false
+            },
+            "33": {
+              "amount": 3.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 329258,
+              "signature": 1717,
+              "parent_slot": 4,
+              "own_parent": true,
+              "model": "forcedstruct_150.spr"
+            }
+          ]
+        }
+      ]
+    },
+    "Lightning": {
+      "bot": "sariss",
+      "conclusion": "Source-backed inference: the rank-four master lost 50 then 21 net mana during logged Lightning requests, consistent with 25 per fire pulse and 4 regeneration. Stock fire deducts mana and emits a projectile in the same branch. No lightning projectile or specific impact was captured.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:37:49.872+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 6,
+          "sector": 34,
+          "position": [
+            -6.802917003631592,
+            -2.0828611850738525,
+            0.119510218501091
+          ],
+          "inventory": {
+            "14": {
+              "amount": 400.0,
+              "state": 1,
+              "activated": false
+            },
+            "31": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            },
+            "32": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:37:50.381+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 6,
+          "sector": 34,
+          "position": [
+            -6.743387222290039,
+            -2.016542673110962,
+            0.119510218501091
+          ],
+          "inventory": {
+            "14": {
+              "amount": 350.0,
+              "state": 1,
+              "activated": false
+            },
+            "31": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            },
+            "32": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:37:50.916+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 6,
+          "sector": 30,
+          "position": [
+            -6.768759250640869,
+            -2.184497833251953,
+            0.119510218501091
+          ],
+          "inventory": {
+            "14": {
+              "amount": 329.0,
+              "state": 1,
+              "activated": false
+            },
+            "31": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            },
+            "32": {
+              "amount": 4.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 262913,
+              "signature": 908,
+              "parent_slot": 3,
+              "own_parent": true,
+              "model": "rpt0.3do"
+            },
+            {
+              "guid": 262915,
+              "signature": 910,
+              "parent_slot": 3,
+              "own_parent": true,
+              "model": "rpt0.3do"
+            }
+          ]
+        }
+      ]
+    },
+    "Force Jump": {
+      "bot": "kyle_katarn",
+      "conclusion": "The stock charge/release spent 20 mana with 4 regeneration. Height rose from 0.863 to 1.695 then 1.799 with ordinary sector change. Later routing stalled; this proves the Force effect, not route success.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:35:58.687+00:00",
+          "health": 95.66290283203125,
+          "deaths": 0,
+          "weapon": 3,
+          "sector": 102,
+          "position": [
+            0.6375370621681213,
+            -0.25514453649520874,
+            0.8631850481033325
+          ],
+          "inventory": {
+            "14": {
+              "amount": 382.0,
+              "state": 1,
+              "activated": false
+            },
+            "21": {
+              "amount": 3.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:35:59.188+00:00",
+          "health": 95.66290283203125,
+          "deaths": 0,
+          "weapon": 3,
+          "sector": 102,
+          "position": [
+            0.6174708604812622,
+            -0.26903289556503296,
+            1.6952791213989258
+          ],
+          "inventory": {
+            "14": {
+              "amount": 366.0,
+              "state": 1,
+              "activated": false
+            },
+            "21": {
+              "amount": 3.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:35:59.691+00:00",
+          "health": 95.66290283203125,
+          "deaths": 0,
+          "weapon": 3,
+          "sector": 155,
+          "position": [
+            0.5356252193450928,
+            -0.3256690502166748,
+            1.7994245290756226
+          ],
+          "inventory": {
+            "14": {
+              "amount": 366.0,
+              "state": 1,
+              "activated": false
+            },
+            "21": {
+              "amount": 3.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        }
+      ]
+    },
+    "Speed": {
+      "bot": "kyle_katarn",
+      "conclusion": "Speed became active with mana 400 to 380 and ensuing ordinary movement.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:35:50.350+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 2,
+          "sector": 78,
+          "position": [
+            1.9591515064239502,
+            0.4098992943763733,
+            0.119510218501091
+          ],
+          "inventory": {
+            "14": {
+              "amount": 400.0,
+              "state": 1,
+              "activated": false
+            },
+            "22": {
+              "amount": 3.0,
+              "state": 12,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:35:50.859+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 2,
+          "sector": 78,
+          "position": [
+            2.0123519897460938,
+            0.6935055255889893,
+            -0.030426986515522003
+          ],
+          "inventory": {
+            "14": {
+              "amount": 380.0,
+              "state": 1,
+              "activated": false
+            },
+            "22": {
+              "amount": 3.0,
+              "state": 14,
+              "activated": true
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        }
+      ]
+    }
+  },
+  "gun_witnesses": {
+    "Bryar": {
+      "bot": "boba_fett",
+      "conclusion": "Selected Bryar, energy 50 to 49, own-parent/own-creator bry0.3do GUID 329272/signature 1731.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:38:14.151+00:00",
+          "health": 100.0,
+          "deaths": 2,
+          "weapon": 2,
+          "sector": 110,
+          "position": [
+            -2.2938592433929443,
+            -1.7787113189697266,
+            -0.1304897665977478
+          ],
+          "inventory": {
+            "11": {
+              "amount": 50.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 329258,
+              "signature": 1717,
+              "parent_slot": 4,
+              "own_parent": true,
+              "model": "forcedstruct_150.spr"
+            }
+          ]
+        },
+        {
+          "utc": "2026-10-25T05:38:14.669+00:00",
+          "health": 100.0,
+          "deaths": 2,
+          "weapon": 2,
+          "sector": 110,
+          "position": [
+            -2.619155168533325,
+            -1.776820421218872,
+            -0.1304897665977478
+          ],
+          "inventory": {
+            "11": {
+              "amount": 49.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 329272,
+              "signature": 1731,
+              "parent_slot": 4,
+              "own_parent": true,
+              "model": "bry0.3do"
+            }
+          ]
+        }
+      ]
+    },
+    "Stormtrooper rifle": {
+      "bot": "boba_fett",
+      "conclusion": "Selected rifle, energy 197 to 195, own-parent/own-creator str0.3do GUID 328147/signature 606.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:37:19.936+00:00",
+          "health": 82.89529418945312,
+          "deaths": 1,
+          "weapon": 3,
+          "sector": 61,
+          "position": [
+            0.32467976212501526,
+            0.6810047626495361,
+            0.1195102259516716
+          ],
+          "inventory": {
+            "11": {
+              "amount": 197.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:37:20.452+00:00",
+          "health": 82.89529418945312,
+          "deaths": 1,
+          "weapon": 3,
+          "sector": 61,
+          "position": [
+            0.14863930642604828,
+            0.6467971801757812,
+            0.1195102259516716
+          ],
+          "inventory": {
+            "11": {
+              "amount": 195.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 328147,
+              "signature": 606,
+              "parent_slot": 4,
+              "own_parent": true,
+              "model": "str0.3do"
+            }
+          ]
+        }
+      ]
+    },
+    "Repeater": {
+      "bot": "jan_ors",
+      "conclusion": "Selected repeater, powercells 4 to 1, and newly observed own-parent/own-creator rpt0.3do projectile.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:38:32.722+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 6,
+          "sector": 112,
+          "position": [
+            -4.363754749298096,
+            -1.9796233177185059,
+            -0.13021399080753326
+          ],
+          "inventory": {
+            "12": {
+              "amount": 4.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:38:33.235+00:00",
+          "health": 100.0,
+          "deaths": 0,
+          "weapon": 6,
+          "sector": 112,
+          "position": [
+            -4.364171028137207,
+            -1.9635368585586548,
+            -0.12998831272125244
+          ],
+          "inventory": {
+            "12": {
+              "amount": 1.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 132808,
+              "signature": 1875,
+              "parent_slot": 1,
+              "own_parent": true,
+              "model": "rpt0.3do"
+            },
+            {
+              "guid": 132812,
+              "signature": 1879,
+              "parent_slot": 1,
+              "own_parent": true,
+              "model": "rpt0.3do"
+            },
+            {
+              "guid": 132817,
+              "signature": 1884,
+              "parent_slot": 1,
+              "own_parent": true,
+              "model": "rpt0.3do"
+            }
+          ]
+        }
+      ]
+    },
+    "Rail detonator": {
+      "bot": "boba_fett",
+      "conclusion": "Selected rail detonator, charges 24 to 23, own-parent/own-creator rld0.3do GUID 329012/signature 1471.",
+      "samples": [
+        {
+          "utc": "2026-10-25T05:38:03.852+00:00",
+          "health": 79.46524810791016,
+          "deaths": 1,
+          "weapon": 7,
+          "sector": 19,
+          "position": [
+            -4.784585952758789,
+            -1.5524390935897827,
+            0.30195021629333496
+          ],
+          "inventory": {
+            "15": {
+              "amount": 24.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": []
+        },
+        {
+          "utc": "2026-10-25T05:38:04.364+00:00",
+          "health": 79.46524810791016,
+          "deaths": 1,
+          "weapon": 7,
+          "sector": 21,
+          "position": [
+            -4.691111087799072,
+            -1.6922439336776733,
+            0.11948887258768082
+          ],
+          "inventory": {
+            "15": {
+              "amount": 23.0,
+              "state": 1,
+              "activated": false
+            }
+          },
+          "own_parent_and_creator_projectiles": [
+            {
+              "guid": 329012,
+              "signature": 1471,
+              "parent_slot": 4,
+              "own_parent": true,
+              "model": "rld0.3do"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "dm_summary": "All six maps reached NAV_READY and completed their 80-second fixtures: 955 valid samples, zero observer errors, no backtrace/segmentation/assertion/fatal log lines, successful fixture exits and cleanup. Pickup recognition does not imply universal route reachability.",
+  "bacta_witness": {
+    "bot": "boba_fett",
+    "conclusion": "Bacta amount fell 1 to 0 while alive and health rose 82.895 to 92.465 with Healing inactive. Concurrent damage prevents recovering the exact heal amount.",
+    "samples": [
+      {
+        "utc": "2026-10-25T05:37:31.755+00:00",
+        "health": 82.89529418945312,
+        "deaths": 1,
+        "weapon": 3,
+        "sector": 61,
+        "position": [
+          0.25353339314460754,
+          0.6813722848892212,
+          0.1195102259516716
+        ],
+        "inventory": {
+          "25": {
+            "amount": 0.0,
+            "state": 8,
+            "activated": false
+          },
+          "40": {
+            "amount": 1.0,
+            "state": 5,
+            "activated": false
+          }
+        },
+        "own_parent_and_creator_projectiles": [
+          {
+            "guid": 328287,
+            "signature": 746,
+            "parent_slot": 4,
+            "own_parent": true,
+            "model": "str0.3do"
+          },
+          {
+            "guid": 328283,
+            "signature": 742,
+            "parent_slot": 4,
+            "own_parent": true,
+            "model": "str0.3do"
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-25T05:37:32.264+00:00",
+        "health": 92.46524810791016,
+        "deaths": 1,
+        "weapon": 3,
+        "sector": 61,
+        "position": [
+          0.07133861631155014,
+          0.689723789691925,
+          0.1195545345544815
+        ],
+        "inventory": {
+          "25": {
+            "amount": 0.0,
+            "state": 8,
+            "activated": false
+          },
+          "40": {
+            "amount": 0.0,
+            "state": 1,
+            "activated": false
+          }
+        },
+        "own_parent_and_creator_projectiles": [
+          {
+            "guid": 328293,
+            "signature": 752,
+            "parent_slot": 4,
+            "own_parent": true,
+            "model": "str0.3do"
+          }
+        ]
+      }
+    ]
+  },
+  "live_rule_change": {
+    "switch_record": {
+      "path": "bot-qa/mixed-cd64-sabers-switch.json",
+      "sha256": "3666555eba359b04faf115148b5c77a64a6cae6e0187f503ef0162a0dc23b292",
+      "bytes": 2841
+    },
+    "switch_epoch": 1792907008.3769078,
+    "switch_utc": "2026-10-25T05:43:28.376+00:00",
+    "settle_seconds": 2,
+    "rules": {
+      "bots_sabers_only": true,
+      "bots_fists_peace": true,
+      "bots_force_enabled": false
+    },
+    "service_processes_unchanged": true,
+    "sampling": "Original stream until each bot first second-stream timestamp, then the second stream; overlapping samples are not double counted.",
+    "bots": {
+      "boba_fett": {
+        "pid_before": 112588,
+        "pid_after": 112588,
+        "same_pid": true,
+        "samples": 205,
+        "from_utc": "2026-10-25T05:43:30.448+00:00",
+        "through_utc": "2026-10-25T05:45:14.528+00:00",
+        "span_seconds": 104.08,
+        "selected_weapon_samples": {
+          "10": 197,
+          "2": 8
+        },
+        "gun_selection_observation": "All brief gun selections were Bryar with health 100 and energy ammunition 50, during ordinary respawns; no firing evidence accompanied them.",
+        "gun_selected_samples": 8,
+        "gun_samples_match_respawn_values": true,
+        "new_own_creator_projectiles": [],
+        "same_life_ammo_decreases": [],
+        "same_life_mana_decreases": [],
+        "new_force_active_transitions": [],
+        "residual_active_powers_at_cutoff": [
+          23
+        ],
+        "active_powers_at_end": [],
+        "rule_log_lines": [
+          "BOT_BEHAVIOR name=Bot_BobaFett sabers_only=1 fists_peace=1 force_enabled=0"
+        ],
+        "force_input_requests_after_rule_log": [],
+        "client_log_snapshot": {
+          "path": "bot-qa/mixed-cd64-state/runtime/runs/20261025T053537Z-9d6c8e/bots/20261025T053549Z-05f7f05b/boba_fett/client.log",
+          "sha256": "fe9cd1f3623ededaa0918018a1182044118a8f18da391c8697538b8e00aae040",
+          "bytes": 31709
+        },
+        "fault_lines": [],
+        "last_roster": [
+          {
+            "slot": 1,
+            "name": "Bot_JanOrs",
+            "network_id": 10625916,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 2,
+            "name": "Bot_Katarn",
+            "network_id": 10625915,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 3,
+            "name": "Bot_Sariss",
+            "network_id": 10625917,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 4,
+            "name": "Bot_BobaFett",
+            "network_id": 10625914,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 5,
+            "name": "NativeHuman",
+            "network_id": 10625913,
+            "weapon_mesh": "fistg.3do"
+          },
+          {
+            "slot": 6,
+            "name": "RetailHuman",
+            "network_id": 10625908,
+            "weapon_mesh": "fistg.3do"
+          },
+          {
+            "slot": 7,
+            "name": "WebHuman",
+            "network_id": 10625912,
+            "weapon_mesh": "fistg.3do"
+          }
+        ]
+      },
+      "jan_ors": {
+        "pid_before": 112589,
+        "pid_after": 112589,
+        "same_pid": true,
+        "samples": 205,
+        "from_utc": "2026-10-25T05:43:30.449+00:00",
+        "through_utc": "2026-10-25T05:45:14.532+00:00",
+        "span_seconds": 104.083,
+        "selected_weapon_samples": {
+          "10": 201,
+          "2": 4
+        },
+        "gun_selection_observation": "All brief gun selections were Bryar with health 100 and energy ammunition 50, during ordinary respawns; no firing evidence accompanied them.",
+        "gun_selected_samples": 4,
+        "gun_samples_match_respawn_values": true,
+        "new_own_creator_projectiles": [],
+        "same_life_ammo_decreases": [],
+        "same_life_mana_decreases": [],
+        "new_force_active_transitions": [],
+        "residual_active_powers_at_cutoff": [],
+        "active_powers_at_end": [],
+        "rule_log_lines": [
+          "BOT_BEHAVIOR name=Bot_JanOrs sabers_only=1 fists_peace=1 force_enabled=0"
+        ],
+        "force_input_requests_after_rule_log": [],
+        "client_log_snapshot": {
+          "path": "bot-qa/mixed-cd64-state/runtime/runs/20261025T053537Z-9d6c8e/bots/20261025T053549Z-05f7f05b/jan_ors/client.log",
+          "sha256": "d10ce4877138a9839d1f47f46229a749576de480018880e2b83c56a251eebc26",
+          "bytes": 34990
+        },
+        "fault_lines": [],
+        "last_roster": [
+          {
+            "slot": 1,
+            "name": "Bot_JanOrs",
+            "network_id": 10625916,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 2,
+            "name": "Bot_Katarn",
+            "network_id": 10625915,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 3,
+            "name": "Bot_Sariss",
+            "network_id": 10625917,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 4,
+            "name": "Bot_BobaFett",
+            "network_id": 10625914,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 5,
+            "name": "NativeHuman",
+            "network_id": 10625913,
+            "weapon_mesh": "fistg.3do"
+          },
+          {
+            "slot": 6,
+            "name": "RetailHuman",
+            "network_id": 10625908,
+            "weapon_mesh": "fistg.3do"
+          },
+          {
+            "slot": 7,
+            "name": "WebHuman",
+            "network_id": 10625912,
+            "weapon_mesh": "fistg.3do"
+          }
+        ]
+      },
+      "kyle_katarn": {
+        "pid_before": 112590,
+        "pid_after": 112590,
+        "same_pid": true,
+        "samples": 205,
+        "from_utc": "2026-10-25T05:43:30.449+00:00",
+        "through_utc": "2026-10-25T05:45:14.533+00:00",
+        "span_seconds": 104.083,
+        "selected_weapon_samples": {
+          "10": 198,
+          "2": 7
+        },
+        "gun_selection_observation": "All brief gun selections were Bryar with health 100 and energy ammunition 50, during ordinary respawns; no firing evidence accompanied them.",
+        "gun_selected_samples": 7,
+        "gun_samples_match_respawn_values": true,
+        "new_own_creator_projectiles": [],
+        "same_life_ammo_decreases": [],
+        "same_life_mana_decreases": [],
+        "new_force_active_transitions": [],
+        "residual_active_powers_at_cutoff": [
+          22,
+          23
+        ],
+        "active_powers_at_end": [],
+        "rule_log_lines": [
+          "BOT_BEHAVIOR name=Bot_Katarn sabers_only=1 fists_peace=1 force_enabled=0"
+        ],
+        "force_input_requests_after_rule_log": [],
+        "client_log_snapshot": {
+          "path": "bot-qa/mixed-cd64-state/runtime/runs/20261025T053537Z-9d6c8e/bots/20261025T053549Z-05f7f05b/kyle_katarn/client.log",
+          "sha256": "fe1b4bef5e6647384b49a9c963decb526cafba6f0306c1bef026a979f4739332",
+          "bytes": 41023
+        },
+        "fault_lines": [],
+        "last_roster": [
+          {
+            "slot": 1,
+            "name": "Bot_JanOrs",
+            "network_id": 10625916,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 2,
+            "name": "Bot_Katarn",
+            "network_id": 10625915,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 3,
+            "name": "Bot_Sariss",
+            "network_id": 10625917,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 4,
+            "name": "Bot_BobaFett",
+            "network_id": 10625914,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 5,
+            "name": "NativeHuman",
+            "network_id": 10625913,
+            "weapon_mesh": "fistg.3do"
+          },
+          {
+            "slot": 6,
+            "name": "RetailHuman",
+            "network_id": 10625908,
+            "weapon_mesh": "fistg.3do"
+          },
+          {
+            "slot": 7,
+            "name": "WebHuman",
+            "network_id": 10625912,
+            "weapon_mesh": "fistg.3do"
+          }
+        ]
+      },
+      "sariss": {
+        "pid_before": 112591,
+        "pid_after": 112591,
+        "same_pid": true,
+        "samples": 205,
+        "from_utc": "2026-10-25T05:43:30.450+00:00",
+        "through_utc": "2026-10-25T05:45:14.533+00:00",
+        "span_seconds": 104.083,
+        "selected_weapon_samples": {
+          "10": 203,
+          "2": 2
+        },
+        "gun_selection_observation": "All brief gun selections were Bryar with health 100 and energy ammunition 50, during ordinary respawns; no firing evidence accompanied them.",
+        "gun_selected_samples": 2,
+        "gun_samples_match_respawn_values": true,
+        "new_own_creator_projectiles": [],
+        "same_life_ammo_decreases": [],
+        "same_life_mana_decreases": [],
+        "new_force_active_transitions": [],
+        "residual_active_powers_at_cutoff": [],
+        "active_powers_at_end": [],
+        "rule_log_lines": [
+          "BOT_BEHAVIOR name=Bot_Sariss sabers_only=1 fists_peace=1 force_enabled=0"
+        ],
+        "force_input_requests_after_rule_log": [],
+        "client_log_snapshot": {
+          "path": "bot-qa/mixed-cd64-state/runtime/runs/20261025T053537Z-9d6c8e/bots/20261025T053549Z-05f7f05b/sariss/client.log",
+          "sha256": "4a381246dbc4c732daa8e9bf47e6117e10147318bcb3796abf6e42275fe81623",
+          "bytes": 32455
+        },
+        "fault_lines": [],
+        "last_roster": [
+          {
+            "slot": 1,
+            "name": "Bot_JanOrs",
+            "network_id": 10625916,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 2,
+            "name": "Bot_Katarn",
+            "network_id": 10625915,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 3,
+            "name": "Bot_Sariss",
+            "network_id": 10625917,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 4,
+            "name": "Bot_BobaFett",
+            "network_id": 10625914,
+            "weapon_mesh": "sabg.3do"
+          },
+          {
+            "slot": 5,
+            "name": "NativeHuman",
+            "network_id": 10625913,
+            "weapon_mesh": "fistg.3do"
+          },
+          {
+            "slot": 6,
+            "name": "RetailHuman",
+            "network_id": 10625908,
+            "weapon_mesh": "fistg.3do"
+          },
+          {
+            "slot": 7,
+            "name": "WebHuman",
+            "network_id": 10625912,
+            "weapon_mesh": "fistg.3do"
+          }
+        ]
+      }
+    },
+    "combined_sample_count": 820,
+    "conclusion": "All four bots applied the live update without a PID change. After two seconds of settling: no newly seen own-creator projectiles, no alive/same-life ammunition or mana decreases, no new Force active transitions, and no further Force-input requests. Existing Boba Seeing and Kyle Speed/Seeing expired normally. Brief respawn Bryar selections had no firing evidence."
+  },
+  "stock_script_sha256": {
+    "force_heal.cog": "ad43aeee9a12a2d876502b196534e334179f2cf8918a2f1e05be4a721c00cb31",
+    "force_protection.cog": "4ba55d8f175c8b10d0c5d2a08c5e92d95fcae96b6cb1d1214ea4370e9685a638",
+    "force_grip.cog": "fa9f5402a42ba3cc1f120c65bf4287e4ed3fab5382eeab56c5b07d4c36c4bf93",
+    "force_seeing.cog": "47fcffb1a371cf61ec386d3eded9615f0f9ae2945997738c4861091c28fe6ac4",
+    "force_absorb.cog": "6336236a9f13c39c334652d1a5305042d80dc9d6d94b773e09cce24c12a4b6a9",
+    "force_pull.cog": "9ab4429c7334bcf1baa286e7027bc4e7ea4e4bcc9907342254d27b2659605141",
+    "force_blinding.cog": "83acc0064f688148e68cfa04cd267d64e0c8521981eda937a79cfe90e484e82a",
+    "force_destruction.cog": "dfc09d68c31b85333b42d3703a5cab58e708219eb7d72a7e3cabd0514a4a6693",
+    "force_lightning.cog": "0fe34a58ce604196573b33e889b14087b586ef6ca36a83fd550680b7d993796c",
+    "force_jump.cog": "36c2b8176c38bfdea43b1c6431892a9022d5e7a98435af79164d9105a484c882",
+    "force_speed.cog": "0f50c82e245269b7620834cb38c82f8ed45ca5518031b0d43a335f50602f1b6b"
+  },
+  "limitations": [
+    "Qualification is for candidate cd64, not a later final package. Its build record describes modified client code and reused unchanged objects, not an unmodified native client or fresh dependency rebuild.",
+    "The two completed mixed observers contain 3488 and 708 valid samples with zero errors; their periods overlap. The first spans 449.040 seconds and was size-capped, rather than completing 600 seconds.",
+    "Half-second non-atomic samples can miss transient shots, casts, collisions and pickups. Absence of sampled events is bounded evidence about these runs, not proof about every tick.",
+    "Owned projectiles alone are not shot counts because saber reflections can change parents. Concrete gun witnesses include creator provenance plus selection and ammunition corroboration.",
+    "No successful live Persuasion cast is claimed. Throw and Deadly Sight were intentionally withheld under fists peace. Lightning emission is inferred from stock fire-handler semantics and mana costs; a particular impact was not captured.",
+    "Bowcaster and concussion combat were not witnessed here. DM m2 acquired concussion normally. This is not qualification of every gun or every Force matchup.",
+    "All six stock DM maps loaded and built graphs, but complete navigation is not established. Initial reachable item counts: m2 9/46, m4 42/70, m5 6/129, m10 18/42, m_boss15 1/16, m_boss17 8/13. m2 and m4 stalled; m_boss15 never left its spawn sector.",
+    "Already active effects and in-flight projectiles keep ordinary stock lifetimes when rules change. Force-off stops new inputs rather than erasing game effects.",
+    "Roster visibility of human clients does not establish their local health or peace compliance. Human peace, provocation and cross-transport conclusions belong to separate receipts."
+  ]
+}

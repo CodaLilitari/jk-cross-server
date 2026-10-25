@@ -15,7 +15,7 @@ from unittest.mock import patch
 import zipfile
 
 from manager.updater import (API_URL, InstallationBusy, MANIFEST, PROJECT_URL, ReleaseUpdater, SUMS,
-                             UpdateError, Version, _Redirects, _trusted_url)
+                             UpdateError, Version, _Redirects, _trusted_url, _relative)
 
 
 def digest(data):
@@ -85,6 +85,12 @@ class Remote:
 
 
 class VersionTests(unittest.TestCase):
+    def test_admin_credentials_cannot_be_managed_release_paths(self):
+        for name in ("authority/keys.sqlite3", "custom/authority/keys.sqlite3", "keys.sqlite3-wal",
+                     "jk-admin-key-fixture.cog", "downloads/JK-ADMIN-KEY-FIXTURE.COG"):
+            with self.subTest(name=name), self.assertRaises(UpdateError):
+                _relative(name)
+        self.assertEqual(_relative("tools/admin_key.py"), "tools/admin_key.py")
     def test_semantic_precedence_and_invalid_versions(self):
         ordered = ["0.3.0-dev", "0.3.0-dev.2", "0.3.0-dev.10", "0.3.0-rc.1", "0.3.0", "0.10.0", "1.0.0"]
         self.assertEqual([v.text for v in sorted(map(Version, reversed(ordered)))], ordered)
@@ -147,6 +153,7 @@ class UpdaterTests(unittest.IsolatedAsyncioTestCase):
         self.remote = Remote(files=payload("0.4.0-dev", changed={"app.py": b"print('new fixture')\n", "docs/new.txt": b"new"}, removed=("obsolete.txt",)))
         self.updater.fetcher = self.remote
         local = {"config/server.json": b'{"password":"fixture-only"}', "runtime/log.txt": b"session log",
+                 "runtime/authority/keys.sqlite3": b"private authority fixture",
                  ".venv/local.txt": b"virtual environment", "games/custom.gob": b"game data", "notes.txt": b"local edits"}
         install_fixture(self.root, local)
         await self.updater.check()

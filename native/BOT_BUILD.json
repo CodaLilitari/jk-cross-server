@@ -4,7 +4,7 @@
   "patch": "native/bot-client.patch",
   "platform": "Linux x86_64",
   "reconstructed_after_scratch_reset": true,
-  "method": "Recompile changed units and all four server-only units; reuse published unchanged objects/static dependencies.",
+  "method": "Recompile changed units and all server-only units back to the client base; reuse verified published unchanged objects/static dependencies.",
   "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
   "distribution": "PRETTY_NAME=\"Ubuntu 24.04.3 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.3 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
   "source_pins": [
@@ -35,39 +35,55 @@
     " 5a82f71ed1dfc0bec044d9702463dbdf84ea3b71 lib/zlib (5a82f71)"
   ],
   "compiled_sources": {
-    "src/AI/jkBot.c": "0e5e57365a462f7244009d619dda154991e680798180148195ae2153eea6d0cb",
+    "src/AI/jkBot.c": "a098e339d9aa69818dcd30f6fc2870e19d40d8a8193c7f9b72fb7cac263b30ed",
+    "src/AI/jkBot.h": "544d2f313734f61b5933601a330ab665b081d5773f18ad23b3177f14d372b5ba",
+    "src/AI/jkBotBehavior.h": "5cad5dc201e93c01d8dd5b72f6d3d9b425f29b528f83aeb4ec14c811da245e49",
+    "src/AI/jkBotBehavior.inc": "ef13f015be070f0658fa2f08a6b63066228168ee129f04a79747e4e6bab63a16",
+    "src/AI/jkBotCombat.inc": "1f0e2f30d041d9a78555492083460d2fe4be89e8ee69eb1fe65048b48be83630",
+    "src/AI/jkBotForce.inc": "52d60e354239da47584a6a3acfa9eaa8d4cda9bbde2665d160397887519fa8ba",
+    "src/AI/jkBotLoadout.h": "10c0846a8571b07037ae291903da9f10a07d83a1e357e03710a63c92dc06a593",
+    "src/AI/jkBotNavigate.inc": "50a106bd52c4783677daf7bf3082236867124a0a4986f47fddeebf1bcc8a18fe",
+    "src/AI/jkBotNavigation.inc": "ef6d9af90f5f4d016f9e40607e3ac84ac453ac70cd867090990e014660de88e7",
     "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+    "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+    "src/Cog/sithCog.c": "34b9448cdff18673cca38aab7efc920496ecc23508190b506506da2bac42b7cd",
     "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+    "src/Dss/jkDSS.c": "df627a4cef64a62862aebb6704e107ff75527294cf4687a3474ef6112ac02f2e",
     "src/Dss/sithDSSThing.c": "277c5ea276b8b6f0e2835e434eb3e3325159edb19e67e086890b9748f2f34b29",
+    "src/Dss/sithMulti.c": "971511d3167ca2ddca113a2d3e84018feba7c967991654dda99d344718b18b26",
+    "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
     "src/Gui/jkGUIDialog.c": "bd776034955f26eba782fb2cf90aef7131962f451ccc03b5aa01ca7ec8f9af20",
-    "src/Gui/jkGUIMultiplayer.c": "145c7a3f3448dff29d62b3557eb3eadc8b03549a9ec525a4ccad852db2620f48",
+    "src/Gui/jkGUIMultiplayer.c": "3abec9dd31d4a5fca1e92fb6cb8f90b3f1a510dffdd2f4e94f6c2921132e5660",
+    "src/Gui/jkGUIMultiplayer.h": "481bbb0c95918cd146f520c62ec3840b35750652b866377e6220d64973a09d55",
     "src/Main/Main.c": "70858936110dc34cdf237444358f4aa8b596983cb84fdb706ae6e671b37ff233",
     "src/Platform/Networking/GNS/stdComm_GNS.cpp": "60ec7b204b0e2a0aa2180fa9d2218b371bf6e78aaa683fc62ad897a2bb4e7fdd",
     "src/Win95/Window.c": "87295dbf8c529ba003c2d0f3a9d50de2e4954f597a4ea790fd1314ec5df186fa",
-    "src/Win95/Windows.c": "4914b71eb839ce14aa5ffb99eb38127c015a138a8c789376c162d40482e61345"
+    "src/Win95/Windows.c": "4914b71eb839ce14aa5ffb99eb38127c015a138a8c789376c162d40482e61345",
+    "src/World/sithThing.c": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec",
+    "src/World/sithWeapon.c": "e9682e53a12ab3d18c1c8950692713fa484fae7364490fbac84302905dc2dc8c"
   },
   "files": {
     "bin/bots-linux-x86_64/jk-bot-client": {
-      "sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
-      "bytes": 8558544
+      "sha256": "50924ed74935a06edfb7ee5e937f756ea0a68a7386534740f2e2917ac835779c",
+      "bytes": 8597072
     },
     "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
       "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
       "bytes": 3644744
     },
     "native/bot-client.patch": {
-      "sha256": "02dc798472f00337373dc3336544335b8ee83e6ef62714ff656e388b10a67c43",
-      "bytes": 59730
+      "sha256": "94b425eff4527345e15dd589a356486d7e97f89243110ec06bc749d58841debd",
+      "bytes": 145276
     },
     "native/bot-relink-linux-x86_64.tar.gz": {
-      "sha256": "650146a7ad10a5e243b397afa250c8dc1a916d37106630b17b61a98af41a8ed9",
-      "bytes": 5966256
+      "sha256": "d44966fb988c17cc896546898481de30456350677dc20b769d669a051e917792",
+      "bytes": 5993895
     }
   },
   "relink_inputs": {
     "CMakeFiles/openjkdf2.dir/src/main.c.o": "5cac74e46ccdb6f00cfe4b60d06df1a8282ddc27ad1c7001009af728d3d88c95",
     "CMakeFiles/sith_engine.dir/generated/globals.c.o": "b8ea7a66262f5d97d72f6fbf66522fb48d49a57e62d9b4d0a8cf95a7603ca713",
-    "CMakeFiles/sith_engine.dir/src/AI/jkBot.c.o": "043cedebaeee612cc4a4e21b96c1f7053214a3e99008867c30fb881064f40b75",
+    "CMakeFiles/sith_engine.dir/src/AI/jkBot.c.o": "21d0f64ce2446d59c89d5e8da2e3963205571ebf0cdb096d82665eac59a33c00",
     "CMakeFiles/sith_engine.dir/src/AI/jkBotPersona.c.o": "d2d5a79ea190604a8f5f09cb0f299353129dec4fcc8aa79e8e7d1e933b133e1e",
     "CMakeFiles/sith_engine.dir/src/AI/sithAI.c.o": "cbda1c7df0dd425eaeb69e14308b53c9869fe6120c6d98f2d1743d86076bddc5",
     "CMakeFiles/sith_engine.dir/src/AI/sithAIAwareness.c.o": "2b590541a50ed915d863874172cf0a84d9398a6114e62adb8da8e2ed6dea0cfb",
@@ -75,7 +91,7 @@
     "CMakeFiles/sith_engine.dir/src/AI/sithAICmd.c.o": "bf2d694cb81f01ee91dde194f0d6e4b227df8676b7903b66729b016fb9307e7d",
     "CMakeFiles/sith_engine.dir/src/Cog/jkCog.c.o": "72bba9240e439d2e4a7e8bc8cc7f0f3820db548c3bfbd079873b36caf9888abb",
     "CMakeFiles/sith_engine.dir/src/Cog/lex.yy.c.o": "b584b71bdf4c8e3b47abee76786f3ce9db94ccc7d6f77d351a64e75a9086a396",
-    "CMakeFiles/sith_engine.dir/src/Cog/sithCog.c.o": "5dba287036ce1185ad7e1c1a5c13ce737c3ab3f09a14640fecc78473a6600f8e",
+    "CMakeFiles/sith_engine.dir/src/Cog/sithCog.c.o": "7d839de09044668f302553a53317c5abb9a80deca920ace27b9a71f01afc47ac",
     "CMakeFiles/sith_engine.dir/src/Cog/sithCogExec.c.o": "eee94be7d207b7fb50e2416a12d4ba6c094a28d8b51cefbe2f96d8778161b9a1",
     "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunction.c.o": "b2e40ca58066145e55b43419be84a587c7ce3284cffd34739c30faeea5b470d0",
     "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionAI.c.o": "68a97a910e2dd68a71789ced4669f2c909f5d788b7d0b1d518a9dc427fdebdf2",
@@ -91,7 +107,7 @@
     "CMakeFiles/sith_engine.dir/src/Devices/sithControl.c.o": "e49a00a1bb40f129aa5580a00700e90525637e0b99a4753ae8da7fc2695a93de",
     "CMakeFiles/sith_engine.dir/src/Devices/sithSound.c.o": "3c610d83e5ce69701448a630cebb5ab84a18d6c29f21cca76fbe581622b9c18e",
     "CMakeFiles/sith_engine.dir/src/Devices/sithSoundMixer.c.o": "4694285bf82664472645680bd178f8f00e64ef4ee59fbc50baf75867d9ab3b6d",
-    "CMakeFiles/sith_engine.dir/src/Dss/jkDSS.c.o": "cf8bd7f824b9ec11774eed68e084695175a78c6942def013c312e15f48494536",
+    "CMakeFiles/sith_engine.dir/src/Dss/jkDSS.c.o": "7eacb2ee677d46f4ec678dc1617efe9cebe1c743b10d5c53732cf2681f15ddda",
     "CMakeFiles/sith_engine.dir/src/Dss/sithDSS.c.o": "d46b86f80a52414c6356acc0fbfd258328dca8358423dff4b3e79e61376da980",
     "CMakeFiles/sith_engine.dir/src/Dss/sithDSSCog.c.o": "c592507b4b629d4e9c96fd11919b164ae681711f774987b9057a57c304ea348d",
     "CMakeFiles/sith_engine.dir/src/Dss/sithDSSThing.c.o": "ac40cfabe3c742dca33aac9607361158ffc54cf3adceb9311e7ba7f72aba1687",
@@ -111,7 +127,7 @@
     "CMakeFiles/sith_engine.dir/src/Engine/sithAnimClass.c.o": "82df11fcfb3b484012b3ae0ee8081387234ace59dc268e38dd9bbe50c79e523f",
     "CMakeFiles/sith_engine.dir/src/Engine/sithCamera.c.o": "c4717c37e364e3b60e6175dd92235335bf803776a1ad71404e5438778873b3ec",
     "CMakeFiles/sith_engine.dir/src/Engine/sithCollision.c.o": "2029114dc2644a17196b058603f3eaabb870eb2ea81167f24f1ab273907f526b",
-    "CMakeFiles/sith_engine.dir/src/Engine/sithIntersect.c.o": "fdf369039ce5250444c5d5789e7cc50dc16dc7270cc1a669b4c6922a6e7fb7d2",
+    "CMakeFiles/sith_engine.dir/src/Engine/sithIntersect.c.o": "6ed52f16898e6a0e4644cd471f9819831e51e19f6427286dcfeb714c99abb9d1",
     "CMakeFiles/sith_engine.dir/src/Engine/sithKeyFrame.c.o": "807adbf0c3148137f9e35d7f1f985496e0b510c318d2a01139d0924933dba1a1",
     "CMakeFiles/sith_engine.dir/src/Engine/sithParticle.c.o": "23a5601df38ca5abc964fd08216cdecfecb84f23e9268628f0c19d596c79adc3",
     "CMakeFiles/sith_engine.dir/src/Engine/sithPhysics.c.o": "f5c3834ef503ef3351401239f59e0a0aa95fa0d8acd20905644f084a0de688e6",
@@ -166,7 +182,7 @@
     "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMods.c.o": "c6c5f35c391a857c4ac56067fe7dbf6f480e538db637b70e8e2080c7ea7d7b71",
     "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMouse.c.o": "5c7b43a5ce836b69549be14363fe200e767b2b905dfe867c784e4d6f69dfbca4",
     "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMultiTally.c.o": "3201529150582f224b0fd6452fbd66625e595d9daf1fb234e63f1fa2a48f1cd0",
-    "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMultiplayer.c.o": "fc36c5a25862fd7edc582e7f83b76772b3ffe8ec11a6b9010f950c72bcd3d3c9",
+    "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMultiplayer.c.o": "d1b80f9d2fa0d8c685bf1061176adc8de83c0bde998b492caf0e2828f2192d93",
     "CMakeFiles/sith_engine.dir/src/Gui/jkGUINetHost.c.o": "78c76015f1200075bd46ec8cc44cc490ab8829579139c278836df075bf57f2f0",
     "CMakeFiles/sith_engine.dir/src/Gui/jkGUIObjectives.c.o": "e038a72e9fa764fdfd591566dd43bda09140074f5ddb16c8503d7e9fbf2f3ee3",
     "CMakeFiles/sith_engine.dir/src/Gui/jkGUIPlayer.c.o": "9f59e960dcc9a642ca014336193c07cbefe42b25a9165ea20c6fa42d2f67d8cb",
@@ -253,9 +269,9 @@
     "CMakeFiles/sith_engine.dir/src/World/sithSprite.c.o": "12c51d396a82b2a9a46cb9c4f8508cec21bb950202fa0f554a4f8a0f32acf475",
     "CMakeFiles/sith_engine.dir/src/World/sithSurface.c.o": "2c6732ba62765c4a37fad8ea3965a120b1d9cbfd757889a8f03cdbda97c2c4e8",
     "CMakeFiles/sith_engine.dir/src/World/sithTemplate.c.o": "75c5b2a7711a97960004cb48ef8c61dbc5eed95fea9e802267f883a67d924f17",
-    "CMakeFiles/sith_engine.dir/src/World/sithThing.c.o": "997394994d6b0b6a520ef56008640625d938ccecbe6e09422e9856308d92b56c",
+    "CMakeFiles/sith_engine.dir/src/World/sithThing.c.o": "7e35bd7453da3581be6f826f7de4eaf57504943f9a88f09326c0525379e57343",
     "CMakeFiles/sith_engine.dir/src/World/sithTrackThing.c.o": "6eb99949b7004faf73cace4d32e1149793fdf77299fa4457f76fddcdee1eca53",
-    "CMakeFiles/sith_engine.dir/src/World/sithWeapon.c.o": "dbb0caf72d85b58bbaec1c16493fca380655b6cab2a71169535e8db8fd032c18",
+    "CMakeFiles/sith_engine.dir/src/World/sithWeapon.c.o": "f334e2142bd85e21140351063c0d5af3b3ae63c21d244f7818d3da3f0c97d846",
     "CMakeFiles/sith_engine.dir/src/World/sithWorld.c.o": "a80a9a90a7a88d5efed9d9596a79a4a84ba47c28738e46d9b53dcbea8ee9c9cd",
     "CMakeFiles/sith_engine.dir/src/external/fcaseopen/fcaseopen.c.o": "98025ea8223aa06f1f3cc6e687e061a36f1e1f7e95a79f20d7d23c138f8f243a",
     "CMakeFiles/sith_engine.dir/src/external/libsmacker/smacker.c.o": "b7868c5f0efdf898055441604c3eaadc6e3cb6b8c80286a68bcf8493e2ce192b",

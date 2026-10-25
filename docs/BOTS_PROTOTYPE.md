@@ -1,5 +1,10 @@
 # Player bot prototype: recovery and qualification
 
+> Historical report for the recovered prototype and the exact hashes below.
+> Current controls, Force support, stock-map navigation and CTF work are described
+> in [BOTS_BEHAVIOR.md](BOTS_BEHAVIOR.md). A newer build does not inherit the
+> runtime qualifications recorded here.
+
 This work reconstructs the prototype after its unpushed local checkout was
 lost. It is not a byte-for-byte recovery. The new source, executable hashes and
 test receipts describe the reconstruction. Earlier gameplay does not qualify a

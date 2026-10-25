@@ -1,0 +1,186 @@
+{
+  "recorded_at": "2026-10-25T06:30:09.689822+00:00",
+  "status": "pass",
+  "scope": "Integrated Python manager, bot lifecycle/configuration, persistent authority/API, typed chat-admin IPC, broker ownership, release exclusions, browser transport/assets, and unchanged published JavaScript transport/asset oracles. No new game or human-client fixture was launched.",
+  "python": "3.12.14",
+  "node": "v24.22.1",
+  "unique_test_cases": 138,
+  "test_executions_in_accepted_runs": 148,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "suites": [
+    {
+      "suite": "manager",
+      "command": [
+        "/workspace/scratch/3cdb8ff42680/bot-deps/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "tests_run": 111,
+      "passed": 111,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reported_seconds": 10.463,
+      "log": "bot-qa/integrated-admin-python-manager.log",
+      "log_sha256": "8d51f270ec915d78cfe64d534c869778d41c0112be3a5844a897e7cde36f041c",
+      "environment": {}
+    },
+    {
+      "suite": "web_gateway_with_published_client",
+      "command": [
+        "/workspace/scratch/3cdb8ff42680/bot-deps/bin/python",
+        "-m",
+        "unittest",
+        "web_gateway.test_gateway",
+        "web_gateway.test_admin",
+        "web_gateway.test_assets",
+        "web_gateway.test_published_client",
+        "-v"
+      ],
+      "tests_run": 27,
+      "passed": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reported_seconds": 1.373,
+      "log": "bot-qa/integrated-admin-python-web_gateway-published.log",
+      "log_sha256": "bebd5e05b1eb0688ca643d9f4c663579c5515c76325cabe4d140498dacad16ca",
+      "environment": {
+        "JKDF2WEB_CLIENT_DIR": "/workspace/scratch/3cdb8ff42680/bot-qa/browser-client"
+      }
+    },
+    {
+      "suite": "manager_broker_configuration_after_retirement_fix",
+      "command": [
+        "/workspace/scratch/3cdb8ff42680/bot-deps/bin/python",
+        "-m",
+        "unittest",
+        "tests.test_manager",
+        "-v"
+      ],
+      "tests_run": 9,
+      "passed": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reported_seconds": 0.062,
+      "log": "bot-qa/integrated-admin-python-broker-fixed.log",
+      "log_sha256": "fea48c74cf724acfcfbb7f56ff36d5cd0fcf5768795f51ee5f6df13c1cd87c79",
+      "environment": {}
+    },
+    {
+      "suite": "browser_host_removal_rejoin_boundary_after_fix",
+      "command": [
+        "/workspace/scratch/3cdb8ff42680/bot-deps/bin/python",
+        "-m",
+        "unittest",
+        "web_gateway.test_gateway.GatewayIntegration.test_host_kick_drains_packet_and_expires_browser_rejoin_seat",
+        "-v"
+      ],
+      "tests_run": 1,
+      "passed": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reported_seconds": 0.236,
+      "log": "bot-qa/integrated-admin-python-browser-removal-fixed.log",
+      "log_sha256": "b40023011ea697e323a7e9c41bbb59480dcca22f034ad99c4522681630bfc9ab",
+      "environment": {}
+    }
+  ],
+  "source_snapshot_note": "The full tests/ and gateway runs preceded two narrow retirement-boundary corrections. manager/broker.py and tests/test_manager.py then changed together; all 9 manager/broker/configuration tests passed. web_gateway/gateway.py and web_gateway/test_gateway.py then changed together; the extended host-removal/rejoin regression passed. These 10 rerun cases are included in the 138 unique cases, not additional unique tests. Other integrated core sources remained frozen. The hashes below describe the final reviewed source snapshot.",
+  "resolved_optional_prerequisite": {
+    "initial_gateway_attempt": {
+      "tests_run": 27,
+      "passed": 25,
+      "skipped": 2,
+      "log_sha256": "3d8dfb792d9574cf9aee9552d2a1a54f80d3adb9123ba3c1cac92b5b860561fb"
+    },
+    "resolution": "Selected the already cached unchanged cloudflare-38 client with JKDF2WEB_CLIENT_DIR and reran all 27 gateway tests with zero skips.",
+    "published_js_sha256": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0"
+  },
+  "independent_review": {
+    "reviewed": [
+      "manager/chat_admin.py",
+      "manager/runtime.py",
+      "manager/broker.py",
+      "web_gateway/ipc.py",
+      "web_gateway/gateway.py",
+      "directplay/gateway.c"
+    ],
+    "corrected_broker_issue": "Retired peer marker was consumed by its first REMOVE acknowledgement, so a later buffered DATA or duplicate REMOVE could emit fatal broker error199 and stop the shared DirectPlay adapter. Marker now survives until successful re-registration or adapter teardown.",
+    "broker_regression_boundary": "Kick peer500 while peer501 remains; ignore late500 DATA before and after REMOVE; acknowledge duplicate REMOVE; continue PING and forward peer501 DATA without errors.",
+    "corrected_browser_issue": "A rejoin request could receive a transient success while a host-retired seat drained its quit output. The rejoin guard now rejects both closed and host-removed seats immediately.",
+    "browser_regression_boundary": "Immediately reject rejoin during the host-removal/drain state, deliver the queued ordinary quit packet, send host-left, then reject the expired seat.",
+    "controller_findings": "Private typed operations preserve trusted peer/generation correlation; resets clear queued authority; bounded worker avoids awaiting IPC inside reader callbacks; key capability/revocation is checked per action; proof text is redacted from general runtime logs.",
+    "no_additional_blocking_finding": true
+  },
+  "qualification_limits": [
+    "Unit and controlled local protocol integration tests do not establish connected retail/native/browser gameplay or actual server-side kick/map transition; those require separate receipts.",
+    "The offline helper cannot independently authenticate a stock-chat challenge sender; the documented challenge-substitution/phishing limitation remains.",
+    "Previously qualified rendered control-panel/helper receipts remain separate; these runs do not claim fresh UI rendering."
+  ],
+  "related_receipts": [
+    "qa/chat-admin-authority.json",
+    "qa/bots-server-controls.json"
+  ],
+  "source_sha256": {
+    "app.py": "18e0107a109f9d2cd41e45f0b36ebfdc72c62a4d08ce46e1dab6314312c00159",
+    "bots/__init__.py": "bcb2d17ad45888a115146a9491ee107f968593ede7cc98a1163b15b69a653893",
+    "bots/map_audit.py": "32804e1c6df6a9ef2dfe12eedfd36d1b69c20d4ec5bc870977c47e6a6e4f11bf",
+    "bots/profiles.json": "6e439a854243678158e9956ea169ab785fe84f5a550fcd8592797c328880fd82",
+    "bots/run.py": "c02f41dee9eeab5330c3e0a564839f2baf09a8093f907affc4fca019f2d2fe23",
+    "bots/settings.py": "59a955450e634c17cb274fb024dde94947746cc03f3fca904ac8aab7b83906c6",
+    "manager/__init__.py": "0473c521e59b406646bd31bd5caae352fd3a450fb68b374dce1c6f58a8fd1618",
+    "manager/admin.py": "5c05aee0bc2fa7ce38bd6c6ac5b98f0019778ac1f45ed6772a32d3763cd19065",
+    "manager/authority.py": "952b4e6013db9857d6a94b3b9881cccf0e15050cd93261f63b901acbe65727ee",
+    "manager/broker.py": "1d52d8ccf1c3d8bcf3a276103834da1f1b9e2122cd37ea83162193f23bde8d21",
+    "manager/chat_admin.py": "1760705d4dc80a645bee9fa681d10369ba7b8827b70f8cc9e309e388ede8bdcb",
+    "manager/config.py": "d8c79e499388be3d6bacf88425dfc3c8319840898d75392e1967c9bc3147a528",
+    "manager/content.py": "d4dae8db1b658f0b545d476b2e324b39c79cee622fd7ac77d8ccc955ca7f7812",
+    "manager/runtime.py": "afc4b863ed8a5b7685ae123ef8c09a3a23d47a6e041b7a030e1676782f28c36a",
+    "manager/ui/app.js": "b208d3133d8555096b5a1229060b72899eed0cb903a5c43f7751fc2826b23012",
+    "manager/ui/index.html": "e1db52efe4f18aee4b636c619d7b5b07f3911337e8db553a2e4000dd88ce573c",
+    "manager/ui/style.css": "5b117213bcaf62c4718cd28ed567bcef556542f6ff5f198b9351d2902de394fd",
+    "manager/updater.py": "5071f083a60437332e52c7c94367964e4c7d1ef90b2c0b44e338646780ef176e",
+    "manager/updates.py": "f9a127c11f6270d799523a8693702d4d1d513276d31e9a5b0a794ed7d8d6ebba",
+    "scripts/build_release.py": "7eb04afadf2eb702c84cd72eeff67f1bdf293bcaeb35ac7539e5c78ee0f95fc0",
+    "tests/test_authority.py": "8a0ddf90dee209d2f9a0bed26b7e0c015170e721e7131a6037e21694eccc9f04",
+    "tests/test_bot_manager.py": "efcd71ef809b48096afdfc13db47b5bdb70571525e194ba82bb9e96aac377893",
+    "tests/test_bot_maps.py": "abe799197fdad07b93e69ddb4c2260befcbc26f81a9a6864f5174cc140c5300e",
+    "tests/test_bots.py": "f96801765ff24a8ff6930edd8a01cb8db337eb82dde2fd3fbf2aee295ce75531",
+    "tests/test_chat_admin.py": "d540f59227de6902d2cd27fdd75067a0e50f11cc25f10f016bbb364a4c649e4d",
+    "tests/test_content_ctf.py": "3ec1d14f0c005d42ba6d4be5d61d22ae3e9b12543b6fadc0eab84638981d21f4",
+    "tests/test_launcher.py": "1dbac99731b7ae7934e1ef0ae5e061820fee301e1e0b1a27e2465d4e2eed39d1",
+    "tests/test_manager.py": "57cddaf0b67eff37f942a015917cc067a595dba544c4e742d6e7c4dbb8f728dc",
+    "tests/test_release_packaging.py": "af9e3e4f17478a927bc63f18e47bc2befb0d127a04c118f76fffd752fee3c456",
+    "tests/test_updater.py": "584b5ca4d382637b30be50fdddd028138a13253a5f877abdd9d837c5e7bfe1ca",
+    "tests/test_updates.py": "47df11f2e9b572918abbdf04116bb52f1fa3d38dc4f895f2a1269e5f3e04faaa",
+    "tools/admin-helper.css": "8dc8e255a458102f6ea3e274f69c183426fe43ca6f900affaa9c73f8d90b935f",
+    "tools/admin-helper.html": "43e484175008fa23f49967cac6df16c7a13baef1741e0ab495d94a11f9e2109d",
+    "tools/admin-helper.js": "baa8c8a2e80d3d9555b712c52499b8fc5cc96052b946c4d6522b7add14171a96",
+    "tools/admin_key.py": "73e8f97cd451290fb2b74312b767bc4f6974ac9c2fee77c39a4a24137f41feb0",
+    "web_gateway/__init__.py": "bd35ba197b4a0279ebefdec96da7756aa2ed41a3e26345e157d5818e8f1021cc",
+    "web_gateway/assets.py": "ac459d0e6f21da8d25f89bbcba58a648e88546e60d778bdf7eb52b3c52f428b8",
+    "web_gateway/check_published_assets.mjs": "99a4853ed65790ba27fcead685b6cdb8a171b8b01f0393e5506ac35777884188",
+    "web_gateway/check_published_client.mjs": "4808a69c2ec01a9c2609ccdda6c328b3125a7e20820ed0ef133daf591e8f8a6a",
+    "web_gateway/fetch_client.py": "189529324455094947b6883fac751fc3702b276eb2c067f23ea4592b082889ca",
+    "web_gateway/gateway.py": "9dba4b358bc2b5090cd3ef90b2feb98170b8d3c45be3908cc9a762c37fadb155",
+    "web_gateway/ipc.py": "89d40c5a35b3d03f2b274462c82304c6478e54c493fdfa9df0db40d8c82f168a",
+    "web_gateway/requirements-lock.txt": "ff2b26d035ae12bc3e346cbec0114264b93eb5f6c0198a1b5ca8b2e7f9e6a699",
+    "web_gateway/requirements.txt": "6a913b217582ad2275d9cf28202c45df1d9f3ca2d10493273d9d193eeaa927b3",
+    "web_gateway/test_admin.py": "40dc1c240ff7205a1642ef72189619c9419e45dc702aec917fdcf9bebe8942ae",
+    "web_gateway/test_assets.py": "35f8df0937d150f47e240cbcdc0de2f6cdc3ced051b397e3d258d0ea5258cef8",
+    "web_gateway/test_gateway.py": "fb98f5812bfcd84a707b10648e294e190714e6904e2121257ae43cb80e4d1bd4",
+    "web_gateway/test_published_client.py": "838c2575f94418f1abbc6128871b65140a3ec32e4049618b3f4a46f7180ad158"
+  },
+  "review_only_source_sha256": {
+    "directplay/gateway.c": "d22e2ac1cff4a9d3864fbad1d56b0def3966276b3eb87ebce360305e3dd19059"
+  }
+}

@@ -9,6 +9,7 @@ import os
 import secrets
 import shutil
 import signal
+import sys
 import time
 from pathlib import Path
 from aiohttp import web
@@ -18,6 +19,9 @@ from web_gateway.assets import build_asset_provider
 from . import config as conf
 from .content import child_casefold, preflight
 from .broker import AdapterBroker
+from .authority import AuthorityStore
+from .chat_admin import ChatAdminController, redact_admin_proof
+from bots.settings import BEHAVIOR_FIELDS, behavior_values, engine_path, write_behavior
 
 def stage_file(source, destination):
     # Resolve symlinked test/install inputs; create an independent directory
@@ -33,6 +37,9 @@ def stage_tree(source: Path, target: Path):
     for child in source.iterdir():
         name = child.name.casefold()
         if name == "video":
+            continue
+        if name == "authority" or (name.startswith("jk-admin-key-") and name.endswith(".cog")):
+            # Exported credentials belong to the offline helper, not game data.
             continue
         output = target / name
         if output.exists():
@@ -64,10 +71,15 @@ class ServerManager:
         self.intentional_stop = False
         self.generation = 0
         self.restart_attempts = 0
+        self.bots_error = None
+        # Credential issuance belongs to the persistent control-panel process,
+        # never to a game startup, a per-run config snapshot or child env.
+        self.authority_store = AuthorityStore(self.state_dir.resolve() / "authority")
+        self.chat_admin = None
 
     def log(self, message, source="manager"):
         timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
-        row = {"time": timestamp, "source": source, "text": str(message)[:4000]}
+        row = {"time": timestamp, "source": source, "text": redact_admin_proof(message)[:4000]}
         self.logs.append(row)
         if self.run_dir:
             path = self.run_dir / "session.jsonl"
@@ -92,8 +104,40 @@ class ServerManager:
                 "browser_assets": self.assets.summary() if self.assets else None,
                 "browser_transfer": dict(self.gateway.metrics) if self.gateway else None,
                 "session": self.session, "preflight": self.preflight_result,
+                "bots": self.bot_status(),
+                "chat_admin": self.chat_admin.status() if self.chat_admin else {"connected": False},
                 "run_directory": str(self.run_dir) if self.run_dir else None,
                 "logs": list(self.logs)}
+
+    def bot_status(self):
+        enabled = self.config["bots_enabled"]
+        result = {"enabled": enabled, "state": "disabled" if not enabled else "stopped",
+                  "configured_count": len(self.config["bots_profiles"]) if enabled else 0,
+                  "joined_count": 0, "players": [], "behavior": behavior_values(self.config),
+                  "error": self.bots_error}
+        if enabled and self.state in ("starting", "running"):
+            result["state"] = "failed" if self.bots_error else "starting"
+            path = self.run_dir / "bots-status.json" if self.run_dir else None
+            try:
+                if path and path.is_file() and path.stat().st_size <= 256 * 1024:
+                    receipt = json.loads(path.read_text(encoding="utf-8"))
+                    if not isinstance(receipt, dict):
+                        return result
+                    players = receipt.get("bots", [])
+                    if isinstance(players, list) and len(players) <= 4 and all(isinstance(p, dict) for p in players):
+                        result["players"] = [{key: p[key] for key in
+                            ("id", "name", "joined", "slot", "network_id", "requested_team", "force_side", "error") if key in p}
+                            for p in players]
+                        result["joined_count"] = sum(p.get("joined") is True for p in players)
+                    if not self.bots_error:
+                        if receipt.get("result") == "failed":
+                            result["state"] = "failed"
+                            result["error"] = "; ".join(str(e) for e in receipt.get("errors", []))[:1000]
+                        elif result["joined_count"] == result["configured_count"]:
+                            result["state"] = "running"
+            except (OSError, ValueError, TypeError):
+                pass
+        return result
 
     async def update_config(self, value):
         async with self.lock:
@@ -101,6 +145,60 @@ class ServerManager:
                 raise conf.ConfigError("Stop the session before changing its settings.")
             self.config = conf.save(self.config_path, value)
             return self.config
+
+    async def update_bot_behavior(self, value):
+        """Only behavior switches can change while a session is active."""
+        if not isinstance(value, dict) or set(value) != set(BEHAVIOR_FIELDS):
+            raise conf.ConfigError("Supply all three bot behavior switches and no other settings.")
+        async with self.lock:
+            if self.state not in ("stopped", "failed", "running"):
+                raise conf.ConfigError("Wait for session startup or shutdown before changing bot behavior.")
+            checked = conf.validate({**self.config, **value})
+            previous = self.config
+            if self.state == "running" and self.config["bots_enabled"]:
+                path = self.run_dir / "bots-behavior.cfg"
+                write_behavior(path, checked)
+                try:
+                    self.config = conf.save(self.config_path, checked)
+                except BaseException:
+                    write_behavior(path, previous)
+                    raise
+                self.log("Bot behavior updated; running clients reload the rules at their next settings check.")
+            else:
+                self.config = conf.save(self.config_path, checked)
+            return {key: self.config[key] for key in BEHAVIOR_FIELDS}
+
+    async def start_bots(self):
+        if not self.config["bots_enabled"]:
+            return
+        root = Path(__file__).resolve().parents[1]
+        run_dir = self.run_dir.resolve()
+        behavior = run_dir / "bots-behavior.cfg"
+        write_behavior(behavior, self.config)
+        argv = [sys.executable, "-m", "bots.run", "--server-config", str(run_dir / "config.snapshot.json"),
+                "--profiles", ",".join(self.config["bots_profiles"]), "--engine", str(engine_path(self.config)),
+                "--connect", f"127.0.0.1:{self.config['native_port']}", "--runtime", str(run_dir / "bots"),
+                "--behavior-file", str(behavior), "--status-file", str(run_dir / "bots-status.json"), "--managed"]
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(root) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+        await self.spawn("bots", argv, env)
+
+    async def stop_bots(self):
+        proc = self.processes.get("bots")
+        if proc is None:
+            return
+        # All managed bot children share this runner's owned process group.
+        # Signal it even after its leader exits, so a crashed supervisor never
+        # leaves client processes running against a later session.
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(proc.pid, signal.SIGTERM)
+        try:
+            await asyncio.wait_for(proc.wait(), 6)
+        except asyncio.TimeoutError:
+            pass
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(proc.pid, signal.SIGKILL)
+        await proc.wait()
 
     def prepare(self):
         data = Path(self.config["game_data"])
@@ -156,6 +254,14 @@ class ServerManager:
         if generation != self.generation or self.intentional_stop or self.state != "running":
             return
         reason = f"{name} exited with code {code}"
+        if name == "bots":
+            async with self.lock:
+                if generation != self.generation or self.intentional_stop or self.state != "running":
+                    return
+                self.bots_error = reason
+                await self.stop_bots()
+                self.log("Bot roster stopped; the game session remains available to human players.")
+            return
         await self.stop(failure=reason)
         if self.config["auto_restart"] and self.restart_attempts < 3:
             self.restart_attempts += 1
@@ -185,6 +291,7 @@ class ServerManager:
             if self.updater:
                 self.updater.acquire_session_lease()
             self.state, self.error = "starting", None
+            self.bots_error = None
             self.intentional_stop = False
             self.generation += 1
             if not restarting:
@@ -230,6 +337,8 @@ class ServerManager:
                     argv = [xvfb, "-a", "-s", "-screen 0 640x480x24", *argv]
                 self.ipc = NativeIPC(port=self.config["ipc_port"], token=token)
                 self.ipc.subscribe_info(self.on_info)
+                self.chat_admin = ChatAdminController(self.authority_store, self.ipc, self.log)
+                await self.chat_admin.start()
                 await self.spawn("engine", argv, env)
                 await self.ipc.start()
                 await self.ipc.wait_ready(timeout=40)
@@ -258,6 +367,7 @@ class ServerManager:
                     self.web_runner = web.AppRunner(self.gateway.create_app(), access_log=None)
                     await self.web_runner.setup()
                     await web.TCPSite(self.web_runner, self.config["web_bind"], self.config["web_port"]).start()
+                await self.start_bots()
                 if any(p.returncode is not None for p in self.processes.values()):
                     raise RuntimeError("A server component exited during startup.")
                 self.state, self.started = "running", time.monotonic()
@@ -282,6 +392,11 @@ class ServerManager:
 
     async def _cleanup(self):
         self.intentional_stop = True
+        if self.chat_admin:
+            await self.chat_admin.close()
+            self.chat_admin = None
+        await self.stop_bots()
+        self.processes.pop("bots", None)
         if self.gateway:
             await self.gateway.close()
             self.gateway = None

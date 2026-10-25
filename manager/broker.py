@@ -33,6 +33,8 @@ class AdapterBroker:
         engine.subscribe_data(self.on_data)
         engine.subscribe_state(self.on_state)
         engine.subscribe_info(self.on_info)
+        if hasattr(engine, "subscribe_removed"):
+            engine.subscribe_removed(self.on_removed)
 
     async def start(self):
         self.server = await asyncio.start_server(self.accept, "127.0.0.1", self.port, limit=MAX_FRAME + 4)
@@ -50,6 +52,13 @@ class AdapterBroker:
             self.pool_ready.clear()
             for client in list(self.clients):
                 client.writer.close()
+
+    async def on_removed(self, peer_id):
+        client = self.owners.pop(peer_id, None)
+        if client:
+            client.peers.discard(peer_id)
+            client.retired_peers.add(peer_id)
+            await client.send(104, peer_id)
 
     async def on_info(self, mode, entry):
         for client in list(self.clients):
@@ -80,16 +89,28 @@ class AdapterBroker:
                         peer = await self.engine.add_peer(src)
                         self.owners[peer] = client
                         client.peers.add(peer)
+                        client.retired_peers.discard(peer)
                         await client.send(103, peer, dst, U32.pack(0))
                         self.log(f"Retail transport peer {peer} registered")
                     elif kind == 4:
+                        if src in client.retired_peers:
+                            # Keep this marker through duplicate departure and
+                            # already-buffered packets. A successful new ADD
+                            # of this ID is the only event that revives it.
+                            await client.send(104, src, dst)
+                            continue
                         if src not in client.peers:
                             raise ValueError("Peer not owned by this adapter")
-                        await self.engine.remove_peer(src)
                         client.peers.discard(src)
                         self.owners.pop(src, None)
+                        await self.engine.remove_peer(src)
                         await client.send(104, src, dst)
                     elif kind == 5:
+                        if src in client.retired_peers:
+                            # Ordinary DSS_QUIT and DirectPlay's destruction
+                            # notice race with packets already in flight.
+                            # Retire only that seat, not the shared adapter.
+                            continue
                         if src not in client.peers or not 4 <= len(payload) <= 2052:
                             raise ValueError("Unknown sender or invalid Sith payload")
                         await self.engine.send(src, dst, payload)
@@ -151,6 +172,7 @@ class AdapterClient:
         self.broker, self.reader, self.writer = broker, reader, writer
         self.authenticated = False
         self.peers = set()
+        self.retired_peers = set()
         self.lock = asyncio.Lock()
 
     async def send(self, kind, src=0, dst=0, payload=b""):

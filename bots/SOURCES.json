@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "status": "reconstructed_from_prior_design_record",
+  "version": 2,
+  "status": "reconstructed_prototype_extended_with_configurable_rules_force_and_stock_ctf",
   "implementation": "Original ordinary-client input driver and roster; no historical bot code or game asset archives imported.",
   "engine": {
     "url": "https://gitlab.com/codalilitari/OpenJKDF2-MotS-Fixes",
@@ -40,6 +40,18 @@
     "registry_sha256_from_earlier_audit": "b14aac1feed2ff56a37ab7303f8a2c814114e91f6caa120e97a1edd94f1c6cb1",
     "provenance": "PROFILES_PROVENANCE.md",
     "registry_sha256_verified_during_recovery": "b14aac1feed2ff56a37ab7303f8a2c814114e91f6caa120e97a1edd94f1c6cb1",
-    "verification_receipt": "../qa/bots-recovery-assets.json"
-  }
+    "verification_receipt": "../qa/bots-recovery-assets.json",
+    "current_registry_sha256": "6e439a854243678158e9956ea169ab785fe84f5a550fcd8592797c328880fd82",
+    "extension": "Original names, models, sound classes and 128 chat lines preserved; added legal Force side/style metadata."
+  },
+  "workflows": [
+    {
+      "name": "JK/MotS COG Workshop",
+      "url": "https://gitlab.com/codalilitari/jk-mots-cog-workshop",
+      "commit": "ab3c4782ab7b474f2ab5def503eb8afd5065cfef",
+      "version": "0.1.6",
+      "role": "Inspect same-game stock COG lifecycle, inventory bins, Force activation/cancellation, and exact CTF bindings; distinguish static, controlled and connected evidence.",
+      "imported_game_assets": false
+    }
+  ]
 }

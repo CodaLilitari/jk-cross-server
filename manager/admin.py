@@ -3,16 +3,19 @@ from __future__ import annotations
 
 import asyncio
 import hmac
+import io
 import ipaddress
 from pathlib import Path
 import secrets
 from urllib.parse import urlsplit
+import zipfile
 
 from aiohttp import web
 from . import config as conf
 from .content import catalog, preflight
 
 UI = Path(__file__).with_name("ui")
+OFFLINE_TOOLS = Path(__file__).resolve().parents[1] / "tools"
 
 
 def create_admin_app(manager, *, port: int | None = 8765, token: str | None = None, updates=None) -> web.Application:
@@ -68,11 +71,71 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
     async def put_config(request):
         return web.json_response(await manager.update_config(await request.json()))
 
+    async def put_bot_behavior(request):
+        return web.json_response(await manager.update_bot_behavior(await request.json()))
+
+    async def get_bot_profiles(request):
+        from bots.run import load_profiles
+        return web.json_response([{"id": ident, "name": row["name"], "model": row["model"]}
+                                  for ident, row in load_profiles().items()])
+
     async def get_status(request):
         result = manager.status()
         if updates:
             result["updates"] = updates.status()
         return web.json_response(result)
+
+    def authority_store():
+        store = getattr(manager, "authority_store", None)
+        if store is None:
+            raise RuntimeError("Persistent admin authority is unavailable.")
+        return store
+
+    async def get_admin_keys(request):
+        return web.json_response(authority_store().metadata())
+
+    def credential_download(issued):
+        # The body is delivered once as a download; it never enters status,
+        # game configuration, a run directory, a URL or a panel log message.
+        return web.Response(body=issued["credential"].encode("ascii"),
+                            content_type="application/octet-stream", headers={
+                                "Content-Disposition": f'attachment; filename="{issued["filename"]}"',
+                                "Pragma": "no-cache",
+                            })
+
+    async def issue_admin_key(request):
+        body = await request.json()
+        if not isinstance(body, dict) or set(body) != {"label", "capabilities"}:
+            raise ValueError("Issuance accepts only label and capabilities.")
+        issued = authority_store().issue(body["label"], body["capabilities"])
+        return credential_download(issued)
+
+    async def empty_key_action(request):
+        if await request.read():
+            raise ValueError("This key action does not accept a request body.")
+
+    async def revoke_admin_key(request):
+        await empty_key_action(request)
+        return web.json_response(authority_store().revoke(request.match_info["key_id"]))
+
+    async def rotate_admin_key(request):
+        await empty_key_action(request)
+        return credential_download(authority_store().rotate(request.match_info["key_id"]))
+
+    async def offline_admin_helper(request):
+        output = io.BytesIO()
+        with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+            for name in ("admin-helper.html", "admin-helper.js", "admin-helper.css"):
+                bundle.writestr(name, (OFFLINE_TOOLS / name).read_bytes())
+        return web.Response(body=output.getvalue(), content_type="application/zip", headers={
+            "Content-Disposition": 'attachment; filename="jk-admin-offline-helper.zip"',
+        })
+
+    async def offline_admin_cli(request):
+        return web.Response(body=(OFFLINE_TOOLS / "admin_key.py").read_bytes(),
+                            content_type="application/octet-stream", headers={
+                                "Content-Disposition": 'attachment; filename="admin_key.py"',
+                            })
 
     async def supplied_config(request):
         body = await request.json() if request.can_read_body else {}
@@ -114,9 +177,17 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
     app = web.Application(middlewares=[guard], client_max_size=128 * 1024)
     app.router.add_get("/", index)
     app.router.add_get("/ui/{name}", asset)
+    app.router.add_get("/admin-helper.zip", offline_admin_helper)
+    app.router.add_get("/admin-helper.py", offline_admin_cli)
     app.router.add_get("/api/config", get_config)
     app.router.add_put("/api/config", put_config)
+    app.router.add_put("/api/bots/behavior", put_bot_behavior)
+    app.router.add_get("/api/bots/profiles", get_bot_profiles)
     app.router.add_get("/api/status", get_status)
+    app.router.add_get("/api/admin-keys", get_admin_keys)
+    app.router.add_post("/api/admin-keys", issue_admin_key)
+    app.router.add_post("/api/admin-keys/{key_id}/revoke", revoke_admin_key)
+    app.router.add_post("/api/admin-keys/{key_id}/rotate", rotate_admin_key)
     app.router.add_post("/api/catalog", get_catalog)
     app.router.add_post("/api/preflight", run_preflight)
     app.router.add_post("/api/start", start)

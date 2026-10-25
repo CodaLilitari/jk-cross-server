@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "scope": "retained intermediate failures and diagnostic probes; not final qualification",
+  "bot_probe_sha256": "fc16be840cc2166cb35a91639453474ddb2be835055d0fca63cc3a3374db5501",
+  "server_probe_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+  "findings": [
+    {
+      "probe": "8b63 CTF c1 on previous server 34737bb3",
+      "result": "All four actual teams were zero. The spawn count was eight with the correct mask 0xffff; valid lobby starts 16–31 were excluded by the incorrectly shortened enumeration."
+    },
+    {
+      "probe": "fc16 CTF on corrected server 0e900a63",
+      "result": "All 32 spawn records and correct initial lobby positions were observed. c1 and c3 remained on team zero because navigation targeted deep trigger floors. The c2 bot exited after a collision endpoint assertion."
+    },
+    {
+      "probe": "fc16 deathmatch",
+      "result": "The m2 bot exited during graph building. m4, m5, and m10 completed 75-second observations; m4 later stalled in sector 102. Two boss-map fixtures rejected an overlong QA session name before launch; the harness name was shortened."
+    }
+  ],
+  "notes": [
+    "Private matrix status observed means observation completed, not gameplay passed. C2 has 11 valid samples and 229 read errors after exit.",
+    "Subsequent code fixes and final receipts are separate; none of these failures is relabelled as a success."
+  ],
+  "inputs": {
+    "8b63_spawn_failure": "40bb66c971b96a6936723244e9d48a2bcc5117a9b1a95d148e374d260c293b88",
+    "ctf_fc16_matrix": "0248397aa83a0832eafaac4de7d7111caf37f96d7aeec3af8a7754b35fb41aec",
+    "dm_fc16_matrix": "60ca385cd33dc897abc3f9d43cef3dd4c0f3624c397af9b833b57f881ba39c44"
+  }
+}

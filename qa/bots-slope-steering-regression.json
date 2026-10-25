@@ -1,0 +1,81 @@
+{
+  "kind": "supported slope steering regression",
+  "generated_at_utc": "2026-10-25T05:59:59.070802+00:00",
+  "scope": "Controlled geometry regression of Bot_SafeDirection, with the stock C1 ramp dimensions and normal; not a live CTF capture claim.",
+  "baseline_bot_binary_sha256": "acf75700a6eddaf57f4049172718e56bf1c9a8532e6cf66e5d0907a331cc498c",
+  "baseline_driver_source_sha256": "3ad0c74f7671d5afe07abf5ef7840bedf38e7735bfca04a051434ef9516a72b2",
+  "corrected_driver_source_sha256": "a098e339d9aa69818dcd30f6fc2870e19d40d8a8193c7f9b72fb7cac263b30ed",
+  "fixture_source_sha256": "72ae2d2706383af6359971137fd64d8b5701a8c2c54407a4b4f2bf57dc5db83f",
+  "test_driver_sha256": "37924d13d431c777e9c8100db162289642dd556237ad88d8d1f924ef3d7a0ea0",
+  "stock_level_reference": {
+    "private_file": "bot-qa/stock-inspect/jkl/c1.jkl",
+    "sha256": "349fb5beffba7c84fd573fe1184f3fbb569d4fcdad07d2d9b26fcb8afdb849e0",
+    "sector": 117,
+    "surface": 1274,
+    "floor_vertices": [
+      [
+        -3.200005,
+        0.2,
+        0.3
+      ],
+      [
+        -2.900003,
+        0.500002,
+        0
+      ],
+      [
+        -3.900005,
+        0.500002,
+        0
+      ],
+      [
+        -3.600005,
+        0.2,
+        0.3
+      ]
+    ],
+    "normal": [
+      0,
+      0.707104,
+      0.707109
+    ]
+  },
+  "observed_defect": "A horizontal body sweep intersects the valid uphill floor; the distant downward probe then starts below that rising floor. The navigation graph can have a route which steering cannot follow.",
+  "correction": "Subdivide movement lookahead into at most 0.075-unit horizontal segments. Find supported floor height before each body sweep, bound local and total rise, retain the original overall drop limits, and sweep along the supported slope. At abrupt ledges keep the horizontal clearance sweep until the edge is cleared; normal physics still performs the fall. No position or game-state injection.",
+  "baseline_result": {
+    "exit_code": -6,
+    "assertion": "baseline-test: /workspace/scratch/3cdb8ff42680/jk-cross-server/native/tests/test_bot_slope_geometry.inc:71: test_bot_slope_steering: Assertion `Bot_SafeDirection(&self,(rdVector3){0,-1,0},0,0.3f,&blocked)' failed.",
+    "expected_failure": true,
+    "core_dumps_disabled": true
+  },
+  "corrected_result": {
+    "exit_code": 0,
+    "combined_pass_groups": 26,
+    "strict_compile_flags": [
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-UNDEBUG"
+    ]
+  },
+  "cases": [
+    "Actual C1 ramp slope, from its base and successive uphill positions.",
+    "Longer stopping-distance lookahead while moving quickly.",
+    "Downhill supported slope.",
+    "Low ceiling, blocking wall, missing floor and excessive sudden rise rejected.",
+    "Ordinary 0.2-unit drop retained, 0.4-unit drop requires explicit allowDrop.",
+    "Collision-query stack remains balanced."
+  ],
+  "unchanged_scope": "No combat, Force, peace, team or chat rules were changed. Inputs remain ordinary movement controls.",
+  "evidence_logs": {
+    "bot-qa/slope-regression/baseline-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bot-qa/slope-regression/baseline-run.log": "4db2ab9c3729c7620c69baa419b46207d6f67c81216e74a574a7d5e5080c3b4d",
+    "bot-qa/slope-regression/fixed-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bot-qa/slope-regression/fixed-run.log": "9b5aaaad50f82cbbebb829d3ffc9e3d5cc765d6497e6bd5941d81acbdc392e47"
+  },
+  "limitations": [
+    "The fixture models a bounded central strip of the authored ramp; it is not a full map simulation.",
+    "The combined driver uses controlled collision queries. The separate navigation portal regression exercises the real collision/intersection routines.",
+    "Live traversal and capture qualification must identify the subsequently rebuilt binary separately."
+  ]
+}

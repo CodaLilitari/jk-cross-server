@@ -1,8 +1,12 @@
 {
   "files": {
+    ".gitattributes": {
+      "mode": 420,
+      "sha256": "e252ca10817033b4644dc2e06224aed4e74b912193eac3fe0624566975ed904e"
+    },
     ".gitignore": {
       "mode": 420,
-      "sha256": "a410b74ea0315ca0e29474ab7bc79f1c332e160e1e4f6c2090f476666d7eadef"
+      "sha256": "90c499ff537ec58d5fa439e02de467b91e956091fe126175391c60494661c6ed"
     },
     "CHANGELOG.md": {
       "mode": 420,
@@ -18,7 +22,7 @@
     },
     "README.md": {
       "mode": 420,
-      "sha256": "72ba0a5ff2cf17a850edea29397ba9497432123b9618db05af779fcea0b5a3b4"
+      "sha256": "5e25ac9123d74d8dcceb352aaf2b2f907133aadd37495624de72159b36a46f94"
     },
     "VERSION": {
       "mode": 420,
@@ -30,7 +34,7 @@
     },
     "bin/bots-linux-x86_64/jk-bot-client": {
       "mode": 493,
-      "sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e"
+      "sha256": "50924ed74935a06edfb7ee5e937f756ea0a68a7386534740f2e2917ac835779c"
     },
     "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
       "mode": 493,
@@ -42,7 +46,7 @@
     },
     "bin/linux-x86_64/openjkdf2": {
       "mode": 493,
-      "sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3"
+      "sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee"
     },
     "bots/PROFILES_PROVENANCE.md": {
       "mode": 420,
@@ -50,23 +54,31 @@
     },
     "bots/README.md": {
       "mode": 420,
-      "sha256": "4f91d734d0503b5dbebf3569db658fae84f2c8133815af5216a32b3bd67de52a"
+      "sha256": "fcc8ea9013f3b58c99f527dd1558c3f632271059fdb0d007056976290c89cee0"
     },
     "bots/SOURCES.json": {
       "mode": 420,
-      "sha256": "64b7b8bf8864806be0c29ff9e866d83a26037212cae54c82ec646fb8b09a1258"
+      "sha256": "8b601f395ce498ecd9962407c5e1acc7eb4cf046d71f3d222d2c354d0b84bca5"
     },
     "bots/__init__.py": {
       "mode": 420,
       "sha256": "bcb2d17ad45888a115146a9491ee107f968593ede7cc98a1163b15b69a653893"
     },
+    "bots/map_audit.py": {
+      "mode": 420,
+      "sha256": "32804e1c6df6a9ef2dfe12eedfd36d1b69c20d4ec5bc870977c47e6a6e4f11bf"
+    },
     "bots/profiles.json": {
       "mode": 420,
-      "sha256": "f0df931c6dabf2d1c0b352cdbad1ba1d9cbe1753cc0fe5f6fd76f61ab6165b84"
+      "sha256": "6e439a854243678158e9956ea169ab785fe84f5a550fcd8592797c328880fd82"
     },
     "bots/run.py": {
       "mode": 420,
-      "sha256": "f8128da6400bd0857bbeef8f32319352737de6fda69e4eefc800a5fb897f8a66"
+      "sha256": "c02f41dee9eeab5330c3e0a564839f2baf09a8093f907affc4fca019f2d2fe23"
+    },
+    "bots/settings.py": {
+      "mode": 420,
+      "sha256": "59a955450e634c17cb274fb024dde94947746cc03f3fca904ac8aab7b83906c6"
     },
     "directplay/Makefile": {
       "mode": 420,
@@ -86,11 +98,11 @@
     },
     "directplay/gateway.c": {
       "mode": 420,
-      "sha256": "60f9626e6d64cab3acfbda7e8aa508089715cc288141b5cef8b23d601bae028a"
+      "sha256": "d22e2ac1cff4a9d3864fbad1d56b0def3966276b3eb87ebce360305e3dd19059"
     },
     "directplay/gateway.exe": {
       "mode": 493,
-      "sha256": "73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95"
+      "sha256": "39b544cbf189921c551418f846df90c695c65307938633c84f8a2132065304e8"
     },
     "directplay/protocol.c": {
       "mode": 420,
@@ -126,11 +138,19 @@
     },
     "docs/ARCHITECTURE.md": {
       "mode": 420,
-      "sha256": "bb8f335d5bf92898e69cf2bd3dc5d5e66b220e4aed99073f58b4b62867d1de85"
+      "sha256": "405ff03c993f7e90786270e29d6c9e95df4260b36f1dce39503ffdb6cc8699b9"
+    },
+    "docs/BOTS_BEHAVIOR.md": {
+      "mode": 420,
+      "sha256": "7a61f97154b9ff03175e302dfaddbdd4c41ab7c0a7b3a08d0735154a1e9fb63d"
     },
     "docs/BOTS_PROTOTYPE.md": {
       "mode": 420,
-      "sha256": "d5debbb01d153a58d0836d4102a29789d4baf70dffa78616f3c550ed2bbe89c3"
+      "sha256": "53400685197989a59c7238b1801a58e84eda3229591bb928d484104a04dbae85"
+    },
+    "docs/CHAT_ADMIN.md": {
+      "mode": 420,
+      "sha256": "aaf6fe7a2ae97ed2942d6b682bcf3a4bc5e9a0fadfb0a9d0eee85d5ad9fa7762"
     },
     "docs/NETWORKING.md": {
       "mode": 420,
@@ -138,7 +158,7 @@
     },
     "docs/QUALIFICATION.md": {
       "mode": 420,
-      "sha256": "edfe6703c54dec0c966e1a6e31b62e71ae07e5b2c7214c1ee684de5f2dccbd0f"
+      "sha256": "c1f95abd7122f95790936f77029ef794ffecb6e8621396bc2bce4c1066867688"
     },
     "docs/UPDATES.md": {
       "mode": 420,
@@ -310,39 +330,47 @@
     },
     "manager/admin.py": {
       "mode": 420,
-      "sha256": "c573606e49d426415bfa3e70441bd2c8654d5e1e683bef015f4c0d6381419ac4"
+      "sha256": "5c05aee0bc2fa7ce38bd6c6ac5b98f0019778ac1f45ed6772a32d3763cd19065"
+    },
+    "manager/authority.py": {
+      "mode": 420,
+      "sha256": "952b4e6013db9857d6a94b3b9881cccf0e15050cd93261f63b901acbe65727ee"
     },
     "manager/broker.py": {
       "mode": 420,
-      "sha256": "5863289ed2eacd08772c39b4bff0ad2fc53014cd29d104656ec6043a6966c9dc"
+      "sha256": "1d52d8ccf1c3d8bcf3a276103834da1f1b9e2122cd37ea83162193f23bde8d21"
+    },
+    "manager/chat_admin.py": {
+      "mode": 420,
+      "sha256": "1760705d4dc80a645bee9fa681d10369ba7b8827b70f8cc9e309e388ede8bdcb"
     },
     "manager/config.py": {
       "mode": 420,
-      "sha256": "8d156ddfbafc686bc72b9eb0b5d44ca96dbed90165e3a5687a41074a917950bc"
+      "sha256": "d8c79e499388be3d6bacf88425dfc3c8319840898d75392e1967c9bc3147a528"
     },
     "manager/content.py": {
       "mode": 420,
-      "sha256": "40f66149db90bb12c39836869cd78a31ea3e2f33c1373a18f770950a860a75dc"
+      "sha256": "d4dae8db1b658f0b545d476b2e324b39c79cee622fd7ac77d8ccc955ca7f7812"
     },
     "manager/runtime.py": {
       "mode": 420,
-      "sha256": "847d6312ab39d9d3e6367dc00b559226fa28d0e4578f55dbec385113428de5c3"
+      "sha256": "afc4b863ed8a5b7685ae123ef8c09a3a23d47a6e041b7a030e1676782f28c36a"
     },
     "manager/ui/app.js": {
       "mode": 420,
-      "sha256": "6b703a9ed1774b7c5a2d9ed09cb3195bb1a02d559dbb692cc70b753b4afacda9"
+      "sha256": "b208d3133d8555096b5a1229060b72899eed0cb903a5c43f7751fc2826b23012"
     },
     "manager/ui/index.html": {
       "mode": 420,
-      "sha256": "afd176528722bd8ef89c5a44972f73bcb7feb243ceb2e401b6477d15fe53fcd6"
+      "sha256": "e1db52efe4f18aee4b636c619d7b5b07f3911337e8db553a2e4000dd88ce573c"
     },
     "manager/ui/style.css": {
       "mode": 420,
-      "sha256": "4d41f23ed41cfacacea5d3c86f3316585d1c3a68495aa65f28f5cab7cb23aa68"
+      "sha256": "5b117213bcaf62c4718cd28ed567bcef556542f6ff5f198b9351d2902de394fd"
     },
     "manager/updater.py": {
       "mode": 420,
-      "sha256": "93d7112bf8d3e98c311ed83c9cf79475e956fc541e8b591456fde455e3d8cedf"
+      "sha256": "5071f083a60437332e52c7c94367964e4c7d1ef90b2c0b44e338646780ef176e"
     },
     "manager/updates.py": {
       "mode": 420,
@@ -350,23 +378,23 @@
     },
     "native/BOT_BUILD.json": {
       "mode": 420,
-      "sha256": "917a2fc84ae5922f46cbbae7f5cbe806903d94c75e9bca2861f97417704d06dc"
+      "sha256": "febb8d1ece0ec7960eabb1817e03a3bf53a2bdc456879989d90900abc8b13e90"
     },
     "native/BUILD.json": {
       "mode": 420,
-      "sha256": "3173b97dab27c2f63a267b677460b13344df893dc6dcd796f28d5a5a1cc80f1e"
+      "sha256": "5feb9119dc9462a0b63e156bb1161c56603e4c624b13da73892dc8475a1dbecc"
     },
     "native/README.md": {
       "mode": 420,
-      "sha256": "e9b1661a2fe1c97118970c80b26147de685a3227a6eed28b0a3bcc5c57e7cb50"
+      "sha256": "1a269aa1cad43561326ce2488118cfd36d42e89ff4d1ae03a4f26f717cd93b04"
     },
     "native/bot-client.patch": {
       "mode": 420,
-      "sha256": "02dc798472f00337373dc3336544335b8ee83e6ef62714ff656e388b10a67c43"
+      "sha256": "94b425eff4527345e15dd589a356486d7e97f89243110ec06bc749d58841debd"
     },
     "native/bot-relink-linux-x86_64.tar.gz": {
       "mode": 420,
-      "sha256": "650146a7ad10a5e243b397afa250c8dc1a916d37106630b17b61a98af41a8ed9"
+      "sha256": "d44966fb988c17cc896546898481de30456350677dc20b769d669a051e917792"
     },
     "native/build.sh": {
       "mode": 493,
@@ -378,11 +406,11 @@
     },
     "native/crossplay-dedicated.patch": {
       "mode": 420,
-      "sha256": "879dd33e4161815802d6fd7ce21b0f298e0ce9300197efab1ab75c7c2ffa8856"
+      "sha256": "0147665539dac3e1ae7652e97e1afdde12e3a46188141de0796795272f1da369"
     },
     "native/package_bots.py": {
       "mode": 420,
-      "sha256": "6dce65fb5cbe967d5e56ffc18410d0bdffad5450b2618d8bd4be29337302d279"
+      "sha256": "595d1d39fbdb29871ad7631ee2b7a9a90a750c5641a3a89668147d3bd663a131"
     },
     "native/package_native.py": {
       "mode": 420,
@@ -390,23 +418,147 @@
     },
     "native/protocol.md": {
       "mode": 420,
-      "sha256": "d1053da58d2c3acbb48467bd6281adffc91c898681eceea3a711b418f4d3f0a4"
+      "sha256": "fc767b54cf70a822882fc1e04af6473cfc6eb0c9d7c6d4d8d3d87abb9a3773ec"
     },
     "native/relink-linux-x86_64.tar.gz": {
       "mode": 420,
-      "sha256": "7003e80ae105ebf1baee5b670922a2f3670559c31092c356e56b0d4ef81ae5e0"
+      "sha256": "3e342920b782eea38b422460f45b048e0c762f39beff81b60342ce9e69fc7fe9"
+    },
+    "native/tests/run_bot_collision_tests.py": {
+      "mode": 420,
+      "sha256": "29594eea7c7112870f4c2936f430c55c27f98b8110409fd58dc4111156b148c7"
     },
     "native/tests/run_bot_driver_tests.py": {
       "mode": 420,
       "sha256": "bdac9790732dd061dc6ae6e7b635bbf60ebe19a9b53ba586d97e10ef02982095"
     },
+    "native/tests/run_bot_loadout_tests.py": {
+      "mode": 420,
+      "sha256": "4d0e8a826367ee5770c94e5cb1662cde89a83df123a8c370415045caced5456b"
+    },
+    "native/tests/run_bot_portal_tests.py": {
+      "mode": 420,
+      "sha256": "83dd444ada9e7f868a0aea826015139de50fd952c9780d9e7767d934aeb3093b"
+    },
+    "native/tests/run_server_admin_tests.py": {
+      "mode": 420,
+      "sha256": "55b614608d784f465fff9a2d6e28eae7b27c9b44ca601c0420ce839dde9c7f4e"
+    },
+    "native/tests/run_server_spawn_tests.py": {
+      "mode": 420,
+      "sha256": "644f0e60290f4a7827265001a862c9d1c9259b70faac573363ae43caab2277ef"
+    },
+    "native/tests/test_bot_behavior.inc": {
+      "mode": 420,
+      "sha256": "e960c8e237537d608b9aa4a7623d69236499d103113a6d9db3fca306994a8dc2"
+    },
+    "native/tests/test_bot_c1_geometry.inc": {
+      "mode": 420,
+      "sha256": "8f3857d9ad55415e6e22a04a192bcf02b678a5a7454ba3bab27c24a8c6d431a8"
+    },
+    "native/tests/test_bot_collision.c": {
+      "mode": 420,
+      "sha256": "5169007ec76144be733a08462126c2f123d0ec45ccfb6ca3da3a3b3fd7b43ae0"
+    },
     "native/tests/test_bot_driver.c": {
       "mode": 420,
-      "sha256": "3884e0ab70a0c7e79fb788b0bf6cdf591db2e00cc51f3e2d7473f2a5125d4264"
+      "sha256": "37924d13d431c777e9c8100db162289642dd556237ad88d8d1f924ef3d7a0ea0"
+    },
+    "native/tests/test_bot_loadout.c": {
+      "mode": 420,
+      "sha256": "ee73838be9966facb56cee2d4a783e5cd0d55bc90cadc0ba301419583c765a32"
+    },
+    "native/tests/test_bot_navigation.inc": {
+      "mode": 420,
+      "sha256": "3642423cf11faac8f7e9cfb32b89d80cbe2dd076c0e103e4f039b79f5b640dc5"
+    },
+    "native/tests/test_bot_portal_collision.c": {
+      "mode": 420,
+      "sha256": "e22e848bcf600a6fe17a8039fc2c2509dcf731084cdf3abcecdabf450c843ec9"
+    },
+    "native/tests/test_bot_slope_geometry.inc": {
+      "mode": 420,
+      "sha256": "72ae2d2706383af6359971137fd64d8b5701a8c2c54407a4b4f2bf57dc5db83f"
+    },
+    "native/tests/test_bot_static_bridge.inc": {
+      "mode": 420,
+      "sha256": "d41869ee433eec91681bb6a3526ae7848024c67de14e86cfaad67fd8e087420d"
+    },
+    "native/tests/test_server_admin.c": {
+      "mode": 420,
+      "sha256": "85492ca2cef44141c27ae7b5eafdd3556d0de7cb3257c28d302d22271a463ca3"
+    },
+    "native/tests/test_server_admin_connections.cpp": {
+      "mode": 420,
+      "sha256": "17199984b24307bbde3e1448d0369821d4b02f76b46941c422b99169dba6c995"
+    },
+    "native/tests/test_server_spawns.c": {
+      "mode": 420,
+      "sha256": "ced9053b7d62873171c8ef3acd011c22928ca7f017c0e33327fbbe0315e6192e"
     },
     "qa/admin-browser-layout.json": {
       "mode": 420,
       "sha256": "d57e98e12452fdcb6b66c02c8c64868dccab4d155c02e28631ce7dff65e61ce4"
+    },
+    "qa/bots-boss15-floor-regression.json": {
+      "mode": 420,
+      "sha256": "c00246e67f1403e3aa359a43cd655427da704db6d1def6a3651640ad20af6933"
+    },
+    "qa/bots-c2-collision-regression.json": {
+      "mode": 420,
+      "sha256": "6fbfb667e083a96fc4b4a66bbb4dd55859877beb942f12087bb8b45798f9613c"
+    },
+    "qa/bots-c3-grounded-clearance-regression.json": {
+      "mode": 420,
+      "sha256": "79b884005576138c2fec3b34e7ad5fdfdcce8b0df70e01e560d7e78b1bc4bd79"
+    },
+    "qa/bots-c3-portal-regression.json": {
+      "mode": 420,
+      "sha256": "0943ec76d1ead791072db2ca456694274c9f2d26ba08aa3fa9fee9faf9789998"
+    },
+    "qa/bots-ctf-acf7.json": {
+      "mode": 420,
+      "sha256": "216f2afec8d6ca99db258831f4b0c9052661c8067ff16152c553fd1a286ad556"
+    },
+    "qa/bots-ctf-cd64.json": {
+      "mode": 420,
+      "sha256": "2bf4c4ed43d4700f11dd8af78b443d13014b0ec269f7b3b076c447592ad672fe"
+    },
+    "qa/bots-feature-build-acf7.json": {
+      "mode": 420,
+      "sha256": "7759c22738acdfe1b2386045fb3f004fef3779fcd29586cb9c92e535bc20536d"
+    },
+    "qa/bots-feature-build-d455.json": {
+      "mode": 420,
+      "sha256": "58070524008ca66289faff1115089e7ed6197f84b09d7fa3f4f716e7655692fd"
+    },
+    "qa/bots-feature-build.json": {
+      "mode": 420,
+      "sha256": "1969fbd010fa3bbce8924abf756a924006e4f4363d453cabab273f39f85dda54"
+    },
+    "qa/bots-feature-combat-cd64.json": {
+      "mode": 420,
+      "sha256": "d3e2884c79d72bb0d6d743d29c3e7ddfd661146f5f06364eb2be4f83e7e2c56e"
+    },
+    "qa/bots-feature-fixture-resources.json": {
+      "mode": 420,
+      "sha256": "e3d581cbfd6fcbcc6703739d97425bb4ba87e1dab10d17eeb77b552322365374"
+    },
+    "qa/bots-feature-mixed-cd64.json": {
+      "mode": 420,
+      "sha256": "753f4d4dd924368c45efc94c637302ee0fc96ebde90fb299982c364fd7724de8"
+    },
+    "qa/bots-feature-native-peace-cd64.json": {
+      "mode": 420,
+      "sha256": "96f630ac28b8913f33544d2068faf3d87893b710d54c1e637733791422852937"
+    },
+    "qa/bots-feature-probes.json": {
+      "mode": 420,
+      "sha256": "783a808056afe2b37bab77e96361649884d775f884e5a891f30199fabecf956f"
+    },
+    "qa/bots-feature-stock-maps.json": {
+      "mode": 420,
+      "sha256": "e0f900b2ab11c6fb53e22c190206d6f9cca8d5dff52ec37127bbfe0164d3d6ff"
     },
     "qa/bots-final-human-fire.json": {
       "mode": 420,
@@ -423,6 +575,14 @@
     "qa/bots-final-native-retail.json": {
       "mode": 420,
       "sha256": "8ef8023c0ad985f1697503180e79022b6b92927d167afa85cca1ce02616bcee1"
+    },
+    "qa/bots-force-profile-probe.json": {
+      "mode": 420,
+      "sha256": "984e71240d9a224c06d9bec00ade29dd405bc00762ff26bdf4975f66cc485757"
+    },
+    "qa/bots-initial-anchor-regression.json": {
+      "mode": 420,
+      "sha256": "7bbfb33fbd00df366a3780671ff5736e130fa8a8e5a6d04c3248ec01b8293fbc"
     },
     "qa/bots-low-ceiling-regression.json": {
       "mode": 420,
@@ -460,6 +620,18 @@
       "mode": 420,
       "sha256": "c263e1f73888ef336ddc95470431a86323f427b553d312d4934bd10081e916c1"
     },
+    "qa/bots-server-controls.json": {
+      "mode": 420,
+      "sha256": "b5d1856c47364553821e79c90aec807ffc6794306491d4a2cdaabdf181ce0c52"
+    },
+    "qa/bots-slope-steering-regression.json": {
+      "mode": 420,
+      "sha256": "3dfc84ef65edcaf10606ea94c0ae3ce2d914ca06bf6a91c177faea301af5e40e"
+    },
+    "qa/bots-stock-map-audit.json": {
+      "mode": 420,
+      "sha256": "5c4e68d22e75c99f3e5bb5d1257732d8e2a3749a872efa77653c294cfd748511"
+    },
     "qa/browser-asset-admin-layout.json": {
       "mode": 420,
       "sha256": "0d99e8a7a753db5d64a1da4e7296daafcd0ed3817e42e180e528a93b8032294d"
@@ -479,6 +651,18 @@
     "qa/browser-asset-mots-mod-restart.json": {
       "mode": 420,
       "sha256": "e2b27c287614a0186d4ba8d80c1766827e2f0a50c437295a683d8b967bf4e595"
+    },
+    "qa/chat-admin-adapter-build.json": {
+      "mode": 420,
+      "sha256": "83434e038db92bc468e0b165a851d7fd24cf6920bf6c03ed8c615ef092a977d8"
+    },
+    "qa/chat-admin-authority.json": {
+      "mode": 420,
+      "sha256": "bb21fe33fe4cbc9f36ec14b094e8670073183ddf32b910634da7dbc2976aa717"
+    },
+    "qa/chat-admin-python.json": {
+      "mode": 420,
+      "sha256": "e859067a99c768515c730076a194d5bda9768cf7b1af9ee275a2fec776f3aab8"
     },
     "qa/controller_smoke.json": {
       "mode": 420,
@@ -604,6 +788,22 @@
       "mode": 420,
       "sha256": "d4a87d014ac80f10d87fe85deed2059c28a243651365f52569bff7e36bb902c1"
     },
+    "qa/server-admin-build.json": {
+      "mode": 420,
+      "sha256": "1744dcdb24a7839016d991c0f948ff2e9820e4cbc1c63b19511cb94af3ac5061"
+    },
+    "qa/server-admin-native-regression.json": {
+      "mode": 420,
+      "sha256": "a542e6d4555898684f7a9e039ac58f160c60fb1f49e9fa615c86cc86b000d771"
+    },
+    "qa/server-ctf-build.json": {
+      "mode": 420,
+      "sha256": "452529f61b9af306fa08b3cf818d85b2cb6010098f0e9f48618d7c5a008b4015"
+    },
+    "qa/server-ctf-spawn-regression.json": {
+      "mode": 420,
+      "sha256": "31843449cccda359fe59ebdcfe69c32a4a2d794525da015de2ebfe9f212cb0d0"
+    },
     "qa/update-admin-layout.json": {
       "mode": 420,
       "sha256": "25b78fd1e83568b5974314e939081669b3d0eefd29362920a0290e75cb6f2861"
@@ -626,31 +826,67 @@
     },
     "scripts/build_release.py": {
       "mode": 420,
-      "sha256": "b8923943777ced038faf6c8f193560e2955b56bdfe90fdf017fe5a0509ad94c9"
+      "sha256": "7eb04afadf2eb702c84cd72eeff67f1bdf293bcaeb35ac7539e5c78ee0f95fc0"
+    },
+    "tests/test_authority.py": {
+      "mode": 420,
+      "sha256": "8a0ddf90dee209d2f9a0bed26b7e0c015170e721e7131a6037e21694eccc9f04"
+    },
+    "tests/test_bot_manager.py": {
+      "mode": 420,
+      "sha256": "efcd71ef809b48096afdfc13db47b5bdb70571525e194ba82bb9e96aac377893"
+    },
+    "tests/test_bot_maps.py": {
+      "mode": 420,
+      "sha256": "abe799197fdad07b93e69ddb4c2260befcbc26f81a9a6864f5174cc140c5300e"
     },
     "tests/test_bots.py": {
       "mode": 420,
-      "sha256": "494c74e77a042c05b44d0b08d7ded9ed4893d0d70516cf1e94e90e6040928797"
+      "sha256": "f96801765ff24a8ff6930edd8a01cb8db337eb82dde2fd3fbf2aee295ce75531"
+    },
+    "tests/test_chat_admin.py": {
+      "mode": 420,
+      "sha256": "d540f59227de6902d2cd27fdd75067a0e50f11cc25f10f016bbb364a4c649e4d"
+    },
+    "tests/test_content_ctf.py": {
+      "mode": 420,
+      "sha256": "3ec1d14f0c005d42ba6d4be5d61d22ae3e9b12543b6fadc0eab84638981d21f4"
     },
     "tests/test_launcher.py": {
       "mode": 420,
-      "sha256": "7d95e4bb972d5f8dd206c0db13426bc060580bac51e545f78ca5f091bd6ed780"
+      "sha256": "1dbac99731b7ae7934e1ef0ae5e061820fee301e1e0b1a27e2465d4e2eed39d1"
     },
     "tests/test_manager.py": {
       "mode": 420,
-      "sha256": "909e6257bc473ae6cd585334839069789ff8d4e15b8a7dbec5c318b0bdc37b9c"
+      "sha256": "57cddaf0b67eff37f942a015917cc067a595dba544c4e742d6e7c4dbb8f728dc"
     },
     "tests/test_release_packaging.py": {
       "mode": 420,
-      "sha256": "161bc8a3d5132931e9bf28ad6f4d94f519723de5d12f4100ad4be0988d97769e"
+      "sha256": "af9e3e4f17478a927bc63f18e47bc2befb0d127a04c118f76fffd752fee3c456"
     },
     "tests/test_updater.py": {
       "mode": 420,
-      "sha256": "c47a30f792570a5830a9e7439f4c694c0e8e351674a255dd9a90b44f89379f96"
+      "sha256": "584b5ca4d382637b30be50fdddd028138a13253a5f877abdd9d837c5e7bfe1ca"
     },
     "tests/test_updates.py": {
       "mode": 420,
       "sha256": "47df11f2e9b572918abbdf04116bb52f1fa3d38dc4f895f2a1269e5f3e04faaa"
+    },
+    "tools/admin-helper.css": {
+      "mode": 420,
+      "sha256": "8dc8e255a458102f6ea3e274f69c183426fe43ca6f900affaa9c73f8d90b935f"
+    },
+    "tools/admin-helper.html": {
+      "mode": 420,
+      "sha256": "43e484175008fa23f49967cac6df16c7a13baef1741e0ab495d94a11f9e2109d"
+    },
+    "tools/admin-helper.js": {
+      "mode": 420,
+      "sha256": "baa8c8a2e80d3d9555b712c52499b8fc5cc96052b946c4d6522b7add14171a96"
+    },
+    "tools/admin_key.py": {
+      "mode": 420,
+      "sha256": "73e8f97cd451290fb2b74312b767bc4f6974ac9c2fee77c39a4a24137f41feb0"
     },
     "web_gateway/README.md": {
       "mode": 420,
@@ -678,11 +914,11 @@
     },
     "web_gateway/gateway.py": {
       "mode": 420,
-      "sha256": "ab26bc0f6164ddd4c2b34c843454a0a6a8138256f0c112cfe3f4dba847c1b92e"
+      "sha256": "9dba4b358bc2b5090cd3ef90b2feb98170b8d3c45be3908cc9a762c37fadb155"
     },
     "web_gateway/ipc.py": {
       "mode": 420,
-      "sha256": "5de141de844178191bb31b737bdeb3d66687c8b27186f399181afd7c2fa63fc8"
+      "sha256": "89d40c5a35b3d03f2b274462c82304c6478e54c493fdfa9df0db40d8c82f168a"
     },
     "web_gateway/requirements-lock.txt": {
       "mode": 420,
@@ -702,7 +938,7 @@
     },
     "web_gateway/test_gateway.py": {
       "mode": 420,
-      "sha256": "4fe8c27655076c665536bb6b9dbd971703e3b7ef8757c3cd05d344c424dc27dc"
+      "sha256": "fb98f5812bfcd84a707b10648e294e190714e6904e2121257ae43cb80e4d1bd4"
     },
     "web_gateway/test_published_client.py": {
       "mode": 420,

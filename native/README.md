@@ -35,9 +35,11 @@ it into an empty folder, edit the included library if desired, and run
 GNS shared library available at runtime. Existing dependency notices apply.
 
 The recovery build reused the published unchanged objects/static dependencies,
-recompiling changed client units and all four server-modified units from the
-client base. A fresh full dependency rebuild is not claimed by its receipts.
-See `docs/BOTS_PROTOTYPE.md` for qualification and limitations.
+recompiling changed client units and restoring every existing server-modified
+unit to the client source. New dedicated-only units are excluded from the bot
+link. A fresh full dependency rebuild is not claimed by its receipts. See
+[Bot behavior](../docs/BOTS_BEHAVIOR.md) for current qualification and limitations;
+[Bot prototype](../docs/BOTS_PROTOTYPE.md) preserves the earlier milestone.
 
 ## Server changes
 
@@ -46,6 +48,20 @@ The patch adds an authenticated, bounded loopback TCP transport bridge. It accep
 Dedicated startup uses its isolated working directory and requires the original game-data marker. Redirected stdin is handled without repeatedly logging a prompt. The public GNS packet source is bound to its actual connection's assigned identity. Session metadata counts fully joined active human players, excluding the dedicated host and unused DirectPlay surrogate slots.
 
 Two existing serialization inconsistencies are corrected inside the server: UpdateState's light value is written as float32 to match the existing reader, and MotS absolute CreateThing's sector is read as int32 to match the retail/browser representation and existing sender.
+
+### Chat administration
+
+The manager issues and revokes persistent administrator credentials independently
+of the game process. `src/Dss/sithAdmin.c` accepts only a small set of typed host
+actions from the authenticated supervisor, checks the actor's current transport
+identity and connection generation, and executes ordinary kick or episode
+progression messages. It exposes no arbitrary console or script operation.
+
+Players use ordinary chat and an offline proof helper. The downloaded `.cog`
+file is an inert credential container kept outside game content; it is never
+loaded as a world script. Retail, OpenJKDF2 and JKWeb retain their ordinary
+clients and game checksums. See [Chat administration](../docs/CHAT_ADMIN.md) for
+issuance, login, revocation and the limits of manually copying challenges.
 
 ### MotS native reader profile
 

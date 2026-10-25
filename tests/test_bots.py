@@ -110,18 +110,45 @@ time.sleep(30)
                       "boba_fett,jan_ors,kyle_katarn,stormtrooper,bossk"):
             with self.subTest(selection=value), self.assertRaises(ValueError):
                 run.select_profiles(profiles, value)
-        for key, value in [("game", "mots"), ("rank", 1), ("teams", True),
-                           ("game_flags", 16), ("password", "private"),
+        for key, value in [("game", "mots"), ("rank", 9), ("teams", True),
+                           ("game_flags", 4096), ("password", "private"),
                            ("mod_dir", "/tmp/mod"), ("episode", "JKCTF"), ("max_players", 2)]:
             config = dict(self.config, **{key: value})
             with self.subTest(key=key), self.assertRaises(ValueError):
                 run.check_scope(config, 2)
+        for rank in range(9):
+            run.check_scope(dict(self.config, rank=rank), 2)
+        run.check_scope(dict(self.config, teams=True, game_flags=256), 2)
+        run.check_scope(dict(self.config, episode="JK1CTF", teams=True), 2)
+        with self.assertRaisesRegex(ValueError, "Team game"):
+            run.check_scope(dict(self.config, episode="JK1CTF"), 2)
 
     def test_endpoint_rejects_arguments_and_unsupported_formats(self):
         for value in ("-host:3", "host;echo:3", "host:0", "host:65536", "::1:3500", "host", "host:3\n"):
             with self.subTest(endpoint=value), self.assertRaises(ValueError):
                 run.endpoint(value)
         self.assertEqual(run.endpoint("example.local:03500"), "example.local:3500")
+
+    def test_host_and_human_capacity_gate_precedes_staging_and_client_spawn(self):
+        profiles = list(run.load_profiles().values())
+        for count, slots in ((1, 2), (4, 5)):
+            self.config["max_players"] = slots
+            self.profiles = profiles[:count]
+            with self.subTest(bots=count, slots=slots), patch.object(run.subprocess, "Popen") as spawn:
+                with self.assertRaisesRegex(ValueError, "dedicated host"):
+                    self.launch()
+                spawn.assert_not_called()
+                self.assertFalse((self.root / "runs").exists())
+        for count, slots in ((1, 3), (4, 6)):
+            self.config["max_players"] = slots
+            self.profiles = profiles[:count]
+            with self.subTest(bots=count, slots=slots):
+                code, directory = self.launch(seconds=1.0)
+                self.assertEqual(code, 0)
+                receipt = json.loads((directory / "session.json").read_text())
+                self.assertEqual(len(receipt["bots"]), count)
+                self.assertTrue(all(row["joined"] for row in receipt["bots"]))
+                self.assertTrue(all(row["returncode"] is not None for row in receipt["bots"]))
 
     def test_staging_preserves_original_human_data_with_links_and_copy_fallback(self):
         (self.data / "Resource/Video").mkdir()
@@ -170,9 +197,31 @@ time.sleep(30)
                 self.assertNotIn(key, env)
             self.assertEqual(env["OPENJKDF2_ROOT"], row["directory"])
             self.assertEqual(env["JK_BOT_CHAT_LOCK"], str(directory / "chat.lock"))
+            self.assertEqual(env["JK_BOT_BEHAVIOR_FILE"], str(directory / "behavior.cfg"))
+            self.assertEqual(env["JK_BOT_TEAM"], "0")
             self.assertIn(row["name"], observed["argv"])
             self.assertIn(row["model"], observed["argv"])
         self.assertEqual(len(pids), 2)
+
+    def test_team_force_metadata_and_external_behavior_file_are_passed_without_mutation(self):
+        self.config.update(teams=True, game_flags=256, rank=8)
+        behavior = self.root / "rules.cfg"
+        behavior.write_text("version=1\nsabers_only=1\nfists_peace=0\nforce_enabled=1\n")
+        before = behavior.read_bytes()
+        status = self.root / "roster.json"
+        code, directory = self.launch(behavior_file=behavior, status_file=status)
+        self.assertEqual(code, 0)
+        receipt = json.loads(status.read_text())
+        self.assertEqual(receipt, json.loads((directory / "session.json").read_text()))
+        self.assertEqual(behavior.read_bytes(), before)
+        for index, row in enumerate(receipt["bots"]):
+            env = json.loads((Path(row["directory"]) / "observed.json").read_text())["env"]
+            self.assertEqual(env["JK_BOT_TEAM"], str(1 + index % 2))
+            self.assertEqual(row["requested_team"], 1 + index % 2)
+            self.assertNotIn("team", row)  # A request is not an observed CTF assignment.
+            self.assertEqual(env["JK_BOT_FORCE_SIDE"], self.profiles[index].get("force_side", "light"))
+            self.assertEqual(env["JK_BOT_FORCE_STYLE"], self.profiles[index].get("force_style", "balanced"))
+            self.assertEqual(env["JK_BOT_BEHAVIOR_FILE"], str(behavior))
 
     def test_finite_duration_without_join_is_failure_and_stops_owned_processes(self):
         self.engine = self.program("silent", "import time\ntime.sleep(30)\n")

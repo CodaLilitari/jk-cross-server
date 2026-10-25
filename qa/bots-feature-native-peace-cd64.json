@@ -1,0 +1,610 @@
+{
+  "qualification": "intermediate_cd64_native_human_connected_and_passive_peace; retaliation_not_qualified",
+  "game": "JK1MP/m2.jkl",
+  "session_name": "Bot Feature QA",
+  "join_address": "127.0.0.1:47800",
+  "advertised_rank": 8,
+  "human_character_rank": 0,
+  "native_binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+  "native_source_base": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "native_unmodified": true,
+  "binary_evidence": "/workspace/scratch/3cdb8ff42680/native-human-build/recovery-build.json",
+  "candidate_bot_build_prefix": "cd64",
+  "dedicated_build_prefix": "0e90",
+  "observation": "O_RDONLY bounded mapped process reads, no pauses, debugger, game state writes, or synthetic packets",
+  "control": "Normal X11 keyboard and pointer events through unchanged GUI; existing NativeHuman profile",
+  "initial_join": {
+    "slot": 5,
+    "network_id": 10625913,
+    "armed_spawn_deaths_excluded": 2,
+    "explanation": "Default Bryar spawn died before valid fists selection. Early key1 inputs during receiving-data/respawn were ineffective. These are not passive fists intervals."
+  },
+  "passive_stationary": {
+    "samples": 97,
+    "errors": 0,
+    "file": "passive-still.jsonl",
+    "start_unix": 1792906766.686518,
+    "end_unix": 1792906791.4991703,
+    "duration_seconds": 24.812652349472046,
+    "health_values": [
+      100.0
+    ],
+    "shield_values": [
+      100.0
+    ],
+    "weapon_values": [
+      1
+    ],
+    "weapon_models": [
+      "fistg.3do"
+    ],
+    "movement_extent": 0.0,
+    "roster_union": [
+      "Bot_BobaFett",
+      "Bot_JanOrs",
+      "Bot_Katarn",
+      "Bot_Sariss",
+      "NativeHuman"
+    ],
+    "weapon_transitions": [
+      {
+        "unix": 1792906766.686518,
+        "weapon": 1
+      }
+    ]
+  },
+  "passive_movement": {
+    "samples": 68,
+    "errors": 0,
+    "file": "passive-move.jsonl",
+    "start_unix": 1792906813.818941,
+    "end_unix": 1792906833.848607,
+    "duration_seconds": 20.02966594696045,
+    "health_values": [
+      100.0
+    ],
+    "shield_values": [
+      100.0
+    ],
+    "weapon_values": [
+      1
+    ],
+    "weapon_models": [
+      "fistg.3do"
+    ],
+    "movement_extent": 0.13504934601471494,
+    "roster_union": [
+      "Bot_BobaFett",
+      "Bot_JanOrs",
+      "Bot_Katarn",
+      "Bot_Sariss",
+      "NativeHuman",
+      "RetailHuman"
+    ],
+    "weapon_transitions": [
+      {
+        "unix": 1792906813.818941,
+        "weapon": 1
+      }
+    ]
+  },
+  "approach_movement": {
+    "samples": 124,
+    "errors": 0,
+    "file": "encounter-approach.jsonl",
+    "start_unix": 1792906869.656419,
+    "end_unix": 1792906904.682249,
+    "duration_seconds": 35.025830030441284,
+    "health_values": [
+      100.0
+    ],
+    "shield_values": [
+      100.0
+    ],
+    "weapon_values": [
+      1
+    ],
+    "weapon_models": [
+      "fistg.3do"
+    ],
+    "movement_extent": 1.3004900546423726,
+    "roster_union": [
+      "Bot_BobaFett",
+      "Bot_JanOrs",
+      "Bot_Katarn",
+      "Bot_Sariss",
+      "NativeHuman",
+      "RetailHuman"
+    ],
+    "weapon_transitions": [
+      {
+        "unix": 1792906869.656419,
+        "weapon": 1
+      }
+    ]
+  },
+  "rapid_swap_attempt": {
+    "summary": {
+      "samples": 103,
+      "errors": 0,
+      "file": "rapid-swap-attempt.jsonl",
+      "start_unix": 1792907014.0220032,
+      "end_unix": 1792907048.9077039,
+      "duration_seconds": 34.885700702667236,
+      "health_values": [
+        100.0
+      ],
+      "shield_values": [
+        100.0
+      ],
+      "weapon_values": [
+        1,
+        2
+      ],
+      "weapon_models": [
+        "bryg.3do",
+        "fistg.3do"
+      ],
+      "movement_extent": 0.0,
+      "roster_union": [
+        "Bot_BobaFett",
+        "Bot_JanOrs",
+        "Bot_Katarn",
+        "Bot_Sariss",
+        "NativeHuman",
+        "RetailHuman",
+        "WebHuman"
+      ],
+      "weapon_transitions": [
+        {
+          "unix": 1792907014.0220032,
+          "weapon": 1
+        },
+        {
+          "unix": 1792907022.296791,
+          "weapon": 2
+        },
+        {
+          "unix": 1792907023.841507,
+          "weapon": 1
+        }
+      ]
+    },
+    "normal_input_events": {
+      "normal_x11_key_events": [
+        {
+          "unix": 1792907021.5444064,
+          "key": "2"
+        },
+        {
+          "unix": 1792907022.097525,
+          "key": "1"
+        },
+        {
+          "unix": 1792907022.6482327,
+          "key": "2"
+        },
+        {
+          "unix": 1792907023.2011883,
+          "key": "1"
+        },
+        {
+          "unix": 1792907023.7859623,
+          "key": "2"
+        },
+        {
+          "unix": 1792907024.3367414,
+          "key": "1"
+        }
+      ],
+      "interval": 0.55
+    },
+    "qualified": false,
+    "actual_selection_state_changes": 2,
+    "reason": "No qualifying nearby bot witness during attempted sequence; ordinary selection animations only produced two state changes. No provocation attribution or retaliation observed.",
+    "native_attributed_provocation_lines": []
+  },
+  "late_movement_caveat": "Ordinary pickup auto-switched to Stormtrooper rifle while walking at epoch1792907064.047; fists restored. Do not count that portion as a passive fists interval.",
+  "punch_attempted": false,
+  "live_rule_change_reported_by_root": {
+    "unix": 1792907008.376908,
+    "sabers_only": true,
+    "fists_peace": true,
+    "force_enabled": false
+  },
+  "final_state": {
+    "unix": 1792907152.9620788,
+    "local_player": {
+      "address": "0x55d07d9d9550",
+      "index": 15,
+      "type": 10,
+      "flags": "0x20300401",
+      "position": [
+        -1.8650001287460327,
+        -1.9343831539154053,
+        -0.1298954337835312
+      ],
+      "look": [
+        0.9778459072113037,
+        -0.20846015214920044,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "signature": 16,
+      "template": "walkplayer",
+      "weapon_model": "fistg.3do",
+      "parent_address": "0x0",
+      "parent_signature": 0,
+      "health": 100.0,
+      "sector": 110,
+      "model": "ky.3do"
+    },
+    "weapon": 1,
+    "shields": 100.0,
+    "roster": [
+      {
+        "slot": 1,
+        "name": "Bot_JanOrs",
+        "network_id": 10625916,
+        "team": 0
+      },
+      {
+        "slot": 2,
+        "name": "Bot_Katarn",
+        "network_id": 10625915,
+        "team": 0
+      },
+      {
+        "slot": 3,
+        "name": "Bot_Sariss",
+        "network_id": 10625917,
+        "team": 0
+      },
+      {
+        "slot": 4,
+        "name": "Bot_BobaFett",
+        "network_id": 10625914,
+        "team": 0
+      },
+      {
+        "slot": 5,
+        "name": "NativeHuman",
+        "network_id": 10625913,
+        "team": 0
+      },
+      {
+        "slot": 6,
+        "name": "RetailHuman",
+        "network_id": 10625908,
+        "team": 0
+      },
+      {
+        "slot": 7,
+        "name": "WebHuman",
+        "network_id": 10625912,
+        "team": 0
+      }
+    ]
+  },
+  "evidence_screenshots": [
+    "passive-still-end.png",
+    "move-step.png",
+    "approach-three.png",
+    "approach-center.png",
+    "frozen-passive.png",
+    "left-match.png",
+    "final-address-ready.png"
+  ],
+  "lifecycle": "Completed cd64 match left through normal Escape > Abort > Yes > score Ok. Same unchanged client and owned display remain open at GNS Join menu, address127.0.0.1:47800, waiting for final candidate.",
+  "private_evidence": {
+    "root": "bot-qa/native-human/qa/behavior-final",
+    "availability": "Private local QA evidence; not committed with proprietary game assets or fixture runtime.",
+    "files": [
+      {
+        "path": "abort-confirm.png",
+        "bytes": 346439,
+        "sha256": "276eaf6abc6a64b04436023ba097b3e702ed810dbb8c2acc851fbe7d5b740719"
+      },
+      {
+        "path": "address-ready.png",
+        "bytes": 570255,
+        "sha256": "684b16dd2bcd24b5c846aef232941dc276c8d94e4337a0cb8edbaa60b1b19402"
+      },
+      {
+        "path": "approach-center-two.json",
+        "bytes": 8409,
+        "sha256": "d72c0396e22b28cafe7cbab82f12d1502e586ac740fd657568808c2c27736ed4"
+      },
+      {
+        "path": "approach-center-two.png",
+        "bytes": 45208,
+        "sha256": "f568e09093d184d0dd0182ae96a52a497d31062b64216b50dc271f26a9567d48"
+      },
+      {
+        "path": "approach-center.json",
+        "bytes": 8487,
+        "sha256": "68721a4e73c5f4a0a54b38c5888da5780bfc6702caac59b3aea2c1d00d54095e"
+      },
+      {
+        "path": "approach-center.png",
+        "bytes": 109065,
+        "sha256": "df7b8ce7b87698cc6b5018829802df29a1bfa11ca56fa1ed7b761a0e69008f69"
+      },
+      {
+        "path": "approach-door.json",
+        "bytes": 8467,
+        "sha256": "75e569ceb7e757897cd58a95658bd99aed87aeae23463b176b843c5ab09a0463"
+      },
+      {
+        "path": "approach-door.png",
+        "bytes": 45837,
+        "sha256": "81ea405d67e69e616fd42d3b7b232f5c1abc6887d32c8e99a3b2ea19d4c4eb97"
+      },
+      {
+        "path": "approach-one.json",
+        "bytes": 7559,
+        "sha256": "ccc17e0fb2d67bae53614610fa23a7332106e6519061f54618d8e3a1232f9b69"
+      },
+      {
+        "path": "approach-one.png",
+        "bytes": 218556,
+        "sha256": "5dbc461c469f00c02a2e66994436102ea0005758097bd0609414a2530a20a4d6"
+      },
+      {
+        "path": "approach-three.json",
+        "bytes": 8530,
+        "sha256": "2cc7ceb425d6a3e869bf9b53049bade37ba90e0b04a48234b40c922432120ecf"
+      },
+      {
+        "path": "approach-three.png",
+        "bytes": 91512,
+        "sha256": "f97c4b6da6c7036550223b532157cc34c9fa669692896d883c485f11050bcd90"
+      },
+      {
+        "path": "approach-two.json",
+        "bytes": 7558,
+        "sha256": "beb58734aa5daca62b5c1e35af1a871890105338e447d84a2262bd23cc6ffa27"
+      },
+      {
+        "path": "approach-two.png",
+        "bytes": 35683,
+        "sha256": "5557c51cf70b075bdc610bfe21ab212b1a82222c7d2a8c18ffb529bdfa4ad222"
+      },
+      {
+        "path": "connection-menu.png",
+        "bytes": 569832,
+        "sha256": "d46f63639dbdef18c55046ce4c28c9495389f32cf3d55470ca4975a2918c1354"
+      },
+      {
+        "path": "disconnect-menu.png",
+        "bytes": 424476,
+        "sha256": "c9b20bbbde9c4756790468799e220e199f99629881c797f78abc1bc6254497ae"
+      },
+      {
+        "path": "disconnect-state.png",
+        "bytes": 128350,
+        "sha256": "3c8a8bb5bdc5a63f77c1909275c046caba837ee9c09c80f2a0044757918b046b"
+      },
+      {
+        "path": "encounter-approach.jsonl",
+        "bytes": 697293,
+        "sha256": "974be264b223fb8306b68545b27bb5c97c872e8b17fc51c0b155c8ae51b3ee6c"
+      },
+      {
+        "path": "final-address-ready.png",
+        "bytes": 570240,
+        "sha256": "077be78fa40f7186d3369d0df51816b9d4ab1b2eb1438f13c9e6ba18ec9677de"
+      },
+      {
+        "path": "final-connection-menu.png",
+        "bytes": 569832,
+        "sha256": "d46f63639dbdef18c55046ce4c28c9495389f32cf3d55470ca4975a2918c1354"
+      },
+      {
+        "path": "fists-confirm.json",
+        "bytes": 6710,
+        "sha256": "92ae2881e09deb59744d9190cb5756d541fcc40727861178a2352ae861609c8a"
+      },
+      {
+        "path": "fists-confirm.png",
+        "bytes": 164387,
+        "sha256": "396476c9f7e43f6c89dbe475c0306d795f6339ee7ad2f6e2feb3c1ac38ef337e"
+      },
+      {
+        "path": "fists-first.json",
+        "bytes": 6751,
+        "sha256": "c913b45be16fe2f093cb314719017535bf6fe24c32cd08bf214751f89e270db6"
+      },
+      {
+        "path": "fists-first.png",
+        "bytes": 231453,
+        "sha256": "718c4807cc5548a8da512f806faa552cf10c6aeacfecc6f0db3a638db1e1217c"
+      },
+      {
+        "path": "fists-retry.json",
+        "bytes": 6707,
+        "sha256": "04464dc8ff1d34f83627c47dfab09741676020a99d0887e111e74b8a60b89410"
+      },
+      {
+        "path": "frozen-passive.json",
+        "bytes": 8414,
+        "sha256": "e6d666de903e258ae56f4329396ed30a44ebea27d820d6917228219c1255969a"
+      },
+      {
+        "path": "frozen-passive.png",
+        "bytes": 147054,
+        "sha256": "1f789f124138a0fd9be14a40f9e487a9a3497f4488f412ca3a174c69d180c02c"
+      },
+      {
+        "path": "join-initial.json",
+        "bytes": 4152,
+        "sha256": "4ddf16c0dbb9d869b83a52e30b1122abc35059c2446de7ae13de2bea197cc5d8"
+      },
+      {
+        "path": "join-initial.png",
+        "bytes": 574002,
+        "sha256": "ca1b9c0be711c08294f3de11587cc5e0e60468007e69fa6049c5134e0c06d29b"
+      },
+      {
+        "path": "layout.json",
+        "bytes": 1070,
+        "sha256": "bb6d8f7f53f06607422575a0626bcf81e26bfa43db88fe926e0d0bf302bf9364"
+      },
+      {
+        "path": "left-match.png",
+        "bytes": 143229,
+        "sha256": "f739c3f345d0f8f9c9ff35cb02e7528a83094187e21c6791185b0bd872eb0d20"
+      },
+      {
+        "path": "main-menu.png",
+        "bytes": 588864,
+        "sha256": "d8d60be27a16d8c6225458aaf4b58f060f266c28224b33187308b37215f9aa7a"
+      },
+      {
+        "path": "menu-initial.png",
+        "bytes": 592388,
+        "sha256": "9b557d0566a8a376c6ed6a5d3084c65d64ee3d602f9c4a9b0816f4751fd76c8d"
+      },
+      {
+        "path": "menu-observation.json",
+        "bytes": 497,
+        "sha256": "df6ed4755b1ad54af502c2242cdeca0d1a1a2aa8fcdc4b54456336cb5cce39f1"
+      },
+      {
+        "path": "move-step-two.json",
+        "bytes": 7671,
+        "sha256": "2ef241dad023305bd77083559c908ee4ab1b1f9000ed7bda7afc97b660f50f40"
+      },
+      {
+        "path": "move-step-two.png",
+        "bytes": 228680,
+        "sha256": "446f8d02928b801912e3f5de144ba5fd74a21ef6e1ff5d53fb4a3bb00a16a031"
+      },
+      {
+        "path": "move-step.json",
+        "bytes": 7516,
+        "sha256": "19f629699e2b95343a3e6cb4b0e845532ededcec9938b609d603385f34737689"
+      },
+      {
+        "path": "move-step.png",
+        "bytes": 240520,
+        "sha256": "d6407af57f140c857d1321b8fb56be73bafa08fdfd938d42044aedcc46c83dec"
+      },
+      {
+        "path": "multiplayer-menu.png",
+        "bytes": 571926,
+        "sha256": "ccf6db123c9338be63c52924865e59c3f4939d2ae28baea8a20e25ad54db5662"
+      },
+      {
+        "path": "nearby-one.json",
+        "bytes": 8475,
+        "sha256": "04146460a8598a219aad1947536671cf3823744205ae4373210a6b12990b64b7"
+      },
+      {
+        "path": "nearby-one.png",
+        "bytes": 324580,
+        "sha256": "5760d42f715ceffbdf3a1bed85eaff57a357f0ba240a0aa35df65acabc7a9903"
+      },
+      {
+        "path": "passive-fists-start.json",
+        "bytes": 6658,
+        "sha256": "9e22e7ac2904393c066e17baa9d4a8c67fb9b054b34f1df5110149449b22bcd1"
+      },
+      {
+        "path": "passive-fists-start.png",
+        "bytes": 166335,
+        "sha256": "7a12b5702e0b5e3699576f630376bcee5b811cda9e1fc4d4cd31bf749e80aab1"
+      },
+      {
+        "path": "passive-move.jsonl",
+        "bytes": 352077,
+        "sha256": "a07e36d3a792449dfd0ee7dafc03be61593dfbca6ddb1a9468502898091c4974"
+      },
+      {
+        "path": "passive-still-end.png",
+        "bytes": 117674,
+        "sha256": "109e90f63bce75c9491337b5a3a0b67efbf6dd3eee1561109440cbd6c7bae734"
+      },
+      {
+        "path": "passive-still-summary.json",
+        "bytes": 547,
+        "sha256": "1cf30793c4c1c0b79d90c85c0ecc82d808d9ecf43cdf2a0593cc2cfdb2e76b0f"
+      },
+      {
+        "path": "passive-still.jsonl",
+        "bytes": 488237,
+        "sha256": "cefefc382fd75632d65597070eaf0b513b289b83fac2a647dd7b5dd991020116"
+      },
+      {
+        "path": "preparation.json",
+        "bytes": 338,
+        "sha256": "e99d6a7963782b2e63d7a4d7174917830381166503fe40fff83cb01528acddf4"
+      },
+      {
+        "path": "process.json",
+        "bytes": 373,
+        "sha256": "c9428d2c2261fc73d0241da1c82d6719905523952117cac0710890b81fdd9270"
+      },
+      {
+        "path": "rapid-swap-after.json",
+        "bytes": 8404,
+        "sha256": "06043c380a0c58ab56cb70965f9c8b625aa0a08068df440b4707438850163dc3"
+      },
+      {
+        "path": "rapid-swap-after.png",
+        "bytes": 322999,
+        "sha256": "3b3fde75a17be2e99d0b28b573deb40ae77299ec418ac66299cb4dda184f8d2d"
+      },
+      {
+        "path": "rapid-swap-attempt.jsonl",
+        "bytes": 567223,
+        "sha256": "a966856f03a7433cc989d408ea64cdf69ab4984cce62be279ed1ae4027a101e8"
+      },
+      {
+        "path": "rapid-swap-input.json",
+        "bytes": 297,
+        "sha256": "ccb1a2e7b7103f9c8346f85c9aba1a29ea07163c1acfb0b781fc1057ee35a64f"
+      },
+      {
+        "path": "returned-main.png",
+        "bytes": 588269,
+        "sha256": "d8bce2d3a80de1713452112ff7f30f4ab91b632d31e0c81364209d92084b7569"
+      },
+      {
+        "path": "server-discovery.png",
+        "bytes": 394946,
+        "sha256": "4abd69be7fe79fa29bc213ec1f7f9f76156fef49ba1e7e4639ac455292dad4f8"
+      },
+      {
+        "path": "turn-one.json",
+        "bytes": 7614,
+        "sha256": "cb38a0923febf395a402a44a3449885486d301ce2ae9adc875d1349c5c548f93"
+      },
+      {
+        "path": "turn-one.png",
+        "bytes": 166320,
+        "sha256": "17dc670e4453e4b6ec457ec74eec9d913b8ca492bc963028675fb7b863199122"
+      },
+      {
+        "path": "xvfb.json",
+        "bytes": 578,
+        "sha256": "11b1a95abc96467c5acea89b04586398540246b443aae0ceea1b09385e4b05c0"
+      }
+    ]
+  },
+  "private_report_sha256": "3c46cd76541c8ab4c8ba4d105df041f3e050dc993e4cf003920075577bbe698f",
+  "ready_for_next_candidate": {
+    "recorded_unix": 1792907318.683009,
+    "client_pid": 109076,
+    "client_starttime": "1043919",
+    "display": ":0",
+    "x_keeper_pid": 109064,
+    "x_keeper_starttime": "1043414",
+    "menu": "GNS Join game list; address127.0.0.1:47800",
+    "screenshot": "final-address-ready.png"
+  }
+}

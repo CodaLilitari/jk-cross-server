@@ -7,6 +7,7 @@ A dedicated JKDF2 / Mysteries of the Sith host with a small browser control pane
 ## What is included
 
 - Python administration: start/stop, saved settings, stock/custom episode catalog, map selection, limits, log output, file preflight and isolated run directories.
+- Persistent admin credentials for ordinary player chat commands, with explicit key issuance/revocation, an offline proof helper, and server-executed kick/next-level actions. See [Chat administration](docs/CHAT_ADMIN.md).
 - GitLab release checks on startup and every six hours, verified package installation, optional automatic installation between sessions, and rollback recovery.
 - A compiled Linux x86-64 dedicated engine, built from the pinned OpenJKDF2-MotS-Fixes source with server-side transport changes.
 - A compiled Windows 32-bit DirectPlay bridge and its C source. On Linux it runs through Wine with a compatible original DirectPlay runtime.
@@ -58,21 +59,28 @@ Existing 0.2 installations need the 0.3 ZIP installed manually once. Git
 checkouts use Git rather than the in-place installer. See [update instructions](docs/UPDATES.md)
 for migration, recovery, multi-instance behavior, and publishing new releases.
 
-## Optional player-bot prototype
+## Optional player bots
 
-The `prototype/player-bots-recovery` work adds a separate Linux bot client and
-roster launcher. Each bot joins this server as an ordinary native player using
-the stock movement, weapon, inventory, damage and respawn code. Human retail,
-OpenJKDF2 and JKWeb executables remain unchanged. Bots consume normal player
-slots. The dedicated engine remains unchanged. This branch also corrects a
-pre-existing JK retail-scoreboard field mapping and adds verified handling of
-obsolete sends during JK retail departure in the DirectPlay adapter. The bot
-executable and these adapter changes have separate qualification records.
+The Linux server panel can start one to four ordinary player bots, chosen from
+eight stock multiplayer identities with occasional original character chat.
+Each bot runs a separate native client and uses the stock movement, weapons,
+inventory, Force powers, damage, scoring and respawn rules. Retail, OpenJKDF2
+and JKWeb human clients keep their existing executables and connection routes.
 
-This prototype accepts stock **JK1MP, rank 0, free-for-all** sessions. MotS,
-Force powers, teams, objectives, passwords and mods are outside its supported
-scope. Eight stock multiplayer identities have occasional original themed chat.
-See [the bot guide](bots/README.md) and [qualification](docs/BOTS_PROTOTYPE.md).
+The panel's **Sabers only**, **Fists = peace**, and **Use Force powers** checkboxes
+can be applied during a match without restarting it. Bots seek useful pickups,
+choose weapons according to ammunition and range, and pursue stock CTF
+objectives. Supported content is stock **JK1MP and JK1CTF, ranks 0–8**; the
+implementation remains experimental. MotS bots, passwords and mods are outside
+this version's scope.
+
+The server also preserves all authored spawn points independently of the
+configured player limit. This is required by stock CTF's lobby and team spawn
+masks and applies to every connection route. Normal admission still enforces
+the configured limit. See [the bot guide](bots/README.md) and
+[behavior, build evidence and limitations](docs/BOTS_BEHAVIOR.md). The
+[earlier recovery qualification](docs/BOTS_PROTOTYPE.md) is retained with its
+original executable hashes.
 
 ```bash
 python3 -m bots.run --list-profiles
@@ -105,7 +113,7 @@ Disabling downloads prevents asset chunks from being sent. The server still adve
 
 Set the DirectPlay bridge path, enable the retail adapter, and on Linux set a Wine executable/launcher and a dedicated Wine prefix. That prefix needs a working original DirectPlay TCP/IP provider. The bridge itself contains no original game or Microsoft binaries. See `directplay/README.md` for tested runtime setup and precise provenance.
 
-Mixed sessions reserve DirectPlay identities for native/browser participants. The engine uses those real identities, so an ordinary retail peer can address them. The maximum configured human count in mixed mode is 15; the dedicated host occupies one engine slot. Stock maps may impose a lower practical spawn limit. The retail session browser also counts reserved transport identities. The administration panel's joined-player count excludes these reservations.
+Mixed sessions reserve DirectPlay identities for native/browser participants. The engine uses those real identities, so an ordinary retail peer can address them. Mixed mode supports up to 15 configured slots, including the dedicated host; that leaves up to 14 playing clients, shared by humans and bots. Stock maps may impose a lower practical spawn limit. The retail session browser also counts reserved transport identities. The administration panel's joined-player count excludes these reservations.
 
 ## Network configuration
 

@@ -1,0 +1,71 @@
+{
+  "kind": "chat_admin_directplay_descriptor_build",
+  "binary": {
+    "path": "directplay/gateway.exe",
+    "sha256": "39b544cbf189921c551418f846df90c695c65307938633c84f8a2132065304e8",
+    "bytes": 293040
+  },
+  "source_sha256": {
+    "directplay/gateway.c": "d22e2ac1cff4a9d3864fbad1d56b0def3966276b3eb87ebce360305e3dd19059",
+    "directplay/protocol.c": "1cfd68b2695d6faec44204a7b57ae443ffa632e013112f07778155886fcd5a30",
+    "directplay/protocol.h": "fb27292ecd563b2372cb31998d8db32ed618451c53c30236bd358090e5485e40",
+    "directplay/departure_policy.h": "5655da67828b23088cc8227163501b8e5608f8a73bdea8de004ec9d51070bf27",
+    "directplay/Makefile": "7e8f8868564fbc42cfb893d2d1b8d28a68d20ce30551e37e127fffed2cd1bbac"
+  },
+  "compiler": "i686-w64-mingw32-gcc-posix (GCC) 13-posix",
+  "compiler_packages": [
+    {
+      "Package": "gcc-mingw-w64-i686-posix",
+      "Version": "13.2.0-6ubuntu1+26.1",
+      "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-i686-posix_13.2.0-6ubuntu1+26.1_amd64.deb",
+      "SHA256": "8c63daeb59c96044c2a5c26b5a3a2b793237f3e10d3428bb659401122b8e501c",
+      "Size": "35221632"
+    },
+    {
+      "Package": "gcc-mingw-w64-i686-posix-runtime",
+      "Version": "13.2.0-6ubuntu1+26.1",
+      "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-i686-posix-runtime_13.2.0-6ubuntu1+26.1_amd64.deb",
+      "SHA256": "650bcd76e0c56c713428950aec8823fd517f911eaad80406907379a69d36ad0a",
+      "Size": "13146552"
+    },
+    {
+      "Package": "mingw-w64-i686-dev",
+      "Version": "11.0.1-3build1",
+      "Filename": "pool/universe/m/mingw-w64/mingw-w64-i686-dev_11.0.1-3build1_all.deb",
+      "SHA256": "903e09f47c0e441f9476a32efc745430a0cc39b1c33a13ea1f1d0414a24b7970",
+      "Size": "3153084"
+    },
+    {
+      "Package": "binutils-mingw-w64-i686",
+      "Version": "2.41.90.20240122-1ubuntu1+11.4",
+      "Filename": "pool/universe/b/binutils-mingw-w64/binutils-mingw-w64-i686_2.41.90.20240122-1ubuntu1+11.4_amd64.deb",
+      "SHA256": "5236ef254532c1f4ebddbce898e884fe9cc1ac4803092211ec615cbdeba7aafb",
+      "Size": "2974884"
+    },
+    {
+      "Package": "gcc-mingw-w64-base",
+      "Version": "13.2.0-6ubuntu1+26.1",
+      "Filename": "pool/universe/g/gcc-mingw-w64/gcc-mingw-w64-base_13.2.0-6ubuntu1+26.1_amd64.deb",
+      "SHA256": "a30c07e807e9874ea93909448c5d6d37f9569ebe60ad32de8e490aad198538a3",
+      "Size": "188046"
+    },
+    {
+      "Package": "mingw-w64-common",
+      "Version": "11.0.1-3build1",
+      "Filename": "pool/universe/m/mingw-w64/mingw-w64-common_11.0.1-3build1_all.deb",
+      "SHA256": "4a42fd30fbc3838c58c929d8a4882682fc12408bb7a0e6cafa913c0f0a57c187",
+      "Size": "5580230"
+    }
+  ],
+  "compiler_package_origin": "https://snapshot.ubuntu.com/ubuntu/20260828T000000Z/",
+  "SOURCE_DATE_EPOCH": 1792901044,
+  "build_command": "SOURCE_DATE_EPOCH=1792901044 make -C directplay gateway.exe CC=i686-w64-mingw32-gcc-posix",
+  "tests": {
+    "command": "make -C directplay test",
+    "passed": true,
+    "log_sha256": "ff88bc83885a1f8b003bf1bb3378eb4678ff0cf52850fefdc9efb22a7a2c03a9"
+  },
+  "independent_source_review": "Preserves DirectPlay instance/application GUIDs, flags, physical capacity/count, reserved fields and player objects. Updates ordinary session name/password and application metadata only; ignores count-only descriptor changes.",
+  "scope": "Strict cross-compilation and existing protocol/departure regressions. Actual DP5 map change and rejoin remain a separate live qualification.",
+  "private_build_log_sha256": "f6c91d2bb063fc50967b6801f28ffa5ce7f739599191fd3b007a73c006df8b5e"
+}

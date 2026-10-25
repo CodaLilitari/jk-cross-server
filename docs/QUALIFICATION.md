@@ -147,7 +147,7 @@ preceding three-family gameplay receipts concern the stock sessions.
 
 ## Limits of this build
 
-Mixed sessions have up to 15 configured human seats; stock maps can impose lower practical limits. Native/browser sessions with the retail adapter disabled can configure up to 31. The dedicated host uses an additional engine slot. Real DirectPlay surrogate objects can inflate the count shown by the original retail session browser. The administration count uses the simulation's fully joined human count.
+Mixed sessions support up to 15 configured slots; native/browser sessions with the retail adapter disabled can configure up to 31. These totals include the dedicated host, leaving at most 14 or 30 playing clients respectively, shared by humans and bots. Stock maps can impose lower practical spawn limits. Real DirectPlay surrogate objects can inflate the count shown by the original retail session browser. The administration count uses the simulation's fully joined players.
 
 The default MotS native wire profile targets the pinned native client's 16-bit absolute-CreateThing sector reader. A corrected 32-bit native reader requires the documented server environment option. Both profiles cannot be inferred automatically from the client's connection.
 

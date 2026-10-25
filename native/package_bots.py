@@ -23,7 +23,9 @@ def main():
   method='Complete CMake build from pinned engine source with bot-client.patch only.'
  runtime=project/'bin/bots-linux-x86_64';runtime.mkdir(parents=True,exist_ok=True)
  for src,name in [(binary,'jk-bot-client'),(build/'libGameNetworkingSockets.so','libGameNetworkingSockets.so')]:
-  temporary=runtime/(name+'.new');shutil.copy2(src,temporary);temporary.replace(runtime/name)
+  temporary=runtime/(name+'.new');shutil.copy2(src,temporary)
+  if name=='jk-bot-client':temporary.chmod(0o755)
+  temporary.replace(runtime/name)
  relink=[];members={};output=False
  for i,arg in enumerate(link):
   if i==0:relink.append('c++');continue

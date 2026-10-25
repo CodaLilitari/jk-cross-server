@@ -8,3 +8,6 @@ config/
 .jk-update/
 instance.json
 *.log
+authority/
+jk-admin-key-*.cog
+keys.sqlite3*

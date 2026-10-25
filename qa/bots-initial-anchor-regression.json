@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "evidence": "controlled_initial_route_input_regression_and_owned_offline_collision_probe_not_live_traversal",
+  "preceding_bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+  "observed_issue": {
+    "map": "m_boss17.jkl",
+    "fixture": "bot-qa/dm-final-d455/m_boss17",
+    "first_sector": 29,
+    "last_sector": 28,
+    "samples": 200,
+    "observation_errors": 0,
+    "observed_item_increases": 0,
+    "unreached_anchor": 307,
+    "route": [
+      307
+    ],
+    "cause": "The actual player-to-nearest-anchor segment has no graph edge. The executor defaulted that first segment to walking, so blocked steering produced vertical recovery jumps without forward jump traversal."
+  },
+  "correction": {
+    "runtime_scope": "first unreached nearest anchor, grounded player, ordinary non-lift node",
+    "algorithm": "Classify the actual player-to-anchor segment with existing grounded and ordinary jump checks, then use the unchanged jump executor and its actual-position/alignment checks.",
+    "force_jump_added": false,
+    "map_specific_runtime_data": false,
+    "state_writes": "normal input keys and axes only; no player position or graph-node injection"
+  },
+  "verification": {
+    "baseline_executor_sha256": "69e4fd940b6dcb30ac7f22c9fc26d5f9612e89501a501691902e78fc55c80077",
+    "baseline_failure": "Missing ordinary JUMP input and jump execution state for a valid initial segment.",
+    "baseline_exit_code": -6,
+    "fixed_strict_driver_groups": 27,
+    "actual_owned_geometry_probe": {
+      "fixture": "bot-qa/boss17-grounded-probe.json",
+      "query_world_only": true,
+      "grounded_steering": false,
+      "ordinary_jump_arc": true,
+      "probe_includes_preceding_grounded_portal_fix": true
+    },
+    "checks": [
+      "ordinary jump input when the first anchor requires it",
+      "forward input continues while airborne",
+      "no direct position change or invented graph node",
+      "no Force request added",
+      "ordinary jump distance and rise limits preserved",
+      "existing C1 ramp/entrance, static bridge, combat/peace and Force regressions remain passing"
+    ]
+  },
+  "subsequent_live_qualification": "pending_new_binary",
+  "files": {
+    "bot-engine/src/AI/jkBotNavigate.inc": "50a106bd52c4783677daf7bf3082236867124a0a4986f47fddeebf1bcc8a18fe",
+    "bot-engine/src/AI/jkBotNavigation.inc": "ef6d9af90f5f4d016f9e40607e3ac84ac453ac70cd867090990e014660de88e7",
+    "native/tests/test_bot_navigation.inc": "3642423cf11faac8f7e9cfb32b89d80cbe2dd076c0e103e4f039b79f5b640dc5"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "evidence": "controlled_actual_engine_collision_and_navigation_regression_not_live_traversal",
+  "preceding_bot_sha256": "d45532cbce192e744e5f8999764492fb28ebfbe526b75269409a117a51d16e83",
+  "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+  "observed_issue": {
+    "map": "c3.jkl",
+    "fixture": "bot-qa/ctf-final-d455/c3",
+    "actual_team": 1,
+    "samples": 359,
+    "observation_errors": 0,
+    "capture_count": 0,
+    "enemy_flag_pickup_count": 0,
+    "upper_lift_landing_reached": 617,
+    "blocked_standing_route": "617 through 616 toward 15 and 9",
+    "low_opening_height": 0.150001,
+    "raised_threshold_height": 0.1,
+    "threshold_depth": 0.043798,
+    "ordinary_standing_offset": 0.120114,
+    "ordinary_moving_radius": 0.065,
+    "remaining_overhead_at_supported_center": 0.029887
+  },
+  "cause": "The raised clearance chord passed through the opening, but ordinary floor samples skipped the narrow raised threshold. The supported standing center has insufficient head clearance.",
+  "correction": {
+    "runtime_scope": "generic collision-checked portal intervals; no map names or authored coordinate tables",
+    "algorithm": "Split the already accepted direct or raised chord at actual movement-portal crossings, sample each sector interval, project onto its supporting floor, and use actual engine sphere collision at the standing center.",
+    "crossings_limit": 64,
+    "radius": "current local player moveSize when finite and in range, otherwise the ordinary 0.065 fallback",
+    "query_stack_balanced": true,
+    "crouch_added": false,
+    "crouch_assessment": "Ordinary DUCK lowers the floor offset to moveSize+0.01 while retaining the moving sphere. This raised low opening would require coordinated crouch/step execution; it is conservatively excluded from standing routes. A separate existing graph route remains after excluding these window edges."
+  },
+  "verification": {
+    "baseline_nav_sha256": "4118d0ffd92f44346d4d2762978641fdde5c512939ad3b51304d9f7691bfdd87",
+    "baseline_failed_assertion": "!Bot_Walkable(&a,&b,&drop)",
+    "baseline_exit_code": -6,
+    "corrected_actual_engine_groups": 5,
+    "strict_driver_groups": 26,
+    "full_owned_map_probe": "617\u21929 standing/jump/Force-jump all rejected; both segments through the corrected 606\u2192513 bend remain walkable.",
+    "checks": [
+      "short raised threshold rejected despite a clear raised chord",
+      "ordinary 0.20-high passage preserved",
+      "raised step with sufficient headroom preserved",
+      "moveSize used independently of collideSize",
+      "no jump/Force edge substitutes for the rejected threshold",
+      "previous angled-bend route and disconnected/closed/AI-only/unsupported cases retained",
+      "C1 entrance/ramp and adjacent-sector static support regressions remain passing"
+    ],
+    "map_audit_tests_passed": 4,
+    "independent_review": "Combat agent independently reviewed the source and ran all five actual-engine portal groups.",
+    "independent_review_log_sha256": "2fca0868cc09a3cb413b5118d621a4d0a7dfd38bfe5cf290846637805ce90afd"
+  },
+  "subsequent_live_qualification": "pending_new_binary",
+  "files": {
+    "bot-engine/src/AI/jkBotNavigation.inc": "ef6d9af90f5f4d016f9e40607e3ac84ac453ac70cd867090990e014660de88e7",
+    "native/tests/test_bot_portal_collision.c": "e22e848bcf600a6fe17a8039fc2c2509dcf731084cdf3abcecdabf450c843ec9",
+    "native/tests/run_bot_portal_tests.py": "83dd444ada9e7f868a0aea826015139de50fd952c9780d9e7767d934aeb3093b"
+  },
+  "limitations": [
+    "This regression does not establish a completed C3 flag capture or universal map traversal.",
+    "Runtime pickup reachability is graph coverage from one current origin, not all pickups actually collected."
+  ]
+}

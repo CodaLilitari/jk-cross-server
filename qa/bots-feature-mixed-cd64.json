@@ -1,0 +1,451 @@
+{
+  "schema": 1,
+  "status": "Observed local mixed-client compatibility and live behavior controls; bounded scope.",
+  "recorded_utc": "2026-10-25T05:46:50.290339+00:00",
+  "bot_binary_sha256": "cd64c7b9bac33e65b274fe82ca7cf5cfc5f32b06ac5dd66c632234b37c24412a",
+  "server_binary_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+  "gateway_binary_sha256": "73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95",
+  "build_lineage": "cd64 is the connected combat/transport candidate. Later navigation fixes are qualified in separate hash-specific receipts.",
+  "session": {
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "rank": 8,
+    "teams": false,
+    "configured_capacity_including_host": 8,
+    "bots": 4,
+    "human_clients": 3
+  },
+  "method": "Normal graphical join/profile/character menus and ordinary keyboard input. Bounded mapped O_RDONLY native/retail reads and fixed read-only published-WASM fields; no gameplay state writes, packet injection, or pauses.",
+  "human_clients": {
+    "retail": {
+      "name": "RetailHuman",
+      "sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "version": "Original JK 1.00",
+      "modified_for_bots": false
+    },
+    "native": {
+      "name": "NativeHuman",
+      "sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+      "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+      "modified_for_bots": false
+    },
+    "browser": {
+      "name": "WebHuman",
+      "provenance": {
+        "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+        "build": "cloudflare-38",
+        "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+        "files": [
+          {
+            "name": "index.html",
+            "size": 226513,
+            "sha256": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+            "modified": false
+          },
+          {
+            "name": "openjkdf2.js",
+            "size": 532943,
+            "sha256": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+            "modified": false
+          },
+          {
+            "name": "openjkdf2.wasm",
+            "size": 3681717,
+            "sha256": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6",
+            "modified": false
+          }
+        ],
+        "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c",
+        "retail_assets_included": false
+      },
+      "modified_for_bots": false,
+      "runtime": "Chromium 140.0.7339.16 with SwiftShader in an isolated QA profile"
+    }
+  },
+  "retail_observation": {
+    "samples": 146,
+    "errors": 0,
+    "duration_seconds": 29.931997060775757,
+    "all_seven_participants_in_every_sample": true,
+    "ordinary_forward_input_displacement": 1.0183024406433105,
+    "health_during_fists_sample": [
+      18.5
+    ],
+    "initial_join_caveat": "Retail spawned armed and lost health before fists selection. The later stable-health interval starts after fistg.3do was synchronized; initial damage is not labelled a peace failure or a passive test.",
+    "roster": {
+      "Bot_BobaFett": {
+        "slots": [
+          4
+        ],
+        "network_ids": [
+          10625914
+        ],
+        "thing_types": [
+          10
+        ],
+        "models": [
+          "kyh4.3do"
+        ],
+        "distinct_positions": 36,
+        "first_kills_deaths": [
+          5,
+          5
+        ],
+        "last_kills_deaths": [
+          6,
+          6
+        ]
+      },
+      "Bot_JanOrs": {
+        "slots": [
+          1
+        ],
+        "network_ids": [
+          10625916
+        ],
+        "thing_types": [
+          10
+        ],
+        "models": [
+          "kya10.3do"
+        ],
+        "distinct_positions": 32,
+        "first_kills_deaths": [
+          7,
+          3
+        ],
+        "last_kills_deaths": [
+          8,
+          4
+        ]
+      },
+      "Bot_Katarn": {
+        "slots": [
+          2
+        ],
+        "network_ids": [
+          10625915
+        ],
+        "thing_types": [
+          10
+        ],
+        "models": [
+          "ky.3do"
+        ],
+        "distinct_positions": 39,
+        "first_kills_deaths": [
+          5,
+          7
+        ],
+        "last_kills_deaths": [
+          6,
+          8
+        ]
+      },
+      "Bot_Sariss": {
+        "slots": [
+          3
+        ],
+        "network_ids": [
+          10625917
+        ],
+        "thing_types": [
+          10
+        ],
+        "models": [
+          "kya9.3do"
+        ],
+        "distinct_positions": 31,
+        "first_kills_deaths": [
+          6,
+          6
+        ],
+        "last_kills_deaths": [
+          7,
+          7
+        ]
+      },
+      "NativeHuman": {
+        "slots": [
+          5
+        ],
+        "network_ids": [
+          10625913
+        ],
+        "thing_types": [
+          10
+        ],
+        "models": [
+          "ky.3do"
+        ],
+        "distinct_positions": 1,
+        "first_kills_deaths": [
+          0,
+          2
+        ],
+        "last_kills_deaths": [
+          0,
+          2
+        ]
+      },
+      "RetailHuman": {
+        "slots": [
+          6
+        ],
+        "network_ids": [
+          10625908
+        ],
+        "thing_types": [
+          10
+        ],
+        "models": [
+          "ky.3do"
+        ],
+        "distinct_positions": 1,
+        "first_kills_deaths": [
+          0,
+          0
+        ],
+        "last_kills_deaths": [
+          0,
+          0
+        ]
+      },
+      "WebHuman": {
+        "slots": [
+          7
+        ],
+        "network_ids": [
+          10625912
+        ],
+        "thing_types": [
+          10
+        ],
+        "models": [
+          "ky.3do"
+        ],
+        "distinct_positions": 1,
+        "first_kills_deaths": [
+          0,
+          0
+        ],
+        "last_kills_deaths": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "browser_observation": {
+    "all_seven_participants_and_dedicated_host_present": true,
+    "ordinary_forward_input_displacement": 0.7088329794625093,
+    "received_relay_messages_increase": 1040,
+    "transport": "Existing WebSocket relay; direct data-channel traffic was zero in this local fixture."
+  },
+  "bot_observation": {
+    "samples_with_all_seven_participants": 1644,
+    "all_four_bots_observed_full_roster": true,
+    "human_weapon_models_after_live_switch": {
+      "NativeHuman": [
+        "fistg.3do",
+        "strg.3do"
+      ],
+      "RetailHuman": [
+        "fistg.3do"
+      ],
+      "WebHuman": [
+        "fistg.3do"
+      ]
+    }
+  },
+  "live_rule_switch": {
+    "epoch": 1792907008.3769078,
+    "rules": {
+      "bots_sabers_only": true,
+      "bots_fists_peace": true,
+      "bots_force_enabled": false
+    },
+    "before_processes": {
+      "engine": {
+        "pid": 112341,
+        "returncode": null
+      },
+      "directplay": {
+        "pid": 112377,
+        "returncode": null
+      },
+      "bots": {
+        "pid": 112587,
+        "returncode": null
+      }
+    },
+    "after_processes": {
+      "engine": {
+        "pid": 112341,
+        "returncode": null
+      },
+      "directplay": {
+        "pid": 112377,
+        "returncode": null
+      },
+      "bots": {
+        "pid": 112587,
+        "returncode": null
+      }
+    },
+    "before_bots": {
+      "enabled": true,
+      "state": "running",
+      "configured_count": 4,
+      "joined_count": 4,
+      "players": [
+        {
+          "id": "boba_fett",
+          "name": "Bot_BobaFett",
+          "joined": true,
+          "slot": 4,
+          "network_id": 10625914,
+          "requested_team": 0,
+          "force_side": "dark"
+        },
+        {
+          "id": "jan_ors",
+          "name": "Bot_JanOrs",
+          "joined": true,
+          "slot": 1,
+          "network_id": 10625916,
+          "requested_team": 0,
+          "force_side": "light"
+        },
+        {
+          "id": "kyle_katarn",
+          "name": "Bot_Katarn",
+          "joined": true,
+          "slot": 2,
+          "network_id": 10625915,
+          "requested_team": 0,
+          "force_side": "light"
+        },
+        {
+          "id": "sariss",
+          "name": "Bot_Sariss",
+          "joined": true,
+          "slot": 3,
+          "network_id": 10625917,
+          "requested_team": 0,
+          "force_side": "dark"
+        }
+      ],
+      "behavior": {
+        "sabers_only": false,
+        "fists_peace": true,
+        "force_enabled": true
+      },
+      "error": null
+    },
+    "after_bots": {
+      "enabled": true,
+      "state": "running",
+      "configured_count": 4,
+      "joined_count": 4,
+      "players": [
+        {
+          "id": "boba_fett",
+          "name": "Bot_BobaFett",
+          "joined": true,
+          "slot": 4,
+          "network_id": 10625914,
+          "requested_team": 0,
+          "force_side": "dark"
+        },
+        {
+          "id": "jan_ors",
+          "name": "Bot_JanOrs",
+          "joined": true,
+          "slot": 1,
+          "network_id": 10625916,
+          "requested_team": 0,
+          "force_side": "light"
+        },
+        {
+          "id": "kyle_katarn",
+          "name": "Bot_Katarn",
+          "joined": true,
+          "slot": 2,
+          "network_id": 10625915,
+          "requested_team": 0,
+          "force_side": "light"
+        },
+        {
+          "id": "sariss",
+          "name": "Bot_Sariss",
+          "joined": true,
+          "slot": 3,
+          "network_id": 10625917,
+          "requested_team": 0,
+          "force_side": "dark"
+        }
+      ],
+      "behavior": {
+        "sabers_only": true,
+        "fists_peace": true,
+        "force_enabled": false
+      },
+      "error": null
+    },
+    "processes_unchanged": true
+  },
+  "limits": [
+    "Local bounded tests do not qualify Internet latency, long matches, every stock-map route, or every Force power.",
+    "Gun, Force, map, and rule-suppression evidence is recorded separately in bots-feature-combat-cd64.json.",
+    "Native passive/provocation evidence is recorded separately; unchanged health at a distance is not proof of every possible attack-restraint scenario.",
+    "Initial armed spawning and already-issued projectiles/effects remain normal game behavior.",
+    "After the recorded passive interval, retail later died with the generic death message; its cause was not established by these observations. Stable health is claimed only for the recorded interval."
+  ],
+  "private_evidence_sha256": {
+    "bot-qa/retail/qa/behavior-final/mixed-all-clients.jsonl": "9a57b9322e85cddec21b8a9c69b051f0876d9f0735457135be55c34efcf2f311",
+    "bot-qa/retail/qa/behavior-final/fists-before-move.json": "30b6f0438cecd5900875f0730d267d552f211125401f43a9657cdee6d68b422f",
+    "bot-qa/retail/qa/behavior-final/fists-after-move.json": "e54ede21730d24bcfbec0154744bc0b808618f3fbddee0547590045add13b393",
+    "bot-qa/browser/feature-mixed-before.json": "0db0bafd0893939f097d61f0500b89438608c7821a40dc77bc48f4e1a934b45e",
+    "bot-qa/browser/feature-mixed-after.json": "28635c1ee149a86b6e976aaf2a75063f7179cb84edd4bcb602f400a8ee948b26",
+    "bot-qa/mixed-cd64-observations.jsonl": "465996ff4b953492f1cd550ed2ffd739554710375fe6f38de90c08192a73e0bc",
+    "bot-qa/mixed-cd64-sabers-observations.jsonl": "59694a984f52033ac7b2ce0904d5fb6718aaa76ef5748766ed62995f335680f7",
+    "bot-qa/browser/screenshots/feature-menu-after-stop.png": "4f3b1b4a954634a3d96bc32aaea2ff194efe5171a677d89d12d65b8be528a654",
+    "bot-qa/retail/qa/behavior-final/13-menu-after-stop.png": "ea8623f4be107366789c1e28ea2d48f753b1569c97fee1c543a2d8d517075f2d"
+  },
+  "cleanup": {
+    "manager_state": "stopped",
+    "owned_server_and_bot_processes": {},
+    "clients": "Human GUI fixtures are retained for final-candidate reconnection and separately cleaned afterward."
+  },
+  "final_rendered_scoreboard_agreement": {
+    "method": "Visual inspection of the original retail and published browser scoreboards after the same session ended.",
+    "bots": {
+      "Bot_JanOrs": {
+        "score": 11,
+        "kills": 12,
+        "deaths": 7,
+        "self_kills": 1
+      },
+      "Bot_Sariss": {
+        "score": 9,
+        "kills": 9,
+        "deaths": 10,
+        "self_kills": 0
+      },
+      "Bot_BobaFett": {
+        "score": 8,
+        "kills": 9,
+        "deaths": 10,
+        "self_kills": 1
+      },
+      "Bot_Katarn": {
+        "score": 7,
+        "kills": 7,
+        "deaths": 10,
+        "self_kills": 0
+      }
+    },
+    "retail_later_death_recorded_as_self_kill": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "scope": "Owned local QA fixture resource failure, not a claimed successful final mixed-client run.",
+  "recorded_utc": "2026-10-25T05:53:41.379776+00:00",
+  "candidate_sha256": "acf75700a6eddaf57f4049172718e56bf1c9a8532e6cf66e5d0907a331cc498c",
+  "container_memory_limit_bytes": 8589934592,
+  "observed_memory_current_at_failure_bytes": 8589692928,
+  "first_observed_oom_kill_counter": 1,
+  "later_observed_oom_kill_counter": 2,
+  "symptoms": [
+    "The local Chromium page reported Target crashed during final reconnection.",
+    "The attempted final mixed fixture timed out waiting 35 seconds for the DirectPlay identity pool, then cleaned the owned manager processes.",
+    "Concurrent CTF and DM fixtures put the container at its memory limit; completed observations remain hash-specific and interrupted scenarios are not marked successful."
+  ],
+  "actions": [
+    "Closed the owned browser controller.",
+    "Interrupted only the specifically identified DM matrix harness.",
+    "Verified saved run directories, executable/module names and process groups before terminating surviving owned DM children.",
+    "Waited for the three valid CTF fixtures to finish and clean up.",
+    "Subsequent game qualification uses lower concurrency."
+  ],
+  "mixed_cleanup": {
+    "state": "stopped",
+    "processes": {}
+  },
+  "private_evidence_sha256": {
+    "bot-qa/mixed-acf7-harness.log": "7cbb91052d7b4d6595a63c28f0ae143479911ac269a48540713b4489000b4b69",
+    "bot-qa/mixed-acf7-state/finished.json": "7ef2bbe9131554d22c4f7e4c6ecddb50ddd1227accadf41896f41744628ca5d3",
+    "bot-qa/dm-matrix-acf7/interrupted-cleanup.json": "e5e0c91e4ef0c26bd4de31de50551d9454a4588bab8626ea1d5bc05e932cfad1",
+    "bot-qa/ctf-matrix-acf7/matrix.json": "ca05f5af4745317a34d0f9acbfddadc0ffc64d0ad0b371cbd82a9f1af500d687"
+  }
+}

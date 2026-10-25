@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "kind": "intermediate-rank-eight-saved-character-live-check",
+  "binary_sha256": "2db5e10889e0c41d632088e7721f27960b365f37e4251c98bfc2937659ac785a",
+  "final_feature_build": false,
+  "evidence": "Two real native bot clients joined the unchanged dedicated engine; bounded read-only own-player samples. No Force casts are claimed for this intermediate build.",
+  "samples": 80,
+  "read_errors": 0,
+  "profiles": [
+    {
+      "id": "jan_ors",
+      "rank": {
+        "amount": 8.0,
+        "state": 8
+      },
+      "mana": {
+        "amount": 400.0,
+        "state": 1
+      },
+      "unspent_stars": {
+        "amount": 8.0,
+        "state": 0
+      },
+      "powers": {
+        "25": {
+          "amount": 4.0,
+          "state": 12
+        },
+        "26": {
+          "amount": 4.0,
+          "state": 12
+        },
+        "27": {
+          "amount": 4.0,
+          "state": 12
+        },
+        "28": {
+          "amount": 4.0,
+          "state": 12
+        },
+        "29": {
+          "amount": 4.0,
+          "state": 12
+        }
+      },
+      "two_connected_peers": true
+    },
+    {
+      "id": "kyle_katarn",
+      "rank": {
+        "amount": 8.0,
+        "state": 8
+      },
+      "mana": {
+        "amount": 400.0,
+        "state": 1
+      },
+      "unspent_stars": {
+        "amount": 0.0,
+        "state": 0
+      },
+      "powers": {
+        "21": {
+          "amount": 3.0,
+          "state": 12
+        },
+        "22": {
+          "amount": 3.0,
+          "state": 12
+        },
+        "23": {
+          "amount": 3.0,
+          "state": 12
+        },
+        "24": {
+          "amount": 3.0,
+          "state": 12
+        },
+        "25": {
+          "amount": 3.0,
+          "state": 12
+        },
+        "26": {
+          "amount": 3.0,
+          "state": 12
+        },
+        "27": {
+          "amount": 3.0,
+          "state": 12
+        },
+        "28": {
+          "amount": 3.0,
+          "state": 12
+        }
+      },
+      "two_connected_peers": true
+    }
+  ]
+}

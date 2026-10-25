@@ -97,6 +97,7 @@ class Peer:
     asset_writable: asyncio.Event = field(default_factory=asyncio.Event)
     last_seen: float = field(default_factory=time.monotonic)
     closed: bool = False
+    host_removed: bool = False
 
     @property
     def rtc_open(self) -> bool:
@@ -138,6 +139,8 @@ class WebGateway:
         self._unsubscribe = [engine.subscribe_data(self.on_engine_data),
                              engine.subscribe_state(self.on_engine_state),
                              engine.subscribe_info(self.on_engine_info)]
+        if hasattr(engine, "subscribe_removed"):
+            self._unsubscribe.append(engine.subscribe_removed(self.on_engine_removed))
         if getattr(engine, "session", None):
             self.mode, self.entry = engine.session
         if enable_webrtc:
@@ -198,6 +201,26 @@ class WebGateway:
             except asyncio.QueueFull:
                 self.metrics["queue_overflows"] += 1
                 self._spawn(self._remove_peer(peer), "web-peer-overflow")
+
+    def on_engine_removed(self, peer_id: int) -> None:
+        peer = self.peers.get(peer_id)
+        if peer and not peer.closed and not peer.host_removed:
+            peer.host_removed = True
+            if peer.incoming_task:
+                peer.incoming_task.cancel()
+            self._spawn(self._removed_by_host(peer), "web-host-removal")
+
+    async def _removed_by_host(self, peer: Peer) -> None:
+        # Let the ordinary host quit packet ahead of this event leave the
+        # outgoing queue before retiring the browser's reconnect seat.
+        with contextlib.suppress(TimeoutError):
+            await asyncio.wait_for(peer.outgoing.join(), timeout=1)
+        if peer.closed:
+            return
+        conn = peer.conn
+        if conn:
+            await self._text(conn, "host-left")
+        await self._remove_peer(peer, notify_engine=False)
 
     async def _text(self, conn: Connection, text: str) -> None:
         if not conn.ws.closed:
@@ -318,7 +341,7 @@ class WebGateway:
             await self._text(conn, "error no-seat")
             return
         peer = self.peers.get(peer_id)
-        if (not self.ready or not peer or room != peer.room or room != self.room_id or
+        if (not self.ready or not peer or peer.closed or peer.host_removed or room != peer.room or room != self.room_id or
                 not hmac.compare_digest(peer.key, args[2])):
             await self._text(conn, "error no-seat")
             return
@@ -389,7 +412,7 @@ class WebGateway:
             await self._text(conn, "error bad-request")
 
     def receive_packet(self, peer: Peer, packet: bytes, transport: str) -> None:
-        if peer.closed or not isinstance(packet, bytes) or not 12 <= len(packet) <= MAX_MESSAGE:
+        if peer.closed or peer.host_removed or not isinstance(packet, bytes) or not 12 <= len(packet) <= MAX_MESSAGE:
             return
         peer.last_seen = time.monotonic()
         if packet[8:12] == b"JKMT":
@@ -526,19 +549,22 @@ class WebGateway:
         try:
             while not peer.closed:
                 packet = await peer.outgoing.get()
-                if peer.rtc_open:
-                    if peer.channel.bufferedAmount > 1024 * 1024:
-                        raise ConnectionError("Slow WebRTC recipient")
-                    try:
-                        peer.channel.send(packet)
-                        self.metrics["webrtc_out"] += 1
-                        continue
-                    except (ConnectionError, RuntimeError):
-                        pass
-                conn = peer.conn
-                if conn and not conn.ws.closed:
-                    await asyncio.wait_for(conn.ws.send_bytes(packet), timeout=2.0)
-                    self.metrics["websocket_out"] += 1
+                try:
+                    if peer.rtc_open:
+                        if peer.channel.bufferedAmount > 1024 * 1024:
+                            raise ConnectionError("Slow WebRTC recipient")
+                        try:
+                            peer.channel.send(packet)
+                            self.metrics["webrtc_out"] += 1
+                            continue
+                        except (ConnectionError, RuntimeError):
+                            pass
+                    conn = peer.conn
+                    if conn and not conn.ws.closed:
+                        await asyncio.wait_for(conn.ws.send_bytes(packet), timeout=2.0)
+                        self.metrics["websocket_out"] += 1
+                finally:
+                    peer.outgoing.task_done()
         except (ConnectionError, TimeoutError):
             await self._remove_peer(peer)
 

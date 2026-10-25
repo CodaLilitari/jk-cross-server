@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-25T06:18:52.004061+00:00",
+  "scope": "Dedicated typed chat administration: compilation and controlled actual-function tests. This is not a final packaged-binary or live cross-client qualification.",
+  "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "source_sha256": {
+    "src/Dss/sithAdmin.c": "1c50955511c5f089e4d3698a4438ed7a7652285d66b7e45465f8e0d604d28763",
+    "src/Dss/sithAdmin.h": "4412645ebe4ff20909426036495870874a4c85b7cb236138d756536dcb8ca9c8",
+    "src/Dss/sithMulti.c": "f7947f2386dd43cc2061fcc5d085d1e0db50129c32f439fe945541605ceff826",
+    "src/Platform/Networking/GNS/AdminConnections.h": "b7547f2280270fb326f8544b8e604663bb0533f12c92b673f3ec7656bf440116",
+    "src/Platform/Networking/GNS/stdComm_GNS.cpp": "22789350bb957bf0fce7484b41a776240b3b3a6db7980334ee1630a5326461a9",
+    "src/Platform/Networking/GNS/stdComm_GNS.h": "a1f5ddbdc5640d82ed4acbf588e497ea0c9adb564104adfa93e37531d8fe2045"
+  },
+  "test_sha256": {
+    "native/tests/test_server_admin.c": "85492ca2cef44141c27ae7b5eafdd3556d0de7cb3257c28d302d22271a463ca3",
+    "native/tests/test_server_admin_connections.cpp": "17199984b24307bbde3e1448d0369821d4b02f76b46941c422b99169dba6c995",
+    "native/tests/run_server_admin_tests.py": "55b614608d784f465fff9a2d6e28eae7b27c9b44ca601c0420ce839dde9c7f4e"
+  },
+  "compiled_translation_units": {
+    "src/Dss/sithAdmin.c": {
+      "object_sha256": "bb6fc08790bbb5e4679d44e560dfae28ee16d8fbc308cffe0d28ad7c48ff4ee4"
+    },
+    "src/Dss/sithMulti.c": {
+      "object_sha256": "a8ecd18dadbaa7b896416dfcaaa3bcaf1a7ee790b8c23837700871f2773fe87b"
+    },
+    "src/Platform/Networking/GNS/stdComm_GNS.cpp": {
+      "object_sha256": "d86cab7a70d3995a024fab4deb494d49b9ac54e407465d06d3be6dabf380d53f"
+    }
+  },
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "admin_regression": {
+    "result": "passed",
+    "groups": 14,
+    "checks": [
+      "bounded stock chat decoding rejects malformed lengths, terminators and control characters",
+      "actual host chat hook uses transport sender and consumes proofs before any formatting or display",
+      "joined actor resolution rejects the host, unknown peers, duplicate identities and loading/disconnected slots",
+      "typed private replies use bounded ordinary DSS_CHAT only to the verified actor",
+      "roster listing is private, bounded, labels stable slots and sanitizes display-only names",
+      "exact kick selectors reject host/self/ambiguity/stale transports and use the actual QuitPlayer packet path",
+      "next-level refuses single-level sessions, pending transitions and terminal/invalid/video episode links",
+      "actual SendEndLevel broadcasts the stock packet three times and schedules the ordinary 10-second transition",
+      "every action rechecks the actor's currently joined engine identity",
+      "engine-owned nonzero incarnations are distinct and cannot be chosen by another peer",
+      "execution rejects zero/duplicate requests and wrong actor generations",
+      "a reused transport ID cannot execute an old occupant's pending authorization",
+      "map/IPC resets invalidate old bindings and session clears never reuse the serial",
+      "connection state is bounded to the host's 31 remote seats"
+    ],
+    "instrumentation": "AddressSanitizer and UndefinedBehaviorSanitizer, halt_on_error=1. Leak scanning disabled because the container denies /proc task-list access.",
+    "actual_functions": "Compiles sithAdmin.c, sithMulti.c and jkDSS.c. Delivery/console/roster fixtures are controlled; actual QuitPlayer and SendEndLevel serialization and timer calls execute."
+  },
+  "preserved_spawn_regression": {
+    "result": "passed",
+    "groups": 5,
+    "checks": [
+      "stock CTF first-spawn mask uses all lobby starts 16..31 at session capacity 8",
+      "red and gold stock respawn masks retain their distinct spawn ranges",
+      "configured capacity includes host, rejects eighth human, reuses only eligible freed slots",
+      "shorter maps and invalid capacity cannot allocate unavailable records",
+      "ordinary SyncPlayers serializes all 32 records without changing session capacity"
+    ]
+  },
+  "contracts": {
+    "identity": "Host chat uses netMsg.idx from actual transport; claimed speaker/name is ignored. Execution rechecks transport membership, engine-owned nonzero generation and currently joined actor.",
+    "authority": "Challenge/policy verification belongs to the authenticated local Python manager. No game packet or COG grants authority.",
+    "execution": "Typed actions run atomically at a receive boundary; no console parser is exposed. Recent request IDs are bounded and deduplicated per incarnation.",
+    "kick": "Exact ASCII name or #slot resolved inside engine. Ambiguous names, host, self and disconnected targets refused. Ordinary DSS_QUIT precedes native linger-close or external REMOVED; old queued external packets are purged and normal player-lost/roster sync follows.",
+    "next_level": "Authored LEVEL entry only. Refuses single-level, terminal/bad/video/same-map links and pending transitions. Keeps stock DSS_ENDLEVEL broadcast and ten-second timer, existing dedicated tally auto-advance and unchanged clients normal tally.",
+    "reset": "Transport reconnect, IPC loss and multiplayer map startup renew generations. ADMIN_RESET clears live manager authority. Existing INFO publishes the descriptor after normal SetSessionDesc.",
+    "proof_visibility": "Dedicated host consumes admin commands before console formatting, including during loading. Peer-directed ordinary chat remains unchanged: other players can see the one-use actor-bound proof. Long-term keys must never enter chat."
+  },
+  "remaining_validation": [
+    "Live HMAC login, copied-proof/reconnect and policy lifecycle require integration checks.",
+    "These fixtures do not prove actual native, retail or browser kick delivery or authored next-level rejoin.",
+    "Integrator must rebuild/package final sources. No package manifest was changed."
+  ]
+}

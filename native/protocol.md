@@ -22,8 +22,8 @@ bootstrap context, so Linux servers without a display need Xvfb/Mesa.
 The existing registry options are plain JSON: `gameName`, `serverPassword`,
 `portNum`, `maxPlayers`, `maxRank`, `tickRate`, `scoreLimit`, `timeLimit`,
 `bIsDedicated`, `bUseScoreLimit`, `bUseTimeLimit`, `bIsSingleLevel`, and
-`bIsTeams`. Set `bIsDedicated` to true before startup. `maxPlayers` is the human
-limit; the engine reserves one additional host slot. Use 100 ms tick intervals
+`bIsTeams`. Set `bIsDedicated` to true before startup. `maxPlayers` includes the
+dedicated host slot; humans and bots share the remaining slots. Use 100 ms tick intervals
 for the original retail default (the retail interface supports 100–300 ms).
 
 ## Transports
@@ -45,7 +45,7 @@ or browser clients may join. Browser and GNS canonical IDs then equal real
 DirectPlay IDs. This preserves IDs embedded inside game packets and allows
 unmodified retail clients to address those peers. A pool of at most 15 IDs,
 15 real retail players and a host fit within DirectPlay's 32 physical slots.
-Use at most 15 human slots for this mixed configuration. The original retail
+Use at most 15 configured slots, including the host, for this mixed configuration. The original retail
 session browser may count unused surrogate transport slots; the control panel
 should display the engine's actual player count.
 
@@ -67,12 +67,45 @@ required retail gateway is disconnected.
 | 5 | DATA: src=registered peer, dst=recipient (0 or 1 means engine host) | Game output uses type 105 with canonical src/dst |
 | 7 | PING: payload up to 256 bytes | 107, payload echoed |
 | 8 | SET_ID_POOL: payload 1–15 unique uint32 DirectPlay IDs; before clients join | 108, payload uint32 ID count |
+| 9 | ADMIN_REQUEST: src=actor transport ID, dst=request ID; payload uint32 generation, uint32 operation, then up to 127 printable ASCII bytes | 110, actor/request echoed; payload uint32 generation, uint32 status (0 success), then bounded ASCII summary |
 
 Errors use type 199, src=request type, dst=error code, payload UTF-8 reason.
 Without a DirectPlay pool, automatic external IDs begin at 65536 and native
 GNS IDs retain their ordinary small-number allocation. ID 1 is always the
 engine host; a DirectPlay gateway must acquire the server-player ID 1 or
 translate the host identity consistently.
+
+### Private administrator events and actions
+
+Type 9 exists only on the dedicated engine's authenticated supervisor socket.
+The public adapter broker rejects it. Operations are 1 (private chat reply),
+2 (private current player list), 3 (kick by `#slot` or exact unambiguous name),
+and 4 (ordinary next authored level). List/next-level take no argument. There
+is no arbitrary console or script operation. The engine rechecks a fully joined
+actor's transport identity and nonzero connection generation before execution.
+
+Type 109 is a verified host-directed admin chat event: src is the actual
+transport ID, dst its generation, and payload is at most 127 printable ASCII
+characters. It is emitted after ordinary message deduplication. A player name
+or speaker field inside chat does not identify the actor. Type 111, with zero
+src/dst and no payload, clears manager grants when the map or IPC context resets.
+Generations change on reconnect/reset. A bounded recent-request cache also
+rejects accidental duplicate supervisor actions.
+
+The manager verifies persistent credentials outside the game and authorizes
+typed requests; the engine executes normal host actions. A kick sends the
+ordinary quit packet and retires transport membership. An unsolicited 104
+event instructs the relevant adapter to retire its corresponding seat. Late
+packets from that retired seat do not affect other players in the shared
+DirectPlay adapter. A level change uses stock end-level/tally messages and
+requires episode progression. Updated INFO descriptors keep browser and
+DirectPlay discovery synchronized with the actual map.
+
+See [Chat administration](../docs/CHAT_ADMIN.md) for issuance, the inert key-file
+container, offline proof workflow, and the limits of a human-pasted challenge
+on unchanged clients. No credential is loaded into world COG bytecode.
+
+### Sith packet representation
 
 The Sith packet header is uint16 message type plus uint16 reliability sequence;
 it is not a uint32 message type. Player enumeration is message 41, with body

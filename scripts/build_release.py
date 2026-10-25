@@ -31,12 +31,13 @@ SAFE_DOTFILES = {".gitignore", ".gitattributes", ".gitlab-ci.yml"}
 LOCAL_DIRECTORIES = {
     "config", "runtime", "venv", "env", "__pycache__", "node_modules",
     "dist", "build", "deliverables", "downloads", "game-data", "game_data",
-    "mots-data", "mods", "wine", "wine-prefix", "prefix", "secrets",
+    "mots-data", "mods", "wine", "wine-prefix", "prefix", "secrets", "authority",
 }
 PRIVATE_NAMES = {
     "credentials.json", "credentials.yml", "credentials.yaml", "auth.json",
     "tokens.json", "token.json", "secrets.json", "secrets.yaml", "secrets.yml",
     "server.json", "instance.json", "settings.json",
+    "keys.sqlite3", "keys.sqlite3-journal", "keys.sqlite3-wal", "keys.sqlite3-shm",
     "id_rsa", "id_ed25519", "id_ecdsa", "authorized_keys", "known_hosts",
 }
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".iso", ".gob", ".goo", ".pem", ".key", ".p12", ".pfx"}
@@ -79,6 +80,7 @@ def excluded(name: str) -> bool:
         lower in PRIVATE_NAMES
         or lower == ".env"
         or lower.startswith(".env.")
+        or lower.startswith("jk-admin-key-") and lower.endswith(".cog")
         or path.suffix.lower() in EXCLUDED_SUFFIXES
         or lower.startswith("jk_cross_server_") and lower.endswith((".zip", ".zip.sha256"))
     )

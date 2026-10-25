@@ -3,7 +3,7 @@
   "game": "jk",
   "profiles": [
     {
-      "id": "boba_fett", "name": "Bot_BobaFett", "model": "kyh4.3do", "sound": "kybobafett.snd",
+      "id": "boba_fett", "force_side": "dark", "force_style": "balanced", "name": "Bot_BobaFett", "model": "kyh4.3do", "sound": "kybobafett.snd",
       "taunts": {
         "spawn": ["Coordinates received. Beginning the hunt.", "The contract does not expire with one setback.", "Fresh coordinates. Same objective.", "Checking the exits before the next pursuit."],
         "kill": ["One less trail to follow.", "That closes one part of the contract.", "Your escape route needed work.", "The pursuit ends here. For now."],
@@ -12,7 +12,7 @@
       }
     },
     {
-      "id": "jan_ors", "name": "Bot_JanOrs", "model": "kya10.3do", "sound": "kyfemale.snd",
+      "id": "jan_ors", "force_side": "light", "force_style": "master", "name": "Bot_JanOrs", "model": "kya10.3do", "sound": "kyfemale.snd",
       "taunts": {
         "spawn": ["Back on the ground. Checking the route.", "New approach, same mission.", "Equipment check complete. Moving out.", "Someone mark a clear extraction route."],
         "kill": ["That should make the next corridor quieter.", "Target down. Keep the exit clear.", "Good intelligence makes a difference.", "One obstacle out of the flight plan."],
@@ -21,7 +21,7 @@
       }
     },
     {
-      "id": "kyle_katarn", "name": "Bot_Katarn", "model": "ky.3do", "sound": "ky.snd",
+      "id": "kyle_katarn", "force_side": "light", "force_style": "balanced", "name": "Bot_Katarn", "model": "ky.3do", "sound": "ky.snd",
       "taunts": {
         "spawn": ["All right. Let us find a way through.", "Back at it. The corridor will not clear itself.", "Checking the gear before another bad idea.", "There has to be a useful route from here."],
         "kill": ["That went better than the briefing suggested.", "One less complication.", "Experience still counts for something.", "I suppose that answers that question."],
@@ -30,7 +30,7 @@
       }
     },
     {
-      "id": "stormtrooper", "name": "Bot_Trooper", "model": "kym13.3do", "sound": "kytrooper.snd",
+      "id": "stormtrooper", "force_side": "dark", "force_style": "balanced", "name": "Bot_Trooper", "model": "kym13.3do", "sound": "kytrooper.snd",
       "taunts": {
         "spawn": ["Patrol unit returning to assigned sector.", "Armor inspected. Resuming patrol.", "Reporting for corridor security.", "New position established. Advancing."],
         "kill": ["Contact neutralized. Continuing patrol.", "Sector security has improved.", "Mark that result in the patrol report.", "Threat cleared from the immediate area."],
@@ -39,7 +39,7 @@
       }
     },
     {
-      "id": "bossk", "name": "Bot_Bossk", "model": "kyi14.3do", "sound": "kybossk.snd",
+      "id": "bossk", "force_side": "dark", "force_style": "balanced", "name": "Bot_Bossk", "model": "kyi14.3do", "sound": "kybossk.snd",
       "taunts": {
         "spawn": ["The hunt starts with a fresh trail.", "I have not finished tracking you.", "New ground. Plenty of tracks.", "A hunter learns from every pursuit."],
         "kill": ["Another trail reaches its end.", "You ran out of places to hide.", "That chase was worth the trouble.", "I remember every turn a quarry takes."],
@@ -48,7 +48,7 @@
       }
     },
     {
-      "id": "greedo", "name": "Bot_Greedo", "model": "kya17.3do", "sound": "kygreedo.snd",
+      "id": "greedo", "force_side": "dark", "force_style": "balanced", "name": "Bot_Greedo", "model": "kya17.3do", "sound": "kygreedo.snd",
       "taunts": {
         "spawn": ["There had better be a bonus for this job.", "Back in business. Where is the target?", "Checking the contract before the next attempt.", "Another chance to collect."],
         "kill": ["That ought to cover my expenses.", "Now we can discuss the payment.", "A clean result for the ledger.", "Somebody owes me for that one."],
@@ -57,7 +57,7 @@
       }
     },
     {
-      "id": "sariss", "name": "Bot_Sariss", "model": "kya9.3do", "sound": "kyfemale.snd",
+      "id": "sariss", "force_side": "dark", "force_style": "master", "name": "Bot_Sariss", "model": "kya9.3do", "sound": "kyfemale.snd",
       "taunts": {
         "spawn": ["Discipline survives a temporary defeat.", "I return with a clearer purpose.", "The next encounter begins with patience.", "A new position changes little."],
         "kill": ["Your hesitation decided that encounter.", "Focus must come before ambition.", "You left your intention unguarded.", "A measured strike settles the matter."],
@@ -66,7 +66,7 @@
       }
     },
     {
-      "id": "yun", "name": "Bot_Yun", "model": "kya18.3do", "sound": "kyyun.snd",
+      "id": "yun", "force_side": "dark", "force_style": "balanced", "name": "Bot_Yun", "model": "kya18.3do", "sound": "kyyun.snd",
       "taunts": {
         "spawn": ["Another chance to prove my training.", "This time I will judge the distance better.", "The next encounter is mine to prepare for.", "I am ready to begin again."],
         "kill": ["Training becomes clearer in the moment.", "A quick decision made the difference.", "I saw the opening that time.", "There is still more to learn from that exchange."],

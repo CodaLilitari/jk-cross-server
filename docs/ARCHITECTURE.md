@@ -41,7 +41,7 @@ The bridge therefore creates real local DirectPlay player objects as transport s
 
 The actual DirectPlay 5 runtime rejected additional local player objects in a `DPSESSION_CLIENTSERVER` session. The bridge uses the original peer-session layout instead. It translates the host's special canonical ID, 1, to the host's real DirectPlay ID at the retail boundary. Only the source-audited host-ID fields in management messages are translated; arbitrary payload bytes, object GUIDs, and script arguments are not searched and replaced.
 
-This arrangement reserves physical DirectPlay slots before all human players arrive. A mixed session therefore has a maximum of 15 configured human seats, and the original retail session browser includes reserved transport objects in its displayed player count. The administration panel separately reports the simulation's fully joined human players. Native/browser sessions with the retail adapter disabled do not need Wine or a DirectPlay ID pool.
+This arrangement reserves physical DirectPlay slots before all players arrive. A mixed session supports up to 15 configured slots including the dedicated host, leaving up to 14 playing clients shared by humans and bots. The original retail session browser includes reserved transport objects in its displayed player count. The administration panel separately reports the simulation's fully joined players. Native/browser sessions with the retail adapter disabled do not need Wine or a DirectPlay ID pool.
 
 ## Dedicated-host and join differences
 
