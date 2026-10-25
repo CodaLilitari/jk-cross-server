@@ -70,6 +70,12 @@ weapon strategy, and human-level competitive play are beyond this prototype.
 Actual native/retail/browser interoperability and AI performance must be assessed
 from the current build's live QA record, not inferred from these launcher tests.
 
+The recovered build has a local mixed-session test with four bots and unchanged
+retail JK 1.00, native OpenJKDF2 and JKWeb clients together on `JK1MP/m2.jkl`.
+The final executable also has live evidence of escaping the low spawn tunnel
+that trapped the preceding build. See [qualification and exact build hashes](../docs/BOTS_PROTOTYPE.md)
+for the observed gameplay, runtime details and limits of this test.
+
 ## Roster and chat
 
 | Profile id | Visible player name | Stock model | Stock sound class |

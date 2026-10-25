@@ -1,0 +1,350 @@
+{
+  "kind": "bounded-normal-human-fire-followup",
+  "bot_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+  "ai_source_sha256": "0e5e57365a462f7244009d619dda154991e680798180148195ae2153eea6d0cb",
+  "source_unchanged": true,
+  "capture": {
+    "file": "final-8af6-human-fire-passive.jsonl",
+    "sha256": "223618afb6031a331ec6f745a4ce2e366a0cc271cbf1f27383dba28b68d3eab9",
+    "bytes": 718165,
+    "duration_limit_seconds": 30,
+    "first_sample_utc": "2026-10-25T03:55:37.975043+00:00",
+    "last_sample_utc": "2026-10-25T03:56:07.925593+00:00",
+    "successful_samples": 223,
+    "total_records": 240,
+    "read_errors": [
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "boba_fett",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "stormtrooper",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "stormtrooper",
+        "error": "Route count outside bounds"
+      },
+      {
+        "bot": "stormtrooper",
+        "error": "Route count outside bounds"
+      }
+    ]
+  },
+  "native_human_identity": {
+    "slot": 7,
+    "name": "NativeHuman",
+    "network_id": 4251735
+  },
+  "native_human_kills_range": [
+    0,
+    0
+  ],
+  "native_human_projectile_propagation": {
+    "status": "observed",
+    "distinct_projectile_guids": 15,
+    "observations": 49,
+    "first_epoch": 1792900559.7966356,
+    "last_epoch": 1792900566.9008443,
+    "first_projectile_as_received_by_clients": [
+      {
+        "observer": "boba_fett",
+        "epoch": 1792900559.7966356,
+        "projectile": {
+          "idx": 160,
+          "guid": 528785,
+          "signature": 2399,
+          "parent_slot": 7,
+          "own_parent": false,
+          "position": [
+            -8.013449668884277,
+            -0.7923998832702637,
+            1.4201042652130127
+          ]
+        }
+      },
+      {
+        "observer": "jan_ors",
+        "epoch": 1792900559.797138,
+        "projectile": {
+          "idx": 146,
+          "guid": 528785,
+          "signature": 2423,
+          "parent_slot": 7,
+          "own_parent": false,
+          "position": [
+            -8.013449668884277,
+            -0.7123998999595642,
+            1.4201042652130127
+          ]
+        }
+      },
+      {
+        "observer": "kyle_katarn",
+        "epoch": 1792900559.7974374,
+        "projectile": {
+          "idx": 151,
+          "guid": 528785,
+          "signature": 2346,
+          "parent_slot": 7,
+          "own_parent": false,
+          "position": [
+            -8.013449668884277,
+            -0.7123998999595642,
+            1.4201042652130127
+          ]
+        }
+      },
+      {
+        "observer": "stormtrooper",
+        "epoch": 1792900559.7977319,
+        "projectile": {
+          "idx": 147,
+          "guid": 528785,
+          "signature": 2424,
+          "parent_slot": 7,
+          "own_parent": false,
+          "position": [
+            -8.013449668884277,
+            -0.7923998832702637,
+            1.4201042652130127
+          ]
+        }
+      }
+    ]
+  },
+  "human_to_bot_damage": {
+    "status": "not_established",
+    "reason": "Human-owned projectiles were received by all four bot clients. Boba and Kyle health/armor did not change in successful samples. Jan and Trooper lost health while exchanging bot-owned shots; this capture does not identify the human as a damage source. NativeHuman kills remained zero. No human-caused bot damage or kill is claimed."
+  },
+  "bots": [
+    {
+      "id": "boba_fett",
+      "successful_samples": 46,
+      "read_error_count": 14,
+      "own_health_first_last": [
+        74.89419555664062,
+        74.89419555664062
+      ],
+      "own_shields_first_last": [
+        47.69999694824219,
+        47.69999694824219
+      ],
+      "own_deaths_first_last": [
+        5,
+        5
+      ],
+      "native_human_projectile_guids_observed": [
+        528785,
+        528791,
+        528804,
+        528813,
+        528822,
+        528831,
+        528840,
+        528849,
+        528854,
+        528859,
+        528866,
+        528874,
+        528882,
+        528892,
+        528900
+      ]
+    },
+    {
+      "id": "jan_ors",
+      "successful_samples": 60,
+      "read_error_count": 0,
+      "own_health_first_last": [
+        100.0,
+        0.0
+      ],
+      "own_shields_first_last": [
+        54.09996032714844,
+        0.0
+      ],
+      "own_deaths_first_last": [
+        3,
+        4
+      ],
+      "native_human_projectile_guids_observed": [
+        528785,
+        528791,
+        528804,
+        528813,
+        528822,
+        528831,
+        528840,
+        528849,
+        528854,
+        528859,
+        528866,
+        528874,
+        528882,
+        528892,
+        528900
+      ]
+    },
+    {
+      "id": "kyle_katarn",
+      "successful_samples": 60,
+      "read_error_count": 0,
+      "own_health_first_last": [
+        20.826427459716797,
+        20.826427459716797
+      ],
+      "own_shields_first_last": [
+        0.0,
+        0.0
+      ],
+      "own_deaths_first_last": [
+        3,
+        3
+      ],
+      "native_human_projectile_guids_observed": [
+        528785,
+        528804,
+        528813,
+        528822,
+        528831,
+        528849,
+        528866,
+        528874,
+        528892,
+        528900
+      ]
+    },
+    {
+      "id": "stormtrooper",
+      "successful_samples": 57,
+      "read_error_count": 3,
+      "own_health_first_last": [
+        0.0,
+        46.76644515991211
+      ],
+      "own_shields_first_last": [
+        0.0,
+        0.0
+      ],
+      "own_deaths_first_last": [
+        3,
+        3
+      ],
+      "native_human_projectile_guids_observed": [
+        528785,
+        528804,
+        528813,
+        528822,
+        528854,
+        528859,
+        528866,
+        528874,
+        528882
+      ]
+    }
+  ],
+  "nearby_normal_kill_feed": [
+    {
+      "observer": "boba_fett",
+      "message": "Bot_Trooper was killed by Bot_BobaFett",
+      "preceding_status_bot_time": 320.6,
+      "following_status_bot_time": 330.6
+    },
+    {
+      "observer": "boba_fett",
+      "message": "NativeHuman was killed by Bot_BobaFett",
+      "preceding_status_bot_time": 330.6,
+      "following_status_bot_time": 340.7
+    },
+    {
+      "observer": "boba_fett",
+      "message": "RetailHuman was killed by Bot_BobaFett",
+      "preceding_status_bot_time": 330.6,
+      "following_status_bot_time": 340.7
+    },
+    {
+      "observer": "jan_ors",
+      "message": "Bot_Trooper was killed by Bot_BobaFett",
+      "preceding_status_bot_time": 320.6,
+      "following_status_bot_time": 330.6
+    },
+    {
+      "observer": "jan_ors",
+      "message": "NativeHuman was killed by Bot_BobaFett",
+      "preceding_status_bot_time": 330.6,
+      "following_status_bot_time": 340.6
+    },
+    {
+      "observer": "jan_ors",
+      "message": "RetailHuman was killed by Bot_BobaFett",
+      "preceding_status_bot_time": 340.6,
+      "following_status_bot_time": 350.7
+    },
+    {
+      "observer": "jan_ors",
+      "message": "Bot_JanOrs was killed by Bot_Trooper",
+      "preceding_status_bot_time": 350.7,
+      "following_status_bot_time": 360.7
+    }
+  ],
+  "limitations": [
+    "Reads are non-atomic at approximately 0.5-second intervals. Projectile identifiers are deduplicated by network GUID across clients; local signatures differ.",
+    "The observer rejected 17 records because its route-position guard was not satisfied; these are retained above, not silently dropped. They limit coverage for Boba and Trooper.",
+    "Kill-feed status brackets are coarse 10-second bot-clock intervals, and are included as context only.",
+    "Human normal UI actions and input timing are independently recorded by the integration agent. This receipt establishes received human-owned projectiles; causal human-to-bot damage remains unverified."
+  ],
+  "observer_route_guard_note": "The observer required routePos <= routeCount. The input driver clears routeCount on recovery/death while routePos can retain its previous value until replanning (jkBot.c). Thus this guard can reject a legitimate inactive route; these samples remain excluded and are not evidence of an engine array overrun. No additional run was performed."
+}

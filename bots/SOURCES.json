@@ -38,6 +38,8 @@
     "profiles": 8,
     "original_lines": 128,
     "registry_sha256_from_earlier_audit": "b14aac1feed2ff56a37ab7303f8a2c814114e91f6caa120e97a1edd94f1c6cb1",
-    "provenance": "PROFILES_PROVENANCE.md"
+    "provenance": "PROFILES_PROVENANCE.md",
+    "registry_sha256_verified_during_recovery": "b14aac1feed2ff56a37ab7303f8a2c814114e91f6caa120e97a1edd94f1c6cb1",
+    "verification_receipt": "../qa/bots-recovery-assets.json"
   }
 }

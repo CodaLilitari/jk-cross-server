@@ -1,0 +1,804 @@
+{
+  "qualification": "Final reconstructed bot build alongside original retail JK, unchanged native OpenJKDF2, and unchanged published JKWeb",
+  "status": "functional local mixed-client gameplay smoke passed",
+  "recorded_utc": "2026-10-25T03:53:44.328522+00:00",
+  "bot_build": {
+    "sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+    "patch_sha256": "02dc798472f00337373dc3336544335b8ee83e6ef62714ff656e388b10a67c43",
+    "engine_base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "source_frozen_during_test": true
+  },
+  "browser_client": {
+    "repository": "https://github.com/tristamus/jkdf2mp-bb-server",
+    "build": "cloudflare-38",
+    "commit": "24dc3876f32eff57c8ca98ef657698d1a30170c7",
+    "files": [
+      {
+        "name": "index.html",
+        "size": 226513,
+        "sha256": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+        "modified": false
+      },
+      {
+        "name": "openjkdf2.js",
+        "size": 532943,
+        "sha256": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+        "modified": false
+      },
+      {
+        "name": "openjkdf2.wasm",
+        "size": 3681717,
+        "sha256": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6",
+        "modified": false
+      }
+    ],
+    "engine_source_commit": "a7c0211ca408eabd97a7c82fbdcae9450c3a0b9c",
+    "retail_assets_included": false
+  },
+  "browser_runtime": {
+    "playwright": "1.55.0",
+    "chromium": "140.0.7339.16",
+    "viewport": [
+      640,
+      480
+    ],
+    "renderer": "ANGLE SwiftShader",
+    "isolated_test_profile": true,
+    "user_browser_or_signed_in_session_used": false
+  },
+  "server": {
+    "name": "Mixed Bot Recovery QA",
+    "game": "jk",
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "rank": 0,
+    "teams": false,
+    "max_players": 8,
+    "retail_transport_enabled": true,
+    "binary_sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
+    "bot_protocol_changes": false
+  },
+  "method": {
+    "controls": "Normal published-client game folder picker and saved player/character profile, ordinary relay/session/character menus, normal keyboard chat, forward movement, and Space/ACTIVATE respawn.",
+    "memory_reads": "Fixed-layout read-only global HEAPU32/HEAPU16/HEAPF32 fields from the exact pinned WASM. No engine code, memory, gameplay state, or network packet injection.",
+    "layout": {
+      "player_table": 6732944,
+      "player_stride": 5044,
+      "name": "64-byte UTF16",
+      "flags_offset": 128,
+      "network_id_offset": 132,
+      "thing_pointer_offset": 4952,
+      "thing_position_offset": 192,
+      "dead_flag": 512
+    },
+    "other_human_provenance": "RetailHuman and NativeHuman are the separately qualified original-retail/unchanged-native fixtures controlled by the integration test; this browser receipt independently observes their normal player slots and traffic."
+  },
+  "configured_bot_models": [
+    {
+      "name": "Bot_Trooper",
+      "model": "kym13.3do"
+    },
+    {
+      "name": "Bot_JanOrs",
+      "model": "kya10.3do"
+    },
+    {
+      "name": "Bot_BobaFett",
+      "model": "kyh4.3do"
+    },
+    {
+      "name": "Bot_Katarn",
+      "model": "ky.3do"
+    }
+  ],
+  "model_scope": "Exact model filenames above are configured inputs. This browser probe did not decode model pointers; native/retail model verification is recorded separately.",
+  "browser_snapshots": [
+    {
+      "utc": "2026-10-25T03:50:58.195Z",
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "flags": 4,
+          "id": 1,
+          "position": [
+            -1.350000023841858,
+            -1.4499499797821045,
+            1.4201140403747559
+          ],
+          "thing_flags": 539493633
+        },
+        {
+          "slot": 1,
+          "name": "Bot_Trooper",
+          "flags": 7,
+          "id": 4251731,
+          "position": [
+            -3.199916362762451,
+            -1.159258246421814,
+            1.4195102453231812
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 2,
+          "name": "Bot_JanOrs",
+          "flags": 7,
+          "id": 4251733,
+          "position": [
+            -7.0971293449401855,
+            -1.4974584579467773,
+            1.4201045036315918
+          ],
+          "thing_flags": 540018433
+        },
+        {
+          "slot": 3,
+          "name": "Bot_BobaFett",
+          "flags": 7,
+          "id": 4251730,
+          "position": [
+            -7.399323463439941,
+            -2.2190210819244385,
+            0.12010624259710312
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 4,
+          "name": "Bot_Katarn",
+          "flags": 7,
+          "id": 4251732,
+          "position": [
+            -5.176711559295654,
+            -1.2614630460739136,
+            1.4200069904327393
+          ],
+          "thing_flags": 538969345
+        },
+        {
+          "slot": 5,
+          "name": "WebClient",
+          "flags": 7,
+          "id": 4251734,
+          "position": [
+            -8.399999618530273,
+            -1.1599500179290771,
+            0.9201022386550903
+          ],
+          "thing_flags": 538969089
+        }
+      ],
+      "transport": {
+        "session": true,
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 6782,
+        "wsRecv": 23728,
+        "wsSkipped": 11112
+      }
+    },
+    {
+      "utc": "2026-10-25T03:51:31.766Z",
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "flags": 4,
+          "id": 1,
+          "position": [
+            -1.350000023841858,
+            -1.4499499797821045,
+            1.4201140403747559
+          ],
+          "thing_flags": 539493633
+        },
+        {
+          "slot": 1,
+          "name": "Bot_Trooper",
+          "flags": 7,
+          "id": 4251731,
+          "position": [
+            -6.359179973602295,
+            -1.2487565279006958,
+            1.419963002204895
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 2,
+          "name": "Bot_JanOrs",
+          "flags": 7,
+          "id": 4251733,
+          "position": [
+            -3.3579962253570557,
+            -1.7337415218353271,
+            -0.1298954337835312
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 3,
+          "name": "Bot_BobaFett",
+          "flags": 7,
+          "id": 4251730,
+          "position": [
+            -7.455020427703857,
+            -2.6323158740997314,
+            0.1751289814710617
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 4,
+          "name": "Bot_Katarn",
+          "flags": 7,
+          "id": 4251732,
+          "position": [
+            -7.972427845001221,
+            -3.0909109115600586,
+            1.4201198816299438
+          ],
+          "thing_flags": 540018433
+        },
+        {
+          "slot": 5,
+          "name": "WebClient",
+          "flags": 7,
+          "id": 4251734,
+          "position": [
+            -8.051736831665039,
+            -1.1599500179290771,
+            0.7718423008918762
+          ],
+          "thing_flags": 538969089
+        },
+        {
+          "slot": 6,
+          "name": "RetailHuman",
+          "flags": 7,
+          "id": 4251739,
+          "position": [
+            1,
+            -1.5000499486923218,
+            1.4201139211654663
+          ],
+          "thing_flags": 538969345
+        }
+      ],
+      "transport": {
+        "session": true,
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 7266,
+        "wsRecv": 25638,
+        "wsSkipped": 12081
+      }
+    },
+    {
+      "utc": "2026-10-25T03:51:58.272Z",
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "flags": 4,
+          "id": 1,
+          "position": [
+            -1.350000023841858,
+            -1.4499499797821045,
+            1.4201140403747559
+          ],
+          "thing_flags": 539493633
+        },
+        {
+          "slot": 1,
+          "name": "Bot_Trooper",
+          "flags": 7,
+          "id": 4251731,
+          "position": [
+            -0.9486904144287109,
+            -1.4360909461975098,
+            1.4195102453231812
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 2,
+          "name": "Bot_JanOrs",
+          "flags": 7,
+          "id": 4251733,
+          "position": [
+            -7.043791770935059,
+            -1.1906265020370483,
+            -0.18048977851867676
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 3,
+          "name": "Bot_BobaFett",
+          "flags": 7,
+          "id": 4251730,
+          "position": [
+            -7.363713264465332,
+            -2.563974618911743,
+            0.12001118063926697
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 4,
+          "name": "Bot_Katarn",
+          "flags": 7,
+          "id": 4251732,
+          "position": [
+            -8.165777206420898,
+            -1.3549144268035889,
+            1.419511318206787
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 5,
+          "name": "WebClient",
+          "flags": 7,
+          "id": 4251734,
+          "position": [
+            -8.024803161621094,
+            -1.1663880348205566,
+            0.7946599721908569
+          ],
+          "thing_flags": 540018177
+        },
+        {
+          "slot": 6,
+          "name": "RetailHuman",
+          "flags": 7,
+          "id": 4251739,
+          "position": [
+            1.0012459754943848,
+            -1.5003024339675903,
+            1.420104742050171
+          ],
+          "thing_flags": 538969345
+        }
+      ],
+      "transport": {
+        "session": true,
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 7723,
+        "wsRecv": 27240,
+        "wsSkipped": 12831
+      }
+    },
+    {
+      "utc": "2026-10-25T03:52:01.497Z",
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "flags": 4,
+          "id": 1,
+          "position": [
+            -1.350000023841858,
+            -1.4499499797821045,
+            1.4201140403747559
+          ],
+          "thing_flags": 539493633
+        },
+        {
+          "slot": 1,
+          "name": "Bot_Trooper",
+          "flags": 7,
+          "id": 4251731,
+          "position": [
+            -0.7570414543151855,
+            -1.256712794303894,
+            1.4120731353759766
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 2,
+          "name": "Bot_JanOrs",
+          "flags": 7,
+          "id": 4251733,
+          "position": [
+            -6.82454776763916,
+            -1.1002463102340698,
+            -0.18045857548713684
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 3,
+          "name": "Bot_BobaFett",
+          "flags": 7,
+          "id": 4251730,
+          "position": [
+            -7.100867748260498,
+            -2.295673370361328,
+            0.1195102334022522
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 4,
+          "name": "Bot_Katarn",
+          "flags": 7,
+          "id": 4251732,
+          "position": [
+            -6.351347923278809,
+            -1.253703236579895,
+            1.4195101261138916
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 5,
+          "name": "WebClient",
+          "flags": 7,
+          "id": 4251734,
+          "position": [
+            -8.244999885559082,
+            -1.4499499797821045,
+            1.4194890260696411
+          ],
+          "thing_flags": 540017665
+        },
+        {
+          "slot": 6,
+          "name": "RetailHuman",
+          "flags": 7,
+          "id": 4251739,
+          "position": [
+            1.006091594696045,
+            -1.5001907348632812,
+            1.4201059341430664
+          ],
+          "thing_flags": 538969345
+        }
+      ],
+      "transport": {
+        "session": true,
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 7797,
+        "wsRecv": 27417,
+        "wsSkipped": 12885
+      }
+    },
+    {
+      "utc": "2026-10-25T03:53:06.556Z",
+      "players": [
+        {
+          "slot": 0,
+          "name": "ServerDed",
+          "flags": 4,
+          "id": 1,
+          "position": [
+            -1.350000023841858,
+            -1.4499499797821045,
+            1.4201140403747559
+          ],
+          "thing_flags": 539493633
+        },
+        {
+          "slot": 1,
+          "name": "Bot_Trooper",
+          "flags": 7,
+          "id": 4251731,
+          "position": [
+            -0.3647175431251526,
+            -2.5156686305999756,
+            0.1195102259516716
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 2,
+          "name": "Bot_JanOrs",
+          "flags": 7,
+          "id": 4251733,
+          "position": [
+            -6.194785118103027,
+            -1.9068737030029297,
+            0.1195102259516716
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 3,
+          "name": "Bot_BobaFett",
+          "flags": 7,
+          "id": 4251730,
+          "position": [
+            -0.12472884356975555,
+            -0.4270251989364624,
+            0.12010456621646881
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 4,
+          "name": "Bot_Katarn",
+          "flags": 7,
+          "id": 4251732,
+          "position": [
+            -5.820992469787598,
+            -1.934999942779541,
+            1.4201045036315918
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 5,
+          "name": "WebClient",
+          "flags": 7,
+          "id": 4251734,
+          "position": [
+            -7.651375770568848,
+            -1.3763834238052368,
+            1.4201045036315918
+          ],
+          "thing_flags": 540018177
+        },
+        {
+          "slot": 6,
+          "name": "RetailHuman",
+          "flags": 7,
+          "id": 4251739,
+          "position": [
+            -2,
+            -1.8500499725341797,
+            -0.12989115715026855
+          ],
+          "thing_flags": 540017921
+        },
+        {
+          "slot": 7,
+          "name": "NativeHuman",
+          "flags": 7,
+          "id": 4251735,
+          "position": [
+            -8.004112243652344,
+            -3.1500017642974854,
+            1.420108437538147
+          ],
+          "thing_flags": 540018433
+        }
+      ],
+      "transport": {
+        "session": true,
+        "dcSent": 0,
+        "dcRecv": 0,
+        "wsSent": 9078,
+        "wsRecv": 32037,
+        "wsSkipped": 15069
+      }
+    }
+  ],
+  "final_combined_roster": {
+    "utc": "2026-10-25T03:53:06.556Z",
+    "fully_joined_real_player_slots": 7,
+    "bot_players": 4,
+    "human_clients": 3,
+    "players": [
+      {
+        "slot": 0,
+        "name": "ServerDed",
+        "flags": 4,
+        "id": 1,
+        "position": [
+          -1.350000023841858,
+          -1.4499499797821045,
+          1.4201140403747559
+        ],
+        "thing_flags": 539493633
+      },
+      {
+        "slot": 1,
+        "name": "Bot_Trooper",
+        "flags": 7,
+        "id": 4251731,
+        "position": [
+          -0.3647175431251526,
+          -2.5156686305999756,
+          0.1195102259516716
+        ],
+        "thing_flags": 540017921
+      },
+      {
+        "slot": 2,
+        "name": "Bot_JanOrs",
+        "flags": 7,
+        "id": 4251733,
+        "position": [
+          -6.194785118103027,
+          -1.9068737030029297,
+          0.1195102259516716
+        ],
+        "thing_flags": 540017921
+      },
+      {
+        "slot": 3,
+        "name": "Bot_BobaFett",
+        "flags": 7,
+        "id": 4251730,
+        "position": [
+          -0.12472884356975555,
+          -0.4270251989364624,
+          0.12010456621646881
+        ],
+        "thing_flags": 540017921
+      },
+      {
+        "slot": 4,
+        "name": "Bot_Katarn",
+        "flags": 7,
+        "id": 4251732,
+        "position": [
+          -5.820992469787598,
+          -1.934999942779541,
+          1.4201045036315918
+        ],
+        "thing_flags": 540017921
+      },
+      {
+        "slot": 5,
+        "name": "WebClient",
+        "flags": 7,
+        "id": 4251734,
+        "position": [
+          -7.651375770568848,
+          -1.3763834238052368,
+          1.4201045036315918
+        ],
+        "thing_flags": 540018177
+      },
+      {
+        "slot": 6,
+        "name": "RetailHuman",
+        "flags": 7,
+        "id": 4251739,
+        "position": [
+          -2,
+          -1.8500499725341797,
+          -0.12989115715026855
+        ],
+        "thing_flags": 540017921
+      },
+      {
+        "slot": 7,
+        "name": "NativeHuman",
+        "flags": 7,
+        "id": 4251735,
+        "position": [
+          -8.004112243652344,
+          -3.1500017642974854,
+          1.420108437538147
+        ],
+        "thing_flags": 540018433
+      }
+    ]
+  },
+  "transport": {
+    "full_game_route": "WebSocket fallback",
+    "webrtc_full_game_verified": false,
+    "counter_scope": "Counters are cumulative for this page, including an earlier match; deltas below isolate the current observation window.",
+    "window_start_utc": "2026-10-25T03:50:58.195Z",
+    "window_end_utc": "2026-10-25T03:53:06.556Z",
+    "deltas": {
+      "dcSent": 0,
+      "dcRecv": 0,
+      "wsSent": 2296,
+      "wsRecv": 8309,
+      "wsSkipped": 3957
+    }
+  },
+  "events": [
+    {
+      "utc": "2026-10-25T03:50:49.930Z",
+      "event": "Normal relay join assigned WebClient real player ID4251734; subsequent browser roster places it in slot5."
+    },
+    {
+      "utc": "2026-10-25T03:51:03.372Z",
+      "event": "Unchanged browser renders m2 with health100/armor100.",
+      "artifact": "final-world-joined.png"
+    },
+    {
+      "utc": "2026-10-25T03:51:31.766Z",
+      "event": "Browser normal forward input changed position; original RetailHuman is visible in slot6/id4251739, flags7."
+    },
+    {
+      "utc": "2026-10-25T03:51:41.328Z",
+      "event": "Browser shows incoming red projectiles, impact/explosion, own corpse and health000; ordinary kill feed explicitly says WebClient was killed by Bot_Katarn.",
+      "artifact": "final-after-move.png"
+    },
+    {
+      "utc": "2026-10-25T03:51:58.272Z",
+      "event": "Read-only browser probe confirms WebClient id4251734 has DEAD flag512 set."
+    },
+    {
+      "utc": "2026-10-25T03:52:00.870Z",
+      "event": "Normal Space/ACTIVATE input requests respawn."
+    },
+    {
+      "utc": "2026-10-25T03:52:01.497Z",
+      "event": "Same browser id4251734/slot5 is alive with DEAD flag cleared and a new spawn position."
+    },
+    {
+      "utc": "2026-10-25T03:52:09.663Z",
+      "event": "Browser HUD confirms respawn health100/armor100 and original character chat.",
+      "artifact": "final-respawn.png",
+      "chat": "Bot_Katarn says 'I can think of a few improvements for next time.'"
+    },
+    {
+      "utc": "2026-10-25T03:53:06.556Z",
+      "event": "Browser independently observes all four bots and all three human client types together, with flags7, distinct real player IDs, and live world positions."
+    }
+  ],
+  "server_log_events": [
+    {
+      "time": "2026-10-25T03:50:56+00:00",
+      "source": "engine",
+      "text": "WebClient has joined the game"
+    },
+    {
+      "time": "2026-10-25T03:51:01+00:00",
+      "source": "engine",
+      "text": "RetailHuman has joined the game"
+    },
+    {
+      "time": "2026-10-25T03:51:29+00:00",
+      "source": "engine",
+      "text": "WebClient says 'web_final_ok'"
+    },
+    {
+      "time": "2026-10-25T03:52:07+00:00",
+      "source": "engine",
+      "text": "NativeHuman has joined the game"
+    }
+  ],
+  "checks": {
+    "unchanged_html_js_wasm_hashes_reverified": true,
+    "four_bots_joined_as_real_players": true,
+    "retail_native_browser_humans_simultaneously_observed": true,
+    "normal_browser_movement_observed": true,
+    "bot_position_updates_observed": true,
+    "incoming_projectiles_and_impact_rendered": true,
+    "bot_attributed_browser_death_rendered": true,
+    "same_id_normal_respawn_observed": true,
+    "normal_bot_character_chat_rendered": true,
+    "normal_browser_chat_received_by_server": true
+  },
+  "screenshot_artifacts": [
+    {
+      "artifact": "final-world-joined.png",
+      "utc": "2026-10-25T03:51:03.372Z",
+      "sha256": "494c6441fd0f2b5e1e3b25bdacf96c532f14eca111c64497bab08d9090f318a9",
+      "bytes": 159289
+    },
+    {
+      "artifact": "final-after-move.png",
+      "utc": "2026-10-25T03:51:41.328Z",
+      "sha256": "e270c26df6365b964353c6cb4799e5ffde878251a486d3e3ccbeabea3732fbfc",
+      "bytes": 278151
+    },
+    {
+      "artifact": "final-respawn.png",
+      "utc": "2026-10-25T03:52:09.663Z",
+      "sha256": "1999c728b17678a3c5bf78db6fc9807325291f076eb30e70cd1a81acfc7a6e3b",
+      "bytes": 225653
+    }
+  ],
+  "limits": [
+    "Local private-network functional smoke, not performance, latency, endurance, or complete game-mechanic parity qualification.",
+    "Stock JK1MP rank0 FFA only. MotS, Force ranks, teams, mods, and other maps were not qualified.",
+    "Browser gameplay used WebSocket fallback; direct WebRTC gameplay was not verified.",
+    "Browser renderer used software graphics, so no frame-rate or resource-efficiency conclusion is drawn.",
+    "Exact model-pointer and other human executable provenance observations are in separate native/retail qualification receipts.",
+    "No retail assets, Chromium profile data, or rendered-game screenshots are embedded in this sanitized JSON; separate artifacts are identified by hashes."
+  ]
+}

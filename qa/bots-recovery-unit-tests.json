@@ -11,9 +11,14 @@
       "PASS remote-zero-health respawn eligibility and inactive/dead/team rejection",
       "PASS unreached nearest-node goal retained until actually reached",
       "PASS normal yaw/pitch axes and single-consumption press edge",
-      "PASS vertical jumping alone does not conceal a navigation stall"
+      "PASS vertical jumping alone does not conceal a navigation stall",
+      "PASS sector110 low-ceiling graph/steering and actual obstruction rejection"
     ],
-    "source_sha256": "c4fe19b94513404664ed71a734426aaea44ab5ae09823d3a969df763b31e6182"
+    "source_sha256": "0e5e57365a462f7244009d619dda154991e680798180148195ae2153eea6d0cb",
+    "test_source_sha256": "3884e0ab70a0c7e79fb788b0bf6cdf591db2e00cc51f3e2d7473f2a5125d4264",
+    "binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+    "strict_compiler_warnings": true,
+    "low_ceiling_baseline_failure_verified": true
   },
   "live_gameplay_proven_by_these_tests": false
 }

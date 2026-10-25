@@ -8,15 +8,50 @@
 uint32_t jkPlayer_maxPlayers;
 SithPlayer jkPlayer_playerInfos[JKPLAYER_NUM_INFOS];
 int32_t sithNet_MultiModeFlags;
+static int corridorMode, queryDepth, pendingHit;
+static flex_t corridorCeiling=-0.05f;
+static SithSector *corridorSector;
+static SithSurface corridorFloor;
+static SithCollision corridorHit;
+/* Bounded box matching stock m2 sector110; not a full level simulation. */
+int sithIntersect_IsSphereInSector(const rdVector3 *p, flex_t radius, SithSector *sector)
+{
+    if (!corridorMode) return sector!=NULL;
+    return sector==corridorSector && p->x-radius>=-3.0f && p->x+radius<=-1.8f &&
+        p->y-radius>=-2.0f && p->y+radius<=-1.65f &&
+        p->z-radius>=-0.25f && p->z+radius<=corridorCeiling;
+}
+SithSector *sithSector_FindSectorAtPos(SithWorld *world, rdVector3 *position)
+{
+    (void)world;
+    return sithIntersect_IsSphereInSector(position,0,corridorSector) ? corridorSector : NULL;
+}
 flex_t sithCollision_SearchForCollisions(SithSector *sector, SithThing *thing,
     const rdVector3 *from, const rdVector3 *direction, flex_t distance,
     flex_t radius, int flags)
 {
-    (void)sector; (void)thing; (void)from; (void)direction; (void)radius; (void)flags;
+    (void)thing; (void)flags;
+    queryDepth++; pendingHit=0;
+    if (corridorMode) {
+        rdVector3 end={from->x+direction->x*distance,
+            from->y+direction->y*distance,from->z+direction->z*distance};
+        memset(&corridorHit,0,sizeof(corridorHit));
+        corridorHit.type=SITHCOLLISION_WORLD;
+        corridorHit.surface=&corridorFloor;
+        corridorFloor.pSector=sector;
+        corridorFloor.flags=SITH_SURFACE_HAS_COLLISION|SITH_SURFACE_FLOOR;
+        if (direction->z<-0.99f && radius==0 && from->z>=-0.25f && end.z<=-0.25f) {
+            pendingHit=1; corridorHit.distance=from->z+0.25f; corridorHit.hitNorm.z=1;
+        } else if (Bot_Max(from->z,end.z)+radius>corridorCeiling ||
+                   Bot_Min(from->z,end.z)-radius<-0.25f) {
+            pendingHit=1; corridorHit.distance=0; corridorHit.hitNorm.z=-1;
+        }
+    }
     return distance;
 }
-SithCollision *sithCollision_PopStack(void) { return NULL; }
-void sithCollision_DecreaseStackLevel(void) {}
+SithCollision *sithCollision_PopStack(void)
+{ if (!pendingHit) return NULL; pendingHit=0; return &corridorHit; }
+void sithCollision_DecreaseStackLevel(void) { queryDepth--; assert(queryDepth>=0); }
 int sithInventory_IsInventoryAvailable(SithThing *thing, int bin)
 { (void)thing; (void)bin; return 0; }
 flex_t sithInventory_GetInventory(SithThing *thing, int bin)
@@ -90,5 +125,22 @@ int main(void)
     assert(bot.goal==-1 && bot.routeCount==0);
     assert(bot.keys[INPUT_FUNC_ACTIVATE]==1 && bot.nodes[0].avoidUntil>bot.now);
     puts("PASS vertical jumping alone does not conceal a navigation stall");
+    jkBot_Configure("Bot_Test","ky.3do");
+    corridorMode=1; corridorSector=&sector; corridorCeiling=-0.05f;
+    BotNode tunnelA={0},tunnelB={0};
+    tunnelA.pos=(rdVector3){-2.0f,-1.850050f,-0.129886f};
+    tunnelB.pos=(rdVector3){-2.4f,-1.850050f,-0.129886f};
+    tunnelA.sector=tunnelB.sector=&sector;
+    int drop=-1;
+    assert(Bot_Walkable(&tunnelA,&tunnelB,&drop)==1 && drop==0);
+    self.position=tunnelA.pos; self.sector=&sector; self.collideSize=0.065f;
+    self.physicsParams.vel=(rdVector3){0,0,0};
+    rdVector3 blocked;
+    assert(Bot_SafeDirection(&self,(rdVector3){-1,0,0},0,0.4f,&blocked)==1);
+    corridorCeiling=-0.16f;
+    assert(Bot_Walkable(&tunnelA,&tunnelB,&drop)==0);
+    assert(Bot_SafeDirection(&self,(rdVector3){-1,0,0},0,0.4f,&blocked)==0);
+    assert(queryDepth==0);
+    puts("PASS sector110 low-ceiling graph/steering and actual obstruction rejection");
     return 0;
 }

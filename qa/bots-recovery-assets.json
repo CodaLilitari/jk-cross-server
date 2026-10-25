@@ -1,0 +1,77 @@
+{
+  "episode/jk1mp.gob": {
+    "sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+    "bytes": 3337481
+  },
+  "resource/res1hi.gob": {
+    "sha256": "6c6d51eca9c85dffe7dce9b449642a052f055352e3f817abf03b465da861aafd",
+    "bytes": 58703359
+  },
+  "resource/res2.gob": {
+    "sha256": "c75f7d5211bdd2e07a3af6a987c718037e8f0fd6909018ddb4327137bf3a7ebf",
+    "bytes": 56069075
+  },
+  "models.dat": {
+    "sha256": "b14aac1feed2ff56a37ab7303f8a2c814114e91f6caa120e97a1edd94f1c6cb1",
+    "bytes": 1280
+  },
+  "profiles": [
+    {
+      "profile": "boba_fett",
+      "model": "3do/kyh4.3do",
+      "sound": "misc/snd/kybobafett.snd",
+      "registry_pair_present": true,
+      "assets_present": true
+    },
+    {
+      "profile": "jan_ors",
+      "model": "3do/kya10.3do",
+      "sound": "misc/snd/kyfemale.snd",
+      "registry_pair_present": true,
+      "assets_present": true
+    },
+    {
+      "profile": "kyle_katarn",
+      "model": "3do/ky.3do",
+      "sound": "misc/snd/ky.snd",
+      "registry_pair_present": true,
+      "assets_present": true
+    },
+    {
+      "profile": "stormtrooper",
+      "model": "3do/kym13.3do",
+      "sound": "misc/snd/kytrooper.snd",
+      "registry_pair_present": true,
+      "assets_present": true
+    },
+    {
+      "profile": "bossk",
+      "model": "3do/kyi14.3do",
+      "sound": "misc/snd/kybossk.snd",
+      "registry_pair_present": true,
+      "assets_present": true
+    },
+    {
+      "profile": "greedo",
+      "model": "3do/kya17.3do",
+      "sound": "misc/snd/kygreedo.snd",
+      "registry_pair_present": true,
+      "assets_present": true
+    },
+    {
+      "profile": "sariss",
+      "model": "3do/kya9.3do",
+      "sound": "misc/snd/kyfemale.snd",
+      "registry_pair_present": true,
+      "assets_present": true
+    },
+    {
+      "profile": "yun",
+      "model": "3do/kya18.3do",
+      "sound": "misc/snd/kyyun.snd",
+      "registry_pair_present": true,
+      "assets_present": true
+    }
+  ],
+  "retail_assets_distributed": false
+}

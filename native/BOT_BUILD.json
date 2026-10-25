@@ -35,7 +35,7 @@
     " 5a82f71ed1dfc0bec044d9702463dbdf84ea3b71 lib/zlib (5a82f71)"
   ],
   "compiled_sources": {
-    "src/AI/jkBot.c": "c4fe19b94513404664ed71a734426aaea44ab5ae09823d3a969df763b31e6182",
+    "src/AI/jkBot.c": "0e5e57365a462f7244009d619dda154991e680798180148195ae2153eea6d0cb",
     "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
     "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
     "src/Dss/sithDSSThing.c": "277c5ea276b8b6f0e2835e434eb3e3325159edb19e67e086890b9748f2f34b29",
@@ -48,7 +48,7 @@
   },
   "files": {
     "bin/bots-linux-x86_64/jk-bot-client": {
-      "sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+      "sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
       "bytes": 8558544
     },
     "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
@@ -56,18 +56,18 @@
       "bytes": 3644744
     },
     "native/bot-client.patch": {
-      "sha256": "e474eb1b58b8dd915b584abb8ce5e0eb2a23010f55ef0bbb217340d8038cc342",
-      "bytes": 59019
+      "sha256": "02dc798472f00337373dc3336544335b8ee83e6ef62714ff656e388b10a67c43",
+      "bytes": 59730
     },
     "native/bot-relink-linux-x86_64.tar.gz": {
-      "sha256": "1f9831e95fdc4837643e91481006c79f35a536c2a6268603f71c76757e746e97",
-      "bytes": 5966245
+      "sha256": "650146a7ad10a5e243b397afa250c8dc1a916d37106630b17b61a98af41a8ed9",
+      "bytes": 5966256
     }
   },
   "relink_inputs": {
     "CMakeFiles/openjkdf2.dir/src/main.c.o": "5cac74e46ccdb6f00cfe4b60d06df1a8282ddc27ad1c7001009af728d3d88c95",
     "CMakeFiles/sith_engine.dir/generated/globals.c.o": "b8ea7a66262f5d97d72f6fbf66522fb48d49a57e62d9b4d0a8cf95a7603ca713",
-    "CMakeFiles/sith_engine.dir/src/AI/jkBot.c.o": "82effbfee4ff910180a3a174494ea2181866996885362c114d2b3577f06d26f0",
+    "CMakeFiles/sith_engine.dir/src/AI/jkBot.c.o": "043cedebaeee612cc4a4e21b96c1f7053214a3e99008867c30fb881064f40b75",
     "CMakeFiles/sith_engine.dir/src/AI/jkBotPersona.c.o": "d2d5a79ea190604a8f5f09cb0f299353129dec4fcc8aa79e8e7d1e933b133e1e",
     "CMakeFiles/sith_engine.dir/src/AI/sithAI.c.o": "cbda1c7df0dd425eaeb69e14308b53c9869fe6120c6d98f2d1743d86076bddc5",
     "CMakeFiles/sith_engine.dir/src/AI/sithAIAwareness.c.o": "2b590541a50ed915d863874172cf0a84d9398a6114e62adb8da8e2ed6dea0cfb",

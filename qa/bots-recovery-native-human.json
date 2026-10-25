@@ -1,0 +1,260 @@
+{
+  "status": "passed_with_scope_limits",
+  "date_utc": "2026-10-25",
+  "scope": "Recovered four-bot prototype; stock JK1MP/m2.jkl, rank zero, free for all; unchanged dedicated server with simultaneous unchanged native OpenJKDF2 and published JKWeb clients.",
+  "bot_binary_sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+  "independent_native_client": {
+    "binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+    "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "player": "NativeHuman",
+    "slot": 3,
+    "modified_for_bots": false,
+    "joined_via": "normal graphical profile, TCP/IP discovery, character selection and join UI"
+  },
+  "observation": {
+    "method": "Bounded mapped O_RDONLY process reads and ordinary rendered GUI screenshot; no process writes, pauses, debugger or injected gameplay state.",
+    "samples": 184,
+    "seconds": 49.801,
+    "errors": 0,
+    "normal_gui_actions": [
+      "Control_L fire key to respawn once"
+    ]
+  },
+  "bot_roster_and_movement": {
+    "Bot_BobaFett": {
+      "slot": 2,
+      "network_id": 3,
+      "models": [
+        "kyh4.3do"
+      ],
+      "types": [
+        10
+      ],
+      "distinct_positions": 156,
+      "sectors": [
+        30,
+        31,
+        32,
+        34,
+        35,
+        37,
+        59,
+        104,
+        109
+      ],
+      "first_score": {
+        "kills": 4,
+        "deaths": 1,
+        "score": 4
+      },
+      "last_score": {
+        "kills": 8,
+        "deaths": 2,
+        "score": 8
+      }
+    },
+    "Bot_JanOrs": {
+      "slot": 1,
+      "network_id": 2,
+      "models": [
+        "kya10.3do"
+      ],
+      "types": [
+        10
+      ],
+      "distinct_positions": 131,
+      "sectors": [
+        27,
+        29,
+        30,
+        31,
+        32,
+        34,
+        37
+      ],
+      "first_score": {
+        "kills": 2,
+        "deaths": 3,
+        "score": 2
+      },
+      "last_score": {
+        "kills": 3,
+        "deaths": 5,
+        "score": 3
+      }
+    },
+    "Bot_Katarn": {
+      "slot": 4,
+      "network_id": 5,
+      "models": [
+        "ky.3do"
+      ],
+      "types": [
+        10
+      ],
+      "distinct_positions": 25,
+      "sectors": [
+        61,
+        110
+      ],
+      "first_score": {
+        "kills": 1,
+        "deaths": 0,
+        "score": 1
+      },
+      "last_score": {
+        "kills": 1,
+        "deaths": 1,
+        "score": 1
+      }
+    },
+    "Bot_Trooper": {
+      "slot": 5,
+      "network_id": 4,
+      "models": [
+        "kym13.3do"
+      ],
+      "types": [
+        10
+      ],
+      "distinct_positions": 181,
+      "sectors": [
+        44,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        94,
+        100
+      ],
+      "first_score": {
+        "kills": 2,
+        "deaths": 3,
+        "score": 2
+      },
+      "last_score": {
+        "kills": 3,
+        "deaths": 3,
+        "score": 3
+      }
+    }
+  },
+  "projectiles": {
+    "samples_with_projectiles": 131,
+    "max_simultaneously_sampled": 10,
+    "models": [
+      "bry0.3do",
+      "det0.3do",
+      "rpt0.3do"
+    ]
+  },
+  "chat": [
+    "Bot_JanOrs says 'I am adding that corner to the briefing.'"
+  ],
+  "native_human": {
+    "normal_respawn": {
+      "before_health": 0.0,
+      "after_health": 100.0,
+      "before_flags": "0x20300601",
+      "after_flags": "0x20300401",
+      "stock_model": "ky.3do"
+    },
+    "health_changes": [
+      {
+        "seconds": 0.0,
+        "health": 100.0
+      },
+      {
+        "seconds": 5.186,
+        "health": 99.74079895019531
+      },
+      {
+        "seconds": 5.446,
+        "health": 86.68476867675781
+      },
+      {
+        "seconds": 5.654,
+        "health": 58.83193588256836
+      },
+      {
+        "seconds": 6.362,
+        "health": 31.63192367553711
+      },
+      {
+        "seconds": 6.504,
+        "health": 18.031917572021484
+      },
+      {
+        "seconds": 6.802,
+        "health": 0.0
+      }
+    ],
+    "deaths_before": 1,
+    "deaths_after": 2,
+    "rendered_hud_kill_line": "NativeHuman was killed by Bot_BobaFett",
+    "normal_leave": "Escape > Abort > Yes; normal multiplayer scoreboard rendered; returned to menu."
+  },
+  "simultaneous_webclient": {
+    "samples_present": 114,
+    "name": "WebClient",
+    "network_id": 65537,
+    "deaths_before": 0,
+    "deaths_after": 1
+  },
+  "evidence_sha256": {
+    "native-samples.jsonl": "a9b4662f6f999d55be4b515f0eb4357ff8613cecfe4a0c45bf727b8fdb6a48b4",
+    "respawn.json": "ed6ee5e48e9b68273ea9078a36fcbdec4c50196b74040f4e69668f7d9152f67a",
+    "native-world.json": "76c9c46f0b6a4566dda25f19bcde4c636a2f071a8cc5704660b2f8659cf50c62",
+    "native-play.png": "d6ce2d133dfc60ebe2cecc7d81982e93c68d1adcb84182e166696fb811665f35",
+    "native-scoreboard.png": "ccecb3b8af66f91539a6e2746773c2c7f6d087bbc22a0e1db9ef9deaabab1b77"
+  },
+  "limits": [
+    "Remote actor health is a replicated field and is not interpreted as authoritative here.",
+    "Position spans can include normal respawns; this is replication evidence, not a navigation quality score.",
+    "Projectile indices may be reused; projectile observations are not a count of shots fired.",
+    "This test does not establish original retail DirectPlay compatibility; the retail runtime remains under diagnosis.",
+    "Stock JK1MP/m2.jkl rank-zero FFA only."
+  ],
+  "rendered_final_scoreboard": {
+    "Bot_BobaFett": {
+      "score": 12,
+      "kills": 12,
+      "deaths": 6,
+      "self_kills": 0
+    },
+    "Bot_JanOrs": {
+      "score": 6,
+      "kills": 6,
+      "deaths": 8,
+      "self_kills": 0
+    },
+    "Bot_Trooper": {
+      "score": 4,
+      "kills": 4,
+      "deaths": 4,
+      "self_kills": 0
+    },
+    "Bot_Katarn": {
+      "score": 3,
+      "kills": 3,
+      "deaths": 2,
+      "self_kills": 0
+    },
+    "NativeHuman": {
+      "score": 0,
+      "kills": 0,
+      "deaths": 2,
+      "self_kills": 0
+    },
+    "WebClient": {
+      "score": 0,
+      "kills": 0,
+      "deaths": 2,
+      "self_kills": 0
+    }
+  }
+}

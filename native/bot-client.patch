@@ -1,9 +1,9 @@
 diff --git a/src/AI/jkBot.c b/src/AI/jkBot.c
 new file mode 100644
-index 0000000..f45998c
+index 0000000..0bc5c11
 --- /dev/null
 +++ b/src/AI/jkBot.c
-@@ -0,0 +1,705 @@
+@@ -0,0 +1,716 @@
 +/*
 + * Ordinary-client multiplayer bot input driver, reconstructed October 2026.
 + * Copyright (C) OpenJKDF2 contributors.
@@ -247,14 +247,25 @@ index 0000000..f45998c
 +    SithSector *hint=a->sector;
 +    int dropping=(delta.z < -BOT_STEP_UP);
 +    if (length>3.5f || length<0.025f || delta.z>BOT_STEP_UP || delta.z < -BOT_MAX_DROP) return 0;
-+    rdVector3 raisedA=a->pos, raisedB=b->pos;
-+    raisedA.z+=0.065f; raisedB.z+=0.065f;
-+    if (dropping) raisedB.z=raisedA.z;
-+    if (!Bot_Clear(NULL,a->sector,raisedA,raisedB,0.058f,1)) return 0;
++    rdVector3 sweepA=a->pos, sweepB=b->pos;
++    if (dropping) sweepB.z=sweepA.z;
++    /* Test the actual body center first. Stock m2 sector110 is only0.20
++       units high: raising a0.058-radius sweep by0.065 invents a ceiling hit
++       even though the ordinary0.065-radius player fits there. */
++    if (!Bot_Clear(NULL,a->sector,sweepA,sweepB,0.058f,1)) {
++        rdVector3 raisedA=sweepA, raisedB=sweepB;
++        raisedA.z+=0.065f; raisedB.z+=0.065f;
++        /* Keep the previous small-step fallback only when both ends have
++           real vertical clearance. Ordinary jump input handles execution. */
++        if (!Bot_Clear(NULL,a->sector,a->pos,raisedA,0.058f,1) ||
++            !Bot_Clear(NULL,b->sector,b->pos,raisedB,0.058f,1) ||
++            !Bot_Clear(NULL,a->sector,raisedA,raisedB,0.058f,1)) return 0;
++    }
 +    int steps=(int)ceilf(length/0.22f);
 +    for (int i=1;i<=steps;i++) {
 +        rdVector3 p=Bot_Mix(a->pos,b->pos,(flex_t)i/(flex_t)steps), floor;
-+        p.z=Bot_Max(previousZ,p.z)+0.14f;
++        /* Keep the ray origin below low ceilings; body clearance is above. */
++        p.z=Bot_Max(previousZ,p.z)+0.02f;
 +        SithSector *floorSector;
 +        if (!Bot_Floor(p,hint,dropping ? BOT_MAX_DROP+0.3f : 0.52f,&floor,&floorSector)) return 0;
 +        if (floor.z-previousZ>BOT_STEP_UP || previousZ-floor.z>BOT_MAX_DROP) return 0;
@@ -513,7 +524,7 @@ index 0000000..f45998c
 +    *blockedAt=to;
 +    if (!Bot_Clear(self,self->sector,self->position,to,self->collideSize*0.85f,0)) return 0;
 +    rdVector3 floor, p=to; SithSector *sector;
-+    p.z+=0.12f;
++    p.z+=0.02f;
 +    if (!Bot_Floor(p,self->sector,allowDrop ? BOT_MAX_DROP+0.3f : 0.43f,&floor,&sector)) return 0;
 +    if (floor.z>self->position.z+BOT_STEP_UP) return 0;
 +    if (self->position.z-floor.z>(allowDrop ? BOT_MAX_DROP : 0.28f)) return 0;

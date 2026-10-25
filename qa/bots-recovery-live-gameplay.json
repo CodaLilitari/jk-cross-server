@@ -1,0 +1,940 @@
+{
+  "version": 1,
+  "kind": "bounded-live-client-observation",
+  "bot_binary_sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+  "engine_base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "scope": "Stock JK1MP/m2.jkl rank0 FFA. Four normal bot clients observed read-only. Native and browser UI qualification is recorded separately. No game-state injection.",
+  "inputs": [
+    {
+      "file": "mixed-f545-passive.jsonl",
+      "sha256": "d4df8c19542ac46d0ddcca1598cd65d974335b4db95a3ec8d321f9fb1268f2d5",
+      "bytes": 1405700,
+      "records": 716,
+      "read_errors": [
+        {
+          "bot": "jan_ors",
+          "error": "Route count outside bounds"
+        },
+        {
+          "bot": "jan_ors",
+          "error": "Route count outside bounds"
+        }
+      ],
+      "header": {
+        "kind": "bounded_read_only_bot_observation",
+        "sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+        "session": "session.json",
+        "duration_limit_seconds": 180,
+        "sample_period_seconds": 0.5,
+        "samples_non_atomic": true,
+        "state_modification": false,
+        "inventory_bins": {
+          "1-10": "stock JK weapons",
+          "11": "energy",
+          "12": "power",
+          "13": "battery",
+          "14": "mana",
+          "15": "rail charges",
+          "40": "bacta",
+          "60": "shields"
+        }
+      }
+    },
+    {
+      "file": "four-f545-passive.jsonl",
+      "sha256": "7aa75da03f0b0286e2e0349024498e074e2c71ef1ad5e9f615da64f659ae0819",
+      "bytes": 3620528,
+      "records": 1424,
+      "read_errors": [],
+      "header": {
+        "kind": "bounded_read_only_bot_observation",
+        "sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+        "session": "four-observer-session.json",
+        "duration_limit_seconds": 180,
+        "sample_period_seconds": 0.5,
+        "samples_non_atomic": true,
+        "state_modification": false,
+        "inventory_bins": {
+          "1-10": "stock JK weapons",
+          "11": "energy",
+          "12": "power",
+          "13": "battery",
+          "14": "mana",
+          "15": "rail charges",
+          "40": "bacta",
+          "60": "shields"
+        }
+      }
+    }
+  ],
+  "bots": [
+    {
+      "id": "boba_fett",
+      "pid": 38204,
+      "model_names": [
+        "kyh4.3do"
+      ],
+      "samples": 714,
+      "bot_time_range": [
+        94.647,
+        428.531
+      ],
+      "sectors": [
+        1,
+        3,
+        19,
+        20,
+        21,
+        22,
+        23,
+        29,
+        30,
+        31,
+        32,
+        34,
+        35,
+        36,
+        37,
+        44,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        61,
+        83,
+        104,
+        109
+      ],
+      "weapon_bins_observed": [
+        2,
+        6,
+        10
+      ],
+      "unique_observed_own_projectiles": 298,
+      "fire_held_samples": 202,
+      "own_kills_first_last": [
+        0,
+        9
+      ],
+      "own_deaths_first_last": [
+        0,
+        2
+      ],
+      "own_score_first_last": [
+        0,
+        9
+      ],
+      "own_health_range": [
+        0.0,
+        100.0
+      ],
+      "respawn_cycles": [
+        {
+          "death_count": 1,
+          "death_bot_time": 153.935,
+          "respawn_bot_time": 158.462,
+          "respawn_health": 100.0,
+          "respawn_sector": 56,
+          "respawn_position": [
+            -2.757589340209961,
+            -1.4342315196990967,
+            1.419409990310669
+          ]
+        },
+        {
+          "death_count": 2,
+          "death_bot_time": 348.581,
+          "respawn_bot_time": 353.08,
+          "respawn_health": 100.0,
+          "respawn_sector": 35,
+          "respawn_position": [
+            -8.403420448303223,
+            -1.7283203601837158,
+            0.9195082187652588
+          ]
+        }
+      ],
+      "ammo_consumption_examples": [
+        {
+          "time": 107.227,
+          "bin": 11,
+          "before": 108.0,
+          "after": 107.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 107.719,
+          "bin": 11,
+          "before": 107.0,
+          "after": 106.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 113.257,
+          "bin": 11,
+          "before": 106.0,
+          "after": 105.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 113.749,
+          "bin": 11,
+          "before": 105.0,
+          "after": 104.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 114.244,
+          "bin": 11,
+          "before": 104.0,
+          "after": 103.0,
+          "weapon": 2,
+          "fire_held": 1
+        }
+      ],
+      "ammo_gain_examples": [
+        {
+          "time": 105.709,
+          "bin": 11,
+          "before": 48.0,
+          "after": 108.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 129.755,
+          "bin": 15,
+          "before": 9.0,
+          "after": 12.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 130.26,
+          "bin": 15,
+          "before": 12.0,
+          "after": 18.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 140.35,
+          "bin": 11,
+          "before": 95.0,
+          "after": 155.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 164.498,
+          "bin": 11,
+          "before": 41.0,
+          "after": 60.0,
+          "weapon": 2,
+          "fire_held": 1
+        }
+      ]
+    },
+    {
+      "id": "jan_ors",
+      "pid": 38205,
+      "model_names": [
+        "kya10.3do"
+      ],
+      "samples": 712,
+      "bot_time_range": [
+        100.896,
+        434.865
+      ],
+      "sectors": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        27,
+        29,
+        30,
+        31,
+        32,
+        34,
+        35,
+        36,
+        37,
+        59,
+        61,
+        83,
+        109
+      ],
+      "weapon_bins_observed": [
+        2,
+        3,
+        6,
+        10
+      ],
+      "unique_observed_own_projectiles": 152,
+      "fire_held_samples": 154,
+      "own_kills_first_last": [
+        0,
+        3
+      ],
+      "own_deaths_first_last": [
+        0,
+        6
+      ],
+      "own_score_first_last": [
+        0,
+        3
+      ],
+      "own_health_range": [
+        0.0,
+        100.0
+      ],
+      "respawn_cycles": [
+        {
+          "death_count": 1,
+          "death_bot_time": 229.09,
+          "respawn_bot_time": 234.617,
+          "respawn_health": 100.0,
+          "respawn_sector": 61,
+          "respawn_position": [
+            -0.1032070592045784,
+            -0.9680761694908142,
+            0.11951019614934921
+          ]
+        },
+        {
+          "death_count": 2,
+          "death_bot_time": 274.041,
+          "respawn_bot_time": 278.569,
+          "respawn_health": 100.0,
+          "respawn_sector": 36,
+          "respawn_position": [
+            -8.435290336608887,
+            -1.2558001279830933,
+            0.919508159160614
+          ]
+        },
+        {
+          "death_count": 3,
+          "death_bot_time": 310.944,
+          "respawn_bot_time": 315.487,
+          "respawn_health": 100.0,
+          "respawn_sector": 27,
+          "respawn_position": [
+            -8.005108833312988,
+            0.213197723031044,
+            1.4195078611373901
+          ]
+        },
+        {
+          "death_count": 4,
+          "death_bot_time": 340.773,
+          "respawn_bot_time": 344.81,
+          "respawn_health": 100.0,
+          "respawn_sector": 27,
+          "respawn_position": [
+            -7.99663782119751,
+            0.2498674988746643,
+            1.4190561771392822
+          ]
+        },
+        {
+          "death_count": 5,
+          "death_bot_time": 374.555,
+          "respawn_bot_time": 379.144,
+          "respawn_health": 100.0,
+          "respawn_sector": 27,
+          "respawn_position": [
+            -7.9333109855651855,
+            0.2499823421239853,
+            1.64447820186615
+          ]
+        },
+        {
+          "death_count": 6,
+          "death_bot_time": 409.057,
+          "respawn_bot_time": 413.633,
+          "respawn_health": 100.0,
+          "respawn_sector": 36,
+          "respawn_position": [
+            -8.40914535522461,
+            -1.2061712741851807,
+            0.9195090532302856
+          ]
+        }
+      ],
+      "ammo_consumption_examples": [
+        {
+          "time": 114.472,
+          "bin": 11,
+          "before": 283.0,
+          "after": 282.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 120.502,
+          "bin": 11,
+          "before": 282.0,
+          "after": 281.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 120.999,
+          "bin": 11,
+          "before": 281.0,
+          "after": 280.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 121.499,
+          "bin": 11,
+          "before": 280.0,
+          "after": 279.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 122.001,
+          "bin": 11,
+          "before": 279.0,
+          "after": 278.0,
+          "weapon": 2,
+          "fire_held": 1
+        }
+      ],
+      "ammo_gain_examples": [
+        {
+          "time": 157.161,
+          "bin": 11,
+          "before": 272.0,
+          "after": 296.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 171.22,
+          "bin": 12,
+          "before": 225.0,
+          "after": 250.0,
+          "weapon": 3,
+          "fire_held": 0
+        },
+        {
+          "time": 171.732,
+          "bin": 12,
+          "before": 250.0,
+          "after": 300.0,
+          "weapon": 3,
+          "fire_held": 0
+        },
+        {
+          "time": 213.522,
+          "bin": 12,
+          "before": 300.0,
+          "after": 375.0,
+          "weapon": 3,
+          "fire_held": 0
+        },
+        {
+          "time": 235.646,
+          "bin": 11,
+          "before": 49.0,
+          "after": 73.0,
+          "weapon": 2,
+          "fire_held": 0
+        }
+      ]
+    },
+    {
+      "id": "kyle_katarn",
+      "pid": 40822,
+      "model_names": [
+        "ky.3do"
+      ],
+      "samples": 356,
+      "bot_time_range": [
+        57.83,
+        237.397
+      ],
+      "sectors": [
+        5,
+        6,
+        8,
+        9,
+        61,
+        110
+      ],
+      "weapon_bins_observed": [
+        2,
+        3
+      ],
+      "unique_observed_own_projectiles": 16,
+      "fire_held_samples": 15,
+      "own_kills_first_last": [
+        0,
+        1
+      ],
+      "own_deaths_first_last": [
+        0,
+        1
+      ],
+      "own_score_first_last": [
+        0,
+        1
+      ],
+      "own_health_range": [
+        0.0,
+        100.0
+      ],
+      "respawn_cycles": [
+        {
+          "death_count": 1,
+          "death_bot_time": 183.684,
+          "respawn_bot_time": 188.241,
+          "respawn_health": 100.0,
+          "respawn_sector": 61,
+          "respawn_position": [
+            -0.028767921030521393,
+            -0.43493223190307617,
+            0.119510218501091
+          ]
+        }
+      ],
+      "ammo_consumption_examples": [
+        {
+          "time": 107.904,
+          "bin": 11,
+          "before": 50.0,
+          "after": 49.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 108.923,
+          "bin": 11,
+          "before": 49.0,
+          "after": 48.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 109.423,
+          "bin": 11,
+          "before": 48.0,
+          "after": 47.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 109.927,
+          "bin": 11,
+          "before": 47.0,
+          "after": 46.0,
+          "weapon": 2,
+          "fire_held": 1
+        },
+        {
+          "time": 110.427,
+          "bin": 11,
+          "before": 46.0,
+          "after": 45.0,
+          "weapon": 2,
+          "fire_held": 1
+        }
+      ],
+      "ammo_gain_examples": [
+        {
+          "time": 189.768,
+          "bin": 12,
+          "before": 0.0,
+          "after": 75.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 212.618,
+          "bin": 11,
+          "before": 49.0,
+          "after": 73.0,
+          "weapon": 3,
+          "fire_held": 0
+        },
+        {
+          "time": 215.621,
+          "bin": 11,
+          "before": 73.0,
+          "after": 133.0,
+          "weapon": 3,
+          "fire_held": 0
+        },
+        {
+          "time": 218.161,
+          "bin": 15,
+          "before": 0.0,
+          "after": 9.0,
+          "weapon": 3,
+          "fire_held": 0
+        }
+      ]
+    },
+    {
+      "id": "stormtrooper",
+      "pid": 40824,
+      "model_names": [
+        "kym13.3do"
+      ],
+      "samples": 356,
+      "bot_time_range": [
+        51.64,
+        231.183
+      ],
+      "sectors": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        35,
+        44,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        58,
+        60,
+        61,
+        94,
+        100,
+        102,
+        109
+      ],
+      "weapon_bins_observed": [
+        2,
+        3
+      ],
+      "unique_observed_own_projectiles": 63,
+      "fire_held_samples": 78,
+      "own_kills_first_last": [
+        1,
+        3
+      ],
+      "own_deaths_first_last": [
+        0,
+        3
+      ],
+      "own_score_first_last": [
+        1,
+        3
+      ],
+      "own_health_range": [
+        0.0,
+        100.0
+      ],
+      "respawn_cycles": [
+        {
+          "death_count": 1,
+          "death_bot_time": 57.205,
+          "respawn_bot_time": 61.738,
+          "respawn_health": 100.0,
+          "respawn_sector": 61,
+          "respawn_position": [
+            -0.03708214685320854,
+            -0.5136517286300659,
+            0.11951935291290283
+          ]
+        },
+        {
+          "death_count": 2,
+          "death_bot_time": 82.497,
+          "respawn_bot_time": 87.029,
+          "respawn_health": 100.0,
+          "respawn_sector": 35,
+          "respawn_position": [
+            -8.397997856140137,
+            -1.7204068899154663,
+            0.9195071458816528
+          ]
+        },
+        {
+          "death_count": 3,
+          "death_bot_time": 94.135,
+          "respawn_bot_time": 98.171,
+          "respawn_health": 100.0,
+          "respawn_sector": 58,
+          "respawn_position": [
+            1.000789761543274,
+            -1.498717188835144,
+            1.4185439348220825
+          ]
+        }
+      ],
+      "ammo_consumption_examples": [
+        {
+          "time": 52.141,
+          "bin": 11,
+          "before": 306.0,
+          "after": 302.0,
+          "weapon": 3,
+          "fire_held": 1
+        },
+        {
+          "time": 52.653,
+          "bin": 11,
+          "before": 302.0,
+          "after": 298.0,
+          "weapon": 3,
+          "fire_held": 1
+        },
+        {
+          "time": 53.171,
+          "bin": 11,
+          "before": 298.0,
+          "after": 294.0,
+          "weapon": 3,
+          "fire_held": 0
+        },
+        {
+          "time": 54.182,
+          "bin": 11,
+          "before": 294.0,
+          "after": 292.0,
+          "weapon": 3,
+          "fire_held": 1
+        },
+        {
+          "time": 54.656,
+          "bin": 11,
+          "before": 292.0,
+          "after": 288.0,
+          "weapon": 3,
+          "fire_held": 1
+        }
+      ],
+      "ammo_gain_examples": [
+        {
+          "time": 145.172,
+          "bin": 11,
+          "before": 50.0,
+          "after": 110.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 146.666,
+          "bin": 12,
+          "before": 0.0,
+          "after": 25.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 147.169,
+          "bin": 12,
+          "before": 25.0,
+          "after": 75.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 148.674,
+          "bin": 12,
+          "before": 75.0,
+          "after": 125.0,
+          "weapon": 2,
+          "fire_held": 0
+        },
+        {
+          "time": 149.172,
+          "bin": 12,
+          "before": 125.0,
+          "after": 150.0,
+          "weapon": 2,
+          "fire_held": 0
+        }
+      ]
+    }
+  ],
+  "simultaneous_peer_evidence": {
+    "observer": "boba_fett",
+    "bot_time": 350.088,
+    "peers": [
+      {
+        "slot": 1,
+        "name": "Bot_JanOrs",
+        "network_id": 2,
+        "model": "kya10.3do",
+        "flags": 540017921,
+        "kills": 3,
+        "deaths": 4,
+        "score": 3
+      },
+      {
+        "slot": 2,
+        "name": "Bot_BobaFett",
+        "network_id": 3,
+        "model": "kyh4.3do",
+        "flags": 540018177,
+        "kills": 6,
+        "deaths": 2,
+        "score": 6
+      },
+      {
+        "slot": 3,
+        "name": "NativeHuman",
+        "network_id": 6,
+        "model": "ky.3do",
+        "flags": 540018433,
+        "kills": 0,
+        "deaths": 2,
+        "score": 0
+      },
+      {
+        "slot": 4,
+        "name": "Bot_Katarn",
+        "network_id": 5,
+        "model": "ky.3do",
+        "flags": 538969345,
+        "kills": 1,
+        "deaths": 0,
+        "score": 1
+      },
+      {
+        "slot": 5,
+        "name": "Bot_Trooper",
+        "network_id": 4,
+        "model": "kym13.3do",
+        "flags": 540017921,
+        "kills": 2,
+        "deaths": 3,
+        "score": 2
+      },
+      {
+        "slot": 6,
+        "name": "WebClient",
+        "network_id": 65537,
+        "model": "ky.3do",
+        "flags": 538969345,
+        "kills": 0,
+        "deaths": 0,
+        "score": 0
+      }
+    ]
+  },
+  "browser_respawn_evidence": {
+    "observer": "boba_fett",
+    "death": {
+      "bot_time": 367.753,
+      "peer": {
+        "slot": 6,
+        "name": "WebClient",
+        "network_id": 65537,
+        "kills": 0,
+        "deaths": 1,
+        "score": 0,
+        "idx": 91,
+        "guid": 91,
+        "flags": 538969857,
+        "type": 10,
+        "sector": 44,
+        "position": [
+          -8.251206398010254,
+          -1.4501725435256958,
+          1.4201076030731201
+        ],
+        "health": 0.0,
+        "model": "ky.3do"
+      }
+    },
+    "alive_after": {
+      "bot_time": 425.493,
+      "peer": {
+        "slot": 6,
+        "name": "WebClient",
+        "network_id": 65537,
+        "kills": 0,
+        "deaths": 1,
+        "score": 0,
+        "idx": 91,
+        "guid": 91,
+        "flags": 540017921,
+        "type": 10,
+        "sector": 35,
+        "position": [
+          -8.399999618530273,
+          -1.7499500513076782,
+          0.920117199420929
+        ],
+        "health": 0.0,
+        "model": "ky.3do"
+      }
+    },
+    "note": "Own browser100HP and normal Space input are independently recorded in browser UI QA. Remote health remains0; DEAD clear and changed position identify new life."
+  },
+  "limits": [
+    "Memory reads are non-atomic, at0.5s intervals. Projectile counts are lower bounds, not total shots fired.",
+    "Remote actor health may remain stale after respawn; own health plus synchronized flags is used for death/respawn analysis.",
+    "Two windows overlap; projectile identifiers are deduplicated per bot process.",
+    "These captures do not establish original-retail human or MotS qualification.",
+    "Low-ceiling navigation defect remains in this exact f545 build: Kyle could not leave stock spawn sector110 until death and normal respawn moved him elsewhere."
+  ],
+  "browser_kill_feed_evidence": {
+    "binary_sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+    "records": [
+      {
+        "observer": "boba_fett",
+        "message": "WebClient was killed by Bot_BobaFett",
+        "preceding_status": "BOT_STATUS name=Bot_BobaFett t=170.3 sector=52 pos=-5.293,-1.751,1.420 health=100.0 weapon=2 target=3 goal=48 path=0/4 kills=0 deaths=1",
+        "following_status": "BOT_STATUS name=Bot_BobaFett t=180.3 sector=49 pos=-5.912,-1.876,1.420 health=100.0 weapon=2 target=-1 goal=386 path=0/1 kills=1 deaths=1"
+      },
+      {
+        "observer": "boba_fett",
+        "message": "WebClient was killed by Bot_Trooper",
+        "preceding_status": "BOT_STATUS name=Bot_BobaFett t=370.7 sector=37 pos=-6.854,-1.495,-0.181 health=100.0 weapon=2 target=4 goal=335 path=0/2 kills=7 deaths=2",
+        "following_status": "BOT_STATUS name=Bot_BobaFett t=380.7 sector=37 pos=-6.969,-1.084,-0.060 health=95.6 weapon=2 target=1 goal=-1 path=0/0 kills=8 deaths=2"
+      },
+      {
+        "observer": "boba_fett",
+        "message": "WebClient was killed by Bot_BobaFett",
+        "preceding_status": "BOT_STATUS name=Bot_BobaFett t=440.7 sector=109 pos=-8.404,-1.432,0.919 health=100.0 weapon=2 target=-1 goal=49 path=0/1 kills=10 deaths=3",
+        "following_status": "BOT_STATUS name=Bot_BobaFett t=450.8 sector=34 pos=-7.170,-1.220,0.007 health=75.0 weapon=10 target=1 goal=-1 path=0/0 kills=10 deaths=3"
+      },
+      {
+        "observer": "jan_ors",
+        "message": "WebClient was killed by Bot_BobaFett",
+        "preceding_status": "BOT_STATUS name=Bot_JanOrs t=180.5 sector=61 pos=-0.205,0.235,0.354 health=64.3 weapon=3 target=-1 goal=503 path=0/1 kills=1 deaths=0",
+        "following_status": "BOT_STATUS name=Bot_JanOrs t=190.5 sector=61 pos=0.798,0.611,0.120 health=64.3 weapon=3 target=-1 goal=470 path=0/1 kills=1 deaths=0"
+      },
+      {
+        "observer": "jan_ors",
+        "message": "WebClient was killed by Bot_Trooper",
+        "preceding_status": "BOT_STATUS name=Bot_JanOrs t=370.8 sector=34 pos=-6.994,-0.905,0.290 health=25.3 weapon=10 target=2 goal=318 path=0/1 kills=3 deaths=4",
+        "following_status": "BOT_STATUS name=Bot_JanOrs t=380.9 sector=27 pos=-8.001,0.205,1.649 health=100.0 weapon=2 target=5 goal=-1 path=0/0 kills=3 deaths=5"
+      },
+      {
+        "observer": "jan_ors",
+        "message": "WebClient was killed by Bot_BobaFett",
+        "preceding_status": "BOT_STATUS name=Bot_JanOrs t=441.0 sector=37 pos=-7.114,-1.342,-0.180 health=99.9 weapon=2 target=-1 goal=123 path=0/1 kills=4 deaths=6",
+        "following_status": "BOT_STATUS name=Bot_JanOrs t=451.0 sector=37 pos=-7.098,-1.164,-0.180 health=85.6 weapon=2 target=2 goal=333 path=0/1 kills=4 deaths=6"
+      }
+    ],
+    "interpretation": "Original game kill feed attributes initial slot3 browser death to Boba, slot6 first death to Trooper, and slot6 post-respawn death to Boba. Same-frame score changes alone were not used for final attribution. Browser UI timing and same-ID respawn are recorded separately."
+  }
+}

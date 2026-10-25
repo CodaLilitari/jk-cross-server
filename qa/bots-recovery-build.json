@@ -2,10 +2,18 @@
   "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
   "patched_files_byte_equal": 11,
   "relink_inputs_hash_matched": 218,
-  "original_binary_sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
-  "relinked_binary_sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+  "original_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+  "relinked_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
   "byte_identical_relink": true,
   "full_clean_source_build_executed": false,
   "bundled_libsmacker_recompiled_and_relinked": true,
-  "libsmacker_warning_note": "Existing upstream format warnings; rebuild/link completed."
+  "libsmacker_warning_note": "Existing upstream format warnings; rebuild/link completed.",
+  "unchanged_server_artifacts": {
+    "bin/linux-x86_64/openjkdf2": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
+    "bin/linux-x86_64/libGameNetworkingSockets.so": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+    "native/crossplay-dedicated.patch": "879dd33e4161815802d6fd7ce21b0f298e0ce9300197efab1ab75c7c2ffa8856",
+    "native/relink-linux-x86_64.tar.gz": "7003e80ae105ebf1baee5b670922a2f3670559c31092c356e56b0d4ef81ae5e0",
+    "directplay/gateway.exe": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3"
+  },
+  "server_manager_and_adapter_source_unchanged": true
 }
