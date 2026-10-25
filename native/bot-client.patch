@@ -1,0 +1,1410 @@
+diff --git a/src/AI/jkBot.c b/src/AI/jkBot.c
+new file mode 100644
+index 0000000..f45998c
+--- /dev/null
++++ b/src/AI/jkBot.c
+@@ -0,0 +1,705 @@
++/*
++ * Ordinary-client multiplayer bot input driver, reconstructed October 2026.
++ * Copyright (C) OpenJKDF2 contributors.
++ * Permission to use, copy, modify, and/or distribute this software for any
++ * purpose without fee is hereby granted.
++ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
++ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
++ * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ *
++ * Reads the local client world and produces normal movement, weapon-selection,
++ * primary-fire, jump and activate inputs. Physics, COGs, pickups, ammunition,
++ * combat, networking and respawn remain the original game's responsibility.
++ */
++#include "AI/jkBot.h"
++#include "Engine/sithCollision.h"
++#include "Engine/sithIntersect.h"
++#include "Gameplay/sithInventory.h"
++#include "Gameplay/sithPlayer.h"
++#include "World/sithWorld.h"
++#include "World/sithSector.h"
++#include "World/sithSurface.h"
++#include "World/jkPlayer.h"
++#include "globals.h"
++#include <math.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <string.h>
++
++#define BOT_NODES 768
++#define BOT_EDGES 12
++#define BOT_CANDIDATES 24
++#define BOT_PATH 128
++#define BOT_FOOT_HEIGHT 0.120114f
++#define BOT_STEP_UP 0.25f
++#define BOT_MAX_DROP 1.55f
++#define BOT_DEG 57.295779513f
++
++typedef struct BotEdge { int to; flex_t cost; int drop; } BotEdge;
++typedef struct BotNode {
++    rdVector3 pos;
++    SithSector *sector;
++    int item, nEdges;
++    BotEdge edges[BOT_EDGES];
++    flex_t visited, avoidUntil;
++} BotNode;
++
++static struct {
++    int enabled, joined;
++    char name[32];
++    uint32_t random;
++    flex_t now, nextLog, nextScan, nextPlan, nextSelect, nextJump, nextUse;
++    flex_t reactionUntil, seenAt, deadAt, stuckAt, nextRecovery;
++    flex_t previousHealth, hurtUntil;
++    flex_t axes[INPUT_FUNC_MAX];
++    unsigned char keys[INPUT_FUNC_MAX], previous[INPUT_FUNC_MAX], presses[INPUT_FUNC_MAX];
++    SithWorld *world;
++    BotNode nodes[BOT_NODES];
++    int nNodes, buildNode, graphDone, graphEdges;
++    int targetSlot, targetGuid, goal, route[BOT_PATH], routeCount, routePos;
++    int wasDead, recoverySide;
++    rdVector3 seenPos, progressPos;
++    flex_t goalSetAt, strafeUntil;
++    int strafeSide;
++} bot;
++
++static flex_t Bot_Min(flex_t a, flex_t b) { return a<b ? a : b; }
++static flex_t Bot_Max(flex_t a, flex_t b) { return a>b ? a : b; }
++static flex_t Bot_Clamp(flex_t v, flex_t a, flex_t b) { return Bot_Min(b,Bot_Max(a,v)); }
++static rdVector3 Bot_Sub(rdVector3 a, rdVector3 b)
++{ rdVector3 v={a.x-b.x,a.y-b.y,a.z-b.z}; return v; }
++static flex_t Bot_Dot(rdVector3 a, rdVector3 b) { return a.x*b.x+a.y*b.y+a.z*b.z; }
++static flex_t Bot_Len(rdVector3 a) { return sqrtf(Bot_Dot(a,a)); }
++static flex_t Bot_Distance(rdVector3 a, rdVector3 b) { return Bot_Len(Bot_Sub(a,b)); }
++static flex_t Bot_Horizontal(rdVector3 a) { return sqrtf(a.x*a.x+a.y*a.y); }
++static rdVector3 Bot_Mix(rdVector3 a, rdVector3 b, flex_t t)
++{ rdVector3 v={a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,a.z+(b.z-a.z)*t}; return v; }
++static uint32_t Bot_Random(void)
++{
++    uint32_t x=bot.random;
++    x^=x<<13; x^=x>>17; x^=x<<5;
++    bot.random=x ? x : 0x93b2b1d1u;
++    return bot.random;
++}
++static flex_t Bot_Unit(void) { return (Bot_Random()&65535u)/65535.0f; }
++static int Bot_SectorSafe(SithSector *s)
++{
++    return s && !(s->flags&(SITH_SECTOR_FALLDEATH|SITH_SECTOR_UNDERWATER|SITH_SECTOR_NOACTORENTER));
++}
++static SithSector *Bot_SectorAt(rdVector3 *p, SithSector *hint)
++{
++    if (hint && sithIntersect_IsSphereInSector(p,0.0f,hint)) return hint;
++    return sithSector_FindSectorAtPos(bot.world,p);
++}
++
++/* Every collision query owns and balances one stack level. */
++static int Bot_Clear(SithThing *self, SithSector *sector, rdVector3 from,
++                     rdVector3 to, flex_t radius, int staticOnly)
++{
++    rdVector3 direction=Bot_Sub(to,from);
++    flex_t distance=Bot_Len(direction);
++    SithCollision *hit;
++    int clear=1;
++    if (!sector) return 0;
++    if (distance<0.001f) return 1;
++    direction.x/=distance; direction.y/=distance; direction.z/=distance;
++    sithCollision_SearchForCollisions(sector,staticOnly ? NULL : self,&from,&direction,
++        distance,radius,RAYCAST_200|(staticOnly ? RAYCAST_1 : 0));
++    while ((hit=sithCollision_PopStack())!=NULL) {
++        if (hit->distance>distance-0.008f) continue;
++        /* Ordinary physics prevents body overlap. A melee player must be
++           allowed to approach its opponent inside the steering probe radius. */
++        if (!staticOnly && self && self->actorParams.pPlayer &&
++            (self->actorParams.pPlayer->curWeaponID==SITHBIN_FISTS ||
++             self->actorParams.pPlayer->curWeaponID==SITHBIN_LIGHTSABER) &&
++            bot.targetSlot>=0 && bot.targetSlot<(int)jkPlayer_maxPlayers &&
++            bot.targetSlot<JKPLAYER_NUM_INFOS && (hit->type&SITHCOLLISION_THING) &&
++            hit->pThingCollided==jkPlayer_playerInfos[bot.targetSlot].pLocalPlayer) continue;
++        if ((hit->type&SITHCOLLISION_WORLD) ||
++            ((hit->type&SITHCOLLISION_THING) && hit->pThingCollided!=self &&
++             hit->pThingCollided && hit->pThingCollided->type!=SITH_THING_ITEM &&
++             hit->pThingCollided->type!=SITH_THING_WEAPON &&
++             hit->pThingCollided->type!=SITH_THING_PARTICLE)) { clear=0; break; }
++        if ((hit->type&SITHCOLLISION_ADJOINCROSS) && hit->surface &&
++            hit->surface->pAdjoin && !Bot_SectorSafe(hit->surface->pAdjoin->sector)) { clear=0; break; }
++    }
++    sithCollision_DecreaseStackLevel();
++    return clear;
++}
++
++static int Bot_Floor(rdVector3 p, SithSector *hint, flex_t depth,
++                     rdVector3 *standing, SithSector **outSector)
++{
++    rdVector3 down={0,0,-1};
++    SithCollision *hit;
++    SithSector *sector=Bot_SectorAt(&p,hint);
++    int found=0;
++    if (!Bot_SectorSafe(sector)) return 0;
++    sithCollision_SearchForCollisions(sector,NULL,&p,&down,depth,0.0f,RAYCAST_1|RAYCAST_200);
++    while ((hit=sithCollision_PopStack())!=NULL) {
++        if ((hit->type&SITHCOLLISION_ADJOINCROSS) && hit->surface &&
++            hit->surface->pAdjoin && !Bot_SectorSafe(hit->surface->pAdjoin->sector)) break;
++        if (!(hit->type&SITHCOLLISION_WORLD)) continue;
++        if (!hit->surface || hit->hitNorm.z<0.55f ||
++            (hit->surface->flags&(SITH_SURFACE_WATER|SITH_SURFACE_VERYDEEPWATER))) break;
++        *standing=p; standing->z=p.z-hit->distance+BOT_FOOT_HEIGHT;
++        *outSector=hit->surface->pSector;
++        found=Bot_SectorSafe(*outSector); break;
++    }
++    sithCollision_DecreaseStackLevel();
++    return found;
++}
++
++static int Bot_AddNode(rdVector3 p, SithSector *sector, int item, flex_t depth)
++{
++    rdVector3 floor; SithSector *floorSector;
++    if (bot.nNodes==BOT_NODES || !Bot_SectorSafe(sector)) return -1;
++    p.z+=0.04f;
++    if (!Bot_Floor(p,sector,depth,&floor,&floorSector)) return -1;
++    if (!sithIntersect_IsSphereInSector(&floor,0.02f,floorSector)) return -1;
++    for (int i=0;i<bot.nNodes;i++) {
++        if (bot.nodes[i].sector==floorSector &&
++            Bot_Distance(bot.nodes[i].pos,floor)<(item>=0 ? 0.035f : 0.12f)) {
++            if (item>=0) bot.nodes[i].item=item;
++            return i;
++        }
++    }
++    int index=bot.nNodes++;
++    BotNode *n=&bot.nodes[index];
++    memset(n,0,sizeof(*n));
++    n->pos=floor; n->sector=floorSector; n->item=item; n->visited=-120.0f;
++    return index;
++}
++
++static int Bot_FaceCenter(SithSurface *surface, rdVector3 *center)
++{
++    rdFace *f=&surface->surfaceInfo.face;
++    if (!f->numVertices || !f->vertexPosIdx) return 0;
++    *center=(rdVector3){0,0,0};
++    for (unsigned int j=0;j<f->numVertices;j++) {
++        int vi=f->vertexPosIdx[j];
++        if (vi<0 || vi>=bot.world->numVertices) return 0;
++        rdVector3 v=bot.world->aVertices[vi];
++        center->x+=v.x; center->y+=v.y; center->z+=v.z;
++    }
++    center->x/=f->numVertices; center->y/=f->numVertices; center->z/=f->numVertices;
++    return 1;
++}
++
++static void Bot_BuildNodes(SithThing *self)
++{
++    bot.nNodes=bot.buildNode=bot.graphDone=bot.graphEdges=0;
++    bot.goal=-1; bot.routeCount=bot.routePos=0;
++    Bot_AddNode(self->position,self->sector,-1,0.65f);
++    /* Preserve authored spawn and pickup locations before generic geometry. */
++    for (int i=0;i<bot.world->numThings;i++) {
++        SithThing *t=&bot.world->aThings[i];
++        if (t->type==SITH_THING_PLAYER || t->type==SITH_THING_ITEM)
++            Bot_AddNode(t->position,t->sector,t->type==SITH_THING_ITEM ? i : -1,0.75f);
++    }
++    /* Door things are absent from static graph construction. Live movement
++       still collides with them and presses ordinary ACTIVATE. */
++    for (int i=0;i<bot.world->numSurfaces && bot.nNodes<BOT_NODES;i++) {
++        SithSurface *s=&bot.world->surfaces[i];
++        rdVector3 p;
++        if (!s->pAdjoin || !(s->pAdjoin->flags&SITHSURF_ADJOIN_ALLOW_MOVEMENT) ||
++            (s->pAdjoin->flags&SITHSURF_ADJOIN_ALLOW_AI_ONLY) ||
++            !Bot_SectorSafe(s->pAdjoin->sector) || !Bot_FaceCenter(s,&p)) continue;
++        p.x+=s->surfaceInfo.face.normal.x*0.14f;
++        p.y+=s->surfaceInfo.face.normal.y*0.14f;
++        p.z+=s->surfaceInfo.face.normal.z*0.14f;
++        Bot_AddNode(p,s->pSector,-1,2.5f);
++    }
++    for (int i=0;i<bot.world->numSurfaces && bot.nNodes<BOT_NODES;i++) {
++        SithSurface *s=&bot.world->surfaces[i];
++        rdVector3 p;
++        if (s->pAdjoin || !(s->flags&SITH_SURFACE_HAS_COLLISION) ||
++            s->surfaceInfo.face.normal.z<0.55f || !Bot_FaceCenter(s,&p)) continue;
++        p.z+=BOT_FOOT_HEIGHT;
++        Bot_AddNode(p,s->pSector,-1,0.5f);
++        rdFace *f=&s->surfaceInfo.face;
++        if (f->numVertices>=3) for (unsigned int j=0;j<f->numVertices && j<6;j++) {
++            rdVector3 near=Bot_Mix(p,bot.world->aVertices[f->vertexPosIdx[j]],0.68f);
++            near.z+=BOT_FOOT_HEIGHT*0.68f;
++            Bot_AddNode(near,s->pSector,-1,0.5f);
++        }
++    }
++    fprintf(stderr,"BOT_NAV nodes=%d map=%s name=%s\n",bot.nNodes,bot.world->map_jkl_fname,bot.name);
++    fflush(stderr);
++}
++
++/* Sample supporting floors: no water/void crossing, bounded rises and
++   explicitly directed drops. Floors and clearance are checked separately. */
++static int Bot_Walkable(BotNode *a, BotNode *b, int *isDrop)
++{
++    rdVector3 delta=Bot_Sub(b->pos,a->pos);
++    flex_t length=Bot_Horizontal(delta), previousZ=a->pos.z;
++    SithSector *hint=a->sector;
++    int dropping=(delta.z < -BOT_STEP_UP);
++    if (length>3.5f || length<0.025f || delta.z>BOT_STEP_UP || delta.z < -BOT_MAX_DROP) return 0;
++    rdVector3 raisedA=a->pos, raisedB=b->pos;
++    raisedA.z+=0.065f; raisedB.z+=0.065f;
++    if (dropping) raisedB.z=raisedA.z;
++    if (!Bot_Clear(NULL,a->sector,raisedA,raisedB,0.058f,1)) return 0;
++    int steps=(int)ceilf(length/0.22f);
++    for (int i=1;i<=steps;i++) {
++        rdVector3 p=Bot_Mix(a->pos,b->pos,(flex_t)i/(flex_t)steps), floor;
++        p.z=Bot_Max(previousZ,p.z)+0.14f;
++        SithSector *floorSector;
++        if (!Bot_Floor(p,hint,dropping ? BOT_MAX_DROP+0.3f : 0.52f,&floor,&floorSector)) return 0;
++        if (floor.z-previousZ>BOT_STEP_UP || previousZ-floor.z>BOT_MAX_DROP) return 0;
++        previousZ=floor.z; hint=floorSector;
++    }
++    if (fabsf(previousZ-b->pos.z)>0.2f) return 0;
++    *isDrop=dropping;
++    return 1;
++}
++
++static void Bot_BuildGraphStep(void)
++{
++    /* Four nodes/tick bounds startup cost without stalling network service. */
++    for (int work=0;work<4 && bot.buildNode<bot.nNodes;work++,bot.buildNode++) {
++        int i=bot.buildNode, candidates[BOT_CANDIDATES];
++        flex_t distances[BOT_CANDIDATES];
++        BotNode *a=&bot.nodes[i];
++        for (int k=0;k<BOT_CANDIDATES;k++) { candidates[k]=-1; distances[k]=1e20f; }
++        for (int j=0;j<bot.nNodes;j++) {
++            if (i==j) continue;
++            rdVector3 d=Bot_Sub(bot.nodes[j].pos,a->pos);
++            if (d.z>BOT_STEP_UP || d.z < -BOT_MAX_DROP) continue;
++            flex_t distance=Bot_Len(d);
++            if (distance>3.8f) continue;
++            for (int k=0;k<BOT_CANDIDATES;k++) if (distance<distances[k]) {
++                for (int m=BOT_CANDIDATES-1;m>k;m--) { candidates[m]=candidates[m-1]; distances[m]=distances[m-1]; }
++                candidates[k]=j; distances[k]=distance; break;
++            }
++        }
++        for (int k=0;k<BOT_CANDIDATES && a->nEdges<BOT_EDGES;k++) {
++            int j=candidates[k], drop=0;
++            if (j<0) break;
++            if (!Bot_Walkable(a,&bot.nodes[j],&drop)) continue;
++            BotEdge *edge=&a->edges[a->nEdges++];
++            edge->to=j; edge->drop=drop; edge->cost=distances[k]+(drop ? 1.8f : 0.0f);
++            bot.graphEdges++;
++        }
++    }
++    if (!bot.graphDone && bot.buildNode==bot.nNodes) {
++        bot.graphDone=1;
++        fprintf(stderr,"BOT_NAV_READY nodes=%d directed_edges=%d name=%s\n",bot.nNodes,bot.graphEdges,bot.name);
++        fflush(stderr);
++    }
++}
++
++static const char *Bot_ItemName(SithThing *item)
++{
++#ifdef SITH_DEBUG_STRUCT_NAMES
++    if (item->pTemplate) return item->pTemplate->aName;
++    return item->aName;
++#else
++    if (item->renderData.model3) return item->renderData.model3->filename;
++    return "";
++#endif
++}
++
++static flex_t Bot_ItemValue(SithThing *self, int itemIndex)
++{
++    if (itemIndex<0 || itemIndex>=bot.world->numThings) return 0;
++    SithThing *item=&bot.world->aThings[itemIndex];
++    if (item->type!=SITH_THING_ITEM || (item->flags&(SITH_TF_DISABLED|SITH_TF_DESTROYED))) return 0;
++    const char *name=Bot_ItemName(item);
++    int weapon=0;
++    if (strstr(name,"strifle") || strstr(name,"stgun")) weapon=SITHBIN_STORMTROOPER_RIFLE;
++    else if (strstr(name,"repeater") || strstr(name,"rpt")) weapon=SITHBIN_REPEATER;
++    else if (strstr(name,"crossbow") || strstr(name,"bowc")) weapon=SITHBIN_TUSKEN_PROD;
++    else if (strstr(name,"railgun")) weapon=SITHBIN_RAIL_DETONATOR;
++    else if (strstr(name,"concrifle") || strstr(name,"concussion")) weapon=SITHBIN_CONCUSSION_RIFLE;
++    if (weapon) {
++        if (!sithInventory_IsInventoryAvailable(self,weapon)) return 7.0f;
++        int ammo=(weapon==SITHBIN_STORMTROOPER_RIFLE) ? SITHBIN_ENERGY :
++                 weapon==SITHBIN_RAIL_DETONATOR ? SITHBIN_RAILCHARGES : SITHBIN_POWER;
++        return sithInventory_GetInventory(self,ammo)<30.0f ? 2.5f : 0.2f;
++    }
++    if (strstr(name,"health") || strstr(name,"med") || strstr(name,"bacta"))
++        return self->actorParams.health<65.0f ? 8.0f : self->actorParams.health<100.0f ? 2.0f : 0.0f;
++    if (strstr(name,"shield")) return sithInventory_GetInventory(self,SITHBIN_SHIELDS)<100.0f ? 4.0f : 0.15f;
++    if (strstr(name,"railcharges")) return sithInventory_GetInventory(self,SITHBIN_RAILCHARGES)<10.0f ? 1.5f : 0.1f;
++    if (strstr(name,"energy")) return sithInventory_GetInventory(self,SITHBIN_ENERGY)<120.0f ? 3.0f : 0.1f;
++    if (strstr(name,"power")) return sithInventory_GetInventory(self,SITHBIN_POWER)<100.0f ? 3.0f : 0.1f;
++    if (strstr(name,"thermal")) return sithInventory_GetInventory(self,SITHBIN_THERMAL_DETONATOR)<10.0f ? 1.5f : 0.1f;
++    return 0.25f;
++}
++
++static int Bot_Nearest(SithThing *self)
++{
++    int best=-1;
++    flex_t distance=1e20f;
++    for (int pass=0;pass<2 && best<0;pass++) for (int i=0;i<bot.nNodes;i++) {
++        BotNode *n=&bot.nodes[i];
++        if (!pass && n->sector!=self->sector) continue;
++        flex_t d=Bot_Distance(n->pos,self->position);
++        if (d>=distance || d>2.0f || fabsf(n->pos.z-self->position.z)>0.3f) continue;
++        if (!Bot_Clear(self,self->sector,self->position,n->pos,0.04f,1)) continue;
++        best=i; distance=d;
++    }
++    return best;
++}
++
++static void Bot_Plan(SithThing *self)
++{
++    flex_t distance[BOT_NODES];
++    int parent[BOT_NODES];
++    unsigned char settled[BOT_NODES];
++    int start=Bot_Nearest(self), goal=-1;
++    if (start<0) return;
++    bot.nextPlan=bot.now+1.0f; bot.nodes[start].visited=bot.now;
++    for (int i=0;i<bot.nNodes;i++) { distance[i]=1e20f; parent[i]=-1; settled[i]=0; }
++    distance[start]=0;
++    for (int iter=0;iter<bot.nNodes;iter++) {
++        int v=-1;
++        for (int i=0;i<bot.nNodes;i++) if (!settled[i] && (v<0 || distance[i]<distance[v])) v=i;
++        if (v<0 || distance[v]>=1e19f) break;
++        settled[v]=1;
++        BotNode *n=&bot.nodes[v];
++        for (int k=0;k<n->nEdges;k++) {
++            BotEdge *e=&n->edges[k];
++            if (e->drop && self->actorParams.health<30.0f) continue;
++            flex_t d=distance[v]+e->cost;
++            if (bot.nodes[e->to].avoidUntil>bot.now) d+=50.0f;
++            if (d<distance[e->to]) { distance[e->to]=d; parent[e->to]=v; }
++        }
++    }
++    /* Keep an unreached goal even after it becomes the nearest start node.
++       Discarding it there causes endless pickup approach oscillation. */
++    if (bot.goal>=0 && bot.goal<bot.nNodes && distance[bot.goal]<1e19f &&
++        bot.nodes[bot.goal].avoidUntil<=bot.now && bot.now-bot.goalSetAt<14.0f &&
++        Bot_Distance(self->position,bot.nodes[bot.goal].pos)>0.11f) goal=bot.goal;
++    if (goal<0) {
++        flex_t best=-1e20f;
++        for (int i=0;i<bot.nNodes;i++) {
++            BotNode *n=&bot.nodes[i];
++            if (distance[i]>=1e19f || n->avoidUntil>bot.now ||
++                Bot_Distance(self->position,n->pos)<0.20f) continue;
++            flex_t unseen=Bot_Clamp((bot.now-n->visited)/30.0f,0.0f,1.0f);
++            flex_t value=Bot_ItemValue(self,n->item)+2.4f*unseen+Bot_Unit()*0.4f;
++            flex_t score=value/(0.8f+distance[i]*0.42f);
++            if (score>best) { best=score; goal=i; }
++        }
++        if (goal>=0) bot.goalSetAt=bot.now;
++    }
++    bot.goal=goal; bot.routeCount=bot.routePos=0;
++    if (goal<0) return;
++    int reverse[BOT_PATH], n=0, v=goal;
++    while (v>=0 && v!=start && n<BOT_PATH) { reverse[n++]=v; v=parent[v]; }
++    if (v!=start) { bot.goal=-1; return; }
++    if (!n) bot.route[bot.routeCount++]=goal;
++    while (n>0) bot.route[bot.routeCount++]=reverse[--n];
++}
++
++static int Bot_EnemyAllowed(SithThing *self, int slot)
++{
++    if (slot<0 || slot>=(int)jkPlayer_maxPlayers || slot>=JKPLAYER_NUM_INFOS) return 0;
++    SithPlayer *p=&jkPlayer_playerInfos[slot];
++    SithThing *t=p->pLocalPlayer;
++    if (!(p->flags&1) || !p->playerNetId || !t || t==self || t->type!=SITH_THING_PLAYER ||
++        (t->flags&(SITH_TF_DEAD|SITH_TF_DISABLED|SITH_TF_DESTROYED)) || !t->sector) return 0;
++    /* Remote actor health may remain zero after respawn. Only synchronized
++       player/type/death flags determine remote eligibility. */
++    if ((sithNet_MultiModeFlags&MULTIMODEFLAG_TEAMS) && self->actorParams.pPlayer &&
++        p->teamNum==self->actorParams.pPlayer->teamNum) return 0;
++    if (t->jkFlags&JKFLAG_PERSUASION) return 0;
++    return 1;
++}
++
++static SithThing *Bot_UpdateTarget(SithThing *self)
++{
++    SithThing *target=NULL;
++    if (Bot_EnemyAllowed(self,bot.targetSlot)) {
++        target=jkPlayer_playerInfos[bot.targetSlot].pLocalPlayer;
++        if ((int)target->guid!=bot.targetGuid) target=NULL;
++    }
++    if (bot.now>=bot.nextScan) {
++        bot.nextScan=bot.now+0.18f;
++        int bestSlot=-1;
++        flex_t best=1e20f;
++        for (unsigned int i=0;i<jkPlayer_maxPlayers && i<JKPLAYER_NUM_INFOS;i++) {
++            if (!Bot_EnemyAllowed(self,(int)i)) continue;
++            SithThing *t=jkPlayer_playerInfos[i].pLocalPlayer;
++            rdVector3 diff=Bot_Sub(t->position,self->position);
++            flex_t d=Bot_Len(diff), forward=Bot_Dot(diff,self->orient.lvec);
++            if (d>20.0f || (d>0.6f && forward/d < -0.12f && t!=target && bot.now>=bot.hurtUntil)) continue;
++            if (!sithCollision_HasLOS(self,t,0)) continue;
++            flex_t score=d*(t==target ? 0.65f : 1.0f);
++            if (score<best) { best=score; bestSlot=(int)i; }
++        }
++        if (bestSlot>=0) {
++            SithThing *next=jkPlayer_playerInfos[bestSlot].pLocalPlayer;
++            if (next!=target) bot.reactionUntil=bot.now+0.22f+Bot_Unit()*0.2f;
++            bot.targetSlot=bestSlot; bot.targetGuid=(int)next->guid;
++            bot.seenPos=next->position; bot.seenAt=bot.now; target=next;
++        } else if (!target || bot.now-bot.seenAt>1.7f) {
++            bot.targetSlot=-1; target=NULL;
++        }
++    }
++    return target;
++}
++
++static int Bot_HasWeapon(SithThing *self, int weapon)
++{
++    if (!sithInventory_IsInventoryAvailable(self,weapon) || sithInventory_GetInventory(self,weapon)<=0.0f) return 0;
++    switch (weapon) {
++        case SITHBIN_BRYARPISTOL: case SITHBIN_STORMTROOPER_RIFLE:
++            return sithInventory_GetInventory(self,SITHBIN_ENERGY)>=2.0f;
++        case SITHBIN_TUSKEN_PROD: case SITHBIN_REPEATER:
++            return sithInventory_GetInventory(self,SITHBIN_POWER)>=3.0f;
++        case SITHBIN_CONCUSSION_RIFLE: return sithInventory_GetInventory(self,SITHBIN_POWER)>=8.0f;
++        case SITHBIN_RAIL_DETONATOR: return sithInventory_GetInventory(self,SITHBIN_RAILCHARGES)>=1.0f;
++        default: return 1;
++    }
++}
++
++static int Bot_SelectWeapon(SithThing *self, flex_t distance)
++{
++    int preference[]={SITHBIN_REPEATER,SITHBIN_STORMTROOPER_RIFLE,SITHBIN_TUSKEN_PROD,
++        SITHBIN_BRYARPISTOL,SITHBIN_LIGHTSABER,SITHBIN_FISTS};
++    int chosen=SITHBIN_FISTS;
++    if (distance<0.48f && Bot_HasWeapon(self,SITHBIN_LIGHTSABER)) chosen=SITHBIN_LIGHTSABER;
++    else if (distance>3.2f && Bot_HasWeapon(self,SITHBIN_CONCUSSION_RIFLE)) chosen=SITHBIN_CONCUSSION_RIFLE;
++    else if (distance>3.5f && Bot_HasWeapon(self,SITHBIN_RAIL_DETONATOR)) chosen=SITHBIN_RAIL_DETONATOR;
++    else for (unsigned int i=0;i<sizeof(preference)/sizeof(preference[0]);i++) {
++        if (Bot_HasWeapon(self,preference[i])) { chosen=preference[i]; break; }
++    }
++    int current=sithInventory_GetCurrentWeapon(self);
++    if (current!=chosen && bot.now>=bot.nextSelect) {
++        bot.keys[INPUT_FUNC_SELECT1+chosen-1]=1;
++        bot.nextSelect=bot.now+0.75f;
++    }
++    return current;
++}
++
++static flex_t Bot_Aim(SithThing *self, rdVector3 at, int combat)
++{
++    rdVector3 d=Bot_Sub(at,self->position);
++    flex_t horizontal=Bot_Horizontal(d);
++    if (horizontal<0.001f) return 180.0f;
++    flex_t yaw=-atan2f(Bot_Dot(d,self->orient.rvec),Bot_Dot(d,self->orient.lvec))*BOT_DEG;
++    flex_t pitch=atan2f(d.z,horizontal)*BOT_DEG-self->actorParams.headPYR.x;
++    flex_t yawRate=Bot_Max(45.0f,self->actorParams.maxRotVelocity);
++    bot.axes[INPUT_FUNC_TURN]=Bot_Clamp(yaw*(combat ? 5.0f : 4.0f)/yawRate,-0.90f,0.90f);
++    bot.axes[INPUT_FUNC_PITCH]=Bot_Clamp(pitch*4.0f/90.0f,-0.8f,0.8f);
++    return Bot_Max(fabsf(yaw),fabsf(pitch));
++}
++
++static int Bot_SafeDirection(SithThing *self, rdVector3 direction, int allowDrop,
++                             flex_t remaining, rdVector3 *blockedAt)
++{
++    flex_t length=Bot_Horizontal(direction);
++    if (length<0.001f) return 0;
++    direction.x/=length; direction.y/=length; direction.z=0;
++    rdVector3 to=self->position;
++    /* Probe beyond stopping distance, not merely the next frame. */
++    flex_t lookahead=0.20f+Bot_Min(0.16f,Bot_Horizontal(self->physicsParams.vel)*0.15f);
++    lookahead=Bot_Min(lookahead,Bot_Max(0.08f,remaining));
++    to.x+=direction.x*lookahead; to.y+=direction.y*lookahead;
++    *blockedAt=to;
++    if (!Bot_Clear(self,self->sector,self->position,to,self->collideSize*0.85f,0)) return 0;
++    rdVector3 floor, p=to; SithSector *sector;
++    p.z+=0.12f;
++    if (!Bot_Floor(p,self->sector,allowDrop ? BOT_MAX_DROP+0.3f : 0.43f,&floor,&sector)) return 0;
++    if (floor.z>self->position.z+BOT_STEP_UP) return 0;
++    if (self->position.z-floor.z>(allowDrop ? BOT_MAX_DROP : 0.28f)) return 0;
++    return 1;
++}
++
++static void Bot_Move(SithThing *self, rdVector3 desired, int allowDrop)
++{
++    rdVector3 blocked;
++    flex_t len=Bot_Horizontal(desired);
++    if (len<0.001f) return;
++    desired.x/=len; desired.y/=len; desired.z=0;
++    if (!Bot_SafeDirection(self,desired,allowDrop,len,&blocked)) {
++        if (bot.now>=bot.nextUse) { bot.keys[INPUT_FUNC_ACTIVATE]=1; bot.nextUse=bot.now+0.8f; }
++        /* Steer around players/props without blind strafing over ledges. */
++        int found=0;
++        static const flex_t angles[]={0.45f,-0.45f,0.85f,-0.85f};
++        for (unsigned int i=0;i<sizeof(angles)/sizeof(angles[0]);i++) {
++            flex_t a=angles[i]*(bot.recoverySide ? bot.recoverySide : 1);
++            rdVector3 side={desired.x*cosf(a)-desired.y*sinf(a),desired.x*sinf(a)+desired.y*cosf(a),0};
++            if (Bot_SafeDirection(self,side,0,len,&blocked)) { desired=side; found=1; break; }
++        }
++        if (!found) {
++            rdVector3 p=self->position, floor; SithSector *sector;
++            p.z+=0.10f;
++            if (self->attach_flags && bot.now>=bot.nextJump && Bot_Floor(p,self->sector,0.4f,&floor,&sector)) {
++                bot.keys[INPUT_FUNC_JUMP]=1; bot.nextJump=bot.now+1.5f;
++            }
++            return;
++        }
++    }
++    bot.axes[INPUT_FUNC_FORWARD]=Bot_Clamp(Bot_Dot(desired,self->orient.lvec),-0.65f,1.0f);
++    bot.axes[INPUT_FUNC_SLIDE]=Bot_Clamp(Bot_Dot(desired,self->orient.rvec),-1.0f,1.0f);
++}
++
++static void Bot_Navigate(SithThing *self)
++{
++    if (bot.now>=bot.nextPlan || bot.goal<0 || bot.routePos>=bot.routeCount) Bot_Plan(self);
++    if (bot.goal<0 || bot.routePos>=bot.routeCount) { bot.axes[INPUT_FUNC_TURN]=0.35f; return; }
++    int nodeIndex=bot.route[bot.routePos];
++    BotNode *node=&bot.nodes[nodeIndex];
++    rdVector3 d=Bot_Sub(node->pos,self->position);
++    if (Bot_Horizontal(d)<0.11f && fabsf(d.z)<0.18f) {
++        node->visited=bot.now; bot.routePos++;
++        if (bot.routePos>=bot.routeCount) {
++            if (bot.goal>=0) bot.nodes[bot.goal].avoidUntil=bot.now+3.0f;
++            bot.goal=-1; bot.nextPlan=0; return;
++        }
++        nodeIndex=bot.route[bot.routePos]; node=&bot.nodes[nodeIndex];
++        d=Bot_Sub(node->pos,self->position);
++    }
++    int allowDrop=0;
++    int from=(bot.routePos>0) ? bot.route[bot.routePos-1] : Bot_Nearest(self);
++    if (from>=0) for (int i=0;i<bot.nodes[from].nEdges;i++) {
++        BotEdge *e=&bot.nodes[from].edges[i];
++        if (e->to==nodeIndex && e->drop && self->actorParams.health>=30.0f) allowDrop=1;
++    }
++    rdVector3 aim=node->pos;
++    aim.z=self->position.z;
++    Bot_Aim(self,aim,0); Bot_Move(self,d,allowDrop);
++}
++
++static void Bot_Combat(SithThing *self, SithThing *target)
++{
++    if (!sithCollision_HasLOS(self,target,0)) { Bot_Navigate(self); return; }
++    bot.seenPos=target->position; bot.seenAt=bot.now;
++    rdVector3 d=Bot_Sub(target->position,self->position);
++    flex_t distance=Bot_Len(d);
++    int weapon=Bot_SelectWeapon(self,distance);
++    int melee=(weapon==SITHBIN_LIGHTSABER || weapon==SITHBIN_FISTS);
++    rdVector3 aim=target->position;
++    aim.x+=sinf(bot.now*1.3f+(bot.random&255))*0.006f;
++    aim.y+=cosf(bot.now*1.1f+(bot.random&255))*0.006f;
++    flex_t error=Bot_Aim(self,aim,1);
++    if (bot.now>=bot.reactionUntil && error<7.0f && (!melee || distance<0.65f) &&
++        (!(weapon==SITHBIN_CONCUSSION_RIFLE || weapon==SITHBIN_RAIL_DETONATOR ||
++           weapon==SITHBIN_THERMAL_DETONATOR) || distance>3.0f)) bot.keys[INPUT_FUNC_FIRE1]=1;
++    if (bot.now>=bot.strafeUntil) {
++        bot.strafeSide=(Bot_Random()&1u) ? 1 : -1;
++        bot.strafeUntil=bot.now+1.1f+Bot_Unit()*1.0f;
++    }
++    flex_t h=Bot_Horizontal(d);
++    if (h>0.001f) {
++        d.x/=h; d.y/=h; d.z=0;
++        flex_t forward=melee ? 1.0f : distance>2.5f ? 0.5f : distance<0.75f ? -0.5f : 0.0f;
++        rdVector3 move={d.x*forward-d.y*0.55f*bot.strafeSide,
++                       d.y*forward+d.x*0.55f*bot.strafeSide,0};
++        if (melee && distance<0.16f) move=(rdVector3){0,0,0};
++        Bot_Move(self,move,0);
++    }
++}
++
++static void Bot_Recovery(SithThing *self)
++{
++    /* Vertical jumps at an obstruction are not navigation progress. */
++    if (Bot_Horizontal(Bot_Sub(self->position,bot.progressPos))>0.13f) {
++        bot.progressPos=self->position; bot.stuckAt=bot.now; return;
++    }
++    if (bot.now-bot.stuckAt<2.0f || bot.now<bot.nextRecovery) return;
++    bot.recoverySide=(Bot_Random()&1u) ? 1 : -1; bot.nextRecovery=bot.now+1.5f;
++    if (bot.routePos<bot.routeCount) bot.nodes[bot.route[bot.routePos]].avoidUntil=bot.now+6.0f;
++    if (bot.goal>=0) bot.nodes[bot.goal].avoidUntil=bot.now+7.0f;
++    bot.goal=-1; bot.routeCount=0; bot.nextPlan=0;
++    bot.keys[INPUT_FUNC_ACTIVATE]=1;
++    if (self->attach_flags && bot.now>=bot.nextJump) {
++        bot.keys[INPUT_FUNC_JUMP]=1; bot.nextJump=bot.now+1.5f;
++    }
++}
++
++int jkBot_IsEnabled(void) { return bot.enabled; }
++
++void jkBot_Configure(const char *name, const char *skin)
++{
++    (void)skin;
++    memset(&bot,0,sizeof(bot)); bot.enabled=1;
++    snprintf(bot.name,sizeof(bot.name),"%s",name ? name : "Bot_Player");
++    bot.random=0x714a21fdu;
++    for (const unsigned char *p=(const unsigned char *)bot.name;*p;p++) bot.random=(bot.random^*p)*16777619u;
++    if (!bot.random) bot.random=1;
++    bot.goal=bot.targetSlot=-1;
++}
++
++void jkBot_OnJoined(void)
++{
++    bot.joined=1; bot.world=NULL; bot.now=0; bot.nextLog=10.0f;
++    bot.targetSlot=-1; bot.goal=-1; bot.routeCount=bot.routePos=0;
++    bot.wasDead=0; bot.nextScan=bot.nextPlan=bot.nextSelect=0;
++    memset(bot.axes,0,sizeof(bot.axes)); memset(bot.keys,0,sizeof(bot.keys));
++    memset(bot.previous,0,sizeof(bot.previous)); memset(bot.presses,0,sizeof(bot.presses));
++}
++
++void jkBot_Tick(flex_t dt)
++{
++    memcpy(bot.previous,bot.keys,sizeof(bot.keys));
++    memset(bot.axes,0,sizeof(bot.axes)); memset(bot.keys,0,sizeof(bot.keys));
++    memset(bot.presses,0,sizeof(bot.presses));
++    if (!bot.enabled || !bot.joined || !sithNet_isMulti || (g_submodeFlags&8) ||
++        !sithWorld_g_pCurrentWorld || !sithPlayer_g_pLocalPlayerThing || !sithPlayer_g_pLocalPlayer) return;
++    if (!isfinite(dt) || dt<=0) return;
++    bot.now+=Bot_Min(dt,0.25f);
++    SithThing *self=sithPlayer_g_pLocalPlayerThing;
++    if (self->type!=SITH_THING_PLAYER || !self->sector || !self->actorParams.pPlayer) return;
++    if (bot.world!=sithWorld_g_pCurrentWorld) {
++        bot.world=sithWorld_g_pCurrentWorld;
++        Bot_BuildNodes(self); bot.progressPos=self->position; bot.stuckAt=bot.now;
++    }
++    if (!bot.graphDone) Bot_BuildGraphStep();
++    int dead=(self->flags&SITH_TF_DEAD)!=0 || self->actorParams.health<=0;
++    if (!dead && !bot.wasDead && bot.previousHealth>self->actorParams.health+0.5f) {
++        bot.hurtUntil=bot.now+2.5f;
++        bot.nextScan=0;
++    }
++    bot.previousHealth=self->actorParams.health;
++    if (dead) {
++        if (!bot.wasDead) { bot.deadAt=bot.now; bot.targetSlot=-1; bot.goal=-1; }
++        /* QOL respawn accepts a press followed by release. */
++        if (bot.now-bot.deadAt>1.5f && fmodf(bot.now-bot.deadAt,1.4f)<0.18f)
++            bot.keys[INPUT_FUNC_ACTIVATE]=1;
++    } else {
++        if (bot.wasDead) {
++            bot.goal=-1; bot.routeCount=0; bot.nextPlan=0; bot.targetSlot=-1;
++            bot.progressPos=self->position; bot.stuckAt=bot.now;
++            fprintf(stderr,"BOT_RESPAWN name=%s health=%.1f\n",bot.name,(double)self->actorParams.health);
++            fflush(stderr);
++        }
++        SithThing *target=Bot_UpdateTarget(self);
++        if (target) Bot_Combat(self,target);
++        else { Bot_SelectWeapon(self,2.0f); Bot_Navigate(self); }
++        Bot_Recovery(self);
++    }
++    bot.wasDead=dead;
++    for (int i=0;i<INPUT_FUNC_MAX;i++) bot.presses[i]=bot.keys[i] && !bot.previous[i];
++    if (bot.now>=bot.nextLog) {
++        bot.nextLog=bot.now+10.0f;
++        fprintf(stderr,"BOT_STATUS name=%s t=%.1f sector=%u pos=%.3f,%.3f,%.3f health=%.1f weapon=%d target=%d goal=%d path=%d/%d kills=%d deaths=%d\n",
++            bot.name,(double)bot.now,self->sector->id,(double)self->position.x,(double)self->position.y,
++            (double)self->position.z,(double)self->actorParams.health,sithInventory_GetCurrentWeapon(self),
++            bot.targetSlot,bot.goal,bot.routePos,bot.routeCount,sithPlayer_g_pLocalPlayer->numKills,
++            sithPlayer_g_pLocalPlayer->numKilled);
++        fflush(stderr);
++    }
++}
++
++flex_t jkBot_GetAxis(int functionId)
++{
++    return functionId>=0 && functionId<INPUT_FUNC_MAX ? bot.axes[functionId] : 0.0f;
++}
++
++int jkBot_GetKey(int functionId, int *presses)
++{
++    if (presses) *presses=0;
++    if (functionId<0 || functionId>=INPUT_FUNC_MAX) return 0;
++    if (presses) { *presses=bot.presses[functionId]; bot.presses[functionId]=0; }
++    return bot.keys[functionId];
++}
+diff --git a/src/AI/jkBot.h b/src/AI/jkBot.h
+new file mode 100644
+index 0000000..b19a6b4
+--- /dev/null
++++ b/src/AI/jkBot.h
+@@ -0,0 +1,11 @@
++#ifndef _JKBOT_H
++#define _JKBOT_H
++#include "types.h"
++/* One ordinary local player per process: synthesize input only. */
++int jkBot_IsEnabled(void);
++void jkBot_Configure(const char *name, const char *skin);
++void jkBot_OnJoined(void);
++void jkBot_Tick(flex_t dt);
++flex_t jkBot_GetAxis(int functionId);
++int jkBot_GetKey(int functionId, int *presses);
++#endif
+diff --git a/src/AI/jkBotPersona.c b/src/AI/jkBotPersona.c
+new file mode 100644
+index 0000000..d94f22c
+--- /dev/null
++++ b/src/AI/jkBotPersona.c
+@@ -0,0 +1,155 @@
++/* Copyright (c) 2026 Coda Lilitari. SPDX-License-Identifier: MIT */
++#include "AI/jkBotPersona.h"
++#include "AI/jkBot.h"
++#include "Gameplay/sithPlayer.h"
++#include "Dss/sithMulti.h"
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <stdint.h>
++#include <time.h>
++#ifdef PLATFORM_POSIX
++#include <fcntl.h>
++#include <sys/file.h>
++#include <unistd.h>
++#endif
++
++#define BOT_LINES 16
++#define BOT_TEXT 111
++enum { CHAT_SPAWN, CHAT_KILL, CHAT_DEATH, CHAT_AMBIENT, CHAT_EVENTS };
++static const char *eventNames[CHAT_EVENTS] = {"spawn", "kill", "death", "ambient"};
++static char lines[CHAT_EVENTS][BOT_LINES][BOT_TEXT];
++static int counts[CHAT_EVENTS], lastLine[CHAT_EVENTS];
++static int enabled, joined, lastKills, lastDeaths, pending;
++static double nextChat, eventAt, phase;
++static uint32_t rng;
++static char gatePath[4096];
++
++static double Persona_Now(void)
++{
++#ifdef PLATFORM_POSIX
++    struct timespec ts;
++    if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0)
++        return (double)ts.tv_sec + ts.tv_nsec / 1000000000.0;
++#endif
++    return (double)clock() / CLOCKS_PER_SEC;
++}
++static uint32_t Persona_Random(void)
++{
++    rng ^= rng << 13; rng ^= rng >> 17; rng ^= rng << 5;
++    return rng;
++}
++/* Shared by exactly one roster invocation. Fail closed on a missing gate. */
++static int Persona_Gate(double now)
++{
++#ifdef PLATFORM_POSIX
++    double last = 0;
++    char buf[80];
++    int allowed = 0;
++    int fd = open(gatePath, O_RDWR | O_CREAT | O_CLOEXEC | O_NOFOLLOW, 0600);
++    if (fd < 0) return 0;
++    if (flock(fd, LOCK_EX | LOCK_NB) == 0) {
++        ssize_t n = read(fd, buf, sizeof(buf) - 1);
++        if (n >= 0) {
++            buf[n] = 0;
++            char *end = NULL;
++            if (n) last = strtod(buf, &end);
++            if ((!n || (end != buf && last >= 0 && last <= now)) &&
++                (!n || now - last >= 35.0)) {
++                int len = snprintf(buf, sizeof(buf), "%.6f\n", now);
++                if (lseek(fd, 0, SEEK_SET) == 0 && ftruncate(fd, 0) == 0 &&
++                    write(fd, buf, (size_t)len) == len) allowed = 1;
++            }
++        }
++        flock(fd, LOCK_UN);
++    }
++    close(fd);
++    return allowed;
++#else
++    (void)now;
++    return 0;
++#endif
++}
++void jkBotPersona_Configure(void)
++{
++    const char *path = getenv("JK_BOT_PERSONA_FILE");
++    const char *gate = getenv("JK_BOT_CHAT_LOCK");
++    const char *off = getenv("JK_BOT_TAUNTS");
++    const char *start = getenv("JK_BOT_CHAT_PHASE");
++    char row[256];
++    FILE *f;
++    enabled = joined = 0; pending = CHAT_SPAWN; phase = 15.0;
++    memset(counts, 0, sizeof(counts));
++    for (int i = 0; i < CHAT_EVENTS; ++i) lastLine[i] = -1;
++    if (!jkBot_IsEnabled() || (off && !strcmp(off, "0")) || !path || !gate ||
++        !*gate || strlen(gate) >= sizeof(gatePath)) return;
++    if (start) {
++        char *end;
++        double value = strtod(start, &end);
++        if (*end == 0 && value >= 15.0 && value <= 600.0) phase = value;
++    }
++    f = fopen(path, "r");
++    if (!f) return;
++    while (fgets(row, sizeof(row), f)) {
++        size_t len = strlen(row);
++        if (len && row[len - 1] != '\n' && !feof(f)) {
++            int c; while ((c = fgetc(f)) != '\n' && c != EOF) {}
++            continue;
++        }
++        while (len && (row[len - 1] == '\n' || row[len - 1] == '\r')) row[--len] = 0;
++        char *text = strchr(row, '\t');
++        if (!text) continue;
++        *text++ = 0;
++        len = strlen(text);
++        if (!len || len >= BOT_TEXT) continue;
++        int valid = 1;
++        for (size_t i = 0; i < len; ++i)
++            if ((unsigned char)text[i] < 32 || (unsigned char)text[i] > 126) valid = 0;
++        if (!valid) continue;
++        for (int i = 0; i < CHAT_EVENTS; ++i) {
++            if (!strcmp(row, eventNames[i]) && counts[i] < BOT_LINES) {
++                memcpy(lines[i][counts[i]++], text, len + 1);
++                break;
++            }
++        }
++    }
++    fclose(f);
++    if (!counts[CHAT_AMBIENT]) return;
++    strcpy(gatePath, gate);
++    rng = (uint32_t)(Persona_Now() * 1000000.0);
++#ifdef PLATFORM_POSIX
++    rng ^= (uint32_t)getpid();
++#endif
++    if (!rng) rng = 0x9e3779b9u;
++    enabled = 1;
++}
++void jkBotPersona_OnJoined(void)
++{
++    if (!enabled || !sithPlayer_g_pLocalPlayer) return;
++    lastKills = sithPlayer_g_pLocalPlayer->numKills;
++    lastDeaths = sithPlayer_g_pLocalPlayer->numKilled;
++    eventAt = Persona_Now(); nextChat = eventAt + phase;
++    pending = CHAT_SPAWN; joined = 1;
++}
++void jkBotPersona_Tick(float dt)
++{
++    (void)dt;
++    SithPlayer *player = sithPlayer_g_pLocalPlayer;
++    SithThing *thing = sithPlayer_g_pLocalPlayerThing;
++    if (!enabled || !joined || !player || !thing) return;
++    double now = Persona_Now();
++    if (player->numKilled > lastDeaths) { pending = CHAT_DEATH; eventAt = now; }
++    else if (player->numKills > lastKills) { pending = CHAT_KILL; eventAt = now; }
++    lastKills = player->numKills; lastDeaths = player->numKilled;
++    if (now < nextChat || (thing->flags & (SITH_TF_DEAD | SITH_TF_DISABLED | SITH_TF_DESTROYED))) return;
++    int event = pending;
++    if (event < 0 || (event != CHAT_SPAWN && now - eventAt > 25.0) || !counts[event]) event = CHAT_AMBIENT;
++    if (!Persona_Gate(now)) { nextChat = now + 5.0 + (Persona_Random() % 8); return; }
++    int choice = (int)(Persona_Random() % (uint32_t)counts[event]);
++    if (counts[event] > 1 && choice == lastLine[event]) choice = (choice + 1) % counts[event];
++    lastLine[event] = choice;
++    sithMulti_SendChat(lines[event][choice], -1, playerThingIdx);
++    printf("BOT_CHAT event=%s text=%s\n", eventNames[event], lines[event][choice]); fflush(stdout);
++    pending = -1;
++    nextChat = now + 90.0 + (Persona_Random() % 61);
++}
+diff --git a/src/AI/jkBotPersona.h b/src/AI/jkBotPersona.h
+new file mode 100644
+index 0000000..ab67201
+--- /dev/null
++++ b/src/AI/jkBotPersona.h
+@@ -0,0 +1,6 @@
++#ifndef JK_BOT_PERSONA_H
++#define JK_BOT_PERSONA_H
++void jkBotPersona_Configure(void);
++void jkBotPersona_OnJoined(void);
++void jkBotPersona_Tick(float dt);
++#endif
+diff --git a/src/Devices/sithControl.c b/src/Devices/sithControl.c
+index 20f1ce8..9f3b141 100644
+--- a/src/Devices/sithControl.c
++++ b/src/Devices/sithControl.c
+@@ -1,4 +1,6 @@
+ #include "sithControl.h"
++#include "AI/jkBot.h"
++#include "AI/jkBotPersona.h"
+ 
+ #include "General/sithStrTable.h"
+ #include "Platform/stdControl.h"
+@@ -266,6 +268,12 @@ void sithControl_Update(flex_t secDeltaTime, int msecDeltaTime)
+     if ( !sithControl_bOpened )
+         return;
+ 
++    if (jkBot_IsEnabled()) {
++        jkBot_Tick(secDeltaTime);
++        jkBotPersona_Tick(secDeltaTime);
++        stdControl_bControlsIdle = 0;
++    }
++
+     // MOTS altered
+     if ( !sithPlayer_g_pLocalPlayerThing
+       || (sithPlayer_g_pLocalPlayerThing->actorParams.flags & (Main_bMotsCompat ? (SITH_AF_NOIDLECAMERA|SITH_AF_SCOPEHUD|SITH_AF_ARACHNID) : SITH_AF_NOIDLECAMERA))
+@@ -708,6 +716,7 @@ int sithControl_WriteConf()
+ 
+ int sithControl_GetKey(int keyId, int *pState)
+ {
++    if (jkBot_IsEnabled()) return jkBot_GetKey(keyId, pState);
+     uint32_t v2; // ebx
+     stdControlKeyInfoEntry *v3; // esi
+     unsigned int v4; // eax
+@@ -750,6 +759,7 @@ void sithControl_FinishRead()
+ 
+ flex_t sithControl_GetKeyAsAxisNormalized(int axisId)
+ {
++    if (jkBot_IsEnabled()) return jkBot_GetAxis(axisId);
+     uint32_t v1; // ebp
+     stdControlKeyInfoEntry *entryIter; // esi
+     int v3; // ebx
+@@ -818,6 +828,7 @@ LABEL_23:
+ 
+ flex_t sithControl_GetKeyAsAxis(int axisId)
+ {
++    if (jkBot_IsEnabled()) return jkBot_GetAxis(axisId);
+     uint32_t v1; // ebp
+     stdControlKeyInfoEntry *v2; // esi
+     int v3; // ebx
+@@ -870,6 +881,8 @@ LABEL_18:
+ 
+ flex_t sithControl_GetAxis(int axisId)
+ {
++    /* Bot aim uses the ordinary key-axis path, never physical mouse deltas. */
++    if (jkBot_IsEnabled()) return 0.0;
+     stdControlKeyInfoEntry *v1; // edi
+     stdControlKeyInfoEntry *v2; // esi
+     uint32_t v3; // ebp
+diff --git a/src/Gui/jkGUIDialog.c b/src/Gui/jkGUIDialog.c
+index a5bda0e..6ba690b 100644
+--- a/src/Gui/jkGUIDialog.c
++++ b/src/Gui/jkGUIDialog.c
+@@ -1,4 +1,5 @@
+ #include "jkGUIDialog.h"
++#include "AI/jkBot.h"
+ #include "Main/stdCapture.h"
+ #include "Win95/Window.h"
+ 
+@@ -74,6 +75,12 @@ tVBuffer *jkGuiDialog_sub_416900()
+ 
+ int jkGuiDialog_OkCancelDialog(char16_t *stringA, char16_t *stringB)
+ {
++    if (jkBot_IsEnabled()) {
++        char detail[512] = {0};
++        stdString_WcharToChar(detail, stringB, sizeof(detail) - 1);
++        fprintf(stderr, "BOT_JOIN_REJECTED game dialog: %s\n", detail);
++        exit(6);
++    }
+     if (Window_bRenderProbe) {
+         char detail[1024]; stdString_WcharToChar(detail, stringB, sizeof(detail)-1); detail[sizeof(detail)-1] = 0;
+         fprintf(stderr, "RENDERPROBE_FAILED unexpected game confirmation: %s\n", detail); exit(5);
+@@ -127,6 +134,12 @@ int jkGuiDialog_OkCancelDialog(char16_t *stringA, char16_t *stringB)
+ 
+ void jkGuiDialog_ErrorDialog(char16_t *stringA, char16_t *stringB)
+ {
++    if (jkBot_IsEnabled()) {
++        char detail[512] = {0};
++        stdString_WcharToChar(detail, stringB, sizeof(detail) - 1);
++        fprintf(stderr, "BOT_JOIN_REJECTED game dialog: %s\n", detail);
++        exit(6);
++    }
+     if (Window_bRenderProbe) {
+         char detail[1024]; stdString_WcharToChar(detail, stringB, sizeof(detail)-1); detail[sizeof(detail)-1] = 0;
+         fprintf(stderr, "RENDERPROBE_FAILED game error: %s\n", detail); exit(5);
+@@ -176,6 +189,12 @@ void jkGuiDialog_ErrorDialog(char16_t *stringA, char16_t *stringB)
+ 
+ int jkGuiDialog_YesNoDialog(char16_t *stringA, char16_t *stringB)
+ {
++    if (jkBot_IsEnabled()) {
++        char detail[512] = {0};
++        stdString_WcharToChar(detail, stringB, sizeof(detail) - 1);
++        fprintf(stderr, "BOT_JOIN_REJECTED game dialog: %s\n", detail);
++        exit(6);
++    }
+     int v2; // edi
+     int v5; // esi
+ 
+diff --git a/src/Gui/jkGUIMultiplayer.c b/src/Gui/jkGUIMultiplayer.c
+index 5e12ab8..4f2d1f4 100644
+--- a/src/Gui/jkGUIMultiplayer.c
++++ b/src/Gui/jkGUIMultiplayer.c
+@@ -1,4 +1,10 @@
+ #include "jkGUIMultiplayer.h"
++#include "AI/jkBot.h"
++#include "AI/jkBotPersona.h"
++#include "Gameplay/sithPlayer.h"
++#ifdef SDL2_RENDER
++#include <SDL3/SDL.h>
++#endif
+ 
+ #include "General/stdBitmap.h"
+ #include "General/stdFont.h"
+@@ -391,8 +397,78 @@ LABEL_29:
+     }
+ }
+ 
++/* Ordinary native client discovery/open path with only its GUI replaced. */
++int jkGuiMultiplayer_BotConnect(const char *endpoint)
++{
++#ifdef SDL2_RENDER
++    uint32_t started = stdPlatform_GetTimeMsec();
++    jkMultiEntry entry;
++    char16_t password[32] = {0};
++    stdString_CharToWchar(jkGuiMultiplayer_ipText, endpoint, 255);
++    jkGuiMultiplayer_ipText[255] = 0;
++    if (stdComm_OpenConnection(NULL)) return 0;
++    for (;;) {
++        if (stdComm_EnumSessions(1, password)) return 0;
++        if (dplay_dword_55D618 > 0) break;
++        if ((uint32_t)(stdPlatform_GetTimeMsec() - started) > 30000) {
++            fprintf(stderr, "BOT_JOIN_REJECTED discovery timeout\n");
++            exit(6);
++        }
++        SDL_Delay(100);
++    }
++    entry = jkGuiMultiplayer_aEntries[0];
++    if (__strcmpi(entry.episodeGobName, "JK1MP") || entry.field_E0 != 10 || entry.maxRank != 0
++        || entry.wPassword[0] || (entry.sessionFlags & (SESSIONFLAG_PASSWORD | SESSIONFLAG_20))
++        || (entry.multiModeFlags & ~(MULTIMODEFLAG_TIMELIMIT | MULTIMODEFLAG_SCORELIMIT | MULTIMODEFLAG_SINGLE_LEVEL))) {
++        fprintf(stderr, "BOT_JOIN_REJECTED requires an open stock JK rank-zero free-for-all session\n");
++        exit(6);
++    }
++    /* Open uses the discovered native transport and its genuine player ID. */
++    if (stdComm_Open(0, password)) return 0;
++    sithMulti_multiModeFlags = entry.multiModeFlags;
++    sithMulti_InitTick(entry.tickRateMs);
++    return jkMain_loadFile2(entry.episodeGobName, entry.mapJklFname);
++#else
++    (void)endpoint;
++    return 0;
++#endif
++}
++
+ int jkGuiMultiplayer_ShowSynchronizing()
+ {
++#ifdef SDL2_RENDER
++    if (jkBot_IsEnabled()) {
++        uint32_t started = stdPlatform_GetTimeMsec();
++        uint32_t lastRequest = started - 2001;
++        g_submodeFlags |= 8u;
++        while (g_submodeFlags & 8u) {
++            uint32_t now = stdPlatform_GetTimeMsec();
++            if (!stdComm_dword_8321E0 || (uint32_t)(now - started) > 60000) {
++                fprintf(stderr, "BOT_JOIN_REJECTED synchronization timeout or closed connection\n");
++                exit(6);
++            }
++            if ((uint32_t)(now - lastRequest) >= 2000) {
++                lastRequest = now;
++                if (!sithMulti_SendJoinRequest(sithNet_serverNetId)) {
++                    fprintf(stderr, "BOT_JOIN_REJECTED join request failed\n");
++                    exit(6);
++                }
++            }
++            sithMessage_ProcessMessages();
++            SDL_Delay(10);
++        }
++        if (!sithPlayer_g_pLocalPlayerThing || !sithPlayer_g_pLocalPlayer) {
++            fprintf(stderr, "BOT_JOIN_REJECTED welcome has no local player\n");
++            exit(6);
++        }
++        jkBot_OnJoined();
++        jkBotPersona_OnJoined();
++        printf("BOT_JOINED slot=%d net=%u\n", playerThingIdx,
++               (unsigned)sithPlayer_g_pLocalPlayer->playerNetId);
++        fflush(stdout);
++        return 1;
++    }
++#endif
+     int v0; // esi
+     void *v2; // [esp-4h] [ebp-8h]
+ 
+@@ -413,6 +489,14 @@ int jkGuiMultiplayer_ShowSynchronizing()
+ 
+ int jkGuiMultiplayer_CogMsgHandleJoining(SithMessage *msg)
+ {
++    if (jkBot_IsEnabled() && (g_submodeFlags & 8u)) {
++        unsigned status = msg->pktData[0];
++        if (status >= 3 && status <= 6) {
++            fprintf(stderr, "BOT_JOIN_REJECTED server status=%u\n", status);
++            exit(6);
++        }
++        return 1;
++    }
+     char16_t *v2; // eax
+     char16_t *v3; // [esp-4h] [ebp-4h]
+ 
+diff --git a/src/Gui/jkGUIMultiplayer.h b/src/Gui/jkGUIMultiplayer.h
+index 4a9a45e..b7007d1 100644
+--- a/src/Gui/jkGUIMultiplayer.h
++++ b/src/Gui/jkGUIMultiplayer.h
+@@ -34,6 +34,7 @@
+ void jkGuiMultiplayer_Startup();
+ void jkGuiMultiplayer_Shutdown();
+ int jkGuiMultiplayer_Show();
++int jkGuiMultiplayer_BotConnect(const char *endpoint);
+ 
+ int jkGuiMultiplayer_ShowSynchronizing();
+ 
+diff --git a/src/Main/Main.c b/src/Main/Main.c
+index fd2c8ac..7aa8421 100644
+--- a/src/Main/Main.c
++++ b/src/Main/Main.c
+@@ -1,4 +1,8 @@
+ #include "Main.h"
++#include "AI/jkBot.h"
++#include "AI/jkBotPersona.h"
++#include "Gameplay/sithPlayer.h"
++#include "World/sithWeapon.h"
+ 
+ #include "../jk.h"
+ #include "stdPlatform.h"
+@@ -109,6 +113,104 @@ int32_t Main_bEnhancedCogVerbs = 0;
+ char Main_strEpisode[129];
+ char Main_strMap[128+4];
+ static char Main_strAutostartCharacter[32];
++static char Main_botHost[256];
++static char Main_botName[16];
++static char Main_botModel[32];
++static char Main_botSound[32];
++
++static int Main_BotSafeName(const char *value, size_t maximum, const char *suffix)
++{
++    size_t length = value ? strlen(value) : 0;
++    if (!length || length > maximum) return 0;
++    for (size_t i = 0; i < length; ++i) {
++        unsigned char c = value[i];
++        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
++              || (c >= '0' && c <= '9') || c == '_' || c == '-'
++              || (suffix && c == '.'))) return 0;
++    }
++    if (suffix) {
++        size_t n = strlen(suffix);
++        if (length <= n || __strcmpi(value + length - n, suffix)) return 0;
++        if (strchr(value, '.') != value + length - n) return 0;
++    }
++    return 1;
++}
++
++static int Main_BotSafeHost(const char *value)
++{
++    const char *colon;
++    size_t length = value ? strlen(value) : 0;
++    if (!length || length > 254) return 0;
++    for (size_t i = 0; i < length; ++i) {
++        unsigned char c = value[i];
++        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
++              || (c >= '0' && c <= '9') || c == '-' || c == '.' || c == ':')) return 0;
++    }
++    colon = strchr(value, ':');
++    if (colon) {
++        unsigned port = 0;
++        if (colon == value || !colon[1]) return 0;
++        for (const char *c = colon + 1; *c; ++c) {
++            if (*c < '0' || *c > '9') return 0;
++            port = port * 10 + (unsigned)(*c - '0');
++            if (port > 65535) return 0;
++        }
++        if (!port) return 0;
++    }
++    return 1;
++}
++
++static void Main_BotArg(char *destination, size_t capacity, const char *value)
++{
++    if (destination[0] || !value || !value[0] || strlen(value) >= capacity) {
++        fprintf(stderr, "BOT_JOIN_REJECTED invalid or repeated bot option\n");
++        exit(6);
++    }
++    stdString_SafeStrCopy(destination, value, capacity);
++}
++
++static int Main_StartupBot(void)
++{
++    char16_t name[32];
++    stdString_CharToWchar(name, Main_botName, 31);
++    name[31] = 0;
++    jkSmack_stopTick = 1;
++    jkSmack_nextGuiState = JK_GAMEMODE_TITLE;
++    Window_SetDrawHandlers(stdDisplay_DrawAndFlipGdi, stdDisplay_SetCooperativeLevel);
++    std3D_StartScene();
++    std3D_EndScene();
++    if (!sithOpenStatic("static.jkl")) {
++        fprintf(stderr, "BOT_JOIN_REJECTED cannot load stock static world\n");
++        exit(6);
++    }
++    jkHudInv_InitItems();
++    jkPlayer_CreateConf(name);
++    /* Headless normally marks the host as an editor; bots are real clients. */
++    g_debugmodeFlags &= ~DEBUGFLAG_IN_EDITOR;
++    sithWeapon_controlOptions |= 4; /* ordinary always-mouselook option */
++    jkPlayer_enableBloom = 0;
++    jkPlayer_enableSSAO = 0;
++    jkPlayer_enableVsync = 0;
++    jkPlayer_fpslimit = 30;
++    jkPlayer_SetMpcInfo(name, Main_botModel, Main_botSound,
++                        "sabergreen1.mat", "sabergreen0.mat");
++    for (int i = SITHBIN_FP_START; i <= SITHBIN_FP_END; ++i)
++        sithPlayer_SetInvItemAmount(i, 0.0);
++    sithPlayer_SetInvItemAmount(SITHBIN_SPEND_STARS, 0.0);
++    jkPlayer_SetRank(0);
++    if (!jkPlayer_MPCWrite(NULL, name, name)
++        || !jkPlayer_MPCParse(&jkGuiMultiplayer_mpcInfo, NULL, name, name, 1)) {
++        fprintf(stderr, "BOT_JOIN_REJECTED cannot create isolated player character\n");
++        exit(6);
++    }
++    printf("BOT_DISCOVER name=%s endpoint=%s skin=%s\n", Main_botName, Main_botHost, Main_botModel);
++    fflush(stdout);
++    if (!jkGuiMultiplayer_BotConnect(Main_botHost)) {
++        fprintf(stderr, "BOT_JOIN_REJECTED cannot open requested game\n");
++        exit(6);
++    }
++    return 1;
++}
+ #endif
+ 
+ #if defined(QOL_IMPROVEMENTS)
+@@ -484,6 +586,7 @@ int Main_Startup(const char *cmdline)
+         if (jkRes_LoadCD(0))
+         {
+ #if defined(QOL_IMPROVEMENTS)
++            if (jkBot_IsEnabled()) return Main_StartupBot();
+             if (Main_bDedicatedServer || Main_bAutostart) {
+                 if (Main_StartupDedicated(Main_bDedicatedServer))
+                 {
+@@ -714,6 +817,22 @@ void Main_ParseCmdLine(char *cmdline)
+             //Main_cogLogFp = fopen("cog.log", "wc");
+         }
+ #ifdef QOL_IMPROVEMENTS
++        else if (!__strcmpi(pArgTok, "-botConnect"))
++        {
++            Main_BotArg(Main_botHost, sizeof(Main_botHost), _strtok(0, " \t"));
++        }
++        else if (!__strcmpi(pArgTok, "-botName"))
++        {
++            Main_BotArg(Main_botName, sizeof(Main_botName), _strtok(0, " \t"));
++        }
++        else if (!__strcmpi(pArgTok, "-botSkin"))
++        {
++            Main_BotArg(Main_botModel, sizeof(Main_botModel), _strtok(0, " \t"));
++        }
++        else if (!__strcmpi(pArgTok, "-botSound"))
++        {
++            Main_BotArg(Main_botSound, sizeof(Main_botSound), _strtok(0, " \t"));
++        }
+         else if (!__strcmpi(pArgTok, "-dedicatedServer") || !__strcmpi(pArgTok, "/dedicatedServer") )
+         {
+             Main_bDedicatedServer = 1;
+@@ -785,6 +904,23 @@ void Main_ParseCmdLine(char *cmdline)
+         }
+     }
+ #ifdef QOL_IMPROVEMENTS
++    if (Main_botHost[0] || Main_botName[0] || Main_botModel[0] || Main_botSound[0]) {
++        if (!Main_BotSafeHost(Main_botHost)
++            || !Main_BotSafeName(Main_botName, 15, NULL)
++            || strncmp(Main_botName, "Bot_", 4) || strlen(Main_botName) <= 4
++            || !Main_BotSafeName(Main_botModel, 31, ".3do")
++            || !Main_BotSafeName(Main_botSound, 31, ".snd")
++            || Main_bDedicatedServer || Main_bAutostart || Main_bAutostartSp
++            || Main_bMotsCompat || Main_bDwCompat || Main_bDevMode || Main_bEnhancedCogVerbs
++            || Main_strEpisode[0] || Main_strMap[0] || Main_strAutostartCharacter[0]
++            || stdCapture_IsActive() || Window_bRenderProbe) {
++            fprintf(stderr, "BOT_JOIN_REJECTED requires -botConnect host[:port] -botName Bot_name -botSkin stock.3do -botSound stock.snd; stock JK client mode only\n");
++            exit(6);
++        }
++        Main_bHeadless = 1;
++        jkBot_Configure(Main_botName, Main_botModel);
++        jkBotPersona_Configure();
++    }
+     if (Main_strAutostartCharacter[0] && (!Main_bAutostart || Main_bAutostartSp)) {
+         fprintf(stderr, "autostart: -character requires -autostart multiplayer mode\n");
+         exit(6);
+diff --git a/src/Win95/Window.c b/src/Win95/Window.c
+index 012b5cb..b575f72 100644
+--- a/src/Win95/Window.c
++++ b/src/Win95/Window.c
+@@ -1,4 +1,5 @@
+ #include "Window.h"
++#include "AI/jkBot.h"
+ 
+ #include "Win95/stdGdi.h"
+ #include "Platform/std3D.h"
+@@ -679,6 +680,16 @@ static char Window_headlessBuffer[256];
+ 
+ void Window_UpdateHeadless()
+ {
++    if (jkBot_IsEnabled()) {
++        /* No terminal polling/prompts and no UI work for an isolated bot. */
++        static uint64_t nextTick = 0;
++        uint64_t now = SDL_GetTicks();
++        if (now < nextTick) SDL_Delay((uint32_t)(nextTick - now));
++        nextTick = SDL_GetTicks() + 33;
++        Window_lastSampleTime = (int)SDL_GetTicks();
++        g_app_active = g_window_active = g_app_suspended = 1;
++        return;
++    }
+     char buffer[32];
+     size_t bytes_read = 0;
+ 
+@@ -1530,6 +1541,18 @@ int Window_Main_Linux(int argc, char** argv)
+ {
+     char cmdLine[1024];
+     int result;
++    int botStartup = 0;
++    for (int i = 1; i < argc; ++i) {
++        if (!__strcmpi(argv[i], "-botConnect") || !__strcmpi(argv[i], "-botName")
++            || !__strcmpi(argv[i], "-botSkin") || !__strcmpi(argv[i], "-botSound")) botStartup = 1;
++    }
++    if (botStartup) {
++        struct stat marker;
++        if (stat("resource/jk_.cd", &marker) || !S_ISREG(marker.st_mode) || marker.st_size != 4) {
++            fprintf(stderr, "BOT_JOIN_REJECTED bot cwd requires original installed JK resource/jk_.cd\n");
++            return 6;
++        }
++    }
+ 
+     if (!stdCapture_Init(argc, argv)) { fprintf(stderr, "capture: invalid request or isolated session\n"); return 6; }
+     if (stdCapture_IsActive()) {
+@@ -1562,7 +1585,7 @@ int Window_Main_Linux(int argc, char** argv)
+ #endif
+     }
+ 
+-    Window_bHeadlessStartup = 0;
++    Window_bHeadlessStartup = botStartup;
+     for (int i = 1; i < argc; i++) {
+         if (!__strcmpi(argv[i], "-headless") || !__strcmpi(argv[i], "/headless")) {
+             Window_bHeadlessStartup = 1;
+@@ -1669,8 +1692,8 @@ int Window_Main_Linux(int argc, char** argv)
+     {
+         int probeArgSize = RenderProbe_OptionSize(argv[i]);
+         if (probeArgSize) { i += probeArgSize-1; continue; }
+-        if (Window_bRenderProbe && strlen(cmdLine)+strlen(argv[i])+2 >= sizeof(cmdLine)) {
+-            fprintf(stderr,"Render probe engine command line is too long.\n"); exit(2);
++        if ((Window_bRenderProbe || botStartup) && strlen(cmdLine)+strlen(argv[i])+2 >= sizeof(cmdLine)) {
++            fprintf(stderr,"Engine command line is too long.\n"); exit(2);
+         }
+         strcat(cmdLine, argv[i]);
+         strcat(cmdLine, " ");
+diff --git a/src/Win95/Windows.c b/src/Win95/Windows.c
+index e3b6290..458dda4 100644
+--- a/src/Win95/Windows.c
++++ b/src/Win95/Windows.c
+@@ -1,4 +1,5 @@
+ #include "Windows.h"
++#include "AI/jkBot.h"
+ 
+ #include "Win95/WinIdk.h"
+ #include "Platform/wuRegistry.h"
+@@ -271,6 +272,10 @@ int Windows_ErrorMsgboxWide(const char *a1, ...)
+     stdString_WcharToChar(tmp, Text, 1024);
+ 
+     jk_printf("ERROR: %s\n", tmp);
++    if (jkBot_IsEnabled()) {
++        fprintf(stderr, "BOT_JOIN_REJECTED game error: %s\n", tmp);
++        exit(6);
++    }
+     if (Window_bRenderProbe) fprintf(stderr,"RENDERPROBE_FAILED %s\n",tmp);
+     else SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", tmp, NULL);
+     return 0;
+@@ -303,6 +308,10 @@ int Windows_ErrorMsgbox(const char *a1, ...)
+     stdString_WcharToChar(tmp, Text, 512);
+ 
+     jk_printf("ERROR: %s\n", tmp);
++    if (jkBot_IsEnabled()) {
++        fprintf(stderr, "BOT_JOIN_REJECTED game error: %s\n", tmp);
++        exit(6);
++    }
+     if (Window_bRenderProbe) fprintf(stderr,"RENDERPROBE_FAILED %s\n",tmp);
+     else SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", tmp, NULL);
+     return 0;
+@@ -330,6 +339,10 @@ void Windows_GameErrorMsgbox(const char *a1, ...)
+ #elif defined(SDL2_RENDER)
+     vsnprintf(tmp, 0x200u, a1, va);
+     jk_printf("FATAL ERROR: %s\n", tmp);
++    if (jkBot_IsEnabled()) {
++        fprintf(stderr, "BOT_JOIN_REJECTED fatal game error: %s\n", tmp);
++        exit(6);
++    }
+     if (Window_bRenderProbe) {
+         va_end(va);
+         fprintf(stderr,"RENDERPROBE_FAILED fatal game error: %s\n",tmp);

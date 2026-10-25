@@ -22,6 +22,23 @@ The build requires network access to the source repositories and PyPI. `cogapp==
 
 For the bundled executable, runtime packages include `libgtk-3-0t64`, `libopenal1`, `libgl1`, `libcurl4t64`, `libsndio7.0`, `libssl3t64`, `xvfb`, `xauth`, and a working Mesa/OpenGL implementation, plus normal C/C++ runtime dependencies. The manager sets `LD_LIBRARY_PATH` to the engine directory. The engine's headless mode still creates an initial SDL/OpenGL context; the manager can use Xvfb if no display is set.
 
+## Optional bot client
+
+`bash native/build_bots.sh` builds `bin/bots-linux-x86_64/jk-bot-client` from the
+same pinned base with **only** `bot-client.patch`. It does not replace the
+dedicated engine. Run bots through `python3 -m bots.run`; see `bots/README.md`.
+
+`BOT_BUILD.json` records the separate executable. The bot relink archive
+contains its exact objects, static libraries and LGPL libsmacker source. Extract
+it into an empty folder, edit the included library if desired, and run
+`python3 relink.py`. The result is `jk-bot-client-relinked`; make the packaged
+GNS shared library available at runtime. Existing dependency notices apply.
+
+The recovery build reused the published unchanged objects/static dependencies,
+recompiling changed client units and all four server-modified units from the
+client base. A fresh full dependency rebuild is not claimed by its receipts.
+See `docs/BOTS_PROTOTYPE.md` for qualification and limitations.
+
 ## Server changes
 
 The patch adds an authenticated, bounded loopback TCP transport bridge. It accepts one supervisor and exposes session metadata, external peer creation/removal, canonical player IDs, and Sith packet delivery. It preserves the original GNS transport for native clients. Detailed framing, message types, ID-pool rules, and packet layouts are in `protocol.md` and the patched engine's `docs/crossplay-gateway.md`.

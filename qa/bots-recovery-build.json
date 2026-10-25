@@ -1,0 +1,11 @@
+{
+  "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "patched_files_byte_equal": 11,
+  "relink_inputs_hash_matched": 218,
+  "original_binary_sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+  "relinked_binary_sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+  "byte_identical_relink": true,
+  "full_clean_source_build_executed": false,
+  "bundled_libsmacker_recompiled_and_relinked": true,
+  "libsmacker_warning_note": "Existing upstream format warnings; rebuild/link completed."
+}

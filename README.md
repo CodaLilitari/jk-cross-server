@@ -58,6 +58,24 @@ Existing 0.2 installations need the 0.3 ZIP installed manually once. Git
 checkouts use Git rather than the in-place installer. See [update instructions](docs/UPDATES.md)
 for migration, recovery, multi-instance behavior, and publishing new releases.
 
+## Optional player-bot prototype
+
+The `prototype/player-bots-recovery` work adds a separate Linux bot client and
+roster launcher. Each bot joins this server as an ordinary native player using
+the stock movement, weapon, inventory, damage and respawn code. Human retail,
+OpenJKDF2 and JKWeb executables remain unchanged. Bots consume normal player
+slots. The server executable and transport adapters are unchanged.
+
+This prototype accepts stock **JK1MP, rank 0, free-for-all** sessions. MotS,
+Force powers, teams, objectives, passwords and mods are outside its supported
+scope. Eight stock multiplayer identities have occasional original themed chat.
+See [the bot guide](bots/README.md) and [qualification](docs/BOTS_PROTOTYPE.md).
+
+```bash
+python3 -m bots.run --list-profiles
+python3 -m bots.run --server-config config/server.json --profiles boba_fett,jan_ors
+```
+
 ## Client connection routes
 
 | Client | How it connects |

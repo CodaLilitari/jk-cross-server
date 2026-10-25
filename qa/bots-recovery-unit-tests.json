@@ -1,0 +1,19 @@
+{
+  "launcher": {
+    "command": "python3 -m unittest discover -s tests -p test_bots.py -v",
+    "passed": 14,
+    "runner_sha256": "f8128da6400bd0857bbeef8f32319352737de6fda69e4eefc800a5fb897f8a66",
+    "tests_sha256": "494c74e77a042c05b44d0b08d7ded9ed4893d0d70516cf1e94e90e6040928797"
+  },
+  "driver": {
+    "controlled_structs_and_collision_stubs": true,
+    "groups": [
+      "PASS remote-zero-health respawn eligibility and inactive/dead/team rejection",
+      "PASS unreached nearest-node goal retained until actually reached",
+      "PASS normal yaw/pitch axes and single-consumption press edge",
+      "PASS vertical jumping alone does not conceal a navigation stall"
+    ],
+    "source_sha256": "c4fe19b94513404664ed71a734426aaea44ab5ae09823d3a969df763b31e6182"
+  },
+  "live_gameplay_proven_by_these_tests": false
+}
