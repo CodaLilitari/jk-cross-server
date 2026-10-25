@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-10-25T00:50:08.934560+00:00",
+  "baseline": "v0.2.0-dev",
+  "all_unchanged": true,
+  "files": [
+    {
+      "path": "bin/linux-x86_64/openjkdf2",
+      "sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "bin/linux-x86_64/libGameNetworkingSockets.so",
+      "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "directplay/gateway.exe",
+      "sha256": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "directplay/protocol.c",
+      "sha256": "8472a0b48ba69b1440136bd540ddc785a304dbe3967b1ce51c916088f5c484ff",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "directplay/gateway.c",
+      "sha256": "1a69f77610b0986efafc40fcbe57cc09a8fc127dec8ffb540804298a93283864",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "native/crossplay-dedicated.patch",
+      "sha256": "879dd33e4161815802d6fd7ce21b0f298e0ce9300197efab1ab75c7c2ffa8856",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "web_gateway/gateway.py",
+      "sha256": "ab26bc0f6164ddd4c2b34c843454a0a6a8138256f0c112cfe3f4dba847c1b92e",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "web_gateway/assets.py",
+      "sha256": "ac459d0e6f21da8d25f89bbcba58a648e88546e60d778bdf7eb52b3c52f428b8",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "web_gateway/requirements-lock.txt",
+      "sha256": "ff2b26d035ae12bc3e346cbec0114264b93eb5f6c0198a1b5ca8b2e7f9e6a699",
+      "matches_0_2_0_dev": true
+    },
+    {
+      "path": "web_gateway/requirements.txt",
+      "sha256": "6a913b217582ad2275d9cf28202c45df1d9f3ca2d10493273d9d193eeaa927b3",
+      "matches_0_2_0_dev": true
+    }
+  ]
+}

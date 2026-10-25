@@ -1,0 +1,574 @@
+{
+  "files": {
+    ".gitignore": {
+      "mode": 420,
+      "sha256": "bf0e1b3418da1516cf0d00404e409f5303a4c1b475aa188948cb5e49cbc4815e"
+    },
+    "CHANGELOG.md": {
+      "mode": 420,
+      "sha256": "4b14b7c092b6a2a5f1b0baaa8bb912409be4ad12da50971cd31d17cf41ecc33b"
+    },
+    "LICENSE": {
+      "mode": 420,
+      "sha256": "c37b31c4160ade5e48cc6c47f5b2463f26d84ec7f419a79802e724f08c600f98"
+    },
+    "NOTICE.md": {
+      "mode": 420,
+      "sha256": "5852d59401ec37d395d2934539cc51797ccd7921c6690deee8913d4c9f6fd5df"
+    },
+    "README.md": {
+      "mode": 420,
+      "sha256": "d7a2c978d5f333633dc1ad26310bbf5646fa0129aaba0f9b3a736ae85c921810"
+    },
+    "VERSION": {
+      "mode": 420,
+      "sha256": "90325c8f60537581cade7378c9dd5776f7fc918641cbc2929b4a60094ed07751"
+    },
+    "app.py": {
+      "mode": 420,
+      "sha256": "18e0107a109f9d2cd41e45f0b36ebfdc72c62a4d08ce46e1dab6314312c00159"
+    },
+    "bin/linux-x86_64/libGameNetworkingSockets.so": {
+      "mode": 493,
+      "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9"
+    },
+    "bin/linux-x86_64/openjkdf2": {
+      "mode": 493,
+      "sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3"
+    },
+    "directplay/Makefile": {
+      "mode": 420,
+      "sha256": "dee5fd7a66a4c0491f22ad8517b88ae4a1adfb37df1109678284b83e58d98432"
+    },
+    "directplay/README.md": {
+      "mode": 420,
+      "sha256": "b89c38bb7149acb7a07e8c4c61556491ff6761579e201feebc286f1dc7bc00e3"
+    },
+    "directplay/directplay5.reg": {
+      "mode": 420,
+      "sha256": "991c2cef582d997e7f63ea66b76509a9214413cc0a75b657b3729d28bafdd225"
+    },
+    "directplay/gateway.c": {
+      "mode": 420,
+      "sha256": "1a69f77610b0986efafc40fcbe57cc09a8fc127dec8ffb540804298a93283864"
+    },
+    "directplay/gateway.exe": {
+      "mode": 493,
+      "sha256": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3"
+    },
+    "directplay/protocol.c": {
+      "mode": 420,
+      "sha256": "8472a0b48ba69b1440136bd540ddc785a304dbe3967b1ce51c916088f5c484ff"
+    },
+    "directplay/protocol.h": {
+      "mode": 420,
+      "sha256": "55c2b8064bd1a58849da99f141a17509dbfcd1d35c8a20f0daa79cad37bfea9a"
+    },
+    "directplay/setup_wine.py": {
+      "mode": 420,
+      "sha256": "d9a65c42f4a87da28423053149e70d86163da9857bfe3a4bc85221bf93b46f3e"
+    },
+    "directplay/test_protocol.c": {
+      "mode": 420,
+      "sha256": "91713c4550c662fd392f0e8bb14717973f501758a7ef9ecbb3a765edada41401"
+    },
+    "directplay/wait_helper.c": {
+      "mode": 420,
+      "sha256": "94023799289c241bb7cce353319a8e6675798f00c74ad2826b2234876fb036ae"
+    },
+    "directplay/wait_helper.exe": {
+      "mode": 493,
+      "sha256": "99f53b61cb65383dff0c475c1c461bcc256a5b80e8180149ea389cfc65bcd4c7"
+    },
+    "directplay/wine_launcher.py.in": {
+      "mode": 420,
+      "sha256": "efe06581274a0e520453f57696c91f090ca0a9d592155100fd00f922b713a2f6"
+    },
+    "docs/ARCHITECTURE.md": {
+      "mode": 420,
+      "sha256": "bb8f335d5bf92898e69cf2bd3dc5d5e66b220e4aed99073f58b4b62867d1de85"
+    },
+    "docs/NETWORKING.md": {
+      "mode": 420,
+      "sha256": "1647f09f1fb1fc81b4080ec8aa0d97309857e83ebf20c99bc1047564e31f279a"
+    },
+    "docs/QUALIFICATION.md": {
+      "mode": 420,
+      "sha256": "edfe6703c54dec0c966e1a6e31b62e71ae07e5b2c7214c1ee684de5f2dccbd0f"
+    },
+    "docs/UPDATES.md": {
+      "mode": 420,
+      "sha256": "e5126acb2ed6b67dc9670836973b4e8973f84abf81aa2f7747397e7cac119dc9"
+    },
+    "examples/jk.json": {
+      "mode": 420,
+      "sha256": "d1582ff356e6782f5e3a06e08a9cf78bf7ebd41cd14b768609712c6fbaed10f1"
+    },
+    "examples/mots.json": {
+      "mode": 420,
+      "sha256": "33447bdec6d74968e6db2326fc07fd64ddbf30c042aca24bbf158daca07b15a3"
+    },
+    "licenses/native/3rdparty/json/LICENSE.MIT": {
+      "mode": 420,
+      "sha256": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14"
+    },
+    "licenses/native/LICENSE.md": {
+      "mode": 420,
+      "sha256": "2f4b8fa145aa8f7ca0c75717f480b090ee9d23ae0832a7f6de28b84ee7e38727"
+    },
+    "licenses/native/lib/GameNetworkingSockets/LICENSE": {
+      "mode": 420,
+      "sha256": "6fedd796d51d7f996e0b3dc7c1c9f6a67603bec7a2cfb9f418e0c6607a1ca647"
+    },
+    "licenses/native/lib/SDL/LICENSE.txt": {
+      "mode": 420,
+      "sha256": "1c040b8271b37e5076359f8fd54240e371114112924d2df81ef87c7d6a1dfdfd"
+    },
+    "licenses/native/lib/SDL/src/hidapi/LICENSE-bsd.txt": {
+      "mode": 420,
+      "sha256": "30eb1bef29b46f8ba7ab8b416035dbd93cb034a45481dd97815b944284582cd2"
+    },
+    "licenses/native/lib/SDL/src/hidapi/LICENSE-orig.txt": {
+      "mode": 420,
+      "sha256": "fb5436aa63d1b71a8dfbf74ecaf1a5b4e1ec4df7f80074d11fec99284f69ca5f"
+    },
+    "licenses/native/lib/SDL/src/hidapi/LICENSE.txt": {
+      "mode": 420,
+      "sha256": "7d3b087c34f35d4d538e3bcddd1ff8f66e92f9ef336881999482800ddf840913"
+    },
+    "licenses/native/lib/SDL/src/video/yuv2rgb/LICENSE": {
+      "mode": 420,
+      "sha256": "f7d74004cc75778cae46c5f0139f244d67c07ef64cf51937e8272352197dcb18"
+    },
+    "licenses/native/lib/SDL_mixer/LICENSE.txt": {
+      "mode": 420,
+      "sha256": "e36997fe492c48e7ed873065cc3a694f38e8189a328d3709099ffdc9a8843f4c"
+    },
+    "licenses/native/lib/SDL_mixer/external/ogg/COPYING": {
+      "mode": 420,
+      "sha256": "d2ab5758336489da61c12cc5bb757da5339c4ae9001f9bb0562b4370249af814"
+    },
+    "licenses/native/lib/SDL_mixer/external/opus/COPYING": {
+      "mode": 420,
+      "sha256": "8338ce8d922bb4416ce3dd1e5680173332435e3f0755007ac7801ccd674fe682"
+    },
+    "licenses/native/lib/SDL_mixer/external/opus/LICENSE_PLEASE_READ.txt": {
+      "mode": 420,
+      "sha256": "7efb4989e0cd1b256229bdf2f09300c5d14e35db0e7476bfb87fac243498273d"
+    },
+    "licenses/native/lib/SDL_mixer/external/opusfile/COPYING": {
+      "mode": 420,
+      "sha256": "0267ae795ab744c4e0f9c45e249440fdf2e75dac8c804f36066b28649bf74aaf"
+    },
+    "licenses/native/lib/SDL_mixer/external/vorbis/COPYING": {
+      "mode": 420,
+      "sha256": "ec1815db59fcd302846df949d7424876cb2e2dc5ed1606c5fb0b36787b1cf43a"
+    },
+    "licenses/native/lib/SDL_mixer/src/dr_libs/LICENSE": {
+      "mode": 420,
+      "sha256": "dd1c647e6f767f8ff4b2dfae0fed314726600a01e0cf1ef556afddd5fa96ff15"
+    },
+    "licenses/native/lib/SDL_mixer/src/timidity/COPYING": {
+      "mode": 420,
+      "sha256": "188de23cc548f2afd04bfb85217220f6864ca2412dc3af003f0d89a9641f42c3"
+    },
+    "licenses/native/lib/freeglut/COPYING": {
+      "mode": 420,
+      "sha256": "b6593d5ec4c113a274abb85b10e8615895cb0ddb89f7912af5fe5aa8df38a275"
+    },
+    "licenses/native/lib/glew/LICENSE.txt": {
+      "mode": 420,
+      "sha256": "8991cd11befec7c6a63662700f03c0cc42e864b6e77c7e70b80297c951a7f0ff"
+    },
+    "licenses/native/lib/libpng/LICENSE": {
+      "mode": 420,
+      "sha256": "7317e078e2d3b5d7ba5a6159e650945153262b44b76f6700f8e9edb261c5143e"
+    },
+    "licenses/native/lib/physfs/LICENSE.txt": {
+      "mode": 420,
+      "sha256": "111b286674ab4720fd1b693ef8628a94bca8f06484d5fe3d75bd6db22fdc1cb2"
+    },
+    "licenses/native/lib/protobuf/LICENSE": {
+      "mode": 420,
+      "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
+    },
+    "licenses/native/lib/protobuf/third_party/utf8_range/LICENSE": {
+      "mode": 420,
+      "sha256": "5a629d2b868081d8af08bbce5d038116f3a0e2e0d4ce9adf4d53f14e76b6b2e0"
+    },
+    "licenses/native/lib/zlib/LICENSE": {
+      "mode": 420,
+      "sha256": "0f854f426019c475697e17f1b0fa638270f6e700bc756d9bfe50d17268bd3281"
+    },
+    "licenses/native/src/external/fcaseopen/LICENSE.txt": {
+      "mode": 420,
+      "sha256": "e14c68cdb459c69bd5a4fe0942e0a1b267c4ee8f6cab4ed18feb91ceee7a8454"
+    },
+    "licenses/native/src/external/libsmacker/COPYING": {
+      "mode": 420,
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+    },
+    "licenses/native/src/external/libsmusher/LICENSE": {
+      "mode": 420,
+      "sha256": "9f2f184afc58045196130c2720bdbc1d0935a7fe210bd0735bf8d9e616b7bc83"
+    },
+    "licenses/native/src/external/nativefiledialog-extended/LICENSE": {
+      "mode": 420,
+      "sha256": "b332d6f507142c66a0e904838b6437e6273734589c22a16b57392b89bfdccb2a"
+    },
+    "licenses/toolchain/Artistic": {
+      "mode": 420,
+      "sha256": "b7fd9b73ea99602016a326e0b62e6646060d18febdd065ceca8bb482208c3d88"
+    },
+    "licenses/toolchain/GFDL-1.2": {
+      "mode": 420,
+      "sha256": "d8e94ae5fdb5433fcae2961aeb1a8cf17174d6f4a0465d24bf37dd8a038bd439"
+    },
+    "licenses/toolchain/GPL": {
+      "mode": 420,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "licenses/toolchain/GPL-2": {
+      "mode": 420,
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+    },
+    "licenses/toolchain/GPL-3": {
+      "mode": 420,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "licenses/toolchain/LGPL-2": {
+      "mode": 420,
+      "sha256": "681e386e44a19d7d0674b4320272c90e66b6610b741e7e6305f8219c42e85366"
+    },
+    "licenses/toolchain/LGPL-2.1": {
+      "mode": 420,
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+    },
+    "licenses/toolchain/gcc-mingw-w64-base.txt": {
+      "mode": 420,
+      "sha256": "a481f772f7a53335f13b32c6c54eb1c8577ce97704edd3757ab7ed4287a8e96a"
+    },
+    "licenses/toolchain/gcc-mingw-w64-i686.txt": {
+      "mode": 420,
+      "sha256": "a481f772f7a53335f13b32c6c54eb1c8577ce97704edd3757ab7ed4287a8e96a"
+    },
+    "licenses/toolchain/mingw-w64-common.txt": {
+      "mode": 420,
+      "sha256": "af23297b7d17e8e31817a5d58088de6fdafe34705bb5a7d1d330f08711b31314"
+    },
+    "licenses/toolchain/mingw-w64-i686-dev.txt": {
+      "mode": 420,
+      "sha256": "af23297b7d17e8e31817a5d58088de6fdafe34705bb5a7d1d330f08711b31314"
+    },
+    "manager/__init__.py": {
+      "mode": 420,
+      "sha256": "0473c521e59b406646bd31bd5caae352fd3a450fb68b374dce1c6f58a8fd1618"
+    },
+    "manager/admin.py": {
+      "mode": 420,
+      "sha256": "c573606e49d426415bfa3e70441bd2c8654d5e1e683bef015f4c0d6381419ac4"
+    },
+    "manager/broker.py": {
+      "mode": 420,
+      "sha256": "5863289ed2eacd08772c39b4bff0ad2fc53014cd29d104656ec6043a6966c9dc"
+    },
+    "manager/config.py": {
+      "mode": 420,
+      "sha256": "8d156ddfbafc686bc72b9eb0b5d44ca96dbed90165e3a5687a41074a917950bc"
+    },
+    "manager/content.py": {
+      "mode": 420,
+      "sha256": "40f66149db90bb12c39836869cd78a31ea3e2f33c1373a18f770950a860a75dc"
+    },
+    "manager/runtime.py": {
+      "mode": 420,
+      "sha256": "847d6312ab39d9d3e6367dc00b559226fa28d0e4578f55dbec385113428de5c3"
+    },
+    "manager/ui/app.js": {
+      "mode": 420,
+      "sha256": "6b703a9ed1774b7c5a2d9ed09cb3195bb1a02d559dbb692cc70b753b4afacda9"
+    },
+    "manager/ui/index.html": {
+      "mode": 420,
+      "sha256": "afd176528722bd8ef89c5a44972f73bcb7feb243ceb2e401b6477d15fe53fcd6"
+    },
+    "manager/ui/style.css": {
+      "mode": 420,
+      "sha256": "4d41f23ed41cfacacea5d3c86f3316585d1c3a68495aa65f28f5cab7cb23aa68"
+    },
+    "manager/updater.py": {
+      "mode": 420,
+      "sha256": "93d7112bf8d3e98c311ed83c9cf79475e956fc541e8b591456fde455e3d8cedf"
+    },
+    "manager/updates.py": {
+      "mode": 420,
+      "sha256": "f9a127c11f6270d799523a8693702d4d1d513276d31e9a5b0a794ed7d8d6ebba"
+    },
+    "native/BUILD.json": {
+      "mode": 420,
+      "sha256": "3173b97dab27c2f63a267b677460b13344df893dc6dcd796f28d5a5a1cc80f1e"
+    },
+    "native/README.md": {
+      "mode": 420,
+      "sha256": "f3c6faeb4e51c03e2a4b67c7afc6dbd777a6dc6fb80ee249129952cd01a8546d"
+    },
+    "native/build.sh": {
+      "mode": 493,
+      "sha256": "5adc1e6cdb1e322bbd2f7e763b2d04c944b3c06ef1d7b947d4b8f95b1ee1b767"
+    },
+    "native/crossplay-dedicated.patch": {
+      "mode": 420,
+      "sha256": "879dd33e4161815802d6fd7ce21b0f298e0ce9300197efab1ab75c7c2ffa8856"
+    },
+    "native/package_native.py": {
+      "mode": 420,
+      "sha256": "e4cc1ca7a59083ba9d23d184fe059156160a203a53391e47f26fccb209a36d8e"
+    },
+    "native/protocol.md": {
+      "mode": 420,
+      "sha256": "d1053da58d2c3acbb48467bd6281adffc91c898681eceea3a711b418f4d3f0a4"
+    },
+    "native/relink-linux-x86_64.tar.gz": {
+      "mode": 420,
+      "sha256": "7003e80ae105ebf1baee5b670922a2f3670559c31092c356e56b0d4ef81ae5e0"
+    },
+    "qa/admin-browser-layout.json": {
+      "mode": 420,
+      "sha256": "d57e98e12452fdcb6b66c02c8c64868dccab4d155c02e28631ce7dff65e61ce4"
+    },
+    "qa/browser-asset-admin-layout.json": {
+      "mode": 420,
+      "sha256": "0d99e8a7a753db5d64a1da4e7296daafcd0ed3817e42e180e528a93b8032294d"
+    },
+    "qa/browser-asset-jk-missing-map.json": {
+      "mode": 420,
+      "sha256": "ed2ac55d52f48576827871e81e061b0bfa1baa096b1fe0c3b07051340fc29a34"
+    },
+    "qa/browser-asset-jk-mod-restart.json": {
+      "mode": 420,
+      "sha256": "2ff2332ecb3d98829dc8f5e980cd2067eed971c4fddf8aeafb0a78a044cecaa0"
+    },
+    "qa/browser-asset-mots-missing-map.json": {
+      "mode": 420,
+      "sha256": "75f75ccb784ed2bd98eb2ca93ddaf157b48d93ea6c86a2ef97d0da7b3f4c2b3f"
+    },
+    "qa/browser-asset-mots-mod-restart.json": {
+      "mode": 420,
+      "sha256": "e2b27c287614a0186d4ba8d80c1766827e2f0a50c437295a683d8b967bf4e595"
+    },
+    "qa/controller_smoke.json": {
+      "mode": 420,
+      "sha256": "a0868d245d4d9db9202b17059cdc25f0d0710c4a8f08fa9678e00ea188fe21bc"
+    },
+    "qa/directplay-protocol-tests.json": {
+      "mode": 420,
+      "sha256": "7b41bf14849e4232237bc9ad60590615fefe998158e0a0fc5489f8859c780236"
+    },
+    "qa/native-client-handshake.log": {
+      "mode": 420,
+      "sha256": "4c6ddebabd559f2e5fa7982a49b1880738f926d2d85d513fc4e411d9ff4aea54"
+    },
+    "qa/native-client-provenance.json": {
+      "mode": 420,
+      "sha256": "8da2e91b2a6c5fb17a4fdf186af2b00222d4a18cf1c3d3d8425c5dc774eb72c5"
+    },
+    "qa/native-final-disconnect-continuity.json": {
+      "mode": 420,
+      "sha256": "25010b691a991d30afcfb55431987186ca5020764599185fea49b1d90125e476"
+    },
+    "qa/native-jk-live.json": {
+      "mode": 420,
+      "sha256": "e94f6f0e6754329d85d85ea29c7b202f61a7724d936bbe89edb616423bf82ca6"
+    },
+    "qa/native-jk-synthetic.json": {
+      "mode": 420,
+      "sha256": "22d76a00abc52ee2561f3788f8e38b646983e01ef6b231201f5344d998443126"
+    },
+    "qa/native-mots-live.json": {
+      "mode": 420,
+      "sha256": "fd1a157a537b26d5f217caa037fdb6d19e89a23700b099790df23756dd3b566f"
+    },
+    "qa/native-mots-synthetic.json": {
+      "mode": 420,
+      "sha256": "9bc13aac247fd7b8671a63dcaf3d39d5bab0b91056cdef20a0be8bd70d799a96"
+    },
+    "qa/native-patch-verified.json": {
+      "mode": 420,
+      "sha256": "763e4cb5c0a0448c6eb7e0b9458e718b76ed10f587ab3a1a1427cfb235d3c85f"
+    },
+    "qa/native-relink-verified.json": {
+      "mode": 420,
+      "sha256": "282d5250a495a9e31011163424fb94cb2a16bf47d2164cbb2ae6653d06e3fa22"
+    },
+    "qa/native-test-cleanup.json": {
+      "mode": 420,
+      "sha256": "1fbb01d423ccb6ab83431dc74d4674497a8698b96598ae598ab7a3032b8c74d9"
+    },
+    "qa/probe_gateway_transport.log": {
+      "mode": 420,
+      "sha256": "3697280e2fd85c7988d94269e2191ada37e87012a6ad0ad18baf584d176b4999"
+    },
+    "qa/probe_transport_mock.log": {
+      "mode": 420,
+      "sha256": "d137fa52593acb39964ef3bbba757444223adad0f64b895463054588f24a9bb5"
+    },
+    "qa/published-wasm-jk-full-game.json": {
+      "mode": 420,
+      "sha256": "ea0dd784d591f580e40759e78a17ca9b47e006831ffa880fb5ec514f83f55325"
+    },
+    "qa/published-wasm-jk-three-client.json": {
+      "mode": 420,
+      "sha256": "e3118ca39f736963b541df2d14bb79c8fd2d2e7146b5b58ff8cdd41a5e292de8"
+    },
+    "qa/published-wasm-mots-full-game.json": {
+      "mode": 420,
+      "sha256": "451fa3203e8c297359e4841e40839833786dac998b06b6937ab728aa77eeb94c"
+    },
+    "qa/published-wasm-mots-retail-leave.json": {
+      "mode": 420,
+      "sha256": "17105d32af8df1078f82d6411fdc25dd07818b701384cc885e730aa1c72bafc3"
+    },
+    "qa/published-wasm-mots-three-client.json": {
+      "mode": 420,
+      "sha256": "719a4845fadd1f847b246bfa479a0c4ee669bb1f61c739870af01e2d0d3f0573"
+    },
+    "qa/python-tests.json": {
+      "mode": 420,
+      "sha256": "b0dd27b75765ae3ab295462f55fca6f2d9925341f9f50741ac930bcadcdf70ec"
+    },
+    "qa/retail-jk-live.json": {
+      "mode": 420,
+      "sha256": "2f120b7a4c10431283e03cc2b811159585276bda38dc1d8ff34c59b58ded7147"
+    },
+    "qa/retail-media-provenance.json": {
+      "mode": 420,
+      "sha256": "fcf4d411abc3bd9ace1c17759c4f0788476b5a90304e1ac23ee1767e88e2ad33"
+    },
+    "qa/retail-mots-chat-boundary.json": {
+      "mode": 420,
+      "sha256": "1e770e693917423227ce8ee0bf43b4b194dca316e362e43a7394593962138aec"
+    },
+    "qa/retail-mots-disconnect.json": {
+      "mode": 420,
+      "sha256": "70ec6a67e93518be229afe87b81e7c7471ef70461b523ffba401780ca738c876"
+    },
+    "qa/retail-mots-hud-chat.json": {
+      "mode": 420,
+      "sha256": "819d15c7fa63ff0c89f630aaaf031b5085c75d664e547ab83cf14ea9e3391de4"
+    },
+    "qa/retail-mots-live.json": {
+      "mode": 420,
+      "sha256": "ffa1a70448252648c2fb47289f154f179defe070bc742533a3e7976a1936df9c"
+    },
+    "qa/retail-mots-projectiles.json": {
+      "mode": 420,
+      "sha256": "09263e528c80729ec7b825f4eaa8cd29aef20f6e33b2c232b2a70aa799ccf578"
+    },
+    "qa/retail-wire-audit.json": {
+      "mode": 420,
+      "sha256": "d4a87d014ac80f10d87fe85deed2059c28a243651365f52569bff7e36bb902c1"
+    },
+    "qa/update-admin-layout.json": {
+      "mode": 420,
+      "sha256": "25b78fd1e83568b5974314e939081669b3d0eefd29362920a0290e75cb6f2861"
+    },
+    "qa/update-component-preservation.json": {
+      "mode": 420,
+      "sha256": "9cb780282deec90eca78492a9fc309cdb7099af175ecedee82606140d153ec31"
+    },
+    "qa/update-gitlab-check.json": {
+      "mode": 420,
+      "sha256": "6dcefb2a5b00b8b6cfd192813cdd4f673ebfa430ce289bd55ce618d3b3d5a5e8"
+    },
+    "qa/update-tests.json": {
+      "mode": 420,
+      "sha256": "4924cf79141e790911bc3d999ce241a6cb12f4013bd962dc50d951b39662fcb9"
+    },
+    "qa/wine-setup-headless-lifecycle.json": {
+      "mode": 420,
+      "sha256": "33749b794ae6f518356ebae8f388a6b84b46cb1c8a996a6ff2e69f5cd0fb24a5"
+    },
+    "scripts/build_release.py": {
+      "mode": 420,
+      "sha256": "b8923943777ced038faf6c8f193560e2955b56bdfe90fdf017fe5a0509ad94c9"
+    },
+    "tests/test_launcher.py": {
+      "mode": 420,
+      "sha256": "7d95e4bb972d5f8dd206c0db13426bc060580bac51e545f78ca5f091bd6ed780"
+    },
+    "tests/test_manager.py": {
+      "mode": 420,
+      "sha256": "909e6257bc473ae6cd585334839069789ff8d4e15b8a7dbec5c318b0bdc37b9c"
+    },
+    "tests/test_release_packaging.py": {
+      "mode": 420,
+      "sha256": "161bc8a3d5132931e9bf28ad6f4d94f519723de5d12f4100ad4be0988d97769e"
+    },
+    "tests/test_updater.py": {
+      "mode": 420,
+      "sha256": "c47a30f792570a5830a9e7439f4c694c0e8e351674a255dd9a90b44f89379f96"
+    },
+    "tests/test_updates.py": {
+      "mode": 420,
+      "sha256": "47df11f2e9b572918abbdf04116bb52f1fa3d38dc4f895f2a1269e5f3e04faaa"
+    },
+    "web_gateway/README.md": {
+      "mode": 420,
+      "sha256": "230a67d6a55efdd93872031ec7607504626073ea93164801ac64d0b74a29728d"
+    },
+    "web_gateway/__init__.py": {
+      "mode": 420,
+      "sha256": "bd35ba197b4a0279ebefdec96da7756aa2ed41a3e26345e157d5818e8f1021cc"
+    },
+    "web_gateway/assets.py": {
+      "mode": 420,
+      "sha256": "ac459d0e6f21da8d25f89bbcba58a648e88546e60d778bdf7eb52b3c52f428b8"
+    },
+    "web_gateway/check_published_assets.mjs": {
+      "mode": 420,
+      "sha256": "99a4853ed65790ba27fcead685b6cdb8a171b8b01f0393e5506ac35777884188"
+    },
+    "web_gateway/check_published_client.mjs": {
+      "mode": 420,
+      "sha256": "4808a69c2ec01a9c2609ccdda6c328b3125a7e20820ed0ef133daf591e8f8a6a"
+    },
+    "web_gateway/fetch_client.py": {
+      "mode": 420,
+      "sha256": "189529324455094947b6883fac751fc3702b276eb2c067f23ea4592b082889ca"
+    },
+    "web_gateway/gateway.py": {
+      "mode": 420,
+      "sha256": "ab26bc0f6164ddd4c2b34c843454a0a6a8138256f0c112cfe3f4dba847c1b92e"
+    },
+    "web_gateway/ipc.py": {
+      "mode": 420,
+      "sha256": "5de141de844178191bb31b737bdeb3d66687c8b27186f399181afd7c2fa63fc8"
+    },
+    "web_gateway/requirements-lock.txt": {
+      "mode": 420,
+      "sha256": "ff2b26d035ae12bc3e346cbec0114264b93eb5f6c0198a1b5ca8b2e7f9e6a699"
+    },
+    "web_gateway/requirements.txt": {
+      "mode": 420,
+      "sha256": "6a913b217582ad2275d9cf28202c45df1d9f3ca2d10493273d9d193eeaa927b3"
+    },
+    "web_gateway/test_admin.py": {
+      "mode": 420,
+      "sha256": "40dc1c240ff7205a1642ef72189619c9419e45dc702aec917fdcf9bebe8942ae"
+    },
+    "web_gateway/test_assets.py": {
+      "mode": 420,
+      "sha256": "35f8df0937d150f47e240cbcdc0de2f6cdc3ced051b397e3d258d0ea5258cef8"
+    },
+    "web_gateway/test_gateway.py": {
+      "mode": 420,
+      "sha256": "4fe8c27655076c665536bb6b9dbd971703e3b7ef8757c3cd05d344c424dc27dc"
+    },
+    "web_gateway/test_published_client.py": {
+      "mode": 420,
+      "sha256": "838c2575f94418f1abbc6128871b65140a3ec32e4049618b3f4a46f7180ad158"
+    }
+  },
+  "schema": 1,
+  "version": "0.3.0-dev"
+}

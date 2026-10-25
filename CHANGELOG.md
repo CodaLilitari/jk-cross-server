@@ -1,5 +1,25 @@
 # Changes
 
+## 0.3.0-dev — GitLab release updates
+
+- Check this project's public GitLab releases on startup and every six hours,
+  with manual checking in the browser panel.
+- Install verified release ZIPs between sessions, with optional automatic
+  installation, persistent preferences, and an automatic panel restart.
+- Preserve configuration, game content, browser files, Wine prefixes, and other
+  unmanaged data; reject local application edits and file collisions.
+- Coordinate installations and sessions across panel instances, defer while a
+  session uses the installation, and prevent stale panels from starting games.
+- Verify package and file hashes, retain a previous-version backup, roll back
+  failed writes, and recover interrupted installations before server startup.
+- Provide a deterministic release packager, manifests, focused updater tests,
+  and documented upgrade instructions. Git checkouts and dependency changes
+  use an explicit manual upgrade path.
+
+The native engine, DirectPlay bridge, client transports, and dependency lists
+are unchanged from 0.2.0-dev. Updater qualification is separate from the
+retained stock-session and browser-download qualification.
+
 ## 0.2.0-dev — Browser asset delivery
 
 - Send the selected missing custom JK/MotS episode through the published

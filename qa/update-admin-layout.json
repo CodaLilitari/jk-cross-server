@@ -1,0 +1,75 @@
+{
+  "kind": "admin-browser-fixture",
+  "checked_at_utc": "2026-10-25T00:48:16.167247+00:00",
+  "scope": "Real HTML, CSS, JavaScript, administration API and settings persistence; simulated release metadata and session state.",
+  "limits": [
+    "No game engine or client was launched.",
+    "No GitLab request, release download or file installation was performed.",
+    "Restart callback was observed without replacing the test process.",
+    "Screenshots are local intermediate evidence, not bundled release files."
+  ],
+  "checks": {
+    "manual_check_enabled_initially": true,
+    "checkbox_preferences_persist_to_disk_and_controller_reload": true,
+    "checkbox_preferences_survive_page_reload": true,
+    "disabling_checks_disables_auto_install_but_keeps_manual_check": true,
+    "manual_check_reaches_api_and_renders_available_release": true,
+    "install_disabled_during_session": true,
+    "stop_remains_enabled_and_completes_during_blocked_update_check": true,
+    "error_state_has_readable_detail": true,
+    "restart_required_state_blocks_game_start_and_exposes_restart": true,
+    "restart_button_calls_controller_and_renders_pending_state": true,
+    "no_installation_was_performed": true
+  },
+  "layouts": [
+    {
+      "name": "desktop",
+      "width": 1280,
+      "height": 1000,
+      "no_horizontal_overflow": true,
+      "measurements": {
+        "viewport": 1280,
+        "document": 1280,
+        "panel_width": 1044,
+        "panel_left": 118,
+        "panel_right": 1162,
+        "panel_scroll_width": 1042,
+        "panel_client_width": 1042
+      },
+      "screenshot": "updates-desktop.png"
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "no_horizontal_overflow": true,
+      "measurements": {
+        "viewport": 390,
+        "document": 390,
+        "panel_width": 358,
+        "panel_left": 16,
+        "panel_right": 374,
+        "panel_scroll_width": 356,
+        "panel_client_width": 356
+      },
+      "screenshot": "updates-mobile.png"
+    }
+  ],
+  "source_sha256": {
+    "manager/admin.py": "c573606e49d426415bfa3e70441bd2c8654d5e1e683bef015f4c0d6381419ac4",
+    "manager/ui/app.js": "6b703a9ed1774b7c5a2d9ed09cb3195bb1a02d559dbb692cc70b753b4afacda9",
+    "manager/ui/index.html": "afd176528722bd8ef89c5a44972f73bcb7feb243ceb2e401b6477d15fe53fcd6",
+    "manager/ui/style.css": "4d41f23ed41cfacacea5d3c86f3316585d1c3a68495aa65f28f5cab7cb23aa68",
+    "manager/updates.py": "f9a127c11f6270d799523a8693702d4d1d513276d31e9a5b0a794ed7d8d6ebba"
+  },
+  "browser_version": "140.0.7339.16",
+  "page_errors": [],
+  "blocked_external_requests": [],
+  "ok": true,
+  "visual_review": {
+    "desktop": "Update card, settings, status and actions are legible and contained at 1280 px.",
+    "mobile": "Checkbox labels and actions wrap within the card at 390 px; no horizontal overflow.",
+    "error_and_restart": "Both state messages and their details render clearly; restart action is exposed only in the required state."
+  },
+  "source_unchanged_after_browser_run": true
+}

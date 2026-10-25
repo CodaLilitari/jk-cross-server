@@ -75,6 +75,15 @@
       </fieldset>
       <div class="actions"><p id="edit-hint">Save settings, check the files, then start the session.</p><div><button type="button" id="preflight" class="quiet">Check files</button><button type="submit" id="save" class="quiet">Save settings</button><button type="button" id="start" class="primary">Start server</button><button type="button" id="stop" class="danger" disabled>Stop</button></div></div>
     </form>
+    <section id="update-panel" class="card" hidden>
+      <div class="section-heading"><div><p class="eyebrow">RELEASES / GITLAB</p><h2>Server updates</h2></div><span id="update-version" class="badge">—</span></div>
+      <p id="update-status" class="update-status" role="status" aria-live="polite">Waiting for an update check…</p>
+      <p id="update-detail" class="hint"></p>
+      <div class="checks"><label><input id="updates-enabled" type="checkbox"> Check automatically every 6 hours</label><label><input id="updates-auto-install" type="checkbox"> Install automatically when the server is stopped</label></div>
+      <p class="hint">Checks published GitLab releases, including development builds. Updates preserve saved settings and game data. Installation waits for all sessions using this installation to stop, then restarts the control panel.</p>
+      <div class="update-actions"><button type="button" id="update-check" class="quiet">Check now</button><button type="button" id="update-install" class="primary" disabled>Install update</button><button type="button" id="update-restart" class="quiet" hidden>Restart panel</button><a id="update-release" href="https://gitlab.com/codalilitari/jk-cross-server/-/releases" target="_blank" rel="noopener">Release notes ↗</a></div>
+      <p id="update-checked" class="hint"></p>
+    </section>
     <section id="asset-panel" class="card" hidden><div class="section-heading"><div><p class="eyebrow">LIVE / CONTENT</p><h2>Browser downloads</h2></div><span id="asset-policy" class="badge">—</span></div><div id="asset-offers" class="grid two"></div><p id="asset-transfer" class="hint" aria-live="polite"></p></section>
     <section class="card logs"><div class="section-heading"><div><p class="eyebrow">LIVE / OUTPUT</p><h2>Server log</h2></div><a id="play-link" href="#" target="_blank" rel="noopener" hidden>Open browser client ↗</a></div><pre id="logs" aria-label="Server log">Waiting for status…</pre></section>
     <footer>Engine and transport readiness are shown here. In-game compatibility evidence is recorded separately in the project documentation.</footer>

@@ -19,6 +19,37 @@ The native test client was rebuilt from the exact base versions of all four chan
 
 Retail qualification uses an isolated original DirectPlay 5 runtime under Wine. Game tests run inside a private network namespace with loopback connectivity and no external route. This is a controlled interoperability test, not a public Internet deployment or a test of every Windows release.
 
+## Release updater acceptance in 0.3
+
+Version 0.3 adds release management to the Python control panel. The native
+engine, DirectPlay bridge, browser transport and asset-delivery implementations,
+and dependency lists retain their 0.2 contents. No new live game-client session
+is claimed for this updater change.
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Updater, scheduling, package builder, real panel restart, and existing controller/browser regression suite | 67 passed; no failures, errors, or skips | `qa/update-tests.json` |
+| GitLab release discovery | Anonymous request to the real public project succeeded; the development worktree correctly recognized the then-published 0.2 release as older | `qa/update-gitlab-check.json` |
+| Actual browser panel with simulated release/session state | Desktop 1280 px and mobile 390 px, persisted preferences, readable errors, restart controls, installation disabled during a match, and Stop usable while an update check waits | `qa/update-admin-layout.json` |
+| Unchanged game-facing components | Hash comparison against the 0.2 release | `qa/update-component-preservation.json` |
+
+The updater tests install fixture packages, preserve configured and unmanaged
+data, remove obsolete managed files, preserve executable modes, and reject
+altered checksums, local edits, unsupported dependencies, invalid archives and
+insufficient space. A subprocess exits after its first installed replacement;
+a new updater instance restores every original managed file from the journal.
+Separate tests cover rollback after a write failure, shared session locks,
+deferred automatic installation, and shutdown waiting for installation work.
+
+The launcher check starts the actual Python panel without a game, requests a
+restart through its authenticated API, observes a new control token, and
+confirms that the session remains stopped. Browser UI checks use simulated
+release metadata; they do not constitute a public release installation or an
+additional multiplayer compatibility test.
+
+The following engineering and game-client records are retained from 0.1 and
+0.2. Their original scope and limitations still apply.
+
 ## Verified engineering checks
 
 | Check | Result | Evidence |

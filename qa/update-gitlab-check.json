@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-10-25T00:48:03.476602+00:00",
+  "scope": "Anonymous real GitLab metadata check; no installation attempted",
+  "status": {
+    "current_version": "0.3.0-dev",
+    "running_version": "0.3.0-dev",
+    "latest_version": "0.2.0-dev",
+    "update_available": false,
+    "checking": false,
+    "installing": false,
+    "error": null,
+    "last_checked": "2026-10-25T00:48:03+00:00",
+    "release_url": "https://gitlab.com/codalilitari/jk-cross-server/-/releases/v0.2.0-dev",
+    "restart_required": false,
+    "install_supported": false,
+    "install_block_reason": "This is a Git checkout. Update it with Git to preserve local work and history.",
+    "receipt": null
+  }
+}

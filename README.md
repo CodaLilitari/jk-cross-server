@@ -7,6 +7,7 @@ A dedicated JKDF2 / Mysteries of the Sith host with a small browser control pane
 ## What is included
 
 - Python administration: start/stop, saved settings, stock/custom episode catalog, map selection, limits, log output, file preflight and isolated run directories.
+- GitLab release checks on startup and every six hours, verified package installation, optional automatic installation between sessions, and rollback recovery.
 - A compiled Linux x86-64 dedicated engine, built from the pinned OpenJKDF2-MotS-Fixes source with server-side transport changes.
 - A compiled Windows 32-bit DirectPlay bridge and its C source. On Linux it runs through Wine with a compatible original DirectPlay runtime.
 - A Python WebSocket/WebRTC gateway with custom episode and active-mod downloads, plus a hash-verifying fetcher for the unchanged published browser client.
@@ -43,6 +44,19 @@ python app.py --config another-instance.json --state-dir another-state --port 87
 ```
 
 For multiple instances, assign distinct native, IPC, broker, browser, and administration ports. Retail DirectPlay also has its own legacy transport port constraints; do not assume changing the native UDP port relocates DirectPlay.
+
+## Keep the server updated
+
+The **Server updates** panel checks this project's published GitLab releases on
+startup and every six hours. Choose **Install update** while the server is
+stopped, or enable **Install automatically when the server is stopped**.
+Automatic installation is opt-in and never interrupts a match. It verifies the
+release, preserves local settings and game data, retains a backup, and restarts
+the panel with the game still stopped.
+
+Existing 0.2 installations need the 0.3 ZIP installed manually once. Git
+checkouts use Git rather than the in-place installer. See [update instructions](docs/UPDATES.md)
+for migration, recovery, multi-instance behavior, and publishing new releases.
 
 ## Client connection routes
 

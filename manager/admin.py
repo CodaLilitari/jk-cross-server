@@ -15,7 +15,7 @@ from .content import catalog, preflight
 UI = Path(__file__).with_name("ui")
 
 
-def create_admin_app(manager, *, port: int | None = 8765, token: str | None = None) -> web.Application:
+def create_admin_app(manager, *, port: int | None = 8765, token: str | None = None, updates=None) -> web.Application:
     token = token or secrets.token_urlsafe(32)
 
     @web.middleware
@@ -69,7 +69,10 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
         return web.json_response(await manager.update_config(await request.json()))
 
     async def get_status(request):
-        return web.json_response(manager.status())
+        result = manager.status()
+        if updates:
+            result["updates"] = updates.status()
+        return web.json_response(result)
 
     async def supplied_config(request):
         body = await request.json() if request.can_read_body else {}
@@ -93,6 +96,21 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
     async def stop(request):
         return web.json_response(await manager.stop())
 
+    async def update_status(request):
+        return web.json_response(updates.status())
+
+    async def update_settings(request):
+        return web.json_response(await updates.configure(await request.json()))
+
+    async def check_updates(request):
+        return web.json_response(await updates.check())
+
+    async def install_update(request):
+        return web.json_response(await updates.install())
+
+    async def restart_panel(request):
+        return web.json_response(await updates.restart())
+
     app = web.Application(middlewares=[guard], client_max_size=128 * 1024)
     app.router.add_get("/", index)
     app.router.add_get("/ui/{name}", asset)
@@ -103,4 +121,10 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
     app.router.add_post("/api/preflight", run_preflight)
     app.router.add_post("/api/start", start)
     app.router.add_post("/api/stop", stop)
+    if updates:
+        app.router.add_get("/api/updates", update_status)
+        app.router.add_put("/api/updates/settings", update_settings)
+        app.router.add_post("/api/updates/check", check_updates)
+        app.router.add_post("/api/updates/install", install_update)
+        app.router.add_post("/api/updates/restart", restart_panel)
     return app

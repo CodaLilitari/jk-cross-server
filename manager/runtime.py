@@ -43,8 +43,10 @@ def stage_tree(source: Path, target: Path):
             stage_file(child, output)
 
 class ServerManager:
-    def __init__(self, config_path: Path, state_dir: Path):
+    def __init__(self, config_path: Path, state_dir: Path, *, updater=None):
         self.config_path, self.state_dir = config_path, state_dir
+        self.updater = updater
+        self.panel_closing = False
         self.config = conf.load(config_path)
         self.state_dir.mkdir(parents=True, exist_ok=True)
         self.state = "stopped"
@@ -173,9 +175,15 @@ class ServerManager:
 
     async def start(self, restarting=False):
         async with self.lock:
+            if self.panel_closing:
+                raise conf.ConfigError("The control panel is restarting or closing.")
             if self.state not in ("stopped", "failed"):
                 raise conf.ConfigError("The session is already active.")
+            if self.updater and self.updater.status()["restart_required"]:
+                raise conf.ConfigError("Restart this control panel before starting a session with the updated files.")
             self.config = conf.validate(self.config, require_paths=True)
+            if self.updater:
+                self.updater.acquire_session_lease()
             self.state, self.error = "starting", None
             self.intentional_stop = False
             self.generation += 1
@@ -314,6 +322,8 @@ class ServerManager:
                 await proc.wait()
         self.processes.clear()
         self.started = None
+        if self.updater:
+            self.updater.release_session_lease()
 
     async def stop(self, failure=None):
         async with self.lock:
@@ -326,6 +336,7 @@ class ServerManager:
         return self.status()
 
     async def close(self):
+        self.panel_closing = True
         await self.stop()
         tasks = list(self.tasks)
         for task in tasks:

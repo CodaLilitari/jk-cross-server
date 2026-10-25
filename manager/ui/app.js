@@ -2,7 +2,7 @@
 const token=document.querySelector('meta[name="admin-token"]').content;
 const form=document.querySelector('#settings');
 const fields=document.querySelector('#settings-fields');
-let config=null, catalog=null, lastStatus=null, busy=false;
+let config=null, catalog=null, lastStatus=null, lastUpdate=null, busy=false, updateBusy=false, reconnecting=false;
 const numeric=['max_players','rank','tick_ms','score_limit','time_limit','native_port','ipc_port','broker_port','web_port','game_flags'];
 const bools=['teams','web_enabled','web_asset_downloads','retail_enabled','auto_restart'];
 const byId=id=>document.getElementById(id);
@@ -11,6 +11,7 @@ async function api(path,method='GET',body){
   const headers={'Authorization':'Bearer '+token};
   if(body!==undefined) headers['Content-Type']='application/json';
   const response=await fetch('/api/'+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),cache:'no-store'});
+  if(response.status===401){window.location.reload();throw new Error('Reconnecting to the restarted control panel…');}
   const result=await response.json();
   if(!response.ok) throw new Error(result.error||('Request failed: '+response.status));
   return result;
@@ -50,9 +51,39 @@ function updateControls(){
   fields.disabled=!editable||busy;
   byId('save').disabled=!editable||busy;
   byId('preflight').disabled=!editable||busy;
-  byId('start').disabled=!editable||busy;
+  byId('start').disabled=!editable||busy||Boolean(lastUpdate?.installing||lastUpdate?.restart_required||lastUpdate?.restart_pending);
   byId('stop').disabled=editable||busy;
   byId('edit-hint').textContent=editable?'Save settings, check the files, then start the session.':'Stop the session to change its settings.';
+  if(lastUpdate){
+    const updating=lastUpdate.installing||lastUpdate.restart_pending;
+    byId('update-check').disabled=busy||updateBusy||updating||lastUpdate.checking;
+    byId('update-install').disabled=busy||updateBusy||updating||lastUpdate.checking||!editable||!lastUpdate.update_available||!lastUpdate.install_supported||lastUpdate.restart_required;
+    byId('update-restart').disabled=busy||updateBusy||updating||!editable;
+    byId('updates-enabled').disabled=busy||updateBusy||updating;
+    byId('updates-auto-install').disabled=busy||updateBusy||updating||!lastUpdate.install_supported;
+  }
+}
+function renderUpdates(value){
+  lastUpdate=value;
+  byId('update-panel').hidden=!value;if(!value)return;
+  byId('update-version').textContent='v'+value.running_version;
+  byId('updates-enabled').checked=value.enabled;
+  byId('updates-auto-install').checked=value.auto_install;
+  let status='Waiting for an update check…';
+  if(value.restart_pending){status='Update installed. Restarting the control panel…';reconnecting=true;}
+  else if(value.installing)status='Downloading and installing the release…';
+  else if(value.checking)status='Checking GitLab…';
+  else if(value.restart_required)status='v'+value.current_version+' is installed. Restart this panel to use it.';
+  else if(value.error)status='The update could not be completed.';
+  else if(value.update_available)status='v'+value.latest_version+' is available.'+(value.waiting_for_other_sessions?' Automatic installation is waiting for other sessions to stop.':value.waiting_for_stop?' Automatic installation is waiting for the session to stop.':'');
+  else if(value.last_checked)status='No newer release is available.';
+  else if(!value.enabled)status='Automatic update checks are disabled.';
+  byId('update-status').textContent=status;
+  byId('update-detail').textContent=[value.error,value.install_block_reason].filter(Boolean).join(' ');
+  byId('update-restart').hidden=!value.restart_required||value.restart_pending;
+  const link=byId('update-release');
+  link.href=value.release_url?.startsWith('https://gitlab.com/codalilitari/jk-cross-server/')?value.release_url:'https://gitlab.com/codalilitari/jk-cross-server/-/releases';
+  byId('update-checked').textContent=value.last_checked?'Last checked: '+new Date(value.last_checked).toLocaleString():'';
 }
 function byteLabel(value){
   if(!Number.isFinite(value)||value<0)return '—';
@@ -103,12 +134,18 @@ function renderStatus(value){
   const play=byId('play-link');play.hidden=!value.browser;
   if(value.browser)play.href='http://127.0.0.1:'+config.web_port+'/';
   renderAssets(value);
+  renderUpdates(value.updates);
   updateControls();
 }
 async function action(fn){
   if(busy)return;busy=true;updateControls();
   try{await fn();}catch(error){notice(error.message,'error');}
   finally{busy=false;updateControls();}
+}
+async function updateAction(fn){
+  if(updateBusy||busy)return;updateBusy=true;updateControls();
+  try{await fn();}catch(error){notice(error.message,'error');}
+  finally{updateBusy=false;updateControls();}
 }
 async function save(){const value=await api('config','PUT',current());fill(value);return value;}
 form.addEventListener('submit',event=>{event.preventDefault();action(async()=>{await save();notice('Settings saved.');});});
@@ -142,5 +179,22 @@ byId('start').addEventListener('click',()=>action(async()=>{
 byId('stop').addEventListener('click',()=>action(async()=>{
   notice('Stopping the session…');renderStatus(await api('stop','POST'));notice('Session stopped.');
 }));
-async function poll(){try{renderStatus(await api('status'));}catch(error){byId('state').textContent='Disconnected';notice(error.message,'error');}}
+byId('update-check').addEventListener('click',()=>updateAction(async()=>{
+  notice('Checking the published GitLab releases…');renderUpdates(await api('updates/check','POST'));
+  notice(lastUpdate.update_available?'A newer release is available.':lastUpdate.error||'No newer release is available.',lastUpdate.error?'error':'success');
+}));
+byId('update-install').addEventListener('click',()=>action(async()=>{
+  notice('Downloading and verifying the update…');renderUpdates(await api('updates/install','POST'));
+  notice('Update installed. The control panel is restarting; the game session will stay stopped.');
+}));
+byId('update-restart').addEventListener('click',()=>action(async()=>{
+  renderUpdates(await api('updates/restart','POST'));notice('Restarting the control panel…');
+}));
+for(const id of ['updates-enabled','updates-auto-install'])byId(id).addEventListener('change',()=>updateAction(async()=>{
+  if(id==='updates-enabled'&&!byId(id).checked)byId('updates-auto-install').checked=false;
+  if(id==='updates-auto-install'&&byId(id).checked)byId('updates-enabled').checked=true;
+  renderUpdates(await api('updates/settings','PUT',{enabled:byId('updates-enabled').checked,auto_install:byId('updates-auto-install').checked}));
+  notice('Update preferences saved.');
+}));
+async function poll(){try{renderStatus(await api('status'));}catch(error){byId('state').textContent=reconnecting?'Restarting':'Disconnected';notice(reconnecting?'Reconnecting after the update…':error.message,reconnecting?'success':'error');}}
 (async()=>{try{fill(await api('config'));await poll();setInterval(poll,1500);}catch(error){notice(error.message,'error');}})();

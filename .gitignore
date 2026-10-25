@@ -3,5 +3,7 @@ __pycache__/
 .venv/
 runtime/
 state/
+config/
+.jk-update/
 instance.json
 *.log
