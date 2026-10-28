@@ -63,8 +63,8 @@ def spectator_reply(payload: bytes, operation: int) -> dict:
     result = dict(zip(names, values[:16]))
     count = result["roster_count"]
     width, height = result["width"], result["height"]
-    if (result["version"] != 1 or result["operation"] != operation or operation not in (0, 1, 2) or
-            result["result"] > 5 or result["capabilities"] & ~15 or result["mode"] > 2 or
+    if (result["version"] != 1 or result["operation"] != operation or operation not in (0, 1, 2, 3) or
+            result["result"] > 5 or result["capabilities"] & ~31 or result["mode"] > 2 or
             result["flags"] & ~127 or result["reason"] > 7 or count > 31 or
             (operation != 0 and count) or
             len(payload) != SPECTATOR_HEADER.size + count * SPECTATOR_PLAYER.size or
@@ -286,13 +286,13 @@ class NativeIPC:
 
     async def spectator_request(self, operation: int, *, world_epoch=0, control_epoch=0,
                                 mode=0, peer_id=0, generation=0, sequence=0,
-                                axes=(0., 0., 0., 0., 0.)) -> dict:
-        """Typed host observer operations; pixels use a separate inherited FD.
+                                axes=(0., 0., 0., 0., 0.), geometry_enabled=0) -> dict:
+        """Typed observer operations; image and geometry use independent inherited FDs.
 
         Source zero identifies the authenticated supervisor, never a spoofed
         gameplay actor. This method is not exposed by the public broker.
         """
-        if type(operation) is not int or operation not in (0, 1, 2):
+        if type(operation) is not int or operation not in (0, 1, 2, 3):
             raise ValueError("Unknown observer operation")
         if operation == 0:
             payload = struct.pack("<II", 1, operation)
@@ -308,6 +308,10 @@ class NativeIPC:
                         (mode != 2 and (peer_id or generation))):
                     raise ValueError("Invalid observer mode or target")
                 payload = struct.pack("<7I", 1, operation, world_epoch, control_epoch, mode, peer_id, generation)
+            elif operation == 3:
+                if type(geometry_enabled) is not int or geometry_enabled not in (0, 1):
+                    raise ValueError("Invalid geometry activation")
+                payload = struct.pack("<5I", 1, operation, world_epoch, control_epoch, geometry_enabled)
             else:
                 if (type(sequence) is not int or not 1 <= sequence <= 0xffffffff or
                         not isinstance(axes, (tuple, list)) or len(axes) != 5 or

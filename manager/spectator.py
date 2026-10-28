@@ -1,4 +1,4 @@
-"""Authenticated host camera control and latest-only in-memory RGBA capture."""
+"""Authenticated camera control and latest-only independent image/geometry capture."""
 from __future__ import annotations
 import asyncio
 import math
@@ -6,6 +6,8 @@ import os
 import socket
 import struct
 import time
+
+from .spectator_geometry import GeometryChannel, inactive_geometry
 
 FRAME_HEADER = struct.Struct("<4s8I")
 MAX_WIDTH, MAX_HEIGHT = 640, 360
@@ -29,7 +31,7 @@ def inactive_status(configured):
             "Enable spectator rendering and restart the session to prepare the host view.",
             "restart_required": not configured, "world_epoch": 0, "control_epoch": 0,
             "target": None, "players": [], "frame": {"available": False, "sequence": 0,
-            "width": 0, "height": 0, "age_ms": None}, "pose": None}
+            "width": 0, "height": 0, "age_ms": None}, "pose": None, "geometry": inactive_geometry()}
 
 
 def uint32(value, name, *, allow_zero=False):
@@ -47,6 +49,11 @@ class SpectatorController:
         self._parent = self._child = None
         self._tasks = []
         self._lock = asyncio.Lock()
+        self._geometry = GeometryChannel(lambda: (self._native["world_epoch"], self._native["control_epoch"])
+                                         if self._native else None)
+        self._geometry_control_error = None
+        self._geometry_renewed_at = 0.
+        self._geometry_renewed_epochs = None
         self._closed = False
         self._viewer_deadline = None
         self._last_input = 0
@@ -54,6 +61,7 @@ class SpectatorController:
 
     def prepare_launch(self, environment):
         environment.pop("OPENJKDF2_SPECTATOR_FD", None)
+        environment.pop("OPENJKDF2_SPECTATOR_GEOMETRY_FD", None)
         if not self.configured:
             return ()
         if os.name == "nt":
@@ -64,9 +72,15 @@ class SpectatorController:
         self._child.setblocking(False)
         environment["OPENJKDF2_SPECTATOR_FD"] = str(self._child.fileno())
         self._tasks.append(asyncio.create_task(self._read_frames(), name="spectator-frames"))
-        return (self._child.fileno(),)
+        geometry_fds = ()
+        try:
+            geometry_fds = (self._geometry.prepare(environment),)
+        except OSError as exc:
+            self._geometry.error = f"The geometry channel could not be prepared: {exc}"
+        return (self._child.fileno(),) + geometry_fds
 
     def spawned(self):
+        self._geometry.spawned()
         if self._child is not None:
             self._child.close()
             self._child = None
@@ -77,6 +91,8 @@ class SpectatorController:
 
     def _connection_state(self, connected):
         if not connected:
+            self._geometry.latest = None
+            self._geometry_renewed_epochs = None
             self._native = self._latest = None
             self._state_at = self._roster_at = 0.
             self._viewer_deadline = None
@@ -142,6 +158,7 @@ class SpectatorController:
         if not self.configured:
             return result
         native, fresh = self._native, self._fresh()
+        result["geometry"] = self._geometry_status()
         result["state"] = "unavailable"
         result["reason"] = self._frame_error or self._control_error or "Waiting for observer capabilities."
         if not native or not fresh:
@@ -175,12 +192,16 @@ class SpectatorController:
         changed = previous is None or (native["world_epoch"], native["control_epoch"]) != (previous["world_epoch"], previous["control_epoch"])
         if changed:
             self._last_input = 0
+            self._geometry_renewed_epochs = None
+            self._geometry_control_error = None
+            self._geometry.latest = None
             if self._latest and (self._latest["world_epoch"], self._latest["control_epoch"]) != (native["world_epoch"], native["control_epoch"]):
                 self._latest = None
         self._native, self._state_at, self._control_error = native, time.monotonic(), None
         if native["operation"] == 0:
             self._roster_at = self._state_at
         if not native["mode"]:
+            self._geometry.latest = None
             self._latest, self._viewer_deadline = None, None
 
     async def _call_locked(self, operation, **kwargs):
@@ -273,10 +294,87 @@ class SpectatorController:
             raise SpectatorError(status["reason"] or "Open a ready observer view first.")
         if self._viewer_deadline is None or self._viewer_deadline <= time.monotonic():
             raise SpectatorError("The viewer lease expired; reopen the view.", 409)
-        # Only authenticated frame fetching renews the viewer lease.
+        # Authenticated image fetching renews the shared viewer lease.
         self._viewer_deadline = time.monotonic() + VIEWER_LEASE
         frame = self._frame()
         return frame if frame and frame["sequence"] > after else None
+
+    def _geometry_frame(self):
+        value, native = self._geometry.latest, self._native
+        if (not self._fresh() or self._geometry.error or self._geometry_control_error or
+                not self.session_ready() or not native["mode"] or not native["flags"] & 32 or
+                native["capabilities"] & 19 != 19 or not native["flags"] & 1 or native["flags"] & 64 or
+                not value or (value["world_epoch"], value["control_epoch"]) !=
+                (native["world_epoch"], native["control_epoch"]) or
+                value["sequence"] < native["frame_sequence"]):
+            return None
+        age = self._geometry_age(value)
+        return value if age <= FRAME_MAX_AGE * 1000 else None
+
+    def _geometry_age(self, value):
+        now = time.monotonic()
+        age = (now - value["captured_at"]) * 1000
+        native = self._native
+        if native and value["sequence"] == native["frame_sequence"]:
+            age = max(age, native["frame_age_ms"] + (now - self._state_at) * 1000)
+        return age
+
+    def _geometry_status(self):
+        native = self._native
+        reason = self._geometry.error or self._geometry_control_error
+        available = bool(self._fresh() and native["capabilities"] & 19 == 19 and
+                         self._geometry.parent is not None and not reason)
+        if not reason:
+            reason = ("" if available else "This engine has no prepared geometry channel.")
+        result = inactive_geometry(reason)
+        result["available"] = available
+        frame = self._geometry_frame()
+        if frame:
+            result.update(frame_available=True, sequence=frame["sequence"], age_ms=round(self._geometry_age(frame)))
+        return result
+
+    async def geometry(self, *, after=0, world_epoch=None, control_epoch=None):
+        uint32(after, "after", allow_zero=True)
+        if world_epoch is None or control_epoch is None:
+            raise ValueError("Geometry fetch requires both world_epoch and control_epoch.")
+        async with self._lock:
+            self._epochs({"world_epoch": world_epoch, "control_epoch": control_epoch})
+            native = self._native
+            if not self._geometry_status()["available"]:
+                raise SpectatorError(self._geometry_status()["reason"])
+            if (not self.session_ready() or not native["mode"] or not native["flags"] & 32 or
+                    not native["flags"] & 1 or native["flags"] & 64):
+                raise SpectatorError("Open a ready observer view before requesting geometry.")
+            if self._viewer_deadline is None or self._viewer_deadline <= time.monotonic():
+                raise SpectatorError("The viewer lease expired; reopen the view.", 409)
+            epochs = (world_epoch, control_epoch)
+            if self._geometry_renewed_epochs != epochs or time.monotonic() - self._geometry_renewed_at >= 1:
+                self._geometry_renewed_epochs, self._geometry_renewed_at = epochs, time.monotonic()
+                try:
+                    reply = await self.ipc.spectator_request(3, world_epoch=world_epoch,
+                            control_epoch=control_epoch, geometry_enabled=1)
+                except (ConnectionError, RuntimeError, asyncio.TimeoutError) as exc:
+                    self._geometry_control_error = str(exc) or "Geometry activation timed out."
+                    self._geometry.latest = None
+                    raise SpectatorError(self._geometry_control_error) from None
+                self._apply(reply)
+                if reply["result"]:
+                    self._geometry.latest = None
+                    if reply["result"] == 2:
+                        raise SpectatorError("The observer world or control epoch changed.", 409)
+                    self._geometry_control_error = "Geometry activation was rejected."
+                    raise SpectatorError(self._geometry_control_error)
+                self._epochs({"world_epoch": world_epoch, "control_epoch": control_epoch})
+            self._viewer_deadline = time.monotonic() + VIEWER_LEASE
+            value = self._geometry_frame()
+            if not value or value["sequence"] <= after:
+                return None
+            # Recompute at delivery; include transfer time and matching native capture age.
+            age = math.ceil(self._geometry_age(value))
+            if age > FRAME_MAX_AGE * 1000:
+                return None
+            header = value["header"]
+            return header[:36] + struct.pack("<I", age) + header[40:] + value["payload"]
 
     async def _poll(self):
         while not self._closed:
@@ -297,6 +395,7 @@ class SpectatorController:
     async def close(self):
         self._closed = True
         self._unsubscribe()
+        await self._geometry.close()
         self._native = self._latest = None
         self._viewer_deadline = None
         for task in self._tasks:

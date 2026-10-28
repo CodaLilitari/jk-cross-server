@@ -1,0 +1,1246 @@
+{
+  "utc": "2026-10-28T23:11:07.103Z",
+  "browser": "156.0.8078.73",
+  "observations": [
+    {
+      "label": "before-opening",
+      "state": "running",
+      "session": {
+        "name": "JK geometry spectator QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 2,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "bots": {
+        "enabled": true,
+        "state": "running",
+        "configured_count": 2,
+        "joined_count": 2,
+        "players": [
+          {
+            "id": "boba_fett",
+            "name": "Bot_BobaFett",
+            "joined": true,
+            "slot": 2,
+            "network_id": 5,
+            "requested_team": 0,
+            "force_side": "dark"
+          },
+          {
+            "id": "jan_ors",
+            "name": "Bot_JanOrs",
+            "joined": true,
+            "slot": 1,
+            "network_id": 3,
+            "requested_team": 0,
+            "force_side": "light"
+          }
+        ],
+        "behavior": {
+          "sabers_only": true,
+          "fists_peace": true,
+          "force_enabled": false
+        },
+        "error": null
+      },
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": false,
+        "mode": "off",
+        "state": "off",
+        "reason": "View is closed.",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 7,
+        "target": null,
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": false,
+          "sequence": 0,
+          "width": 0,
+          "height": 0,
+          "age_ms": null
+        },
+        "pose": {
+          "position": [
+            -7.816720485687256,
+            -2.9639711380004883,
+            0.5727171897888184
+          ],
+          "yaw": -2.5416154861450195,
+          "pitch": 0.027564382180571556,
+          "roll": 0.027564382180571556,
+          "sector": 30
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": false,
+          "sequence": 0,
+          "age_ms": null,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      },
+      "engine": {
+        "pid": 365626,
+        "returncode": null
+      },
+      "native_connected": true
+    },
+    {
+      "label": "image-view",
+      "state": "running",
+      "session": {
+        "name": "JK geometry spectator QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 2,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "bots": {
+        "enabled": true,
+        "state": "running",
+        "configured_count": 2,
+        "joined_count": 2,
+        "players": [
+          {
+            "id": "boba_fett",
+            "name": "Bot_BobaFett",
+            "joined": true,
+            "slot": 2,
+            "network_id": 5,
+            "requested_team": 0,
+            "force_side": "dark"
+          },
+          {
+            "id": "jan_ors",
+            "name": "Bot_JanOrs",
+            "joined": true,
+            "slot": 1,
+            "network_id": 3,
+            "requested_team": 0,
+            "force_side": "light"
+          }
+        ],
+        "behavior": {
+          "sabers_only": true,
+          "fists_peace": true,
+          "force_enabled": false
+        },
+        "error": null
+      },
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "free",
+        "state": "active",
+        "reason": "",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 8,
+        "target": null,
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": true,
+          "sequence": 61,
+          "width": 640,
+          "height": 360,
+          "age_ms": 163
+        },
+        "pose": {
+          "position": [
+            -7.816720485687256,
+            -2.9639711380004883,
+            0.5727171897888184
+          ],
+          "yaw": -2.5416154861450195,
+          "pitch": 0.027564382180571556,
+          "roll": 0.027564382180571556,
+          "sector": 30
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": false,
+          "sequence": 0,
+          "age_ms": null,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      },
+      "engine": {
+        "pid": 365626,
+        "returncode": null
+      },
+      "native_connected": true
+    },
+    {
+      "label": "geometry-view",
+      "state": "running",
+      "session": {
+        "name": "JK geometry spectator QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 2,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "bots": {
+        "enabled": true,
+        "state": "running",
+        "configured_count": 2,
+        "joined_count": 2,
+        "players": [
+          {
+            "id": "boba_fett",
+            "name": "Bot_BobaFett",
+            "joined": true,
+            "slot": 2,
+            "network_id": 5,
+            "requested_team": 0,
+            "force_side": "dark"
+          },
+          {
+            "id": "jan_ors",
+            "name": "Bot_JanOrs",
+            "joined": true,
+            "slot": 1,
+            "network_id": 3,
+            "requested_team": 0,
+            "force_side": "light"
+          }
+        ],
+        "behavior": {
+          "sabers_only": true,
+          "fists_peace": true,
+          "force_enabled": false
+        },
+        "error": null
+      },
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "free",
+        "state": "active",
+        "reason": "",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 8,
+        "target": null,
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": true,
+          "sequence": 71,
+          "width": 640,
+          "height": 360,
+          "age_ms": 73
+        },
+        "pose": {
+          "position": [
+            -7.816720485687256,
+            -2.9639711380004883,
+            0.5727171897888184
+          ],
+          "yaw": -2.5416154861450195,
+          "pitch": 0.027564382180571556,
+          "roll": 0.027564382180571556,
+          "sector": 30
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": true,
+          "sequence": 71,
+          "age_ms": 95,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      },
+      "engine": {
+        "pid": 365626,
+        "returncode": null
+      },
+      "native_connected": true
+    },
+    {
+      "label": "free-camera-moved",
+      "state": "running",
+      "session": {
+        "name": "JK geometry spectator QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 2,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "bots": {
+        "enabled": true,
+        "state": "running",
+        "configured_count": 2,
+        "joined_count": 2,
+        "players": [
+          {
+            "id": "boba_fett",
+            "name": "Bot_BobaFett",
+            "joined": true,
+            "slot": 2,
+            "network_id": 5,
+            "requested_team": 0,
+            "force_side": "dark"
+          },
+          {
+            "id": "jan_ors",
+            "name": "Bot_JanOrs",
+            "joined": true,
+            "slot": 1,
+            "network_id": 3,
+            "requested_team": 0,
+            "force_side": "light"
+          }
+        ],
+        "behavior": {
+          "sabers_only": true,
+          "fists_peace": true,
+          "force_enabled": false
+        },
+        "error": null
+      },
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "free",
+        "state": "active",
+        "reason": "The camera is outside the world.",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 8,
+        "target": null,
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": true,
+          "sequence": 80,
+          "width": 640,
+          "height": 360,
+          "age_ms": 69
+        },
+        "pose": {
+          "position": [
+            -6.805854797363281,
+            -4.441224098205566,
+            0.6220749616622925
+          ],
+          "yaw": -2.5416154861450195,
+          "pitch": 0.027564382180571556,
+          "roll": 0.027564382180571556,
+          "sector": -1
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": true,
+          "sequence": 80,
+          "age_ms": 74,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      },
+      "engine": {
+        "pid": 365626,
+        "returncode": null
+      },
+      "native_connected": true
+    },
+    {
+      "label": "follow-player-first",
+      "state": "running",
+      "session": {
+        "name": "JK geometry spectator QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 2,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "bots": {
+        "enabled": true,
+        "state": "running",
+        "configured_count": 2,
+        "joined_count": 2,
+        "players": [
+          {
+            "id": "boba_fett",
+            "name": "Bot_BobaFett",
+            "joined": true,
+            "slot": 2,
+            "network_id": 5,
+            "requested_team": 0,
+            "force_side": "dark"
+          },
+          {
+            "id": "jan_ors",
+            "name": "Bot_JanOrs",
+            "joined": true,
+            "slot": 1,
+            "network_id": 3,
+            "requested_team": 0,
+            "force_side": "light"
+          }
+        ],
+        "behavior": {
+          "sabers_only": true,
+          "fists_peace": true,
+          "force_enabled": false
+        },
+        "error": null
+      },
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "follow",
+        "state": "active",
+        "reason": "",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 9,
+        "target": {
+          "peer_id": 3,
+          "generation": 2
+        },
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": true,
+          "sequence": 84,
+          "width": 640,
+          "height": 360,
+          "age_ms": 77
+        },
+        "pose": {
+          "position": [
+            0.9945544004440308,
+            -3.533621311187744,
+            0.15649853646755219
+          ],
+          "yaw": -1.1570091247558594,
+          "pitch": 0.024447020143270493,
+          "roll": 0.024449417367577553,
+          "sector": 1
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": true,
+          "sequence": 84,
+          "age_ms": 94,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      },
+      "engine": {
+        "pid": 365626,
+        "returncode": null
+      },
+      "native_connected": true
+    },
+    {
+      "label": "follow-player-later",
+      "state": "running",
+      "session": {
+        "name": "JK geometry spectator QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 2,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "bots": {
+        "enabled": true,
+        "state": "running",
+        "configured_count": 2,
+        "joined_count": 2,
+        "players": [
+          {
+            "id": "boba_fett",
+            "name": "Bot_BobaFett",
+            "joined": true,
+            "slot": 2,
+            "network_id": 5,
+            "requested_team": 0,
+            "force_side": "dark"
+          },
+          {
+            "id": "jan_ors",
+            "name": "Bot_JanOrs",
+            "joined": true,
+            "slot": 1,
+            "network_id": 3,
+            "requested_team": 0,
+            "force_side": "light"
+          }
+        ],
+        "behavior": {
+          "sabers_only": true,
+          "fists_peace": true,
+          "force_enabled": false
+        },
+        "error": null
+      },
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "follow",
+        "state": "active",
+        "reason": "",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 9,
+        "target": {
+          "peer_id": 3,
+          "generation": 2
+        },
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": true,
+          "sequence": 89,
+          "width": 640,
+          "height": 360,
+          "age_ms": 104
+        },
+        "pose": {
+          "position": [
+            1.232641577720642,
+            -3.623255968093872,
+            0.1565048098564148
+          ],
+          "yaw": -2.1272459030151367,
+          "pitch": 0.02214072272181511,
+          "roll": 0.02214072272181511,
+          "sector": 1
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": true,
+          "sequence": 89,
+          "age_ms": 129,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      },
+      "engine": {
+        "pid": 365626,
+        "returncode": null
+      },
+      "native_connected": true
+    },
+    {
+      "label": "context-loss-image-fallback",
+      "state": "running",
+      "session": {
+        "name": "JK geometry spectator QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 2,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "bots": {
+        "enabled": true,
+        "state": "running",
+        "configured_count": 2,
+        "joined_count": 2,
+        "players": [
+          {
+            "id": "boba_fett",
+            "name": "Bot_BobaFett",
+            "joined": true,
+            "slot": 2,
+            "network_id": 5,
+            "requested_team": 0,
+            "force_side": "dark"
+          },
+          {
+            "id": "jan_ors",
+            "name": "Bot_JanOrs",
+            "joined": true,
+            "slot": 1,
+            "network_id": 3,
+            "requested_team": 0,
+            "force_side": "light"
+          }
+        ],
+        "behavior": {
+          "sabers_only": true,
+          "fists_peace": true,
+          "force_enabled": false
+        },
+        "error": null
+      },
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "follow",
+        "state": "active",
+        "reason": "",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 9,
+        "target": {
+          "peer_id": 3,
+          "generation": 2
+        },
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": true,
+          "sequence": 96,
+          "width": 640,
+          "height": 360,
+          "age_ms": 69
+        },
+        "pose": {
+          "position": [
+            1.2839082479476929,
+            -3.5391082763671875,
+            0.15650992095470428
+          ],
+          "yaw": 0.7321287393569946,
+          "pitch": 0.01976158656179905,
+          "roll": 0.019758524373173714,
+          "sector": 1
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": true,
+          "sequence": 96,
+          "age_ms": 108,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      },
+      "engine": {
+        "pid": 365626,
+        "returncode": null
+      },
+      "native_connected": true
+    },
+    {
+      "label": "after-closing",
+      "state": "running",
+      "session": {
+        "name": "JK geometry spectator QA",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 2,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "bots": {
+        "enabled": true,
+        "state": "running",
+        "configured_count": 2,
+        "joined_count": 2,
+        "players": [
+          {
+            "id": "boba_fett",
+            "name": "Bot_BobaFett",
+            "joined": true,
+            "slot": 2,
+            "network_id": 5,
+            "requested_team": 0,
+            "force_side": "dark"
+          },
+          {
+            "id": "jan_ors",
+            "name": "Bot_JanOrs",
+            "joined": true,
+            "slot": 1,
+            "network_id": 3,
+            "requested_team": 0,
+            "force_side": "light"
+          }
+        ],
+        "behavior": {
+          "sabers_only": true,
+          "fists_peace": true,
+          "force_enabled": false
+        },
+        "error": null
+      },
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": false,
+        "mode": "off",
+        "state": "off",
+        "reason": "View is closed.",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 10,
+        "target": null,
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": false,
+          "sequence": 0,
+          "width": 0,
+          "height": 0,
+          "age_ms": null
+        },
+        "pose": {
+          "position": [
+            1.0750561952590942,
+            -3.549060583114624,
+            0.15657249093055725
+          ],
+          "yaw": 0.46151116490364075,
+          "pitch": 0.019986623898148537,
+          "roll": 0.019989553838968277,
+          "sector": 1
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": false,
+          "sequence": 0,
+          "age_ms": null,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      },
+      "engine": {
+        "pid": 365626,
+        "returncode": null
+      },
+      "native_connected": true
+    }
+  ],
+  "page_errors": [],
+  "http_failures": [
+    {
+      "path": "/api/spectator/input",
+      "status": 429
+    },
+    {
+      "path": "/api/spectator/input",
+      "status": 429
+    },
+    {
+      "path": "/api/spectator/input",
+      "status": 429
+    },
+    {
+      "path": "/api/spectator/input",
+      "status": 429
+    },
+    {
+      "path": "/api/spectator/input",
+      "status": 429
+    }
+  ],
+  "geometry_frames": [
+    {
+      "bytes": 376,
+      "sequence": 69,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 216,
+      "sha256": "c4b228753b8be6058e926002f3248014e56be5c48ca126fccf1c6506257b92bf",
+      "payload_sha256": "8eb8e3312bc2720b1f2d87da78dd8840b29857b01aa887194202f8e6ac36e6c9"
+    },
+    {
+      "bytes": 376,
+      "sequence": 70,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 216,
+      "sha256": "79222e96335d49af21d1ec6e8abf6226a5e12fe7e564f1ee4798f4e157c2f216",
+      "payload_sha256": "8eb8e3312bc2720b1f2d87da78dd8840b29857b01aa887194202f8e6ac36e6c9"
+    },
+    {
+      "bytes": 376,
+      "sequence": 71,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 217,
+      "sha256": "593e43abddab61f9bc1b60c221cf198adf0699ad171cea3d2310f1b917f5a955",
+      "payload_sha256": "8eb8e3312bc2720b1f2d87da78dd8840b29857b01aa887194202f8e6ac36e6c9"
+    },
+    {
+      "bytes": 376,
+      "sequence": 72,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 219,
+      "sha256": "0e9f44abea4c52af4403851aa2f33e22e3aef387e445cf564ad0a7bb9d2609fa",
+      "payload_sha256": "8eb8e3312bc2720b1f2d87da78dd8840b29857b01aa887194202f8e6ac36e6c9"
+    },
+    {
+      "bytes": 376,
+      "sequence": 73,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 138,
+      "sha256": "2e1d5ef0d31850d32c01a4b981059bf717d47849c92375dc37014589555a424e",
+      "payload_sha256": "8eb8e3312bc2720b1f2d87da78dd8840b29857b01aa887194202f8e6ac36e6c9"
+    },
+    {
+      "bytes": 376,
+      "sequence": 75,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 75,
+      "sha256": "30ef248323fb3fcd3e1a8710839f50a66842e0c24d7bb4c74acb148c35292f75",
+      "payload_sha256": "8eb8e3312bc2720b1f2d87da78dd8840b29857b01aa887194202f8e6ac36e6c9"
+    },
+    {
+      "bytes": 376,
+      "sequence": 75,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 87,
+      "sha256": "17654f4725dbd6779fb6027894e0ae6f3bbc4252989c8ed0e90b1132ccf8c0dd",
+      "payload_sha256": "8eb8e3312bc2720b1f2d87da78dd8840b29857b01aa887194202f8e6ac36e6c9"
+    },
+    {
+      "bytes": 376,
+      "sequence": 76,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 218,
+      "sha256": "32d9ae9deb8fe301666825e0ebb9ba72587e5d112aa4eaf644ef21d714e1b4a4",
+      "payload_sha256": "8eb8e3312bc2720b1f2d87da78dd8840b29857b01aa887194202f8e6ac36e6c9"
+    },
+    {
+      "bytes": 64,
+      "sequence": 77,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 0,
+      "indices": 0,
+      "age_ms": 15,
+      "sha256": "9e800d1d794b8a3c8cc6527fdc3b4a1c972bd0d9e9414f0bf7e032d030720a96",
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 64,
+      "sequence": 78,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 0,
+      "indices": 0,
+      "age_ms": 15,
+      "sha256": "987031096333952663523e51a15bf4029844ab1cfa46170adba8d0ba53ffb3bd",
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 64,
+      "sequence": 79,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 0,
+      "indices": 0,
+      "age_ms": 35,
+      "sha256": "45b56489cb1eaef9d0082abe691a08a46846d69debed58befdfaad37d688eb5e",
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 64,
+      "sequence": 80,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 0,
+      "indices": 0,
+      "age_ms": 15,
+      "sha256": "34c6f615b11a1e69cd76e139f316e6b7c0ca2acdc02b77d9bdb4b53c8fd6bb8b",
+      "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4536,
+      "sequence": 82,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 175,
+      "indices": 243,
+      "age_ms": 223,
+      "sha256": "10e7bbcc105fe5ead15e3696abddcb36cbf4521f2b45e6e67b6a9dd9077e8bfd",
+      "payload_sha256": "e3963c8f8a1cf247e60d084412aecb0c0cf96617399890ff15dff9cc8441ca6e"
+    },
+    {
+      "bytes": 4632,
+      "sequence": 83,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 178,
+      "indices": 252,
+      "age_ms": 195,
+      "sha256": "ecbd696e41c34d76787dd3fecdaadc5dc8f7bba4de8b999b551e2931a42a8d82",
+      "payload_sha256": "cd6a0854f334e82d875f65802c1150568083662eea82411feb81897bd9aff8d5"
+    },
+    {
+      "bytes": 4600,
+      "sequence": 84,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 177,
+      "indices": 249,
+      "age_ms": 201,
+      "sha256": "4afac5808cadf29395302232cc500c10af8b95b5de650b20ec38828bb0f945ac",
+      "payload_sha256": "a31bf155300b5de5c485d1c43c4984e13402e72fcf289a09ad76984fe8f4ffd5"
+    },
+    {
+      "bytes": 15104,
+      "sequence": 85,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 590,
+      "indices": 810,
+      "age_ms": 201,
+      "sha256": "fc0564b652366a4996f9f0110fff115d6aa6d254eb3f91a258f68f4c2318933b",
+      "payload_sha256": "ac76af58830477de1eebe6ac37a01571a4aa262ace0de25ac2704dc36593e42f"
+    },
+    {
+      "bytes": 3856,
+      "sequence": 87,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 147,
+      "indices": 213,
+      "age_ms": 30,
+      "sha256": "14d60e4145ad06f73b2d5045c9ae75011baa7eae9ce753a8ac373e8cfbec071c",
+      "payload_sha256": "6218e4841a8b5ce74ba1e25848b1ba79c7846478b8e4464e4c994bb1897ec099"
+    },
+    {
+      "bytes": 4104,
+      "sequence": 88,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 157,
+      "indices": 225,
+      "age_ms": 203,
+      "sha256": "303c0f4c21131c61a72ee3b4aa643b683a9172b0a1109ceedb08681f9e88d0d1",
+      "payload_sha256": "c059b07fdd43f1fcb4e06e034a75d377055e2c850268732a119d66195e475249"
+    },
+    {
+      "bytes": 3168,
+      "sequence": 89,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 121,
+      "indices": 171,
+      "age_ms": 198,
+      "sha256": "00bc1e30cde88f5e75597103c67d81fabeb9cc9cb7e03b4b5ef242b60e27966b",
+      "payload_sha256": "c57d5c1358582817640077007c3a4d4f6bf9ab4bdcb093d0c798b5e1c8d09f4b"
+    },
+    {
+      "bytes": 3232,
+      "sequence": 90,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 123,
+      "indices": 177,
+      "age_ms": 196,
+      "sha256": "088c59aac79dcb53892dbd4a20b84ad007b5c7f2fce8d1433b6f109423d75514",
+      "payload_sha256": "d08eeb750d7c380afd63cbde911d93a54a313d7a771310811afbfef152d1af12"
+    },
+    {
+      "bytes": 2488,
+      "sequence": 92,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 93,
+      "indices": 141,
+      "age_ms": 49,
+      "sha256": "4aeba58db4518576a810f10550744b7a494600addf5e722580bff999bae1890a",
+      "payload_sha256": "709e7a3304f259144113264f043bb77b3190126896e4ada6520dad1e95491b03"
+    },
+    {
+      "bytes": 4344,
+      "sequence": 93,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 169,
+      "indices": 225,
+      "age_ms": 201,
+      "sha256": "69ef9c3925f141a61d8b9760e4ddc5ebce4dd70d0e527db84533fada72a2ce60",
+      "payload_sha256": "bcd714c4c71a928d65bde8e8f0832d9f13cfc2cf4fbf074e68f27b1dcb7c2c92"
+    },
+    {
+      "bytes": 29688,
+      "sequence": 94,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 1162,
+      "indices": 1596,
+      "age_ms": 200,
+      "sha256": "89d70ceca63f4252928057baf17e1bf30784f9cab32d9923a6e96d503dc1e4ec",
+      "payload_sha256": "6411f954c74a6ecced3d674e4ed2cc1319c0a1a9a7eb5906eea3c2de739b1dac"
+    }
+  ],
+  "checks": {
+    "image_default": true,
+    "backend_switch_preserves_epochs": true,
+    "geometry_and_image_share_capture_sequence": true,
+    "free_camera_moved": true,
+    "follow_tracks_player": true,
+    "mobile_no_horizontal_overflow": true,
+    "context_loss_fallback": true,
+    "close_keeps_server_running": true,
+    "players_unchanged": true,
+    "actual_geometry_draws": true,
+    "world_geometry_changes": true,
+    "unsupported_webgl_fallback": true
+  },
+  "scope": "Actual local stock JK1MP/m2 world, two ordinary bot clients, production panel and renderer. Read-only instrumentation records production draw calls and samples actual pixels.",
+  "paired_capture": {
+    "matched": true,
+    "geometry_sequence": 75,
+    "image_sequence": 75,
+    "world_epoch": 2,
+    "control_epoch": 8,
+    "geometry_bytes": 376,
+    "image_bytes": 921600
+  },
+  "probe": {
+    "draws": 19,
+    "first": {
+      "sequence": 69,
+      "world_epoch": 2,
+      "control_epoch": 8,
+      "vertices": 12,
+      "indices": 18,
+      "age_ms": 255,
+      "samples": [
+        [
+          222,
+          222,
+          222,
+          255
+        ],
+        [
+          241,
+          241,
+          241,
+          255
+        ],
+        [
+          247,
+          247,
+          247,
+          255
+        ]
+      ],
+      "gl_error": 0
+    },
+    "last": {
+      "sequence": 90,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "vertices": 123,
+      "indices": 177,
+      "age_ms": 202,
+      "samples": [
+        [
+          255,
+          255,
+          255,
+          255
+        ],
+        [
+          207,
+          207,
+          207,
+          255
+        ],
+        [
+          210,
+          210,
+          210,
+          255
+        ]
+      ],
+      "gl_error": 0
+    }
+  },
+  "finished_utc": "2026-10-28T23:11:20.085Z",
+  "passed": true,
+  "artifact": {
+    "pid": 365624,
+    "port": 48765,
+    "utc": "2026-10-28T23:08:39.467766+00:00",
+    "engine": "/workspace/scratch/55e850edc256/jk-browser-spectator/bin/linux-x86_64/openjkdf2",
+    "engine_sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
+    "web_enabled": false,
+    "bots_profiles": [
+      "boba_fett",
+      "jan_ors"
+    ]
+  },
+  "payload_changes_observed": 13,
+  "geometry_bytes_range": [
+    64,
+    29688
+  ],
+  "http_rate_limit_note": "Observed input429 responses are existing camera input throttling during control transitions; no geometry request failed and no page errors occurred."
+}

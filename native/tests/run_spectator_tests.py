@@ -20,12 +20,12 @@ def main():
     for key in ("C_DEFINES","C_INCLUDES","C_FLAGS"):command+=entries[key]
     command += ["-I"+str(source/"lib/SDL/include"),"-I"+str(source/"lib/SDL/include/SDL3"),"-UNDEBUG","-ffunction-sections","-fdata-sections"]
     with tempfile.TemporaryDirectory(prefix="jk-observer-test-") as directory:
-        for name in ("test_spectator_render","test_spectator_controller","test_spectator_cache","test_spectator_frame"):
+        for name in ("test_spectator_render","test_spectator_controller","test_spectator_cache","test_spectator_frame","test_spectator_geometry"):
             output=Path(directory)/name
             sources=[str(Path(__file__).with_name(name+".c"))]
             if name != "test_spectator_render":
                 sources += [str(build/"generated/globals.c")]
-            if name in ("test_spectator_controller","test_spectator_frame"):
+            if name in ("test_spectator_controller","test_spectator_frame","test_spectator_geometry"):
                 sources += [str(source/path) for path in ("src/Primitives/rdMatrix.c","src/Primitives/rdVector.c","src/General/stdMath.c")]
             compiled=subprocess.run(command+sources+["-Wl,--gc-sections","-lm","-o",str(output)])
             if compiled.returncode:

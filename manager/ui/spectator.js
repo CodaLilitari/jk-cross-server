@@ -67,12 +67,19 @@
     if(!panel)return {updateStatus(){}};
     const token=document.querySelector('meta[name="admin-token"]').content;
     const canvas=byId('spectator-canvas'),context=canvas.getContext('2d',{alpha:false});
+    const geometryCanvas=byId('spectator-geometry-canvas'),backend=byId('spectator-backend');
+    const geometry=window.JKSGGeometry;
+    let renderer=null,presentationRevision=0,backendMessage='';
+    const activeCanvas=()=>backend.value==='geometry'?geometryCanvas:canvas;
     const toggle=byId('spectator-toggle'),mode=byId('spectator-mode'),target=byId('spectator-target');
     const input=new ObserverInput();
-    let status=null,serverActive=false,controlBusy=false,statusBusy=false,inputBusy=false,frameBusy=false;
+    let status=null,serverActive=false,controlBusy=false,statusBusy=false,inputBusy=false,frameRequest=null;
     let revision=0,frameSequence=0,message='',releasePending=false,lastRoster='',pointer=null,enginePid=null,lastInputAt=0,lastFrameAt=0,videoUnavailable=true,owned=null;
 
     function clearFrame(){
+      presentationRevision++;
+      frameRequest?.controller.abort();frameRequest=null;
+      if(renderer)renderer.clear();
       frameSequence=0;lastFrameAt=0;videoUnavailable=true;context.fillStyle='#060a07';context.fillRect(0,0,canvas.width,canvas.height);
       byId('spectator-overlay').hidden=false;
       byId('spectator-frame-detail').textContent='Waiting for a frame';
@@ -82,22 +89,42 @@
       for(const button of panel.querySelectorAll('[data-spectator-key]'))button.classList.remove('held');
       void sendInput(true);
     }
-    async function request(path,method='GET',body,raw=false){
+    function selectBackend(value,reason=''){
+      release();backend.value=value;backendMessage=reason;clearFrame();
+      if(value==='geometry'){
+        if(!status?.geometry?.available){selectBackend('image',status?.geometry?.reason||'Experimental geometry is unavailable. Showing the image view.');return;}
+        try{
+          if(!geometry)throw new Error('WebGL geometry support is unavailable. Showing the image view.');
+          if(!renderer)renderer=geometry.createRenderer(geometryCanvas,{onContextLost(){
+            selectBackend('image','WebGL context was lost. Showing the image view.');
+            renderer?.dispose();renderer=null;
+          }});
+        }catch(error){renderer?.dispose();renderer=null;selectBackend('image',error.message);return;}
+      }
+      render();
+    }
+    async function request(path,method='GET',body,raw=false,signal){
       const controller=new AbortController(),timeout=window.setTimeout(()=>controller.abort(),2500);
+      const cancel=()=>controller.abort();
+      if(signal){if(signal.aborted)cancel();else signal.addEventListener('abort',cancel,{once:true});}
       try{
         const headers={Authorization:'Bearer '+token};
         if(body!==undefined)headers['Content-Type']='application/json';
         const response=await window.fetch('/api/spectator'+path,{method,headers,
           body:body===undefined?undefined:JSON.stringify(body),cache:'no-store',signal:controller.signal});
         if(response.status===401){window.location.reload();throw new Error('Reconnecting to the control panel…');}
-        if(raw&&response.ok)return response;
+        if(raw&&response.ok)return {response,buffer:response.status===204?null:await response.arrayBuffer()};
         const result=await response.json();
         if(!response.ok){const error=new Error(result.error||'Spectator request failed.');error.status=response.status;throw error;}
         return result;
-      }finally{window.clearTimeout(timeout);}
+      }finally{window.clearTimeout(timeout);signal?.removeEventListener('abort',cancel);}
     }
     function render(){
       const enabled=serverActive&&status?.enabled===true;
+      const useGeometry=backend.value==='geometry';
+      canvas.hidden=useGeometry;geometryCanvas.hidden=!useGeometry;
+      backend.disabled=controlBusy||!enabled;
+      byId('spectator-backend-status').textContent=backendMessage||(useGeometry?'Experimental flat-colour triangles. Textures, transparency and effects are approximated.':'Image view uses the native renderer.');
       toggle.textContent=controlBusy?'Applying…':enabled?'Close spectator':'Open spectator';
       toggle.disabled=controlBusy||!serverActive||(!enabled&&!status?.available);
       toggle.setAttribute('aria-expanded',String(enabled));
@@ -116,7 +143,7 @@
       const pose=status?.pose,position=pose?.position;
       byId('spectator-position').textContent=enabled&&Array.isArray(position)&&position.every(Number.isFinite)?
         'Position '+position.map(n=>n.toFixed(2)).join(' / ')+' · '+(pose.sector<0?'Outside the level':'Sector '+pose.sector):'';
-      const stale=videoUnavailable||!lastFrameAt||Date.now()-lastFrameAt>2500;
+      const stale=videoUnavailable||!lastFrameAt||Date.now()-lastFrameAt>(useGeometry?2000:2500);
       byId('spectator-overlay').hidden=!stale&&!(pose?.sector<0);
       byId('spectator-overlay').textContent=enabled&&pose?.sector<0?'Outside the level — fly back toward the map.':frameSequence?'Waiting for a fresh frame…':'Waiting for the game view…';
     }
@@ -127,7 +154,10 @@
       if(changed){input.clear();pointer=null;clearFrame();}
       status=value;
       if(!ownsControl(owned,value))owned=null;
-      if(value.frame)videoUnavailable=value.frame.available===false;
+      if(backend.value==='geometry'){
+        if(!value.geometry?.available)selectBackend('image',value.geometry?.reason||'Experimental geometry is unavailable. Showing the image view.');
+        else videoUnavailable=value.geometry.frame_available===false;
+      }else if(value.frame)videoUnavailable=value.frame.available===false;
       if(value.enabled)mode.value=value.mode;
       if(!value.enabled||!value.available){input.clear();clearFrame();}
       const players=Array.isArray(value.players)?value.players:[];
@@ -157,7 +187,7 @@
       controlBusy=true;input.clear();pointer=null;message='';const started=++revision;render();
       try{
         const value=await request('','PUT',{world_epoch:status.world_epoch,control_epoch:status.control_epoch,mode:nextMode,target:selected});
-        if(started===revision&&serverActive){owned=value.enabled&&value.mode==='free'?{world_epoch:value.world_epoch,control_epoch:value.control_epoch}:null;applySnapshot(value);if(value.enabled)canvas.focus({preventScroll:true});}
+        if(started===revision&&serverActive){owned=value.enabled&&value.mode==='free'?{world_epoch:value.world_epoch,control_epoch:value.control_epoch}:null;applySnapshot(value);if(value.enabled)activeCanvas().focus({preventScroll:true});}
       }catch(error){if(started===revision){message=error.message;}}
       finally{controlBusy=false;render();void refresh();}
     }
@@ -172,45 +202,65 @@
       }finally{inputBusy=false;if(releasePending)void sendInput(true);}
     }
     async function fetchFrame(){
-      if(frameBusy||controlBusy||!serverActive||!status?.enabled||document.hidden)return;
-      frameBusy=true;const started=revision;
+      if(frameRequest||controlBusy||!serverActive||!status?.enabled||document.hidden)return;
+      const selected=backend.value,useGeometry=selected==='geometry';
+      if(useGeometry&&(!renderer||!status.geometry?.available))return;
+      const pending={controller:new AbortController()};frameRequest=pending;
+      const started=revision,presentation=presentationRevision,startedAt=Date.now();
       const epoch={world_epoch:status.world_epoch,control_epoch:status.control_epoch};
+      const current=()=>started===revision&&presentation===presentationRevision&&selected===backend.value&&
+        serverActive&&status?.enabled&&!document.hidden&&epoch.world_epoch===status.world_epoch&&epoch.control_epoch===status.control_epoch;
       try{
-        const response=await request('/frame?after='+frameSequence+'&world_epoch='+epoch.world_epoch+'&control_epoch='+epoch.control_epoch,'GET',undefined,true);
+        const {response,buffer}=await request((useGeometry?'/geometry':'/frame')+'?after='+frameSequence+'&world_epoch='+epoch.world_epoch+'&control_epoch='+epoch.control_epoch,'GET',undefined,true,pending.controller.signal);
         if(response.status===204)return;
-        const buffer=await response.arrayBuffer();
-        if(started!==revision||!serverActive||!status?.enabled||epoch.world_epoch!==status.world_epoch||epoch.control_epoch!==status.control_epoch)return;
-        const frame=decodeFrame(response.headers,buffer,epoch,frameSequence);
-        if(canvas.width!==frame.width||canvas.height!==frame.height){canvas.width=frame.width;canvas.height=frame.height;}
-        context.putImageData(new ImageData(frame.pixels,frame.width,frame.height),0,0);frameSequence=frame.sequence;lastFrameAt=Date.now();videoUnavailable=false;
-        byId('spectator-frame-detail').textContent=frame.width+' × '+frame.height+' · Frame '+frame.sequence;
+        if(!current())return;
+        const frame=useGeometry?geometry.decodeGeometry(buffer,epoch,frameSequence,Math.max(0,Date.now()-startedAt)):
+          decodeFrame(response.headers,buffer,epoch,frameSequence);
+        if(useGeometry&&status.geometry.sequence>frame.sequence)return;
+        if(useGeometry)renderer.draw(frame);
+        else{
+          if(canvas.width!==frame.width||canvas.height!==frame.height){canvas.width=frame.width;canvas.height=frame.height;}
+          context.putImageData(new ImageData(frame.pixels,frame.width,frame.height),0,0);
+        }
+        frameSequence=frame.sequence;lastFrameAt=Date.now()-(useGeometry?frame.age_ms:0);videoUnavailable=false;
+        byId('spectator-frame-detail').textContent=frame.width+' × '+frame.height+' · '+(useGeometry?'Geometry ':'')+'Frame '+frame.sequence+(useGeometry?' · '+Math.ceil(frame.age_ms)+' ms old':'');
         message='';render();
       }catch(error){
-        if(started===revision){videoUnavailable=true;message=error.name==='AbortError'?'Waiting for the spectator video…':error.message;render();if(error.status===409)void refresh();}
-      }finally{frameBusy=false;}
+        if(current()){
+          videoUnavailable=true;
+          if(useGeometry&&error.name!=='AbortError'&&error.status!==409){
+            selectBackend('image','Experimental geometry: '+error.message+' Showing the image view.');
+          }else{
+            message=error.name==='AbortError'?'Waiting for the spectator view…':error.message;render();
+          }
+          if(error.status===409)void refresh();
+        }
+      }finally{if(frameRequest===pending)frameRequest=null;}
     }
     // Event wiring is kept below the state machine so all releases share one path.
+    backend.addEventListener('change',()=>selectBackend(backend.value==='geometry'?'geometry':'image'));
     toggle.addEventListener('click',()=>void configure(status?.enabled?'off':mode.value));
     byId('spectator-take-control').addEventListener('click',()=>void configure('free'));
     mode.addEventListener('change',()=>{release();render();if(status?.enabled)void configure(mode.value);});
     target.addEventListener('change',()=>{if(status?.enabled&&mode.value==='follow')void configure('follow');});
-    canvas.addEventListener('keydown',event=>{
-      if(ownsControl(owned,status)&&input.key(event.code,true))event.preventDefault();
-      if(event.code==='Escape')release();
-    });
-    window.addEventListener('keyup',event=>{if(input.key(event.code,false)&&status?.enabled&&status.mode==='free')void sendInput();});
-    canvas.addEventListener('blur',release);
-    canvas.addEventListener('pointerdown',event=>{
-      if(!ownsControl(owned,status)||event.button!==0)return;
-      canvas.focus({preventScroll:true});canvas.setPointerCapture(event.pointerId);pointer={id:event.pointerId,x:event.clientX,y:event.clientY};event.preventDefault();
-    });
-    canvas.addEventListener('pointermove',event=>{
-      if(!pointer||pointer.id!==event.pointerId)return;
-      input.look((pointer.x-event.clientX)*.006,(pointer.y-event.clientY)*.006);
-      pointer.x=event.clientX;pointer.y=event.clientY;
-    });
-    canvas.addEventListener('pointerup',event=>{if(pointer?.id===event.pointerId)pointer=null;});
-    canvas.addEventListener('pointercancel',release);
+    for(const canvas of [byId('spectator-canvas'),geometryCanvas]){
+      canvas.addEventListener('keydown',event=>{
+        if(ownsControl(owned,status)&&input.key(event.code,true))event.preventDefault();
+        if(event.code==='Escape')release();
+      });
+      canvas.addEventListener('blur',release);
+      canvas.addEventListener('pointerdown',event=>{
+        if(!ownsControl(owned,status)||event.button!==0)return;
+        canvas.focus({preventScroll:true});canvas.setPointerCapture(event.pointerId);pointer={id:event.pointerId,x:event.clientX,y:event.clientY};event.preventDefault();
+      });
+      canvas.addEventListener('pointermove',event=>{
+        if(!pointer||pointer.id!==event.pointerId)return;
+        input.look((pointer.x-event.clientX)*.006,(pointer.y-event.clientY)*.006);
+        pointer.x=event.clientX;pointer.y=event.clientY;
+      });
+      canvas.addEventListener('pointerup',event=>{if(pointer?.id===event.pointerId)pointer=null;});
+      canvas.addEventListener('pointercancel',release);
+    }
     for(const button of panel.querySelectorAll('[data-spectator-key]')){
       button.addEventListener('pointerdown',event=>{
         if(!ownsControl(owned,status))return;
@@ -222,8 +272,9 @@
       button.addEventListener('keyup',event=>{if(event.code==='Space'||event.code==='Enter'){event.preventDefault();lift();}});
       button.addEventListener('blur',lift);
     }
+    window.addEventListener('keyup',event=>{if(input.key(event.code,false)&&status?.enabled&&status.mode==='free')void sendInput();});
     window.addEventListener('blur',release);
-    document.addEventListener('visibilitychange',()=>{release();if(!document.hidden)void refresh();});
+    document.addEventListener('visibilitychange',()=>{release();if(document.hidden)clearFrame();else void refresh();});
     window.setInterval(()=>void refresh(),1000);
     window.setInterval(()=>void sendInput(),100);
     window.setInterval(()=>void fetchFrame(),200);
@@ -232,7 +283,7 @@
       const active=value.state==='running'&&value.native_connected===true&&value.session_ready!==false;
       const pid=value.processes?.engine?.pid??null;
       if(pid!==enginePid){revision++;input.setEpoch(0,0);status=null;owned=null;serverActive=false;lastRoster='';clearFrame();enginePid=pid;}
-      if(!active){if(serverActive){revision++;input.clear();pointer=null;status=null;clearFrame();}serverActive=false;message='';render();return;}
+      if(!active){owned=null;if(serverActive){revision++;input.clear();pointer=null;status=null;clearFrame();}serverActive=false;message='';render();return;}
       const justStarted=!serverActive;serverActive=true;
       if(value.spectator&&!controlBusy)applySnapshot(value.spectator);
       if(justStarted)void refresh();

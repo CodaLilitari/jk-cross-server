@@ -109,7 +109,7 @@ test('static panel preserves unique required controls, legacy settings and scrip
     'bots_force_enabled').split(' '))assert.ok(names.has(name),'missing saved setting '+name);
   assert.match(html,/<title>JK Cross Server<\/title>/);
   const scripts=nodes.filter(node=>node.tag==='script');
-  assert.deepEqual(scripts.map(node=>node.attributes.src),['/ui/spectator.js','/ui/app.js']);
+  assert.deepEqual(scripts.map(node=>node.attributes.src),['/ui/spectator-geometry.js','/ui/spectator.js','/ui/app.js']);
   for(const script of scripts)assert.ok(Object.hasOwn(script.attributes,'defer'));
   assert.match(fs.readFileSync(path.join(ui,'app.js'),'utf8'),/window\.jkSpectator\?\.updateStatus\(value\)/);
 });

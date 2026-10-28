@@ -1,0 +1,35 @@
+test_catalog_error_is_readable_json (web_gateway.test_admin.AdminIntegration.test_catalog_error_is_readable_json) ... ok
+test_cross_origin_and_host_rejected (web_gateway.test_admin.AdminIntegration.test_cross_origin_and_host_rejected) ... ok
+test_panel_and_auth (web_gateway.test_admin.AdminIntegration.test_panel_and_auth) ... ok
+test_save_start_stop_and_running_edit_gate (web_gateway.test_admin.AdminIntegration.test_save_start_stop_and_running_edit_gate) ... ok
+test_disabled_chunks_do_not_block_game_and_invalid_requests_are_ignored (web_gateway.test_assets.AssetTransport.test_disabled_chunks_do_not_block_game_and_invalid_requests_are_ignored) ... Executing <Task pending name='Task-54' coro=<AssetTransport.asyncSetUp() running at /workspace/scratch/55e850edc256/jk-browser-spectator/web_gateway/test_assets.py:220> wait_for=<_GatheringFuture pending cb=[Task.task_wakeup()] created at /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/tasks.py:712> cb=[_run_until_complete_cb() at /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/base_events.py:181] created at /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/runners.py:100> took 0.622 seconds
+ok
+test_leave_cancels_backpressure_and_discards_pending_requests (web_gateway.test_assets.AssetTransport.test_leave_cancels_backpressure_and_discards_pending_requests) ... ok
+test_published_javascript_download_and_rebuild (web_gateway.test_assets.AssetTransport.test_published_javascript_download_and_rebuild) ... ok
+test_rtc_map_channel_and_relay_after_channel_closes (web_gateway.test_assets.AssetTransport.test_rtc_map_channel_and_relay_after_channel_closes) ... ok
+test_websocket_download_retry_sender_and_game_separation (web_gateway.test_assets.AssetTransport.test_websocket_download_retry_sender_and_game_separation) ... ok
+test_chunk_bounds_and_hash_select_kind (web_gateway.test_assets.PreparedAssets.test_chunk_bounds_and_hash_select_kind) ... ok
+test_disabled_keeps_map_metadata_and_mod_fingerprint (web_gateway.test_assets.PreparedAssets.test_disabled_keeps_map_metadata_and_mod_fingerprint) ... ok
+test_mots_remaster_tail_and_unsupported_placement (web_gateway.test_assets.PreparedAssets.test_mots_remaster_tail_and_unsupported_placement) ... ok
+test_preflight_rejects_unadvertised_overrides_and_unsafe_mod_names (web_gateway.test_assets.PreparedAssets.test_preflight_rejects_unadvertised_overrides_and_unsafe_mod_names) ... ok
+test_reference_reconstruction_and_deterministic_mod_pack (web_gateway.test_assets.PreparedAssets.test_reference_reconstruction_and_deterministic_mod_pack) ... ok
+test_zero_references_and_stock_only_refusal (web_gateway.test_assets.PreparedAssets.test_zero_references_and_stock_only_refusal) ... ok
+test_browser_join_gate_transport_roster (web_gateway.test_gateway.GatewayIntegration.test_browser_join_gate_transport_roster) ... ok
+test_directplay_id_pool (web_gateway.test_gateway.GatewayIntegration.test_directplay_id_pool) ... ok
+test_game_filter_and_wrong_game_join (web_gateway.test_gateway.GatewayIntegration.test_game_filter_and_wrong_game_join) ... ok
+test_host_kick_drains_packet_and_expires_browser_rejoin_seat (web_gateway.test_gateway.GatewayIntegration.test_host_kick_drains_packet_and_expires_browser_rejoin_seat) ... ok
+test_map_transfer_never_enters_game_engine (web_gateway.test_gateway.GatewayIntegration.test_map_transfer_never_enters_game_engine) ... ok
+test_mots_session_descriptor_and_join (web_gateway.test_gateway.GatewayIntegration.test_mots_session_descriptor_and_join) ... ok
+test_native_ipc_session_and_parallel_allocations (web_gateway.test_gateway.GatewayIntegration.test_native_ipc_session_and_parallel_allocations) ... ok
+test_origin_control (web_gateway.test_gateway.GatewayIntegration.test_origin_control) ... ok
+test_rejoin_key_preserves_player_and_wrong_key_rejected (web_gateway.test_gateway.GatewayIntegration.test_rejoin_key_preserves_player_and_wrong_key_rejected) ... ok
+test_webrtc_negotiated_browser_channels (web_gateway.test_gateway.GatewayIntegration.test_webrtc_negotiated_browser_channels) ... ok
+test_websocket_preserves_payload_and_stamps_source (web_gateway.test_gateway.GatewayIntegration.test_websocket_preserves_payload_and_stamps_source) ... ok
+test_unchanged_published_transport (web_gateway.test_published_client.PublishedClientTransport.test_unchanged_published_transport) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 1.591s
+
+OK
+{"deterministic_mod_pack_matches": true, "full_game": false, "passed": true, "published_code_modified": false, "results": [{"kind": 0, "references": 1, "sha256": "7ba98cb7dacfb92fa46fc0064381e4353acc384aa98128bedbd3449d9faee29b", "size": 444004, "stream_size": 435848}, {"kind": 1, "references": 3, "sha256": "287104c36560b10053f0dec4712d92d40d5d8daa279bc391f54867544193230c", "size": 39768, "stream_size": 14989}], "tail_fingerprint_matches": true, "transport": "published WebSocket fallback", "whole_bundle_sha256": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0"}
+{"application_payload_unchanged": true, "assigned_player": 65536, "descriptor_bytes": 240, "game_simulated": false, "passed": true, "transport_function_changed": false, "whole_bundle_sha256": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0"}

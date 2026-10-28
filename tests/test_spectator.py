@@ -21,7 +21,7 @@ class SpectatorConfigurationTests(unittest.TestCase):
 
 
 @unittest.skipIf(os.name == "nt", "Unix inherited socketpair fixture")
-class SpectatorManagerTests(RuntimeFixture):
+class SpectatorHTTPFixture(RuntimeFixture):
     async def asyncSetUp(self):
         await super().asyncSetUp()
         self.runner = web.AppRunner(create_admin_app(self.manager, port=None, token="observer-fixture-token"))
@@ -67,6 +67,8 @@ class SpectatorManagerTests(RuntimeFixture):
                 await asyncio.sleep(.01)
         return await asyncio.wait_for(wait(), 3)
 
+
+class SpectatorManagerTests(SpectatorHTTPFixture):
     async def test_starts_off_and_reports_authoritative_roster(self):
         status = await self.start_observer()
         self.assertEqual(status["mode"], "off")

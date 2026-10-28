@@ -1,6 +1,6 @@
 diff --git a/docs/crossplay-gateway.md b/docs/crossplay-gateway.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..4f4c8627acda9afedcac21138173727b80916960
+index 00000000..4f4c8627
 --- /dev/null
 +++ b/docs/crossplay-gateway.md
 @@ -0,0 +1,196 @@
@@ -202,7 +202,7 @@ index 0000000000000000000000000000000000000000..4f4c8627acda9afedcac21138173727b
 +be recorded separately, with the exact engine and asset identities.
 diff --git a/src/Dss/sithAdmin.c b/src/Dss/sithAdmin.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..7dd64fe45730494a668da601cf3ad87ec9b38e87
+index 00000000..7dd64fe4
 --- /dev/null
 +++ b/src/Dss/sithAdmin.c
 @@ -0,0 +1,252 @@
@@ -460,7 +460,7 @@ index 0000000000000000000000000000000000000000..7dd64fe45730494a668da601cf3ad87e
 +}
 diff --git a/src/Dss/sithAdmin.h b/src/Dss/sithAdmin.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..89a7260356be12b2ee3c39731f8c6b05d2b4e26c
+index 00000000..89a72603
 --- /dev/null
 +++ b/src/Dss/sithAdmin.h
 @@ -0,0 +1,32 @@
@@ -497,7 +497,7 @@ index 0000000000000000000000000000000000000000..89a7260356be12b2ee3c39731f8c6b05
 +#endif
 +#endif
 diff --git a/src/Dss/sithDSSThing.c b/src/Dss/sithDSSThing.c
-index b05fe1a8014dfbe882651367dc7f7cb15b370cc3..8f33ea70379bf43775eb2fff5800403f6d375e12 100644
+index b05fe1a8..8f33ea70 100644
 --- a/src/Dss/sithDSSThing.c
 +++ b/src/Dss/sithDSSThing.c
 @@ -155,7 +155,8 @@ void sithDSSThing_UpdateState(SithThing *pThing, int toID, int outstream)
@@ -521,7 +521,7 @@ index b05fe1a8014dfbe882651367dc7f7cb15b370cc3..8f33ea70379bf43775eb2fff5800403f
                  return 0;
              rdVector3 pos = NETMSG_POPVEC3();
 diff --git a/src/Dss/sithMulti.c b/src/Dss/sithMulti.c
-index 92f6076996a5edc1743668ef6eaa62b8413a5fac..ae1e3ae76a83875f1914a1315b28a133fa037ddc 100644
+index 92f60769..ae1e3ae7 100644
 --- a/src/Dss/sithMulti.c
 +++ b/src/Dss/sithMulti.c
 @@ -13,6 +13,8 @@
@@ -635,7 +635,7 @@ index 92f6076996a5edc1743668ef6eaa62b8413a5fac..ae1e3ae76a83875f1914a1315b28a133
 \ No newline at end of file
 +}
 diff --git a/src/Engine/rdPuppet.c b/src/Engine/rdPuppet.c
-index 4cf7214d7cd9c91943f85cf2884c241a37de89fe..4bdbeef99a74c1815fa7a02b535c09f55c393f33 100644
+index 4cf7214d..4bdbeef9 100644
 --- a/src/Engine/rdPuppet.c
 +++ b/src/Engine/rdPuppet.c
 @@ -1,4 +1,5 @@
@@ -653,7 +653,7 @@ index 4cf7214d7cd9c91943f85cf2884c241a37de89fe..4bdbeef99a74c1815fa7a02b535c09f5
              }
  
 diff --git a/src/Engine/sithRender.c b/src/Engine/sithRender.c
-index d9657881610b7bb0a8c38db2d2c8023e8f20eb83..e1ea88e30bead0927e9ed8b2cdc0b3871708a310 100644
+index d9657881..e1ea88e3 100644
 --- a/src/Engine/sithRender.c
 +++ b/src/Engine/sithRender.c
 @@ -5,6 +5,7 @@
@@ -756,7 +756,7 @@ index d9657881610b7bb0a8c38db2d2c8023e8f20eb83..e1ea88e30bead0927e9ed8b2cdc0b387
          flex_t cameraDist = stdMath_Dist3D1(pThing->transformedPos.x, pThing->transformedPos.y, pThing->transformedPos.z);
          uint32_t flashG = pThing->explosionParams.flashG;
 diff --git a/src/Main/Main.c b/src/Main/Main.c
-index fd2c8acec614cf2d22613c069ad97c562f02f83b..6e4d1b06b0efa893b4f36ed432fc448bfb51f734 100644
+index fd2c8ace..6e4d1b06 100644
 --- a/src/Main/Main.c
 +++ b/src/Main/Main.c
 @@ -1,4 +1,5 @@
@@ -792,7 +792,7 @@ index fd2c8acec614cf2d22613c069ad97c562f02f83b..6e4d1b06b0efa893b4f36ed432fc448b
  
      std3D_Shutdown(); // Added
 diff --git a/src/Main/jkGame.c b/src/Main/jkGame.c
-index e80722b7b3c755f0b04518ed48c2f77bc6b0d3db..282cd4672e8d9d608273637675dd6a8a626ae1e8 100644
+index e80722b7..282cd467 100644
 --- a/src/Main/jkGame.c
 +++ b/src/Main/jkGame.c
 @@ -1,5 +1,6 @@
@@ -812,14 +812,15 @@ index e80722b7b3c755f0b04518ed48c2f77bc6b0d3db..282cd4672e8d9d608273637675dd6a8a
      int v3; // eax
 diff --git a/src/Main/jkObserver.c b/src/Main/jkObserver.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e3862244120f1e
+index 00000000..c8339adb
 --- /dev/null
 +++ b/src/Main/jkObserver.c
-@@ -0,0 +1,481 @@
+@@ -0,0 +1,651 @@
 +/* A local dedicated-host camera. It owns no game identity or world thing.
 + * The only inputs are typed commands on the authenticated supervisor bridge.
 + * Frames use a separate inherited socket, never a client game transport. */
 +#include "Main/jkObserver.h"
++#include "Main/jkObserverGeometry.h"
 +#include "Main/Main.h"
 +#include "Main/sithMain.h"
 +#include "Engine/sithCamera.h"
@@ -838,6 +839,7 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +#include "Win95/stdDisplay.h"
 +#include "stdPlatform.h"
 +#include <stdlib.h>
++#include <stdio.h>
 +#include <string.h>
 +#include <math.h>
 +#include <limits.h>
@@ -891,10 +893,165 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +static void Observer_WriteFloat(uint8_t *p, float value)
 +{ uint32_t bits; memcpy(&bits,&value,4); Observer_Write32(p,bits); }
 +
++/* Independent bounded JKSG stream. No geometry failure mutates image state. */
++#define GEOM_VERTICES 65536u
++#define GEOM_INDICES 196608u
++#define GEOM_PAYLOAD 2097152u
++enum { GEOM_VALID, GEOM_SIZE_LIMIT, GEOM_MISSING_DATA, GEOM_NONFINITE_PROJECTION, GEOM_INVALID_INDEX, GEOM_REASONS };
++static struct {
++    int fd, enabled, capturing, invalid;
++    uint32_t leaseMs, capturedMs, vertices, indices;
++    uint32_t diagnosticMs[GEOM_REASONS], diagnosticMask;
++    uint8_t *pending, *indexData;
++    size_t pendingBytes, pendingOffset;
++} geometry = {.fd=-1};
++
++/* At most one line per reason per five seconds (four fixed reasons). Keep
++ * this state across captures/lease changes so capture cadence cannot flood logs. */
++static void ObserverGeometry_LogRejection(uint32_t now)
++{
++    static const char *const reasons[GEOM_REASONS]={
++        "", "size-limit", "missing-data", "nonfinite-projection", "invalid-index"
++    };
++    unsigned reason=(unsigned)geometry.invalid;
++    if (!reason || reason>=GEOM_REASONS) return;
++    uint32_t bit=1u<<reason;
++    if ((geometry.diagnosticMask&bit) && now-geometry.diagnosticMs[reason]<5000u) return;
++    geometry.diagnosticMask|=bit;geometry.diagnosticMs[reason]=now;
++    fprintf(stderr,"[spectator geometry] rejected capture: %s\n",reasons[reason]);
++}
++
++static void ObserverGeometry_Stop(void)
++{
++    geometry.enabled=geometry.capturing=0;
++    if (!geometry.pendingOffset) geometry.pendingBytes=0;
++}
++static void ObserverGeometry_Close(void)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    if (geometry.fd>=0) close(geometry.fd);
++#endif
++    geometry.fd=-1; geometry.pendingBytes=geometry.pendingOffset=0;
++    ObserverGeometry_Stop();
++}
++static void ObserverGeometry_Shutdown(void)
++{
++    ObserverGeometry_Close();
++    free(geometry.pending); free(geometry.indexData);
++    geometry.pending=geometry.indexData=NULL;
++}
++static void ObserverGeometry_Startup(int imageFd)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    const char *value=getenv("OPENJKDF2_SPECTATOR_GEOMETRY_FD");
++    if (!value || !*value) return;
++    char *end=NULL; errno=0; long fd=strtol(value,&end,10);
++    if (errno || !end || *end || fd<3 || fd>INT_MAX || fd==imageFd) return;
++    int type=0; socklen_t length=sizeof(type);
++    struct sockaddr_un local, peer; socklen_t localLength=sizeof(local), peerLength=sizeof(peer);
++    if (getsockopt(fd,SOL_SOCKET,SO_TYPE,&type,&length) || type!=SOCK_STREAM ||
++        getsockname(fd,(struct sockaddr *)&local,&localLength) || local.sun_family!=AF_UNIX ||
++        getpeername(fd,(struct sockaddr *)&peer,&peerLength) || peer.sun_family!=AF_UNIX) return;
++    int flags=fcntl(fd,F_GETFL), descriptorFlags=fcntl(fd,F_GETFD);
++    if (flags<0 || descriptorFlags<0 || fcntl(fd,F_SETFL,flags|O_NONBLOCK)<0 ||
++        fcntl(fd,F_SETFD,descriptorFlags|FD_CLOEXEC)<0) return;
++    geometry.pending=malloc(64u+GEOM_PAYLOAD);
++    geometry.indexData=malloc(4u*GEOM_INDICES);
++    if (!geometry.pending || !geometry.indexData) {
++        free(geometry.pending);free(geometry.indexData);geometry.pending=geometry.indexData=NULL;return;
++    }
++    geometry.fd=(int)fd;
++#else
++    (void)imageFd;
++#endif
++}
++static void ObserverGeometry_Flush(uint32_t now)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    if (geometry.pendingBytes && !geometry.pendingOffset)
++        Observer_Write32(geometry.pending+36,now-geometry.capturedMs);
++    for (int attempt=0;geometry.fd>=0 && geometry.pendingOffset<geometry.pendingBytes && attempt<8;attempt++) {
++        ssize_t sent=send(geometry.fd,geometry.pending+geometry.pendingOffset,
++            geometry.pendingBytes-geometry.pendingOffset,MSG_DONTWAIT|MSG_NOSIGNAL);
++        if (sent>0) geometry.pendingOffset+=(size_t)sent;
++        else if (sent<0 && errno==EINTR) continue;
++        else if (sent<0 && (errno==EAGAIN || errno==EWOULDBLOCK)) return;
++        else { ObserverGeometry_Close();return; }
++    }
++    if (geometry.pendingOffset==geometry.pendingBytes) geometry.pendingOffset=geometry.pendingBytes=0;
++#else
++    (void)now;
++#endif
++}
++static void ObserverGeometry_Begin(uint32_t now)
++{
++    geometry.capturing=0;
++    if (!geometry.enabled || geometry.fd<0 || geometry.pendingBytes) return;
++    if (now-geometry.leaseMs>=5000) { ObserverGeometry_Stop();return; }
++    geometry.vertices=geometry.indices=0;geometry.invalid=0;geometry.capturedMs=now;geometry.capturing=1;
++}
++void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
++    const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    if (!observer.renderPass || !geometry.capturing || geometry.invalid) return;
++    int rejection=GEOM_SIZE_LIMIT;
++    if (vertexCount>GEOM_VERTICES-geometry.vertices || solidCount>GEOM_INDICES/3 || normalCount>GEOM_INDICES/3 ||
++        solidCount+normalCount>(GEOM_INDICES-geometry.indices)/3) goto invalid;
++    if ((vertexCount && !vertices) || (solidCount && !solid) || (normalCount && !normal)) {
++        rejection=GEOM_MISSING_DATA;goto invalid;
++    }
++    uint32_t addedIndices=3*(solidCount+normalCount);
++    if (20u*(geometry.vertices+vertexCount)+4u*(geometry.indices+addedIndices)>GEOM_PAYLOAD) goto invalid;
++    /* Line-only batches have no triangles in this fixed profile. */
++    if (!addedIndices) return;
++    rejection=GEOM_NONFINITE_PROJECTION;
++    for (uint32_t i=0;i<vertexCount;i++) {
++        float z=(float)vertices[i].z, w=1.0f/(1.0f-z);
++        float clip[4]={((2.0f*(float)vertices[i].x/OBS_WIDTH)-1.0f)*w,
++            (1.0f-2.0f*(float)vertices[i].y/OBS_HEIGHT)*w,(z-1.0f)*w,w};
++        uint8_t *out=geometry.pending+64+20u*(geometry.vertices+i);
++        for (int c=0;c<4;c++) { if (!isfinite(clip[c])) goto invalid;Observer_WriteFloat(out+4*c,clip[c]); }
++        uint32_t colour=vertices[i].color;
++        out[16]=colour>>16;out[17]=colour>>8;out[18]=colour;out[19]=255;
++    }
++    rejection=GEOM_INVALID_INDEX;
++    uint32_t offset=geometry.indices;
++    for (int batch=0;batch<2;batch++) {
++        const rdTri *triangles=batch?normal:solid;uint32_t count=batch?normalCount:solidCount;
++        for (uint32_t i=0;i<count;i++) {
++            int32_t indices[3]={triangles[i].v1,triangles[i].v2,triangles[i].v3};
++            for (int j=0;j<3;j++) {
++                if (indices[j]<0 || (uint32_t)indices[j]>=vertexCount) goto invalid;
++                Observer_Write32(geometry.indexData+4u*offset++,geometry.vertices+(uint32_t)indices[j]);
++            }
++        }
++    }
++    geometry.vertices+=vertexCount;geometry.indices+=addedIndices;return;
++invalid:
++    geometry.invalid=rejection;
++#else
++    (void)vertices;(void)vertexCount;(void)solid;(void)solidCount;(void)normal;(void)normalCount;
++#endif
++}
++static void ObserverGeometry_End(uint32_t now,uint32_t world,uint32_t control,uint32_t sequence,int ok)
++{
++    if (!geometry.capturing) return;
++    geometry.capturing=0;
++    if (geometry.invalid) { ObserverGeometry_LogRejection(now);return; }
++    if (!ok || !world || !control || !sequence) return;
++    uint32_t bytes=20u*geometry.vertices+4u*geometry.indices;
++    memset(geometry.pending,0,64);memcpy(geometry.pending,"JKSG",4);
++    uint32_t header[11]={1,OBS_WIDTH,OBS_HEIGHT,world,control,sequence,bytes,0,now-geometry.capturedMs,geometry.vertices,geometry.indices};
++    for (int i=0;i<11;i++) Observer_Write32(geometry.pending+4+4*i,header[i]);
++    memcpy(geometry.pending+64+20u*geometry.vertices,geometry.indexData,4u*geometry.indices);
++    geometry.pendingBytes=64u+bytes;geometry.pendingOffset=0;
++}
++
 +static void Observer_ClearInput(void)
 +{ observer.forward=observer.right=observer.up=0.0f; observer.sequence=0; observer.lastInputMs=0; }
 +static void Observer_ControlChanged(void)
-+{ observer.controlEpoch=Observer_Next(observer.controlEpoch); Observer_ClearInput(); }
++{ observer.controlEpoch=Observer_Next(observer.controlEpoch); Observer_ClearInput(); ObserverGeometry_Stop(); }
 +
 +int jkObserver_IsCapable(void) { return observer.capable; }
 +int jkObserver_HasContext(void) { return observer.context; }
@@ -925,6 +1082,7 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +    if (!observer.pending) return;
 +    observer.fd=(int)fd;
 +    observer.capable=1;
++    ObserverGeometry_Startup(observer.fd);
 +#else
 +    (void)argc; (void)argv;
 +#endif
@@ -1032,7 +1190,7 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +
 +void jkObserver_Shutdown(void)
 +{
-+    jkObserver_WorldClosing(); Observer_CloseChannel();
++    jkObserver_WorldClosing(); Observer_CloseChannel(); ObserverGeometry_Shutdown();
 +    free(observer.pending); observer.pending=NULL;
 +    free(observer.ranges); observer.ranges=NULL;
 +    free(observer.snapshot); observer.snapshot=NULL;
@@ -1045,6 +1203,8 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +    if (!observer.capable) return;
 +    const uint32_t now=Observer_Now();
 +    Observer_Flush(now);
++    if (geometry.enabled && now-geometry.leaseMs>=5000) ObserverGeometry_Stop();
++    ObserverGeometry_Flush(now);
 +    uint32_t elapsed=now-observer.lastPollMs; observer.lastPollMs=now;
 +    if (elapsed>100) elapsed=100;
 +    if (!observer.worldReady || !sithWorld_g_pCurrentWorld) return;
@@ -1090,8 +1250,8 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +    jkObserver_Poll();
 +    uint32_t operation=length>=8 && request?Observer_Read32(request+4):UINT32_MAX;
 +    uint32_t result=0;
-+    if (!request || length<8 || Observer_Read32(request)!=1 || operation>2 ||
-+        length!=(operation==0?8u:operation==1?28u:40u)) result=1;
++    if (!request || length<8 || Observer_Read32(request)!=1 || operation>3 ||
++        length!=(operation==0?8u:operation==1?28u:operation==2?40u:20u)) result=1;
 +    else if (operation) {
 +        if (Observer_Read32(request+8)!=observer.worldEpoch || Observer_Read32(request+12)!=observer.controlEpoch) result=2;
 +        else if (operation==1) {
@@ -1104,6 +1264,13 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +                observer.targetLost=0; observer.reason=mode?0:7;
 +                if (mode==2) Observer_ReadPose(Observer_Player(peer,generation)->pLocalPlayer);
 +            }
++        } else if (operation==3) {
++            uint32_t enabled=Observer_Read32(request+16);
++            if (enabled>1) result=1;
++            else if (enabled && (geometry.fd<0 || !observer.mode || !observer.capable || !observer.context ||
++                observer.fd<0 || !observer.worldReady || observer.renderError)) result=4;
++            else if (enabled) { geometry.enabled=1;geometry.leaseMs=Observer_Now(); }
++            else ObserverGeometry_Stop();
 +        } else {
 +            const uint32_t sequence=Observer_Read32(request+16);
 +            float values[5]; for (int i=0;i<5;i++) values[i]=Observer_ReadFloat(request+20+i*4);
@@ -1124,7 +1291,7 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +    SithSector *sector=observer.worldReady && sithWorld_g_pCurrentWorld?sithSector_FindSectorAtPos(sithWorld_g_pCurrentWorld,&observer.position):NULL;
 +    int sectorIndex=sector && sithWorld_g_pCurrentWorld?(int)(sector-sithWorld_g_pCurrentWorld->aSectors):-1;
 +    uint32_t ready=observer.sentSequence && observer.sentWorld==observer.worldEpoch && observer.sentControl==observer.controlEpoch;
-+    uint32_t capabilities=(observer.context?1u:0u)|(observer.fd>=0?2u:0u)|(observer.capable?12u:0u);
++    uint32_t capabilities=(observer.context?1u:0u)|(observer.fd>=0?2u:0u)|(observer.capable?12u:0u)|(geometry.fd>=0?16u:0u);
 +    uint32_t flags=(observer.worldReady?1u:0u)|(ready?2u:0u)|(observer.pendingBytes?4u:0u)|
 +        (observer.worldReady && !sector?8u:0u)|(observer.targetLost?16u:0u)|(observer.mode?32u:0u)|(observer.renderError?64u:0u);
 +    uint32_t reason=observer.reason;
@@ -1270,6 +1437,7 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +    observer.camera.lookPos=observer.position;
 +    observer.camera.lookPYR=observer.angles;
 +    if (!jkObserver_BeginReadOnlyRender()) { jkObserver_SetRenderError(); return 1; }
++    ObserverGeometry_Begin(now);
 +    sithCamera_g_pCurCamera=&observer.camera;
 +    rdCamera_SetCurrent(&observer.camera.rdCamera);
 +    rdroid_curAcceleration=1; sithMain_lastAspect=0.5625f;
@@ -1285,6 +1453,7 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +        rdFinishFrame();
 +        ok=std3D_ObserverReadback(observer.pending+OBS_HEADER,OBS_WIDTH,OBS_HEIGHT);
 +    }
++    ObserverGeometry_End(now,observer.worldEpoch,observer.controlEpoch,Observer_Next(observer.frameSequence),ok);
 +    jkObserver_EndReadOnlyRender();
 +    if (!ok) { jkObserver_SetRenderError(); return 1; }
 +    observer.frameSequence=Observer_Next(observer.frameSequence);
@@ -1294,12 +1463,13 @@ index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e38622
 +    observer.pendingCapturedMs=now;
 +    observer.pendingBytes=OBS_HEADER+OBS_PIXELS; observer.pendingOffset=0;
 +    Observer_Flush(now);
++    ObserverGeometry_Flush(Observer_Now());
 +#endif
 +    return 1;
 +}
 diff --git a/src/Main/jkObserver.h b/src/Main/jkObserver.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..8c0f9653e33052def4dccac43454ac3e96529489
+index 00000000..8c0f9653
 --- /dev/null
 +++ b/src/Main/jkObserver.h
 @@ -0,0 +1,26 @@
@@ -1330,7 +1500,7 @@ index 0000000000000000000000000000000000000000..8c0f9653e33052def4dccac43454ac3e
 +#endif
 +#endif
 diff --git a/src/Main/sithMain.c b/src/Main/sithMain.c
-index b10ad70f0564bc2497a890cf0c69c5ca7976cffc..5e0e1a169873ea7b6647182385a04432d4f36042 100644
+index b10ad70f..5e0e1a16 100644
 --- a/src/Main/sithMain.c
 +++ b/src/Main/sithMain.c
 @@ -1,5 +1,6 @@
@@ -1355,7 +1525,7 @@ index b10ad70f0564bc2497a890cf0c69c5ca7976cffc..5e0e1a169873ea7b6647182385a04432
 +    jkObserver_WorldOpened();
  }
 diff --git a/src/Platform/GL/std3D.c b/src/Platform/GL/std3D.c
-index 13c9d22a5839cd3d4ac4bb10f795c135e2671050..89042fa26ae9a1d63a867445c04b433d1df8f205 100644
+index 13c9d22a..89042fa2 100644
 --- a/src/Platform/GL/std3D.c
 +++ b/src/Platform/GL/std3D.c
 @@ -9,6 +9,7 @@
@@ -1613,7 +1783,7 @@ index 13c9d22a5839cd3d4ac4bb10f795c135e2671050..89042fa26ae9a1d63a867445c04b433d
 +}
 diff --git a/src/Platform/Networking/GNS/AdminConnections.h b/src/Platform/Networking/GNS/AdminConnections.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..fcecd70461052afc860b2a79f5e786bfb5feb0fa
+index 00000000..fcecd704
 --- /dev/null
 +++ b/src/Platform/Networking/GNS/AdminConnections.h
 @@ -0,0 +1,57 @@
@@ -1676,7 +1846,7 @@ index 0000000000000000000000000000000000000000..fcecd70461052afc860b2a79f5e786bf
 +#endif
 diff --git a/src/Platform/Networking/GNS/GatewayBridge.h b/src/Platform/Networking/GNS/GatewayBridge.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..3e04f24e4f1322074471eb0331d85ebef47d87fd
+index 00000000..3e04f24e
 --- /dev/null
 +++ b/src/Platform/Networking/GNS/GatewayBridge.h
 @@ -0,0 +1,172 @@
@@ -1854,7 +2024,7 @@ index 0000000000000000000000000000000000000000..3e04f24e4f1322074471eb0331d85ebe
 +#endif
 diff --git a/src/Platform/Networking/GNS/TransportIdentities.h b/src/Platform/Networking/GNS/TransportIdentities.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..780eb549896e4925348e273688d3990f784c1d79
+index 00000000..780eb549
 --- /dev/null
 +++ b/src/Platform/Networking/GNS/TransportIdentities.h
 @@ -0,0 +1,193 @@
@@ -2052,7 +2222,7 @@ index 0000000000000000000000000000000000000000..780eb549896e4925348e273688d3990f
 +}
 +#endif
 diff --git a/src/Platform/Networking/GNS/stdComm_GNS.cpp b/src/Platform/Networking/GNS/stdComm_GNS.cpp
-index c0c10f6ffbe1e28b739bd8463fe1300a22793f46..03ae9a51157d23efcfb163e0a6859dc2bfa727d3 100644
+index c0c10f6f..03ae9a51 100644
 --- a/src/Platform/Networking/GNS/stdComm_GNS.cpp
 +++ b/src/Platform/Networking/GNS/stdComm_GNS.cpp
 @@ -1,7 +1,9 @@
@@ -2772,7 +2942,7 @@ index c0c10f6ffbe1e28b739bd8463fe1300a22793f46..03ae9a51157d23efcfb163e0a6859dc2
  
  BOOL DirectPlay_SetSessionFlagidk(int a1)
 diff --git a/src/Platform/Networking/GNS/stdComm_GNS.h b/src/Platform/Networking/GNS/stdComm_GNS.h
-index 9567814bee5cc634c65ee70ad505bda52f18314b..e384ec8fdedf7fabf786fac524ff9b1ee15461ac 100644
+index 9567814b..e384ec8f 100644
 --- a/src/Platform/Networking/GNS/stdComm_GNS.h
 +++ b/src/Platform/Networking/GNS/stdComm_GNS.h
 @@ -1,6 +1,8 @@
@@ -2803,7 +2973,7 @@ index 9567814bee5cc634c65ee70ad505bda52f18314b..e384ec8fdedf7fabf786fac524ff9b1e
 \ No newline at end of file
 +#endif // _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
 diff --git a/src/Platform/std3D.h b/src/Platform/std3D.h
-index b46ea4784f024b2d9bace00d766b8dd757d1de07..da18e1a09a43b07203b1bc3cb11e97211576db70 100644
+index b46ea478..da18e1a0 100644
 --- a/src/Platform/std3D.h
 +++ b/src/Platform/std3D.h
 @@ -2,12 +2,16 @@
@@ -2825,7 +2995,7 @@ index b46ea4784f024b2d9bace00d766b8dd757d1de07..da18e1a09a43b07203b1bc3cb11e9721
  #define std3D_FindClosestDevice_ADDR (0x004293B0)
 diff --git a/src/Tests/gateway_bridge_test.cpp b/src/Tests/gateway_bridge_test.cpp
 new file mode 100644
-index 0000000000000000000000000000000000000000..bb8126668d8c0674777ed638fe272b685eb87a7c
+index 00000000..bb812666
 --- /dev/null
 +++ b/src/Tests/gateway_bridge_test.cpp
 @@ -0,0 +1,61 @@
@@ -2892,7 +3062,7 @@ index 0000000000000000000000000000000000000000..bb8126668d8c0674777ed638fe272b68
 +}
 diff --git a/src/Tests/transport_identities_test.cpp b/src/Tests/transport_identities_test.cpp
 new file mode 100644
-index 0000000000000000000000000000000000000000..c353e96e0b0b5fdea7ec24cb5d8360e3b5e38256
+index 00000000..c353e96e
 --- /dev/null
 +++ b/src/Tests/transport_identities_test.cpp
 @@ -0,0 +1,270 @@
@@ -3167,7 +3337,7 @@ index 0000000000000000000000000000000000000000..c353e96e0b0b5fdea7ec24cb5d8360e3
 +                 "committed external/no-pool claims; fresh no-pool identities; bounded lifetime history\n";
 +}
 diff --git a/src/Win95/Window.c b/src/Win95/Window.c
-index 012b5cb53ed6c4b443b1c1a877f4017c10b6f9db..5c74ae9f83c0af041b5cb252f99a9e91ca0d7d3a 100644
+index 012b5cb5..5c74ae9f 100644
 --- a/src/Win95/Window.c
 +++ b/src/Win95/Window.c
 @@ -3,6 +3,7 @@
@@ -3336,3 +3506,33 @@ index 012b5cb53ed6c4b443b1c1a877f4017c10b6f9db..5c74ae9f83c0af041b5cb252f99a9e91
      {
          if (displayWindow) {
              std3D_FreeResources();
+diff --git a/src/Raster/rdCache.c b/src/Raster/rdCache.c
+index 94bdddf6..a825edde 100644
+--- a/src/Raster/rdCache.c
++++ b/src/Raster/rdCache.c
+@@ -1,3 +1,4 @@
++#include "Main/jkObserverGeometry.h"
+ #include "rdCache.h"
+ 
+ #include "Engine/rdroid.h"
+@@ -1415,6 +1416,8 @@ void rdCache_DrawRenderList()
+ #endif
+ 
+ #ifndef RDCACHE_RENDER_NGONS
++        jkObserver_CaptureGeometry(rdCache_aHWVertices, rdCache_totalVerts,
++            rdCache_aHWSolidTris, rdCache_totalSolidTris, rdCache_aHWNormalTris, rdCache_totalNormalTris);
+         if ( rdCache_totalSolidTris )
+             std3D_AddRenderListTris(rdCache_aHWSolidTris, rdCache_totalSolidTris);
+         if ( rdCache_totalNormalTris )
+diff --git a/src/Main/jkObserverGeometry.h b/src/Main/jkObserverGeometry.h
+new file mode 100644
+index 00000000..bb4b8156
+--- /dev/null
++++ b/src/Main/jkObserverGeometry.h
+@@ -0,0 +1,6 @@
++#ifndef _JK_OBSERVER_GEOMETRY_H
++#define _JK_OBSERVER_GEOMETRY_H
++#include "types.h"
++void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
++    const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount);
++#endif

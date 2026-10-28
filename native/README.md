@@ -77,6 +77,14 @@ DirectPlay, and browser gameplay routes retain their existing packet formats
 and game-data checksums. See [Observer protocol](../docs/SPECTATOR_PROTOCOL.md)
 for the exact private command and frame layouts.
 
+An optional second channel exports bounded clip-space vertices, opaque RGBA8
+colours and triangle indices for browser WebGL 2 rasterization. It has its own
+nonblocking socket, pending frame and five-second opt-in lease. Geometry failure
+does not retire the image channel or game IPC. The image remains the default;
+the native scene preparation and image render pass still run. See the exact
+[JKSG protocol](../docs/SPECTATOR_GEOMETRY_PROTOCOL.md) and
+[geometry qualification](../docs/BROWSER_SPECTATOR.md).
+
 ### Chat administration
 
 The manager issues and revokes persistent administrator credentials independently
@@ -101,7 +109,17 @@ JK and MotS use separate session modes and corresponding assets. A JK executable
 
 ## Validation evidence
 
-The current dedicated core is `af0d99d232da3d77a3bbd87dde917bd824775815df9ec420411452701f29e572`.
+The current geometry-capable dedicated core is
+`16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745`.
+[Geometry build provenance](../qa/browser-spectator-native-build.json) records
+two newly compiled units (`jkObserver.c` and `rdCache.c`), 204 reused application
+objects and 12 reused dependency inputs. This is an incremental build against
+the verified image-observer baseline, not a fresh compilation of all 206 units.
+[Geometry packaging verification](../qa/browser-spectator-native-packaging.json)
+checks all 218 link inputs, the literal `$ORIGIN` search path, a byte-identical
+supplied-object relink and a successful independent libsmacker-source relink.
+
+The earlier image-only core was `af0d99d232da3d77a3bbd87dde917bd824775815df9ec420411452701f29e572`.
 [Native observer build](../qa/native-observer-build.json) records the fresh
 206-unit build and a second clean application of the complete patch to the
 pinned base. Every compiled source and all changed headers matched that
@@ -180,11 +198,12 @@ repeat the Release strip step. They produce `openjkdf2-relinked`. Place the
 packaged `libGameNetworkingSockets.so` beside it, use the manager, or set
 `LD_LIBRARY_PATH` to that library's directory.
 
-[Packaging verification](../qa/native-observer-packaging.json) verifies every
-one of the 218 archived object/library inputs. The supplied-object output is
-byte-identical to the packaged core. The default source-rebuild path also
-completed successfully; its output hash is
-`8d7c01781629f8c8f1b57059f6202fbe7c5cd610c93ed449a6074e2353c54258`.
+[Current geometry packaging verification](../qa/browser-spectator-native-packaging.json)
+verifies every one of the 218 archived object/library inputs. The supplied-object
+output is byte-identical to the packaged core. The default source-rebuild path
+also completed successfully; its output hash is
+`1f1dd05cd35e151ca8ebb3dc59b0df146ed8d6a51d4b0a9f1c9e18dcd04e8449`.
 That mode uses its documented smaller compiler option set for libsmacker, so
 byte identity is not promised. Full native source can also be rebuilt using the
-pinned source and patch above.
+pinned source and patch above. The [earlier image-only packaging receipt](../qa/native-observer-packaging.json)
+is retained with its original artifact hashes.

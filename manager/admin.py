@@ -64,7 +64,7 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
 
     async def asset(request):
         name = request.match_info["name"]
-        if name not in ("app.js", "style.css", "spectator.js"):
+        if name not in ("app.js", "style.css", "spectator.js", "spectator-geometry.js"):
             raise web.HTTPNotFound()
         return web.FileResponse(UI / name)
 
@@ -114,6 +114,21 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
             "X-JK-Frame-Sequence": str(frame["sequence"]),
             "X-JK-World-Epoch": str(frame["world_epoch"]),
             "X-JK-Control-Epoch": str(frame["control_epoch"]), "X-JK-Pixel-Format": "RGBA8"})
+
+    async def get_spectator_geometry(request):
+        if (set(request.query) - {"after", "world_epoch", "control_epoch"} or
+                len(request.query) != len(set(request.query)) or
+                not {"world_epoch", "control_epoch"} <= set(request.query)):
+            raise ValueError("Geometry fetch accepts after and requires unique world/control epochs only.")
+        query = {}
+        for key, text in request.query.items():
+            if not text.isascii() or not text.isdecimal() or len(text) > 10:
+                raise ValueError("Geometry counters must be uint32 integers.")
+            query[key] = int(text)
+        envelope = await manager.spectator_geometry(**query)
+        if envelope is None:
+            return web.Response(status=204)
+        return web.Response(body=envelope, content_type="application/octet-stream")
 
     def authority_store():
         store = getattr(manager, "authority_store", None)
@@ -218,6 +233,7 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
     app.router.add_put("/api/spectator", put_spectator)
     app.router.add_put("/api/spectator/input", put_spectator_input)
     app.router.add_get("/api/spectator/frame", get_spectator_frame)
+    app.router.add_get("/api/spectator/geometry", get_spectator_geometry)
     app.router.add_get("/api/admin-keys", get_admin_keys)
     app.router.add_post("/api/admin-keys", issue_admin_key)
     app.router.add_post("/api/admin-keys/{key_id}/revoke", revoke_admin_key)

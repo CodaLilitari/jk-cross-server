@@ -1,0 +1,306 @@
+{
+  "utc": "2026-10-28T23:12:50.193Z",
+  "page_errors": [],
+  "poses": [
+    {
+      "index": 1,
+      "key": "s",
+      "duration": 1000,
+      "state": "running",
+      "players": 2,
+      "max": 7,
+      "pid": 365626,
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "free",
+        "state": "active",
+        "reason": "",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 13,
+        "target": null,
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": true,
+          "sequence": 120,
+          "width": 640,
+          "height": 360,
+          "age_ms": 52
+        },
+        "pose": {
+          "position": [
+            2.4106783866882324,
+            -6.234130859375,
+            0.09661971032619476
+          ],
+          "yaw": 0.46151116490364075,
+          "pitch": 0.019986623898148537,
+          "roll": 0.019989553838968277,
+          "sector": 78
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": true,
+          "sequence": 120,
+          "age_ms": 105,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "key": "a",
+      "duration": 600,
+      "state": "running",
+      "players": 2,
+      "max": 7,
+      "pid": 365626,
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "free",
+        "state": "active",
+        "reason": "The camera is outside the world.",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 13,
+        "target": null,
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": false,
+          "sequence": 0,
+          "width": 0,
+          "height": 0,
+          "age_ms": null
+        },
+        "pose": {
+          "position": [
+            0.8026292324066162,
+            -7.034785747528076,
+            0.13253095746040344
+          ],
+          "yaw": 0.46151116490364075,
+          "pitch": 0.019986623898148537,
+          "roll": 0.019989553838968277,
+          "sector": -1
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": true,
+          "sequence": 129,
+          "age_ms": 242,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "key": "e",
+      "duration": 400,
+      "state": "running",
+      "players": 2,
+      "max": 7,
+      "pid": 365626,
+      "spectator": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "free",
+        "state": "active",
+        "reason": "The camera is outside the world.",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 13,
+        "target": null,
+        "players": [
+          {
+            "peer_id": 3,
+            "generation": 2,
+            "slot": 1,
+            "name": "Bot_JanOrs"
+          },
+          {
+            "peer_id": 5,
+            "generation": 4,
+            "slot": 2,
+            "name": "Bot_BobaFett"
+          }
+        ],
+        "frame": {
+          "available": true,
+          "sequence": 135,
+          "width": 640,
+          "height": 360,
+          "age_ms": 164
+        },
+        "pose": {
+          "position": [
+            0.8026292324066162,
+            -7.034785747528076,
+            1.3325330018997192
+          ],
+          "yaw": 0.46151116490364075,
+          "pitch": 0.019986623898148537,
+          "roll": 0.019989553838968277,
+          "sector": -1
+        },
+        "geometry": {
+          "available": true,
+          "frame_available": true,
+          "sequence": 135,
+          "age_ms": 195,
+          "reason": "",
+          "profile": "flat-colour-v1"
+        }
+      }
+    }
+  ],
+  "before_close": {
+    "state": "running",
+    "players": 2,
+    "max": 7,
+    "pid": 365626,
+    "spectator": {
+      "rendering_configured": true,
+      "available": true,
+      "enabled": true,
+      "mode": "free",
+      "state": "active",
+      "reason": "The camera is outside the world.",
+      "restart_required": false,
+      "world_epoch": 2,
+      "control_epoch": 13,
+      "target": null,
+      "players": [
+        {
+          "peer_id": 3,
+          "generation": 2,
+          "slot": 1,
+          "name": "Bot_JanOrs"
+        },
+        {
+          "peer_id": 5,
+          "generation": 4,
+          "slot": 2,
+          "name": "Bot_BobaFett"
+        }
+      ],
+      "frame": {
+        "available": true,
+        "sequence": 138,
+        "width": 640,
+        "height": 360,
+        "age_ms": 161
+      },
+      "pose": {
+        "position": [
+          0.8026292324066162,
+          -7.034785747528076,
+          1.3325330018997192
+        ],
+        "yaw": 0.46151116490364075,
+        "pitch": 0.019986623898148537,
+        "roll": 0.019989553838968277,
+        "sector": -1
+      },
+      "geometry": {
+        "available": true,
+        "frame_available": true,
+        "sequence": 138,
+        "age_ms": 195,
+        "reason": "",
+        "profile": "flat-colour-v1"
+      }
+    }
+  },
+  "after_timeout": {
+    "state": "running",
+    "players": 2,
+    "max": 7,
+    "pid": 365626,
+    "spectator": {
+      "rendering_configured": true,
+      "available": true,
+      "enabled": false,
+      "mode": "off",
+      "state": "off",
+      "reason": "View is closed.",
+      "restart_required": false,
+      "world_epoch": 2,
+      "control_epoch": 14,
+      "target": null,
+      "players": [
+        {
+          "peer_id": 3,
+          "generation": 2,
+          "slot": 1,
+          "name": "Bot_JanOrs"
+        },
+        {
+          "peer_id": 5,
+          "generation": 4,
+          "slot": 2,
+          "name": "Bot_BobaFett"
+        }
+      ],
+      "frame": {
+        "available": false,
+        "sequence": 0,
+        "width": 0,
+        "height": 0,
+        "age_ms": null
+      },
+      "pose": {
+        "position": [
+          0.8026292324066162,
+          -7.034785747528076,
+          1.3325330018997192
+        ],
+        "yaw": 0.46151116490364075,
+        "pitch": 0.019986623898148537,
+        "roll": 0.019989553838968277,
+        "sector": -1
+      },
+      "geometry": {
+        "available": true,
+        "frame_available": false,
+        "sequence": 0,
+        "age_ms": null,
+        "reason": "",
+        "profile": "flat-colour-v1"
+      }
+    }
+  },
+  "passed": true
+}

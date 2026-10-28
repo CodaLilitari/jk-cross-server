@@ -63,6 +63,8 @@ for migration, recovery, multi-instance behavior, and publishing new releases.
 
 Open **Spectator view** in the existing control panel to follow a joined player or fly an invisible camera through walls and floors. It does not take a player slot, interact with the game, or change client checksums. Closing the view keeps the match running. The Linux implementation provides a 640 × 360 view at up to five frames per second; see [controls, setup and compatibility limits](docs/SPECTATOR.md).
 
+**Image view** remains the default. The optional **Experimental geometry (WebGL 2)** view draws the observer's validated triangle stream in the browser. It shares the same camera and player roster. This first geometry profile uses vertex colours, with no textures and approximate transparency/effects; the server still prepares and renders the native scene. See [browser geometry setup and qualification](docs/BROWSER_SPECTATOR.md).
+
 ![Host spectator view in the JK Cross Server control panel](docs/images/spectator-view.png)
 
 ## Optional player bots

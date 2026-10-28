@@ -26,7 +26,7 @@ ENGINE = r'''
 import asyncio, contextlib, json, os, socket, struct, sys
 from pathlib import Path
 
-keys = ("DISPLAY", "WAYLAND_DISPLAY", "SDL_VIDEO_DRIVER", "SDL_VIDEODRIVER", "EGL_PLATFORM", "XDG_RUNTIME_DIR", "OPENJKDF2_SPECTATOR_FD")
+keys = ("DISPLAY", "WAYLAND_DISPLAY", "SDL_VIDEO_DRIVER", "SDL_VIDEODRIVER", "EGL_PLATFORM", "XDG_RUNTIME_DIR", "OPENJKDF2_SPECTATOR_FD", "OPENJKDF2_SPECTATOR_GEOMETRY_FD")
 Path("engine-environment.json").write_text(json.dumps({k: os.environ.get(k) for k in keys}))
 mode = 1 if "-motsCompat" in sys.argv else 0
 flavor = os.environ.get("JK_FIXTURE_DESCRIPTOR", "valid")
@@ -35,6 +35,10 @@ observer_mode, world_epoch, control_epoch, frame_sequence = 0, 1, 1, 0
 observer_target, observer_generation = 0, 0
 observer_behavior = os.environ.get("JK_FIXTURE_SPECTATOR", "normal")
 frame_socket = socket.socket(fileno=int(os.environ["OPENJKDF2_SPECTATOR_FD"])) if os.environ.get("OPENJKDF2_SPECTATOR_FD") else None
+geometry_socket = socket.socket(fileno=int(os.environ["OPENJKDF2_SPECTATOR_GEOMETRY_FD"])) if os.environ.get("OPENJKDF2_SPECTATOR_GEOMETRY_FD") else None
+geometry_enabled = False
+if geometry_socket:
+    geometry_socket.setblocking(False)
 if frame_socket:
     frame_socket.setblocking(False)
 
@@ -43,14 +47,15 @@ def observer_reply(operation, result=0):
     if observer_behavior == "render-error":
         flags |= 64
     rows = [struct.pack("<III64s", 101, 17, 1, "Fixture player".encode("utf-16-le"))] if operation == 0 and observer_behavior != "empty-roster" else []
-    return struct.pack("<16I6fi", 1, result, operation, 15 if frame_socket else 0, observer_mode,
+    return struct.pack("<16I6fi", 1, result, operation, (15 if frame_socket else 0) | (16 if geometry_socket and observer_behavior != "old-image-engine" else 0), observer_mode,
                        flags, world_epoch, control_epoch, observer_target, observer_generation,
                        4, 2, 5000 if observer_behavior == "stale-frame" else (0 if frame_sequence else 0xffffffff),
                        6 if observer_behavior == "render-error" else (0 if observer_mode else 7),
                        len(rows), frame_sequence, 1., 2., 3., 0., 0., 0., 1) + b"".join(rows)
 
 async def observer_request(writer, source, destination, payload):
-    global observer_mode, control_epoch, observer_target, observer_generation, frame_sequence
+    global observer_mode, control_epoch, observer_target, observer_generation, frame_sequence, geometry_enabled
+    global observer_behavior
     if observer_behavior == "silent":
         return
     if observer_behavior == "unsupported":
@@ -61,10 +66,16 @@ async def observer_request(writer, source, destination, payload):
         return
     version, operation = struct.unpack_from("<II", payload)
     result = 0
-    if source or version != 1 or len(payload) != {0: 8, 1: 28, 2: 40}.get(operation):
+    if source or version != 1 or len(payload) != {0: 8, 1: 28, 2: 40, 3: 20}.get(operation):
         result = 1
     elif operation:
         expected_world, expected_control = struct.unpack_from("<II", payload, 8)
+        if operation == 3 and observer_behavior == "geometry-epoch-transition":
+            # A follow target leaves after the manager's epoch check.
+            control_epoch += 1
+            observer_mode, observer_target, observer_generation = 1, 0, 0
+            frame_sequence, geometry_enabled = 0, False
+            observer_behavior = "normal"
         if (expected_world, expected_control) != (world_epoch, control_epoch):
             result = 2
         elif operation == 1:
@@ -75,6 +86,15 @@ async def observer_request(writer, source, destination, payload):
                 observer_mode, observer_target, observer_generation = selected_mode, peer, generation
                 control_epoch += 1
                 frame_sequence = 0
+        elif operation == 3:
+            if observer_behavior == "geometry-deny":
+                result = 4
+            if observer_behavior == "geometry-reject":
+                writer.write(frame(199, source=11, destination=6, payload=b"unsupported geometry"))
+                return
+            geometry_enabled = bool(struct.unpack_from("<I", payload, 16)[0])
+            if not observer_mode:
+                result = 4
         elif observer_mode != 1:
             result = 5
     with Path("observer-requests.jsonl").open("a") as output:
@@ -94,6 +114,32 @@ async def publish_observer_frame(oversized=False):
     parts = (header[:7], header[7:]) if oversized else (header[:7], header[7:], pixels[:9], pixels[9:])
     for part in parts:
         await asyncio.get_running_loop().sock_sendall(frame_socket, part)
+
+async def publish_geometry(kind):
+    global frame_sequence
+    if not geometry_socket or not geometry_enabled:
+        return
+    frame_sequence += 1
+    vertices = b"".join(struct.pack("<4f4B", x, y, 0., 1., 255, 40, 20, 255) for x, y in ((-1., -1.), (1., -1.), (0., 1.)))
+    indices = struct.pack("<3I", 0, 1, 2)
+    fields = [b"JKSG", 1, 4, 2, world_epoch, control_epoch, frame_sequence, 72, 0, 0, 3, 3, 0, 0, 0, 0]
+    if kind == "oversize": fields[7] = 2097153
+    if kind == "stale": fields[9] = 2001
+    if kind == "epoch": fields[4] += 1
+    if kind == "reserved": fields[12] = 1
+    if kind == "count": fields[10] = 65537
+    if kind == "nonfinite": vertices = struct.pack("<f", float("nan")) + vertices[4:]
+    if kind == "alpha": vertices = vertices[:19] + b"\x00" + vertices[20:]
+    if kind == "index": indices = struct.pack("<3I", 0, 1, 3)
+    if kind == "empty": fields[7], fields[10], fields[11], vertices, indices = 0, 0, 0, b"", b""
+    envelope = struct.pack("<4s15I", *fields) + vertices + indices
+    try:
+        for part in (envelope[:7], envelope[7:64], envelope[64:]):
+            await asyncio.get_running_loop().sock_sendall(geometry_socket, part)
+            if kind == "delayed" and len(part) == 57:
+                await asyncio.sleep(2.1)
+    except (BrokenPipeError, ConnectionResetError):
+        pass
 
 def frame(kind, source=0, destination=0, payload=b""):
     body = struct.pack("<III", kind, source, destination) + payload
@@ -159,6 +205,8 @@ async def main():
             for writer in tuple(writers):
                 writer.close()
             await server.wait_closed()
+        elif command.startswith("geometry-"):
+            await publish_geometry(command.removeprefix("geometry-"))
         elif command == "observer-frame":
             await publish_observer_frame()
         elif command == "observer-oversize":

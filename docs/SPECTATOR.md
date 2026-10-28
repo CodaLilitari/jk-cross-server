@@ -52,9 +52,24 @@ so it does not display the host's weapon, HUD, automap, or console. Extra saber
 and weapon cosmetic meshes from the engine's stateful weapon-render hook are
 also omitted.
 
-A hidden or closed tab stops requesting images. The server closes the view
-after five seconds without an authenticated image request. Open it again when
+A hidden or closed tab stops requesting frames. The server closes the view
+after five seconds without an authenticated image or geometry request. Open it again when
 you return. Held movement expires within 250 milliseconds if input stops.
+
+## Optional browser geometry display
+
+The **Display backend** selector starts on **Image view**, which displays the
+native RGBA image. Choose **Experimental geometry (WebGL 2)** to rasterize the
+observer's clip-space triangles in the browser. Switching displays retains the
+camera pose and ownership, and releases held movement. Both displays support
+the same free-flight and follow controls.
+
+The first geometry profile has opaque vertex colours and no textures. Sky,
+transparency, special depth handling and some effects are approximate. A browser
+without WebGL 2, or a lost context, returns to the image view with an explanation.
+The server still requires its prepared native graphics context; choosing geometry
+does not make the server graphics-free or establish a performance improvement.
+See [the geometry guide](BROWSER_SPECTATOR.md) for evidence and limits.
 
 ## Game and client compatibility
 

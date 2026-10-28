@@ -133,6 +133,9 @@ class ServerManager:
     async def spectator_input(self, value):
         return await self.active_spectator().input(value)
 
+    async def spectator_geometry(self, **kwargs):
+        return await self.active_spectator().geometry(**kwargs)
+
     def spectator_frame(self, **kwargs):
         return self.active_spectator().frame(**kwargs)
 
@@ -208,6 +211,7 @@ class ServerManager:
                 "--behavior-file", str(behavior), "--status-file", str(run_dir / "bots-status.json"), "--managed"]
         env = os.environ.copy()
         env.pop("OPENJKDF2_SPECTATOR_FD", None)
+        env.pop("OPENJKDF2_SPECTATOR_GEOMETRY_FD", None)
         env["PYTHONPATH"] = str(root) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
         await self.spawn("bots", argv, env)
 
@@ -362,6 +366,7 @@ class ServerManager:
                 token = secrets.token_urlsafe(32)
                 env = os.environ.copy()
                 env.pop("OPENJKDF2_SPECTATOR_FD", None)
+                env.pop("OPENJKDF2_SPECTATOR_GEOMETRY_FD", None)
                 if not env.get("XDG_RUNTIME_DIR"):
                     runtime_dir = self.run_dir / "xdg"
                     runtime_dir.mkdir(mode=0o700)

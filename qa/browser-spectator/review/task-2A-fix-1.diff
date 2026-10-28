@@ -1,0 +1,257 @@
+--- a/jk-native-browser-spectator/src/Main/jkObserver.c
++++ b/jk-native-browser-spectator/src/Main/jkObserver.c
+@@ -21,6 +21,7 @@
+ #include "Win95/stdDisplay.h"
+ #include "stdPlatform.h"
+ #include <stdlib.h>
++#include <stdio.h>
+ #include <string.h>
+ #include <math.h>
+ #include <limits.h>
+@@ -78,12 +79,29 @@
+ #define GEOM_VERTICES 65536u
+ #define GEOM_INDICES 196608u
+ #define GEOM_PAYLOAD 2097152u
++enum { GEOM_VALID, GEOM_SIZE_LIMIT, GEOM_MISSING_DATA, GEOM_NONFINITE_PROJECTION, GEOM_INVALID_INDEX, GEOM_REASONS };
+ static struct {
+     int fd, enabled, capturing, invalid;
+     uint32_t leaseMs, capturedMs, vertices, indices;
++    uint32_t diagnosticMs[GEOM_REASONS], diagnosticMask;
+     uint8_t *pending, *indexData;
+     size_t pendingBytes, pendingOffset;
+ } geometry = {.fd=-1};
++
++/* At most one line per reason per five seconds (four fixed reasons). Keep
++ * this state across captures/lease changes so capture cadence cannot flood logs. */
++static void ObserverGeometry_LogRejection(uint32_t now)
++{
++    static const char *const reasons[GEOM_REASONS]={
++        "", "size-limit", "missing-data", "nonfinite-projection", "invalid-index"
++    };
++    unsigned reason=(unsigned)geometry.invalid;
++    if (!reason || reason>=GEOM_REASONS) return;
++    uint32_t bit=1u<<reason;
++    if ((geometry.diagnosticMask&bit) && now-geometry.diagnosticMs[reason]<5000u) return;
++    geometry.diagnosticMask|=bit;geometry.diagnosticMs[reason]=now;
++    fprintf(stderr,"[spectator geometry] rejected capture: %s\n",reasons[reason]);
++}
+ 
+ static void ObserverGeometry_Stop(void)
+ {
+@@ -159,13 +177,17 @@
+ {
+ #ifdef JK_OBSERVER_SUPPORTED
+     if (!observer.renderPass || !geometry.capturing || geometry.invalid) return;
++    int rejection=GEOM_SIZE_LIMIT;
+     if (vertexCount>GEOM_VERTICES-geometry.vertices || solidCount>GEOM_INDICES/3 || normalCount>GEOM_INDICES/3 ||
+-        solidCount+normalCount>(GEOM_INDICES-geometry.indices)/3 ||
+-        (vertexCount && !vertices) || (solidCount && !solid) || (normalCount && !normal)) goto invalid;
++        solidCount+normalCount>(GEOM_INDICES-geometry.indices)/3) goto invalid;
++    if ((vertexCount && !vertices) || (solidCount && !solid) || (normalCount && !normal)) {
++        rejection=GEOM_MISSING_DATA;goto invalid;
++    }
+     uint32_t addedIndices=3*(solidCount+normalCount);
+     if (20u*(geometry.vertices+vertexCount)+4u*(geometry.indices+addedIndices)>GEOM_PAYLOAD) goto invalid;
+     /* Line-only batches have no triangles in this fixed profile. */
+     if (!addedIndices) return;
++    rejection=GEOM_NONFINITE_PROJECTION;
+     for (uint32_t i=0;i<vertexCount;i++) {
+         float z=(float)vertices[i].z, w=1.0f/(1.0f-z);
+         float clip[4]={((2.0f*(float)vertices[i].x/OBS_WIDTH)-1.0f)*w,
+@@ -175,6 +197,7 @@
+         uint32_t colour=vertices[i].color;
+         out[16]=colour>>16;out[17]=colour>>8;out[18]=colour;out[19]=255;
+     }
++    rejection=GEOM_INVALID_INDEX;
+     uint32_t offset=geometry.indices;
+     for (int batch=0;batch<2;batch++) {
+         const rdTri *triangles=batch?normal:solid;uint32_t count=batch?normalCount:solidCount;
+@@ -188,7 +211,7 @@
+     }
+     geometry.vertices+=vertexCount;geometry.indices+=addedIndices;return;
+ invalid:
+-    geometry.invalid=1;
++    geometry.invalid=rejection;
+ #else
+     (void)vertices;(void)vertexCount;(void)solid;(void)solidCount;(void)normal;(void)normalCount;
+ #endif
+@@ -197,7 +220,8 @@
+ {
+     if (!geometry.capturing) return;
+     geometry.capturing=0;
+-    if (!ok || geometry.invalid || !world || !control || !sequence) return;
++    if (geometry.invalid) { ObserverGeometry_LogRejection(now);return; }
++    if (!ok || !world || !control || !sequence) return;
+     uint32_t bytes=20u*geometry.vertices+4u*geometry.indices;
+     memset(geometry.pending,0,64);memcpy(geometry.pending,"JKSG",4);
+     uint32_t header[11]={1,OBS_WIDTH,OBS_HEIGHT,world,control,sequence,bytes,0,now-geometry.capturedMs,geometry.vertices,geometry.indices};
+--- a/jk-browser-spectator/native/tests/test_spectator_geometry.c
++++ b/jk-browser-spectator/native/tests/test_spectator_geometry.c
+@@ -34,16 +34,54 @@
+     now+=123;ObserverGeometry_Flush(now);uint8_t received[512];assert(recv(sockets[1],received,sizeof(received),0)==208);
+     assert(Observer_Read32(received+36)==123 && geometry.pendingBytes==0);
+     puts("PASS hand-derived projection, RGB extraction, index rebasing and capture age");
+-    for(int bad=0;bad<5;bad++) {
++    /* Missing diagnostics, unlimited cadence logging, or poisoned recovery must fail. */
++    FILE *diagnostics=tmpfile();assert(diagnostics);
++    int savedStderr=dup(STDERR_FILENO);assert(savedStderr>=0);
++    fflush(stderr);assert(dup2(fileno(diagnostics),STDERR_FILENO)>=0);
++    unsigned char imageState[sizeof(observer)];memcpy(imageState,&observer,sizeof(observer));
++    for(int bad=0;bad<6;bad++) {
+         ObserverGeometry_Begin(now);
+         if(bad==0){v[0].z=1;jkObserver_CaptureGeometry(v,3,&t,1,NULL,0);v[0].z=0;}
+         if(bad==1){v[0].x=NAN;jkObserver_CaptureGeometry(v,3,&t,1,NULL,0);v[0].x=0;}
+         if(bad==2){t.v3=3;jkObserver_CaptureGeometry(v,3,&t,1,NULL,0);t.v3=2;}
+         if(bad==3)jkObserver_CaptureGeometry(v,65537,&t,1,NULL,0);
+         if(bad==4)jkObserver_CaptureGeometry(v,3,&t,65537,NULL,0);
++        if(bad==5)jkObserver_CaptureGeometry(NULL,3,&t,1,NULL,0);
+         ObserverGeometry_End(now,7,8,10,1);assert(!geometry.pendingBytes);
+     }
+-    puts("PASS malformed and oversized batches discard whole capture");
++    fflush(stderr);long firstBytes=lseek(fileno(diagnostics),0,SEEK_CUR);
++    char messages[2048]={0};rewind(diagnostics);
++    assert(fread(messages,1,sizeof(messages)-1,diagnostics)==(size_t)firstBytes);
++    assert(fseek(diagnostics,0,SEEK_END)==0);
++    /* Burst rejection is bounded independently for each finite reason. */
++    for(int i=0;i<100;i++) {
++        ObserverGeometry_Begin(now);jkObserver_CaptureGeometry(v,65537,&t,1,NULL,0);
++        ObserverGeometry_End(now,7,8,10,1);
++    }
++    now+=4999;geometry.leaseMs=now;
++    ObserverGeometry_Begin(now);jkObserver_CaptureGeometry(v,65537,&t,1,NULL,0);
++    ObserverGeometry_End(now,7,8,10,1);fflush(stderr);
++    long burstBytes=lseek(fileno(diagnostics),0,SEEK_CUR);
++    now++;geometry.leaseMs=now;
++    ObserverGeometry_Begin(now);jkObserver_CaptureGeometry(v,65537,&t,1,NULL,0);
++    ObserverGeometry_End(now,7,8,10,1);fflush(stderr);
++    long renewedBytes=lseek(fileno(diagnostics),0,SEEK_CUR);
++    /* A good frame still emits exact JKSG bytes after a rejected frame. */
++    ObserverGeometry_Begin(now);jkObserver_CaptureGeometry(v,3,&t,1,NULL,0);
++    ObserverGeometry_End(now,7,8,10,1);ObserverGeometry_Flush(now);
++    assert(recv(sockets[1],received,sizeof(received),MSG_DONTWAIT)==136);
++    assert(!memcmp(received,"JKSG",4) && Observer_Read32(received+24)==10);
++    assert(Observer_Read32(received+40)==3 && Observer_Read32(received+44)==3);
++    fflush(stderr);long recoveredBytes=lseek(fileno(diagnostics),0,SEEK_CUR);
++    assert(dup2(savedStderr,STDERR_FILENO)>=0);close(savedStderr);fclose(diagnostics);
++    assert(strstr(messages,"size-limit") && "oversized capture needs a diagnostic reason");
++    assert(strstr(messages,"nonfinite-projection") && strstr(messages,"invalid-index") && strstr(messages,"missing-data"));
++    int lines=0;for(const char *p=messages;*p;p++)lines+=(*p=='\n');
++    assert(lines==4 && burstBytes==firstBytes && renewedBytes>burstBytes);
++    assert(recoveredBytes==renewedBytes && !memcmp(imageState,&observer,sizeof(observer)));
++    puts("PASS malformed and oversized batches discard whole capture with distinct bounded diagnostic reasons");
++    puts("PASS rejection logging is rate limited across 100 captures and renews after five seconds");
++    puts("PASS valid capture recovers after rejection without changing image/control status or adding diagnostics");
+     observer.capable=observer.context=observer.worldReady=1;observer.mode=1;observer.fd=123;
+     uint8_t request[20]={0},reply[92];Observer_Write32(request,1);Observer_Write32(request+4,3);
+     Observer_Write32(request+8,observer.worldEpoch);Observer_Write32(request+12,observer.controlEpoch);
+--- a/jk-browser-spectator/native/rebuild_spectator_geometry.py
++++ b/jk-browser-spectator/native/rebuild_spectator_geometry.py
+@@ -36,6 +36,8 @@
+     subprocess.run(command, cwd=baseline, check=True)
+ command = shlex.split((baseline/'CMakeFiles/openjkdf2.dir/link.txt').read_text())
+ command = [replacements.get(token, token) for token in command if not token.startswith('-Wl,--dependency-file=')]
++# CMake shell escaping must not survive into direct subprocess argv.
++command = [token.replace('\\$', '$') if token.startswith('-Wl,-rpath,') else token for token in command]
+ command[command.index('-o')+1] = str(output/'openjkdf2')
+ commands.append(command)
+ subprocess.run(command, cwd=baseline, check=True)
+--- a/jk-browser-spectator/native/crossplay-dedicated.patch
++++ b/jk-browser-spectator/native/crossplay-dedicated.patch
+@@ -812,10 +812,10 @@
+      int v3; // eax
+ diff --git a/src/Main/jkObserver.c b/src/Main/jkObserver.c
+ new file mode 100644
+-index 00000000..91c4420b
++index 00000000..c8339adb
+ --- /dev/null
+ +++ b/src/Main/jkObserver.c
+-@@ -0,0 +1,627 @@
++@@ -0,0 +1,651 @@
+ +/* A local dedicated-host camera. It owns no game identity or world thing.
+ + * The only inputs are typed commands on the authenticated supervisor bridge.
+ + * Frames use a separate inherited socket, never a client game transport. */
+@@ -839,6 +839,7 @@
+ +#include "Win95/stdDisplay.h"
+ +#include "stdPlatform.h"
+ +#include <stdlib.h>
+++#include <stdio.h>
+ +#include <string.h>
+ +#include <math.h>
+ +#include <limits.h>
+@@ -896,12 +897,29 @@
+ +#define GEOM_VERTICES 65536u
+ +#define GEOM_INDICES 196608u
+ +#define GEOM_PAYLOAD 2097152u
+++enum { GEOM_VALID, GEOM_SIZE_LIMIT, GEOM_MISSING_DATA, GEOM_NONFINITE_PROJECTION, GEOM_INVALID_INDEX, GEOM_REASONS };
+ +static struct {
+ +    int fd, enabled, capturing, invalid;
+ +    uint32_t leaseMs, capturedMs, vertices, indices;
+++    uint32_t diagnosticMs[GEOM_REASONS], diagnosticMask;
+ +    uint8_t *pending, *indexData;
+ +    size_t pendingBytes, pendingOffset;
+ +} geometry = {.fd=-1};
+++
+++/* At most one line per reason per five seconds (four fixed reasons). Keep
+++ * this state across captures/lease changes so capture cadence cannot flood logs. */
+++static void ObserverGeometry_LogRejection(uint32_t now)
+++{
+++    static const char *const reasons[GEOM_REASONS]={
+++        "", "size-limit", "missing-data", "nonfinite-projection", "invalid-index"
+++    };
+++    unsigned reason=(unsigned)geometry.invalid;
+++    if (!reason || reason>=GEOM_REASONS) return;
+++    uint32_t bit=1u<<reason;
+++    if ((geometry.diagnosticMask&bit) && now-geometry.diagnosticMs[reason]<5000u) return;
+++    geometry.diagnosticMask|=bit;geometry.diagnosticMs[reason]=now;
+++    fprintf(stderr,"[spectator geometry] rejected capture: %s\n",reasons[reason]);
+++}
+ +
+ +static void ObserverGeometry_Stop(void)
+ +{
+@@ -977,13 +995,17 @@
+ +{
+ +#ifdef JK_OBSERVER_SUPPORTED
+ +    if (!observer.renderPass || !geometry.capturing || geometry.invalid) return;
+++    int rejection=GEOM_SIZE_LIMIT;
+ +    if (vertexCount>GEOM_VERTICES-geometry.vertices || solidCount>GEOM_INDICES/3 || normalCount>GEOM_INDICES/3 ||
+-+        solidCount+normalCount>(GEOM_INDICES-geometry.indices)/3 ||
+-+        (vertexCount && !vertices) || (solidCount && !solid) || (normalCount && !normal)) goto invalid;
+++        solidCount+normalCount>(GEOM_INDICES-geometry.indices)/3) goto invalid;
+++    if ((vertexCount && !vertices) || (solidCount && !solid) || (normalCount && !normal)) {
+++        rejection=GEOM_MISSING_DATA;goto invalid;
+++    }
+ +    uint32_t addedIndices=3*(solidCount+normalCount);
+ +    if (20u*(geometry.vertices+vertexCount)+4u*(geometry.indices+addedIndices)>GEOM_PAYLOAD) goto invalid;
+ +    /* Line-only batches have no triangles in this fixed profile. */
+ +    if (!addedIndices) return;
+++    rejection=GEOM_NONFINITE_PROJECTION;
+ +    for (uint32_t i=0;i<vertexCount;i++) {
+ +        float z=(float)vertices[i].z, w=1.0f/(1.0f-z);
+ +        float clip[4]={((2.0f*(float)vertices[i].x/OBS_WIDTH)-1.0f)*w,
+@@ -993,6 +1015,7 @@
+ +        uint32_t colour=vertices[i].color;
+ +        out[16]=colour>>16;out[17]=colour>>8;out[18]=colour;out[19]=255;
+ +    }
+++    rejection=GEOM_INVALID_INDEX;
+ +    uint32_t offset=geometry.indices;
+ +    for (int batch=0;batch<2;batch++) {
+ +        const rdTri *triangles=batch?normal:solid;uint32_t count=batch?normalCount:solidCount;
+@@ -1006,7 +1029,7 @@
+ +    }
+ +    geometry.vertices+=vertexCount;geometry.indices+=addedIndices;return;
+ +invalid:
+-+    geometry.invalid=1;
+++    geometry.invalid=rejection;
+ +#else
+ +    (void)vertices;(void)vertexCount;(void)solid;(void)solidCount;(void)normal;(void)normalCount;
+ +#endif
+@@ -1015,7 +1038,8 @@
+ +{
+ +    if (!geometry.capturing) return;
+ +    geometry.capturing=0;
+-+    if (!ok || geometry.invalid || !world || !control || !sequence) return;
+++    if (geometry.invalid) { ObserverGeometry_LogRejection(now);return; }
+++    if (!ok || !world || !control || !sequence) return;
+ +    uint32_t bytes=20u*geometry.vertices+4u*geometry.indices;
+ +    memset(geometry.pending,0,64);memcpy(geometry.pending,"JKSG",4);
+ +    uint32_t header[11]={1,OBS_WIDTH,OBS_HEIGHT,world,control,sequence,bytes,0,now-geometry.capturedMs,geometry.vertices,geometry.indices};
