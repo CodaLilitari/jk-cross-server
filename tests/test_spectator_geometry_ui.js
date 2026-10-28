@@ -184,6 +184,21 @@ test('a native sequence superseding an in-flight envelope prevents older geometr
   assert.equal(f.glCalls.filter(c=>c[0]==='drawElements').length,0);
 });
 
+test('an authoritative newer image status rejects delayed geometry when geometry status has no current frame',async()=>{
+  const f=mountedFixture();f.update();await settle();let finish;
+  f.setGeometryResponse(()=>new Promise(resolve=>{finish=resolve;}));
+  select(f,'geometry');f.intervals.get(200)();await settle();
+  assert.equal(typeof finish,'function','geometry fetch must already be in flight');
+  f.change({
+    geometry:{available:true,frame_available:false,sequence:0,age_ms:null,reason:'',profile:'flat-colour-v1'},
+    frame:{available:true,sequence:10,age_ms:0}
+  });f.update();
+  finish(response(currentTriangle()));await settle();
+  assert.equal(f.glCalls.filter(c=>c[0]==='drawElements').length,0,'capture 9 is superseded by known image capture 10');
+  assert.match(f.nodes['spectator-frame-detail'].textContent,/Waiting/);
+  assert.equal(f.nodes['spectator-overlay'].hidden,false,'superseded response cannot hide the waiting overlay');
+});
+
 test('original visual fixture decodes the full independent clip-space shape and index set',()=>{
   const bytes=fs.readFileSync(path.join(__dirname,'fixtures/spectator_geometry.jksg'));
   const frame=decode(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));

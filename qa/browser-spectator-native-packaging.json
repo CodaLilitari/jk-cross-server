@@ -199,5 +199,78 @@
       "Absolute static input and arbitrary existing link flags preserved",
       "Stripping reproduces supplied-object executable bytes"
     ]
+  },
+  "post_review_rebuild": {
+    "status": "passed",
+    "review_base_commit": "576f768ca1328d9d7a0dd917942a1f09aa9f6915",
+    "method": "After review, guard the triangle-only capture declaration and definition with RDCACHE_RENDER_NGONS. Recompile the same 2 application units into a new isolated output directory with the recovered Linux flags, relink against the preserved baseline, and strip a separate copy. The binary and both compiled objects are byte-identical to the existing package; retain the existing binary and relink archive.",
+    "output_directory": "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build",
+    "patch": {
+      "sha256": "cbc3cb1d1d22e072f4427ecaa926e604163b2520dd2f21effcd7b0710871a542",
+      "bytes": 157404
+    },
+    "source_patch_sections": 24,
+    "complete_patch_matches_source": true,
+    "patch_reverse_check": true,
+    "current_source_hashes": {
+      "src/Main/jkObserver.c": "0c0201da6e87049e702138a60069a6a5ef07fffe354dcd08de63f56260209254",
+      "src/Main/jkObserverGeometry.h": "fcdaa3f8756df6d9d3da4335d9b4c1f2311ac9abd6f2c40e5b8558a3c00dc9b1",
+      "src/Raster/rdCache.c": "5797bc91036ff41c59e8f394b3edaf71dd282bd789fd75561d89570ebe844252"
+    },
+    "helper_command": [
+      "python3",
+      "native/rebuild_spectator_geometry.py",
+      "--source",
+      "/workspace/scratch/55e850edc256/jk-native-browser-spectator",
+      "--baseline-build",
+      "/tmp/jk-native-recovery-build",
+      "--output",
+      "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build"
+    ],
+    "commands_file": {
+      "sha256": "166eba03d9790cbc5002d9d6906dad998e5d8aca0966a249a52faeba149a7a7f",
+      "bytes": 20737
+    },
+    "strip_command": [
+      "strip",
+      "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/openjkdf2-stripped"
+    ],
+    "unstripped_core": {
+      "sha256": "ef29783aae3cf33cc2bddad1a5dda0ff077f79bdd90f7f5b862d54ef747331da",
+      "bytes": 8603560
+    },
+    "stripped_core": {
+      "sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
+      "bytes": 7496192
+    },
+    "fresh_objects": {
+      "CMakeFiles/sith_engine.dir/src/Main/jkObserver.c.o": {
+        "sha256": "9ddf7ee73f7cbbee7196d355f8d289fc5cb41a5b0bdccc34ca0107c521821e7b",
+        "bytes": 35584
+      },
+      "CMakeFiles/sith_engine.dir/src/Raster/rdCache.c.o": {
+        "sha256": "3c842a3f55972ff088e1cb62c31b3c14462c74dc03c80ea4a9fc61fa662c8a81",
+        "bytes": 22768
+      }
+    },
+    "binary_identical_to_package": true,
+    "both_objects_identical_to_package": true,
+    "retained_archive": {
+      "sha256": "8abea7457b84141777bef76685ad7f91eec9710a40811811bda12293fddb88d2",
+      "bytes": 5992217
+    },
+    "ngon_syntax_command": [
+      "python3",
+      "native/tests/check_spectator_ngon_compile.py",
+      "--source",
+      "/workspace/scratch/55e850edc256/jk-native-browser-spectator",
+      "--build",
+      "/tmp/jk-native-recovery-build"
+    ],
+    "ngon_syntax_result": "passed: actual Linux SDL2 observer plus RDCACHE_RENDER_NGONS; no full TARGET_TWL build claimed",
+    "native_observer_behavior_groups": 19,
+    "limits": "Incremental two-unit build. Prior packaging/relink receipts remain historical evidence for identical retained bytes. No full clean native/dependency or alternate-platform build.",
+    "full_compile_and_link_receipt": "qa/browser-spectator-native-build.json:post_review_rebuild",
+    "preserved_baseline_link_inputs_verified": 218
   }
 }

@@ -216,7 +216,8 @@
         if(!current())return;
         const frame=useGeometry?geometry.decodeGeometry(buffer,epoch,frameSequence,Math.max(0,Date.now()-startedAt)):
           decodeFrame(response.headers,buffer,epoch,frameSequence);
-        if(useGeometry&&status.geometry.sequence>frame.sequence)return;
+        if(useGeometry&&(status.geometry.sequence>frame.sequence||
+          (status.frame?.available&&status.frame.sequence>frame.sequence)))return;
         if(useGeometry)renderer.draw(frame);
         else{
           if(canvas.width!==frame.width||canvas.height!==frame.height){canvas.width=frame.width;canvas.height=frame.height;}

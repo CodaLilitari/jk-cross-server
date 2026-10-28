@@ -10,7 +10,7 @@
     "sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
     "bytes": 7496192
   },
-  "native_patch_sha256": "26ea7f659236222c3a8f6abaf8f6967109e21a0dd1fe5b1bd39f8ddf65de6734",
+  "native_patch_sha256": "cbc3cb1d1d22e072f4427ecaa926e604163b2520dd2f21effcd7b0710871a542",
   "tests": [
     {
       "suite": "manager",
@@ -28,15 +28,15 @@
     },
     {
       "suite": "node-ui",
-      "passed": 33,
+      "passed": 34,
       "unit": "test cases",
-      "evidence": "logs/node-ui.log"
+      "evidence": "node-tests.json"
     },
     {
       "suite": "native-observer",
       "passed": 19,
       "unit": "printed behavior groups across five native test programs",
-      "evidence": "logs/native-observer-final.log"
+      "evidence": "logs/final-fix-wave-native-green.log"
     },
     {
       "suite": "native-packager",
@@ -70,21 +70,21 @@
       "world_geometry_changes": true,
       "unsupported_webgl_fallback": true
     },
-    "frames_received": 23,
+    "frames_received": 22,
     "draws_observed": 19,
     "paired_capture": {
       "matched": true,
-      "geometry_sequence": 75,
-      "image_sequence": 75,
+      "geometry_sequence": 27,
+      "image_sequence": 27,
       "world_epoch": 2,
-      "control_epoch": 8,
-      "geometry_bytes": 376,
+      "control_epoch": 5,
+      "geometry_bytes": 27048,
       "image_bytes": 921600
     },
-    "payload_changes_observed": 13,
+    "payload_changes_observed": 21,
     "bytes_range": [
-      64,
-      29688
+      12032,
+      27048
     ],
     "players": 2,
     "maximum_players": 7,
@@ -92,10 +92,10 @@
     "map": "JK1MP/m2.jkl",
     "clients": "Two existing ordinary packaged native bot clients",
     "page_errors": [],
-    "input_429_count": 5,
+    "input_429_count": 2,
     "viewer_lease_expired_after_tab_close": true,
     "evidence": [
-      "final-live-panel.json",
+      "final-reviewed-live-panel.json",
       "final-viewer-lease.json"
     ]
   },
@@ -112,8 +112,13 @@
     "native": "approved after diagnostics and RPATH fixes",
     "manager": "approved after retryable stale-epoch fix",
     "browser": "approved",
-    "whole_branch": "pending",
-    "deferred_minor": "RDCACHE_RENDER_NGONS / TARGET_TWL rdTri declaration needs a conditional guard; Linux target unaffected."
+    "whole_branch": "approved after single final fix wave; no open findings",
+    "resolved_findings": [
+      "Late geometry response compared against current image sequence as well as geometry sequence.",
+      "Conditional triangle hook compiles under Linux SDL2 plus n-gon renderer."
+    ],
+    "correction": "Prior absent-type/TARGET_TWL claim was overbroad; actual rdTri integer member-access failure was Linux SDL2 plus RDCACHE_RENDER_NGONS.",
+    "evidence": "review/whole-branch-review.md"
   },
   "limits": [
     "Experimental opaque vertex-colour triangles; no textures; sky/transparency/special rendering state approximate.",
@@ -126,5 +131,11 @@
     "The first standard manager invocation exited zero but its output lacked a completion summary. A separate explicit TestResult run completed all176 tests successfully; no incomplete run is counted as a pass.",
     "The first live launch used an incorrect bot binary path in the external QA config; correcting the harness path started the unchanged existing bot binary.",
     "The early live geometry hash check included envelope headers; final evidence compares payload-only hashes and verifies paired native/image capture sequences."
-  ]
+  ],
+  "native_ngon_compile": {
+    "passed": true,
+    "scope": "Actual Linux SDL2 compile command plus RDCACHE_RENDER_NGONS, syntax-only; no full TWL build claim.",
+    "evidence": "review/final-fix-wave-report.md"
+  },
+  "source_scope_note": "Manager176 and gateway27 cover unchanged Python production code. Final Node34 and native19 plus n-gon syntax check cover the later JS/native guard wave. Historical source hash snapshots are retained without rewriting them."
 }

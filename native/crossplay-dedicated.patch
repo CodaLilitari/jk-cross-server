@@ -812,10 +812,10 @@ index e80722b7..282cd467 100644
      int v3; // eax
 diff --git a/src/Main/jkObserver.c b/src/Main/jkObserver.c
 new file mode 100644
-index 00000000..c8339adb
+index 00000000..7bc0c61b
 --- /dev/null
 +++ b/src/Main/jkObserver.c
-@@ -0,0 +1,651 @@
+@@ -0,0 +1,653 @@
 +/* A local dedicated-host camera. It owns no game identity or world thing.
 + * The only inputs are typed commands on the authenticated supervisor bridge.
 + * Frames use a separate inherited socket, never a client game transport. */
@@ -990,6 +990,7 @@ index 00000000..c8339adb
 +    if (now-geometry.leaseMs>=5000) { ObserverGeometry_Stop();return; }
 +    geometry.vertices=geometry.indices=0;geometry.invalid=0;geometry.capturedMs=now;geometry.capturing=1;
 +}
++#ifndef RDCACHE_RENDER_NGONS
 +void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
 +    const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount)
 +{
@@ -1034,6 +1035,7 @@ index 00000000..c8339adb
 +    (void)vertices;(void)vertexCount;(void)solid;(void)solidCount;(void)normal;(void)normalCount;
 +#endif
 +}
++#endif
 +static void ObserverGeometry_End(uint32_t now,uint32_t world,uint32_t control,uint32_t sequence,int ok)
 +{
 +    if (!geometry.capturing) return;
@@ -3526,13 +3528,15 @@ index 94bdddf6..a825edde 100644
          if ( rdCache_totalNormalTris )
 diff --git a/src/Main/jkObserverGeometry.h b/src/Main/jkObserverGeometry.h
 new file mode 100644
-index 00000000..bb4b8156
+index 00000000..860810f0
 --- /dev/null
 +++ b/src/Main/jkObserverGeometry.h
-@@ -0,0 +1,6 @@
+@@ -0,0 +1,8 @@
 +#ifndef _JK_OBSERVER_GEOMETRY_H
 +#define _JK_OBSERVER_GEOMETRY_H
 +#include "types.h"
++#ifndef RDCACHE_RENDER_NGONS
 +void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
 +    const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount);
++#endif
 +#endif

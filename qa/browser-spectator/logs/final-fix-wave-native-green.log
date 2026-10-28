@@ -1,0 +1,19 @@
+PASS observer draw preserves sighting, AI, visibility, extra hooks and transform
+PASS observer does not consume explosion flashes or alter player palette effects
+PASS ordinary renderer retains its pre-existing gameplay effects
+PASS startup is opt-in, off, bounded, and roster excludes host/provisional peers
+PASS follow reacquires respawn, rejects stale generation, and never moves host
+PASS finite bounded inputs, radian angles, replay/epoch checks, and 250 ms motion expiry
+PASS saturated socket never blocks, partial frames finish, old epochs stay stale, closure disables camera
+PASS exact world/focus/visibility, animation cursors, saber matrices, mesh lighting and frame-counter restoration
+PASS bounded snapshot rejects excessive worlds before drawing and remains reusable
+PASS actual observer frame supplies yaw/pitch/roll to the engine horizon calculation and restores camera ownership
+PASS actual frame retains its capture timestamp through three seconds of backpressure and status reports age 3000 ms
+PASS subsequent free-camera rotation refreshes horizon offsets and roll
+PASS hand-derived projection, RGB extraction, index rebasing and capture age
+PASS malformed and oversized batches discard whole capture with distinct bounded diagnostic reasons
+PASS rejection logging is rate limited across 100 captures and renews after five seconds
+PASS valid capture recovers after rejection without changing image/control status or adding diagnostics
+PASS operation 3 validates epochs and boolean, advertises capability, renews lease without changing control epoch
+PASS congestion skips capture; partial envelope finishes across epoch changes; lease expiry and disable discard unsent frames
+PASS geometry peer failure preserves image channel and observer control

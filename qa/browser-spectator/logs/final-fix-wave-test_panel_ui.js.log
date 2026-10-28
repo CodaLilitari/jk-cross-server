@@ -1,0 +1,15 @@
+✔ current native descriptor supplies all-route player count and map without subtracting the host twice (3.181159ms)
+✔ an older manager without session_ready remains supported when its native descriptor is current (0.309698ms)
+✔ disconnect, stale descriptor, startup and stopped/failed states retire session-derived presentation (0.326163ms)
+✔ missing or malformed native metadata never falls back to browser-only metadata (3.99447ms)
+✔ transport listener status remains distinct from game-session readiness (0.197939ms)
+✔ static panel preserves unique required controls, legacy settings and script bindings (8.057634ms)
+✔ spectator and live bot controls stay outside the disabled settings fieldset (4.789912ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 35.732697

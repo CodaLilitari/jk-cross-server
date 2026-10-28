@@ -1,0 +1,860 @@
+--- a/repo/manager/ui/spectator.js
++++ b/repo/manager/ui/spectator.js
+@@ -216,7 +216,8 @@
+         if(!current())return;
+         const frame=useGeometry?geometry.decodeGeometry(buffer,epoch,frameSequence,Math.max(0,Date.now()-startedAt)):
+           decodeFrame(response.headers,buffer,epoch,frameSequence);
+-        if(useGeometry&&status.geometry.sequence>frame.sequence)return;
++        if(useGeometry&&(status.geometry.sequence>frame.sequence||
++          (status.frame?.available&&status.frame.sequence>frame.sequence)))return;
+         if(useGeometry)renderer.draw(frame);
+         else{
+           if(canvas.width!==frame.width||canvas.height!==frame.height){canvas.width=frame.width;canvas.height=frame.height;}
+--- a/repo/tests/test_spectator_geometry_ui.js
++++ b/repo/tests/test_spectator_geometry_ui.js
+@@ -184,6 +184,21 @@
+   assert.equal(f.glCalls.filter(c=>c[0]==='drawElements').length,0);
+ });
+ 
++test('an authoritative newer image status rejects delayed geometry when geometry status has no current frame',async()=>{
++  const f=mountedFixture();f.update();await settle();let finish;
++  f.setGeometryResponse(()=>new Promise(resolve=>{finish=resolve;}));
++  select(f,'geometry');f.intervals.get(200)();await settle();
++  assert.equal(typeof finish,'function','geometry fetch must already be in flight');
++  f.change({
++    geometry:{available:true,frame_available:false,sequence:0,age_ms:null,reason:'',profile:'flat-colour-v1'},
++    frame:{available:true,sequence:10,age_ms:0}
++  });f.update();
++  finish(response(currentTriangle()));await settle();
++  assert.equal(f.glCalls.filter(c=>c[0]==='drawElements').length,0,'capture 9 is superseded by known image capture 10');
++  assert.match(f.nodes['spectator-frame-detail'].textContent,/Waiting/);
++  assert.equal(f.nodes['spectator-overlay'].hidden,false,'superseded response cannot hide the waiting overlay');
++});
++
+ test('original visual fixture decodes the full independent clip-space shape and index set',()=>{
+   const bytes=fs.readFileSync(path.join(__dirname,'fixtures/spectator_geometry.jksg'));
+   const frame=decode(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));
+--- a/repo/native/tests/check_spectator_ngon_compile.py
++++ b/repo/native/tests/check_spectator_ngon_compile.py
+@@ -0,0 +1,35 @@
++#!/usr/bin/env python3
++"""Syntax-check the actual Linux observer with the optional n-gon profile.
++
++Uses the recovered compile database, changes source paths and adds only the
++n-gon definition plus syntax-only mode. No baseline objects are written.
++This is not a TARGET_TWL build or runtime qualification.
++"""
++import argparse
++import json
++from pathlib import Path
++import shlex
++import subprocess
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--source', type=Path, required=True)
++    parser.add_argument('--build', type=Path, required=True)
++    args = parser.parse_args()
++    source, build = args.source.resolve(), args.build.resolve()
++    entries = json.loads((build / 'compile_commands.json').read_text())
++    entry = next(e for e in entries if e['file'].endswith('/src/Main/jkObserver.c'))
++    original_source = str(Path(entry['file']).parents[2])
++    command = [token.replace(original_source + '/', str(source) + '/')
++               for token in shlex.split(entry['command'])]
++    index = command.index('-o')
++    del command[index:index + 2]
++    command.remove('-c')
++    command += ['-DRDCACHE_RENDER_NGONS', '-fsyntax-only']
++    subprocess.run(command, cwd=build, check=True)
++    print('PASS actual Linux SDL2 observer compiles with RDCACHE_RENDER_NGONS')
++
++
++if __name__ == '__main__':
++    main()
+--- a/repo/native/crossplay-dedicated.patch
++++ b/repo/native/crossplay-dedicated.patch
+@@ -812,10 +812,10 @@
+      int v3; // eax
+ diff --git a/src/Main/jkObserver.c b/src/Main/jkObserver.c
+ new file mode 100644
+-index 00000000..c8339adb
++index 00000000..7bc0c61b
+ --- /dev/null
+ +++ b/src/Main/jkObserver.c
+-@@ -0,0 +1,651 @@
++@@ -0,0 +1,653 @@
+ +/* A local dedicated-host camera. It owns no game identity or world thing.
+ + * The only inputs are typed commands on the authenticated supervisor bridge.
+ + * Frames use a separate inherited socket, never a client game transport. */
+@@ -990,6 +990,7 @@
+ +    if (now-geometry.leaseMs>=5000) { ObserverGeometry_Stop();return; }
+ +    geometry.vertices=geometry.indices=0;geometry.invalid=0;geometry.capturedMs=now;geometry.capturing=1;
+ +}
+++#ifndef RDCACHE_RENDER_NGONS
+ +void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
+ +    const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount)
+ +{
+@@ -1034,6 +1035,7 @@
+ +    (void)vertices;(void)vertexCount;(void)solid;(void)solidCount;(void)normal;(void)normalCount;
+ +#endif
+ +}
+++#endif
+ +static void ObserverGeometry_End(uint32_t now,uint32_t world,uint32_t control,uint32_t sequence,int ok)
+ +{
+ +    if (!geometry.capturing) return;
+@@ -3526,13 +3528,15 @@
+          if ( rdCache_totalNormalTris )
+ diff --git a/src/Main/jkObserverGeometry.h b/src/Main/jkObserverGeometry.h
+ new file mode 100644
+-index 00000000..bb4b8156
++index 00000000..860810f0
+ --- /dev/null
+ +++ b/src/Main/jkObserverGeometry.h
+-@@ -0,0 +1,6 @@
++@@ -0,0 +1,8 @@
+ +#ifndef _JK_OBSERVER_GEOMETRY_H
+ +#define _JK_OBSERVER_GEOMETRY_H
+ +#include "types.h"
+++#ifndef RDCACHE_RENDER_NGONS
+ +void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
+ +    const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount);
+ +#endif
+++#endif
+--- a/repo/native/BUILD.json
++++ b/repo/native/BUILD.json
+@@ -47,8 +47,8 @@
+       "bytes": 3640648
+     },
+     "native/crossplay-dedicated.patch": {
+-      "sha256": "26ea7f659236222c3a8f6abaf8f6967109e21a0dd1fe5b1bd39f8ddf65de6734",
+-      "bytes": 157328
++      "sha256": "cbc3cb1d1d22e072f4427ecaa926e604163b2520dd2f21effcd7b0710871a542",
++      "bytes": 157404
+     },
+     "native/relink-linux-x86_64.tar.gz": {
+       "sha256": "8abea7457b84141777bef76685ad7f91eec9710a40811811bda12293fddb88d2",
+@@ -1601,5 +1601,78 @@
+   "packaging_receipt": "qa/browser-spectator-native-packaging.json",
+   "baseline_build_receipt": "qa/native-observer-build.json",
+   "supplied_object_relink_sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
+-  "libsmacker_rebuilt_relink_sha256": "1f1dd05cd35e151ca8ebb3dc59b0df146ed8d6a51d4b0a9f1c9e18dcd04e8449"
++  "libsmacker_rebuilt_relink_sha256": "1f1dd05cd35e151ca8ebb3dc59b0df146ed8d6a51d4b0a9f1c9e18dcd04e8449",
++  "post_review_rebuild": {
++    "status": "passed",
++    "review_base_commit": "576f768ca1328d9d7a0dd917942a1f09aa9f6915",
++    "method": "After review, guard the triangle-only capture declaration and definition with RDCACHE_RENDER_NGONS. Recompile the same 2 application units into a new isolated output directory with the recovered Linux flags, relink against the preserved baseline, and strip a separate copy. The binary and both compiled objects are byte-identical to the existing package; retain the existing binary and relink archive.",
++    "output_directory": "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build",
++    "patch": {
++      "sha256": "cbc3cb1d1d22e072f4427ecaa926e604163b2520dd2f21effcd7b0710871a542",
++      "bytes": 157404
++    },
++    "source_patch_sections": 24,
++    "complete_patch_matches_source": true,
++    "patch_reverse_check": true,
++    "current_source_hashes": {
++      "src/Main/jkObserver.c": "0c0201da6e87049e702138a60069a6a5ef07fffe354dcd08de63f56260209254",
++      "src/Main/jkObserverGeometry.h": "fcdaa3f8756df6d9d3da4335d9b4c1f2311ac9abd6f2c40e5b8558a3c00dc9b1",
++      "src/Raster/rdCache.c": "5797bc91036ff41c59e8f394b3edaf71dd282bd789fd75561d89570ebe844252"
++    },
++    "helper_command": [
++      "python3",
++      "native/rebuild_spectator_geometry.py",
++      "--source",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator",
++      "--baseline-build",
++      "/tmp/jk-native-recovery-build",
++      "--output",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build"
++    ],
++    "commands_file": {
++      "sha256": "166eba03d9790cbc5002d9d6906dad998e5d8aca0966a249a52faeba149a7a7f",
++      "bytes": 20737
++    },
++    "strip_command": [
++      "strip",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/openjkdf2-stripped"
++    ],
++    "unstripped_core": {
++      "sha256": "ef29783aae3cf33cc2bddad1a5dda0ff077f79bdd90f7f5b862d54ef747331da",
++      "bytes": 8603560
++    },
++    "stripped_core": {
++      "sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
++      "bytes": 7496192
++    },
++    "fresh_objects": {
++      "CMakeFiles/sith_engine.dir/src/Main/jkObserver.c.o": {
++        "sha256": "9ddf7ee73f7cbbee7196d355f8d289fc5cb41a5b0bdccc34ca0107c521821e7b",
++        "bytes": 35584
++      },
++      "CMakeFiles/sith_engine.dir/src/Raster/rdCache.c.o": {
++        "sha256": "3c842a3f55972ff088e1cb62c31b3c14462c74dc03c80ea4a9fc61fa662c8a81",
++        "bytes": 22768
++      }
++    },
++    "binary_identical_to_package": true,
++    "both_objects_identical_to_package": true,
++    "retained_archive": {
++      "sha256": "8abea7457b84141777bef76685ad7f91eec9710a40811811bda12293fddb88d2",
++      "bytes": 5992217
++    },
++    "ngon_syntax_command": [
++      "python3",
++      "native/tests/check_spectator_ngon_compile.py",
++      "--source",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator",
++      "--build",
++      "/tmp/jk-native-recovery-build"
++    ],
++    "ngon_syntax_result": "passed: actual Linux SDL2 observer plus RDCACHE_RENDER_NGONS; no full TARGET_TWL build claimed",
++    "native_observer_behavior_groups": 19,
++    "limits": "Incremental two-unit build. Prior packaging/relink receipts remain historical evidence for identical retained bytes. No full clean native/dependency or alternate-platform build.",
++    "full_compile_and_link_receipt": "qa/browser-spectator-native-build.json:post_review_rebuild",
++    "preserved_baseline_link_inputs_verified": 218
++  }
+ }
+--- a/repo/qa/browser-spectator-native-build.json
++++ b/repo/qa/browser-spectator-native-build.json
+@@ -1057,5 +1057,530 @@
+     "generated/globals.c": "8f25cb118633fc95eaf41469507291148b70a121481fb27424b5e4fef0b785f9"
+   },
+   "preserved_baseline_inputs_verified": 218,
+-  "preserved_baseline_source_status_unchanged": true
++  "preserved_baseline_source_status_unchanged": true,
++  "post_review_rebuild": {
++    "status": "passed",
++    "review_base_commit": "576f768ca1328d9d7a0dd917942a1f09aa9f6915",
++    "method": "After review, guard the triangle-only capture declaration and definition with RDCACHE_RENDER_NGONS. Recompile the same 2 application units into a new isolated output directory with the recovered Linux flags, relink against the preserved baseline, and strip a separate copy. The binary and both compiled objects are byte-identical to the existing package; retain the existing binary and relink archive.",
++    "output_directory": "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build",
++    "patch": {
++      "sha256": "cbc3cb1d1d22e072f4427ecaa926e604163b2520dd2f21effcd7b0710871a542",
++      "bytes": 157404
++    },
++    "source_patch_sections": 24,
++    "complete_patch_matches_source": true,
++    "patch_reverse_check": true,
++    "current_source_hashes": {
++      "src/Main/jkObserver.c": "0c0201da6e87049e702138a60069a6a5ef07fffe354dcd08de63f56260209254",
++      "src/Main/jkObserverGeometry.h": "fcdaa3f8756df6d9d3da4335d9b4c1f2311ac9abd6f2c40e5b8558a3c00dc9b1",
++      "src/Raster/rdCache.c": "5797bc91036ff41c59e8f394b3edaf71dd282bd789fd75561d89570ebe844252"
++    },
++    "helper_command": [
++      "python3",
++      "native/rebuild_spectator_geometry.py",
++      "--source",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator",
++      "--baseline-build",
++      "/tmp/jk-native-recovery-build",
++      "--output",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build"
++    ],
++    "compile_and_link_commands": [
++      [
++        "/usr/bin/cc",
++        "-DARCH_64BIT",
++        "-DBUILDING_LIBCURL",
++        "-DCURL_STATICLIB",
++        "-DHAVE_CONFIG_H",
++        "-DHAVE_STRUCT_TIMEVAL",
++        "-DLINUX",
++        "-DLINUX_TMP",
++        "-DNO_JK_MMAP",
++        "-DOPENJKDF2_MAJOR_VERSION=0",
++        "-DOPENJKDF2_MINOR_VERSION=9",
++        "-DOPENJKDF2_PATCH_VERSION=9",
++        "-DOPENJKDF2_PROJECT_NAME=OpenJKDF2",
++        "-DOPENJKDF2_PROJECT_VERSION=0.9.9.0",
++        "-DOPENJKDF2_RELEASE_COMMIT=\"\"",
++        "-DOPENJKDF2_RELEASE_COMMIT_SHORT=\"\"",
++        "-DOPENJKDF2_RELEASE_COMMIT_SHORT_U=u\"\"",
++        "-DOPENJKDF2_RELEASE_COMMIT_U=u\"\"",
++        "-DOPENJKDF2_RELEASE_VERSION_STRING=\"v0.9.9\"",
++        "-DOPENJKDF2_RELEASE_VERSION_STRING_U=u\"v0.9.9\"",
++        "-DOPENJKDF2_RELEASE_VERSION_STRING_W=L\"v0.9.9\"",
++        "-DOPENJKDF2_TWEAK_VERSION=0",
++        "-DPLATFORM_CURL",
++        "-DPLATFORM_GNS",
++        "-DPLATFORM_LINUX",
++        "-DPLATFORM_NO_CACERT_BLOB",
++        "-DPLATFORM_PHYSFS",
++        "-DPLATFORM_POSIX",
++        "-DQOL_IMPROVEMENTS",
++        "-DSDL2_RENDER",
++        "-DSTDSOUND_OPENAL",
++        "-DTARGET_CAN_JKGM",
++        "-DUSE_MBEDTLS",
++        "-D_DEFAULT_SOURCE",
++        "-D_XOPEN_SOURCE=500",
++        "-D__USE_MINGW_ANSI_STDIO",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/external/libsmacker",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/external/libsmusher/src",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/external/nativefiledialog-extended",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/external/fcaseopen",
++        "-I/tmp/jk-native-recovery-build/generated",
++        "-I/usr/include/gtk-3.0",
++        "-I/usr/include/pango-1.0",
++        "-I/usr/include/glib-2.0",
++        "-I/usr/lib/x86_64-linux-gnu/glib-2.0/include",
++        "-I/usr/include/harfbuzz",
++        "-I/usr/include/freetype2",
++        "-I/usr/include/libpng16",
++        "-I/usr/include/libmount",
++        "-I/usr/include/blkid",
++        "-I/usr/include/fribidi",
++        "-I/usr/include/cairo",
++        "-I/usr/include/pixman-1",
++        "-I/usr/include/gdk-pixbuf-2.0",
++        "-I/usr/include/webp",
++        "-I/usr/include/gio-unix-2.0",
++        "-I/usr/include/atk-1.0",
++        "-I/usr/include/at-spi2-atk/2.0",
++        "-I/usr/include/at-spi-2.0",
++        "-I/usr/include/dbus-1.0",
++        "-I/usr/lib/x86_64-linux-gnu/dbus-1.0/include",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/3rdparty/json/include",
++        "-isystem",
++        "/usr/include/AL",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/libpng/include",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/SDL/include/SDL3",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/SDL/include",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/SDL_mixer/include/SDL3_mixer",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/physfs/include",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/GameNetworkingSockets/include/GameNetworkingSockets",
++        "-std=c11",
++        "-fshort-wchar",
++        "-Werror=implicit-function-declaration",
++        "-Wno-unused-variable",
++        "-Wno-parentheses",
++        "-Wno-incompatible-pointer-types",
++        "-O3",
++        "-DNDEBUG",
++        "-std=gnu11",
++        "-pthread",
++        "-O2",
++        "-o",
++        "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/jkObserver.c.o",
++        "-c",
++        "/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/Main/jkObserver.c"
++      ],
++      [
++        "/usr/bin/cc",
++        "-DARCH_64BIT",
++        "-DBUILDING_LIBCURL",
++        "-DCURL_STATICLIB",
++        "-DHAVE_CONFIG_H",
++        "-DHAVE_STRUCT_TIMEVAL",
++        "-DLINUX",
++        "-DLINUX_TMP",
++        "-DNO_JK_MMAP",
++        "-DOPENJKDF2_MAJOR_VERSION=0",
++        "-DOPENJKDF2_MINOR_VERSION=9",
++        "-DOPENJKDF2_PATCH_VERSION=9",
++        "-DOPENJKDF2_PROJECT_NAME=OpenJKDF2",
++        "-DOPENJKDF2_PROJECT_VERSION=0.9.9.0",
++        "-DOPENJKDF2_RELEASE_COMMIT=\"\"",
++        "-DOPENJKDF2_RELEASE_COMMIT_SHORT=\"\"",
++        "-DOPENJKDF2_RELEASE_COMMIT_SHORT_U=u\"\"",
++        "-DOPENJKDF2_RELEASE_COMMIT_U=u\"\"",
++        "-DOPENJKDF2_RELEASE_VERSION_STRING=\"v0.9.9\"",
++        "-DOPENJKDF2_RELEASE_VERSION_STRING_U=u\"v0.9.9\"",
++        "-DOPENJKDF2_RELEASE_VERSION_STRING_W=L\"v0.9.9\"",
++        "-DOPENJKDF2_TWEAK_VERSION=0",
++        "-DPLATFORM_CURL",
++        "-DPLATFORM_GNS",
++        "-DPLATFORM_LINUX",
++        "-DPLATFORM_NO_CACERT_BLOB",
++        "-DPLATFORM_PHYSFS",
++        "-DPLATFORM_POSIX",
++        "-DQOL_IMPROVEMENTS",
++        "-DSDL2_RENDER",
++        "-DSTDSOUND_OPENAL",
++        "-DTARGET_CAN_JKGM",
++        "-DUSE_MBEDTLS",
++        "-D_DEFAULT_SOURCE",
++        "-D_XOPEN_SOURCE=500",
++        "-D__USE_MINGW_ANSI_STDIO",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/external/libsmacker",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/external/libsmusher/src",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/external/nativefiledialog-extended",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/external/fcaseopen",
++        "-I/tmp/jk-native-recovery-build/generated",
++        "-I/usr/include/gtk-3.0",
++        "-I/usr/include/pango-1.0",
++        "-I/usr/include/glib-2.0",
++        "-I/usr/lib/x86_64-linux-gnu/glib-2.0/include",
++        "-I/usr/include/harfbuzz",
++        "-I/usr/include/freetype2",
++        "-I/usr/include/libpng16",
++        "-I/usr/include/libmount",
++        "-I/usr/include/blkid",
++        "-I/usr/include/fribidi",
++        "-I/usr/include/cairo",
++        "-I/usr/include/pixman-1",
++        "-I/usr/include/gdk-pixbuf-2.0",
++        "-I/usr/include/webp",
++        "-I/usr/include/gio-unix-2.0",
++        "-I/usr/include/atk-1.0",
++        "-I/usr/include/at-spi2-atk/2.0",
++        "-I/usr/include/at-spi-2.0",
++        "-I/usr/include/dbus-1.0",
++        "-I/usr/lib/x86_64-linux-gnu/dbus-1.0/include",
++        "-I/workspace/scratch/55e850edc256/jk-native-browser-spectator/3rdparty/json/include",
++        "-isystem",
++        "/usr/include/AL",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/libpng/include",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/SDL/include/SDL3",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/SDL/include",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/SDL_mixer/include/SDL3_mixer",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/physfs/include",
++        "-isystem",
++        "/tmp/jk-native-recovery-build/GameNetworkingSockets/include/GameNetworkingSockets",
++        "-std=c11",
++        "-fshort-wchar",
++        "-Werror=implicit-function-declaration",
++        "-Wno-unused-variable",
++        "-Wno-parentheses",
++        "-Wno-incompatible-pointer-types",
++        "-O3",
++        "-DNDEBUG",
++        "-std=gnu11",
++        "-pthread",
++        "-O2",
++        "-o",
++        "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/rdCache.c.o",
++        "-c",
++        "/workspace/scratch/55e850edc256/jk-native-browser-spectator/src/Raster/rdCache.c"
++      ],
++      [
++        "/usr/bin/c++",
++        "-fshort-wchar",
++        "-Werror=implicit-function-declaration",
++        "-Wno-unused-variable",
++        "-Wno-parentheses",
++        "-O3",
++        "-DNDEBUG",
++        "-fshort-wchar",
++        "CMakeFiles/openjkdf2.dir/src/main.c.o",
++        "CMakeFiles/sith_engine.dir/src/AI/sithAI.c.o",
++        "CMakeFiles/sith_engine.dir/src/AI/sithAIAwareness.c.o",
++        "CMakeFiles/sith_engine.dir/src/AI/sithAIClass.c.o",
++        "CMakeFiles/sith_engine.dir/src/AI/sithAICmd.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/jkCog.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/lex.yy.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCog.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogExec.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunction.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionAI.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionPlayer.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionSector.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionSound.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionSurface.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionThing.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/sithCogParse.c.o",
++        "CMakeFiles/sith_engine.dir/src/Cog/y.tab.c.o",
++        "CMakeFiles/sith_engine.dir/src/Devices/sithComm.c.o",
++        "CMakeFiles/sith_engine.dir/src/Devices/sithConsole.c.o",
++        "CMakeFiles/sith_engine.dir/src/Devices/sithControl.c.o",
++        "CMakeFiles/sith_engine.dir/src/Devices/sithSound.c.o",
++        "CMakeFiles/sith_engine.dir/src/Devices/sithSoundMixer.c.o",
++        "CMakeFiles/sith_engine.dir/src/Dss/jkDSS.c.o",
++        "CMakeFiles/sith_engine.dir/src/Dss/sithAdmin.c.o",
++        "CMakeFiles/sith_engine.dir/src/Dss/sithDSS.c.o",
++        "CMakeFiles/sith_engine.dir/src/Dss/sithDSSCog.c.o",
++        "CMakeFiles/sith_engine.dir/src/Dss/sithDSSThing.c.o",
++        "CMakeFiles/sith_engine.dir/src/Dss/sithGamesave.c.o",
++        "CMakeFiles/sith_engine.dir/src/Dss/sithMulti.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdActive.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdCamera.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdCanvas.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdClip.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdColormap.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdKeyframe.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdLight.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdMaterial.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdPuppet.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdThing.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/rdroid.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithAnimClass.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithCamera.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithCollision.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithIntersect.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithKeyFrame.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithParticle.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithPhysics.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithPuppet.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithRender.c.o",
++        "CMakeFiles/sith_engine.dir/src/Engine/sithRenderSky.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gameplay/jkSaber.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gameplay/sithEvent.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gameplay/sithInventory.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gameplay/sithOverlayMap.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gameplay/sithPlayer.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gameplay/sithPlayerActions.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gameplay/sithTime.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/Darray.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/crc32.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/md5.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/sithStrTable.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdBitmap.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdBitmapRle.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdBmp.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdColor.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdConffile.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdFileUtil.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdFnames.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdFont.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdHashtbl.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdJSON.cpp.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdLbm.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdLinkList.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdMath.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdMemory.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdPalEffects.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdPcx.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdSingleLinklist.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdStrTable.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/stdString.c.o",
++        "CMakeFiles/sith_engine.dir/src/General/util.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUI.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIBuildMulti.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIControlOptions.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIControlSaveLoad.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIDecision.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIDialog.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIEsc.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIForce.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIGameplay.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIGeneral.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIJoystick.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIKeyboard.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMain.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMap.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMods.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMouse.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMultiTally.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMultiplayer.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUINetHost.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIObjectives.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIPlayer.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUIRend.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUISaveLoad.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUISetup.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUISingleTally.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUISingleplayer.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUISound.c.o",
++        "CMakeFiles/sith_engine.dir/src/Gui/jkGUITitle.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/InstallHelper.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/Main.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkAI.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkControl.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkCredits.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkCutscene.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkDev.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkEpisode.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkGame.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkGob.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkHud.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkHudCameraView.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkHudInv.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkHudScope.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkMain.c.o",
++        "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/jkObserver.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkQuakeConsole.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkRes.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkSmack.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/jkStrings.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/sithCommand.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/sithCvar.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/sithMain.c.o",
++        "CMakeFiles/sith_engine.dir/src/Main/stdCapture.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/Common/stdControl.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/Common/stdEmbeddedRes.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/Common/stdHttp.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/Common/stdUpdater.cpp.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdDebug.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdMath.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdMatrix.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdModel3.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdParticle.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdPolyline.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdPrimit2.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdPrimit3.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdSprite.c.o",
++        "CMakeFiles/sith_engine.dir/src/Primitives/rdVector.c.o",
++        "CMakeFiles/sith_engine.dir/src/Raster/rdAFRaster.c.o",
++        "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/rdCache.c.o",
++        "CMakeFiles/sith_engine.dir/src/Raster/rdFace.c.o",
++        "CMakeFiles/sith_engine.dir/src/Raster/rdNRaster.c.o",
++        "CMakeFiles/sith_engine.dir/src/Raster/rdRaster.c.o",
++        "CMakeFiles/sith_engine.dir/src/Raster/rdZRaster.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/DirectX.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/Video.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/WinIdk.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/Window.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/Windows.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/std.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/stdComm.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/stdConsole.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/stdDisplay.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/stdGdi.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/stdGob.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/stdMci.c.o",
++        "CMakeFiles/sith_engine.dir/src/Win95/stdSound.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/jkPlayer.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithActor.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithArchLighting.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithExplosion.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithItem.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithMap.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithMaterial.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithModel.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithSector.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithSoundClass.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithSprite.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithSurface.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithTemplate.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithThing.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithTrackThing.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithWeapon.c.o",
++        "CMakeFiles/sith_engine.dir/src/World/sithWorld.c.o",
++        "CMakeFiles/sith_engine.dir/src/hook.c.o",
++        "CMakeFiles/sith_engine.dir/src/jk.c.o",
++        "CMakeFiles/sith_engine.dir/src/main_globals.c.o",
++        "CMakeFiles/sith_engine.dir/src/stdPlatform.c.o",
++        "CMakeFiles/sith_engine.dir/src/unusedWontImpl.c.o",
++        "CMakeFiles/sith_engine.dir/src/version.c.o",
++        "CMakeFiles/sith_engine.dir/src/wprintf.c.o",
++        "CMakeFiles/sith_engine.dir/src/external/fcaseopen/fcaseopen.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/Networking/GNS/stdComm_GNS.cpp.o",
++        "CMakeFiles/sith_engine.dir/src/external/libsmacker/smacker.c.o",
++        "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_bitstream.c.o",
++        "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_hufftree.c.o",
++        "CMakeFiles/sith_engine.dir/src/external/libsmusher/src/smush.c.o",
++        "CMakeFiles/sith_engine.dir/src/external/libsmusher/src/codec48.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/SDL2/jkGUIDisplay.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/SDL2/stdControl.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/GL/shader_utils.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/GL/std3D.c.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/GL/jkgm.cpp.o",
++        "CMakeFiles/sith_engine.dir/src/Platform/Posix/wuRegistry.c.o",
++        "CMakeFiles/sith_engine.dir/src/external/nativefiledialog-extended/nfd_gtk.cpp.o",
++        "CMakeFiles/sith_engine.dir/generated/globals.c.o",
++        "-o",
++        "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/openjkdf2",
++        "-L/tmp/jk-native-recovery-build/SDL/lib",
++        "-L/tmp/jk-native-recovery-build/SDL_mixer/lib",
++        "-L/tmp/jk-native-recovery-build/libpng/lib",
++        "-L/tmp/jk-native-recovery-build/physfs/include/../lib",
++        "-L/tmp/jk-native-recovery-build/GameNetworkingSockets/lib",
++        "-Wl,-rpath,$ORIGIN",
++        "SDL/lib/libSDL3.a",
++        "SDL/lib/libSDL3.a",
++        "SDL_mixer/lib/libvorbisfile.a",
++        "SDL_mixer/lib/libvorbis.a",
++        "SDL_mixer/lib/libogg.a",
++        "SDL_mixer/lib/libopusfile.a",
++        "SDL_mixer/lib/libopus.a",
++        "SDL_mixer/lib/libSDL3_mixer.a",
++        "/usr/lib/x86_64-linux-gnu/libopenal.so",
++        "physfs/lib/libphysfs.a",
++        "SDL/lib/libSDL3.a",
++        "SDL_mixer/lib/libvorbisfile.a",
++        "SDL_mixer/lib/libvorbis.a",
++        "SDL_mixer/lib/libogg.a",
++        "SDL_mixer/lib/libopusfile.a",
++        "SDL_mixer/lib/libopus.a",
++        "SDL_mixer/lib/libSDL3_mixer.a",
++        "/usr/lib/x86_64-linux-gnu/libopenal.so",
++        "libpng/lib/libpng.a",
++        "zlib/Linux/x86_64/lib/libz.a",
++        "-lGL",
++        "/usr/lib/x86_64-linux-gnu/libopenal.so",
++        "/usr/lib/x86_64-linux-gnu/libGLEW.a",
++        "-lgtk-3",
++        "-lgdk-3",
++        "-lz",
++        "-lpangocairo-1.0",
++        "-lpango-1.0",
++        "-lharfbuzz",
++        "-latk-1.0",
++        "-lcairo-gobject",
++        "-lcairo",
++        "-lgdk_pixbuf-2.0",
++        "-lgio-2.0",
++        "-lgobject-2.0",
++        "-lglib-2.0",
++        "GameNetworkingSockets/lib/libGameNetworkingSockets.so",
++        "-ldl",
++        "-lcurl"
++      ]
++    ],
++    "commands_file": {
++      "sha256": "166eba03d9790cbc5002d9d6906dad998e5d8aca0966a249a52faeba149a7a7f",
++      "bytes": 20737
++    },
++    "strip_command": [
++      "strip",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/openjkdf2-stripped"
++    ],
++    "unstripped_core": {
++      "sha256": "ef29783aae3cf33cc2bddad1a5dda0ff077f79bdd90f7f5b862d54ef747331da",
++      "bytes": 8603560
++    },
++    "stripped_core": {
++      "sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
++      "bytes": 7496192
++    },
++    "fresh_objects": {
++      "CMakeFiles/sith_engine.dir/src/Main/jkObserver.c.o": {
++        "sha256": "9ddf7ee73f7cbbee7196d355f8d289fc5cb41a5b0bdccc34ca0107c521821e7b",
++        "bytes": 35584
++      },
++      "CMakeFiles/sith_engine.dir/src/Raster/rdCache.c.o": {
++        "sha256": "3c842a3f55972ff088e1cb62c31b3c14462c74dc03c80ea4a9fc61fa662c8a81",
++        "bytes": 22768
++      }
++    },
++    "binary_identical_to_package": true,
++    "both_objects_identical_to_package": true,
++    "retained_archive": {
++      "sha256": "8abea7457b84141777bef76685ad7f91eec9710a40811811bda12293fddb88d2",
++      "bytes": 5992217
++    },
++    "ngon_syntax_command": [
++      "python3",
++      "native/tests/check_spectator_ngon_compile.py",
++      "--source",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator",
++      "--build",
++      "/tmp/jk-native-recovery-build"
++    ],
++    "ngon_syntax_result": "passed: actual Linux SDL2 observer plus RDCACHE_RENDER_NGONS; no full TARGET_TWL build claimed",
++    "native_observer_behavior_groups": 19,
++    "limits": "Incremental two-unit build. Prior packaging/relink receipts remain historical evidence for identical retained bytes. No full clean native/dependency or alternate-platform build.",
++    "preserved_baseline_link_inputs_verified": 218
++  }
+ }
+--- a/repo/qa/browser-spectator-native-packaging.json
++++ b/repo/qa/browser-spectator-native-packaging.json
+@@ -199,5 +199,78 @@
+       "Absolute static input and arbitrary existing link flags preserved",
+       "Stripping reproduces supplied-object executable bytes"
+     ]
++  },
++  "post_review_rebuild": {
++    "status": "passed",
++    "review_base_commit": "576f768ca1328d9d7a0dd917942a1f09aa9f6915",
++    "method": "After review, guard the triangle-only capture declaration and definition with RDCACHE_RENDER_NGONS. Recompile the same 2 application units into a new isolated output directory with the recovered Linux flags, relink against the preserved baseline, and strip a separate copy. The binary and both compiled objects are byte-identical to the existing package; retain the existing binary and relink archive.",
++    "output_directory": "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build",
++    "patch": {
++      "sha256": "cbc3cb1d1d22e072f4427ecaa926e604163b2520dd2f21effcd7b0710871a542",
++      "bytes": 157404
++    },
++    "source_patch_sections": 24,
++    "complete_patch_matches_source": true,
++    "patch_reverse_check": true,
++    "current_source_hashes": {
++      "src/Main/jkObserver.c": "0c0201da6e87049e702138a60069a6a5ef07fffe354dcd08de63f56260209254",
++      "src/Main/jkObserverGeometry.h": "fcdaa3f8756df6d9d3da4335d9b4c1f2311ac9abd6f2c40e5b8558a3c00dc9b1",
++      "src/Raster/rdCache.c": "5797bc91036ff41c59e8f394b3edaf71dd282bd789fd75561d89570ebe844252"
++    },
++    "helper_command": [
++      "python3",
++      "native/rebuild_spectator_geometry.py",
++      "--source",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator",
++      "--baseline-build",
++      "/tmp/jk-native-recovery-build",
++      "--output",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build"
++    ],
++    "commands_file": {
++      "sha256": "166eba03d9790cbc5002d9d6906dad998e5d8aca0966a249a52faeba149a7a7f",
++      "bytes": 20737
++    },
++    "strip_command": [
++      "strip",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator-final-build/openjkdf2-stripped"
++    ],
++    "unstripped_core": {
++      "sha256": "ef29783aae3cf33cc2bddad1a5dda0ff077f79bdd90f7f5b862d54ef747331da",
++      "bytes": 8603560
++    },
++    "stripped_core": {
++      "sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
++      "bytes": 7496192
++    },
++    "fresh_objects": {
++      "CMakeFiles/sith_engine.dir/src/Main/jkObserver.c.o": {
++        "sha256": "9ddf7ee73f7cbbee7196d355f8d289fc5cb41a5b0bdccc34ca0107c521821e7b",
++        "bytes": 35584
++      },
++      "CMakeFiles/sith_engine.dir/src/Raster/rdCache.c.o": {
++        "sha256": "3c842a3f55972ff088e1cb62c31b3c14462c74dc03c80ea4a9fc61fa662c8a81",
++        "bytes": 22768
++      }
++    },
++    "binary_identical_to_package": true,
++    "both_objects_identical_to_package": true,
++    "retained_archive": {
++      "sha256": "8abea7457b84141777bef76685ad7f91eec9710a40811811bda12293fddb88d2",
++      "bytes": 5992217
++    },
++    "ngon_syntax_command": [
++      "python3",
++      "native/tests/check_spectator_ngon_compile.py",
++      "--source",
++      "/workspace/scratch/55e850edc256/jk-native-browser-spectator",
++      "--build",
++      "/tmp/jk-native-recovery-build"
++    ],
++    "ngon_syntax_result": "passed: actual Linux SDL2 observer plus RDCACHE_RENDER_NGONS; no full TARGET_TWL build claimed",
++    "native_observer_behavior_groups": 19,
++    "limits": "Incremental two-unit build. Prior packaging/relink receipts remain historical evidence for identical retained bytes. No full clean native/dependency or alternate-platform build.",
++    "full_compile_and_link_receipt": "qa/browser-spectator-native-build.json:post_review_rebuild",
++    "preserved_baseline_link_inputs_verified": 218
+   }
+ }
+--- a/engine/src/Main/jkObserver.c
++++ b/engine/src/Main/jkObserver.c
+@@ -172,6 +172,7 @@
+     if (now-geometry.leaseMs>=5000) { ObserverGeometry_Stop();return; }
+     geometry.vertices=geometry.indices=0;geometry.invalid=0;geometry.capturedMs=now;geometry.capturing=1;
+ }
++#ifndef RDCACHE_RENDER_NGONS
+ void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
+     const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount)
+ {
+@@ -216,6 +217,7 @@
+     (void)vertices;(void)vertexCount;(void)solid;(void)solidCount;(void)normal;(void)normalCount;
+ #endif
+ }
++#endif
+ static void ObserverGeometry_End(uint32_t now,uint32_t world,uint32_t control,uint32_t sequence,int ok)
+ {
+     if (!geometry.capturing) return;
+--- a/engine/src/Main/jkObserverGeometry.h
++++ b/engine/src/Main/jkObserverGeometry.h
+@@ -1,6 +1,8 @@
+ #ifndef _JK_OBSERVER_GEOMETRY_H
+ #define _JK_OBSERVER_GEOMETRY_H
+ #include "types.h"
++#ifndef RDCACHE_RENDER_NGONS
+ void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
+     const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount);
+ #endif
++#endif

@@ -85,7 +85,8 @@ MotS, mod, map-transition or long-duration gameplay tests. Historical receipts
 retain their original hashes and scope. Performance, sustained congested live
 play and texture/effect parity remain outside this milestone.
 
-The delivered native package targets Linux x86_64. Review identified that the
-new typed geometry hook needs a conditional declaration for the existing
-`RDCACHE_RENDER_NGONS` / `TARGET_TWL` build profile. That alternate profile is
-not qualified by this branch; its follow-up is recorded in the review evidence.
+The delivered native package targets Linux x86_64. The triangle capture hook is
+conditionally compiled, and a Linux SDL2 configuration with
+`RDCACHE_RENDER_NGONS` passes the added native syntax check. This compile check
+does not qualify that alternate renderer at runtime or certify other platforms.
+The final review corrects an earlier, overly broad TARGET_TWL type claim.

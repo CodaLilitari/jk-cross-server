@@ -1,0 +1,24 @@
+{
+  "passed": 34,
+  "unit": "named test cases",
+  "case_breakdown": {
+    "panel": 7,
+    "spectator": 9,
+    "geometry": 18
+  },
+  "evidence": [
+    "logs/final-fix-wave-test_panel_ui.js.log",
+    "logs/final-fix-wave-test_spectator_ui.js.log",
+    "logs/final-fix-wave-test_spectator_geometry_ui.js.log"
+  ],
+  "source_sha256": {
+    "manager/ui/spectator.js": "1a2a9b20ed4108cb9ee6b14694f930ff81647f09c35b68a3dc023033da4424af",
+    "manager/ui/spectator-geometry.js": "45b88037d00a36ed2ee1987d5b8b4f9d3182b21a82bb82153d8bb57b0a25dde2",
+    "manager/ui/app.js": "e735ba12c868854fe01754b61bed4fbd697d1143c5ecfda28d7244e82a0a0c7f",
+    "tests/test_spectator_geometry_ui.js": "aecce771deb70673476221286e27d1b9028aec3e291e64e1a9c9c527cc604719",
+    "tests/test_spectator_ui.js": "2448f16343eed78baf54806c05fd3b6b084230c801f97cb2b01a4f3f5c66be15",
+    "tests/spectator_fixture.js": "3fff1142b424e1f394d824448525579526fec555c2dcaa46066f3a49820db112",
+    "tests/test_panel_ui.js": "7fa9c288c38ca0fcbac39328678383dbac1d14701d287baee4f4c2eb4af3c572"
+  },
+  "phase": "after final late-response fix"
+}

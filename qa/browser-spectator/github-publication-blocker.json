@@ -1,0 +1,25 @@
+{
+  "requested_destination": "CodaLilitari/jk-cross-server",
+  "operation": "Create the new geometry renderer blob as part of the authorized branch publication",
+  "status": "blocked",
+  "provider_result": {
+    "error": "GitHub API error 403: {\"message\":\"Resource not accessible by integration\",\"documentation_url\":\"https://docs.github.com/rest/git/blobs#create-a-blob\",\"status\":\"403\"}",
+    "error_code": "FORBIDDEN",
+    "error_data": {
+      "message": "Resource not accessible by integration",
+      "documentation_url": "https://docs.github.com/rest/git/blobs#create-a-blob",
+      "status": "403"
+    }
+  },
+  "cli_auth_availability": {
+    "utc": "2026-10-28T23:24:45.145907+00:00",
+    "gh_available": false,
+    "glab_available": false,
+    "GH_TOKEN_present": false,
+    "GITHUB_TOKEN_present": false,
+    "ssh_agent_present": false,
+    "git_credential_helper_configured": false
+  },
+  "branch_created": false,
+  "retry_policy": "No further write retries without legitimate changed authentication."
+}
