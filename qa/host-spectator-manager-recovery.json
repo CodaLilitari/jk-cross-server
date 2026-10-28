@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "producer": "/root/runtime_refresh",
+  "created_utc": "2026-10-28T07:53:32.435785+00:00",
+  "repository": "/tmp/jk-cross-server-recovery",
+  "base_head": "598049a2e7668747ff70009b249c6ca3115bc232",
+  "old_local_checkpoint_available": false,
+  "method": "Exact reviewed spectator controller copied intact; remaining owned sources reconstructed from remote base, retained source excerpts and agreed interfaces.",
+  "old_results_used_as_fresh_verification": false,
+  "files": [
+    {
+      "path": "manager/runtime.py",
+      "sha256": "720cf659716f6ca0644e6144dc6dd8e8602050fd7d6db80f40b3b57ed5c357a6",
+      "bytes": 27171,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": "afc4b863ed8a5b7685ae123ef8c09a3a23d47a6e041b7a030e1676782f28c36a"
+    },
+    {
+      "path": "manager/config.py",
+      "sha256": "fdc2a130e1b29677808a675193961213a412803369a5652777f00744e7bbdfb4",
+      "bytes": 9281,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": "d8c79e499388be3d6bacf88425dfc3c8319840898d75392e1967c9bc3147a528"
+    },
+    {
+      "path": "manager/admin.py",
+      "sha256": "643beb5bfb3a1446a249a3665708400f97024c47a17b69b2955065f6e85038f2",
+      "bytes": 10980,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": "5c05aee0bc2fa7ce38bd6c6ac5b98f0019778ac1f45ed6772a32d3763cd19065"
+    },
+    {
+      "path": "manager/display.py",
+      "sha256": "038c6b72608a93223c6798eb8e53e6eed34a6daa8f11a1939783df8d73f36aa8",
+      "bytes": 2404,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": null
+    },
+    {
+      "path": "manager/spectator.py",
+      "sha256": "ce088fcf2e49c206ea54197e2034a4f67584bc74679172c447ba8aedf8d48fda",
+      "bytes": 16510,
+      "fidelity": "exact_reviewed_source_recovery",
+      "base_sha256": null
+    },
+    {
+      "path": "web_gateway/ipc.py",
+      "sha256": "036477706687753bb24b73f4e62924c63da2baac73d0c03a72a9b9997193d624",
+      "bytes": 28833,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": "d0ea30f81e0f5d35a21f5c47cdf580de160a3fdc390884ca29fabeef1392d6e2"
+    },
+    {
+      "path": "bots/settings.py",
+      "sha256": "04f7187279f77f58e15ce9f7b8de864012e71337eede30dce96cbe0be461d288",
+      "bytes": 2614,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": "59a955450e634c17cb274fb024dde94947746cc03f3fca904ac8aab7b83906c6"
+    },
+    {
+      "path": "tests/test_runtime_display.py",
+      "sha256": "ccf64527530a5d5716b8b87d58f259e07758ae23fd9059788609eba1ca2ce39b",
+      "bytes": 23249,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": null
+    },
+    {
+      "path": "tests/test_spectator.py",
+      "sha256": "a2b513ea2581d0c212427f52f024eb5fb525baebbc94de73d987534d59346848",
+      "bytes": 13403,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": null
+    },
+    {
+      "path": "tests/test_bots.py",
+      "sha256": "0314b5bf4ce9711392258619eceb1dd664ca17f9e50ab15b2f331a9f4375ceff",
+      "bytes": 17330,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": "f96801765ff24a8ff6930edd8a01cb8db337eb82dde2fd3fbf2aee295ce75531"
+    },
+    {
+      "path": "tests/test_bot_manager.py",
+      "sha256": "5f6e35e1b95ec3298b0e63a8e2055325415d7e1c8cd165a3ad95274fbd585812",
+      "bytes": 11469,
+      "fidelity": "reconstructed_source_with_fresh_behavioral_verification",
+      "base_sha256": "efcd71ef809b48096afdfc13db47b5bdb70571525e194ba82bb9e96aac377893"
+    }
+  ],
+  "retained_behavior": [
+    "Automatic/offscreen/xvfb/existing-display core selection, separate Wine display preflight and environment.",
+    "Current validated INFO descriptor readiness; disconnect/stop/failure clearing and IPC/generation/revision guards against late failures.",
+    "Host-only authenticated typed spectator IPC and bounded latest-only inherited RGBA stream.",
+    "Five-second viewer lease assigned before enable mutation; only authenticated frame fetching renews it.",
+    "Original bot count+2 conservative launcher headroom and numerical player ceilings retained; misleading host-inclusion wording corrected."
+  ],
+  "limitations": [
+    "Only spectator.py has an independently retained pre-outage complete-source hash; other reconstructed files are not claimed byte-identical.",
+    "Native renderer and live retail/browser/native gameplay qualification are separate from these manager and protocol fixtures."
+  ]
+}

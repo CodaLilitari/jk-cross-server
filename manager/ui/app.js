@@ -1,11 +1,31 @@
 'use strict';
+function panelPresentation(value,settings={}) {
+  const connected=value.native_connected===true;
+  const session=value.session;
+  const valid=Boolean(session&&typeof session.name==='string'&&typeof session.episode==='string'&&typeof session.map==='string'&&Number.isInteger(session.players)&&session.players>=0&&Number.isInteger(session.max)&&session.max>=1&&session.max<=31);
+  const ready=value.state==='running'&&connected&&(value.session_ready===true||value.session_ready===undefined)&&valid;
+  const active=value.state==='running'||value.state==='starting';
+  const backend=value.engine_display_backend;
+  return {
+    native:connected?'Connected':active?'Connecting':'Offline',
+    session:ready?'Ready':active?'Waiting for current session':'Not ready',
+    players:ready?session.players+' / '+session.max:'—',
+    map:ready?session.episode+' / '+session.map:'No active session',
+    retail:value.retail_ready?'Ready':settings.retail_enabled&&active?'Waiting':settings.retail_enabled?'Offline':'Disabled',
+    web:value.browser&&active?'Listening':settings.web_enabled?'Offline':'Disabled',
+    display:active&&backend?String(backend):'—',
+    ready,
+  };
+}
+if(typeof module==='object'&&module.exports)module.exports={panelPresentation};
+if(typeof document!=='undefined') {
 const token=document.querySelector('meta[name="admin-token"]').content;
 const form=document.querySelector('#settings');
 const fields=document.querySelector('#settings-fields');
 let config=null, catalog=null, lastStatus=null, lastUpdate=null, busy=false, updateBusy=false, reconnecting=false, authorityBusy=false;
 const numeric=['max_players','rank','tick_ms','score_limit','time_limit','native_port','ipc_port','broker_port','web_port','game_flags'];
 const bools=['teams','web_enabled','web_asset_downloads','retail_enabled','auto_restart',
-  'bots_enabled','bots_taunts','bots_sabers_only','bots_fists_peace','bots_force_enabled'];
+  'bots_enabled','bots_taunts','bots_sabers_only','bots_fists_peace','bots_force_enabled','spectator_rendering'];
 const behaviorKeys=['bots_sabers_only','bots_fists_peace','bots_force_enabled'];
 const byId=id=>document.getElementById(id);
 
@@ -130,20 +150,20 @@ function renderStatus(value){
   const state=byId('state');state.textContent=value.state;state.className='badge '+value.state;
   const seconds=value.uptime_seconds||0;
   byId('uptime').textContent=seconds?Math.floor(seconds/3600)+'h '+Math.floor(seconds%3600/60)+'m '+seconds%60+'s':'Local control panel';
-  byId('native-status').textContent=value.native_connected?'Connected':'Offline';
-  byId('retail-status').textContent=value.retail_ready?'Connected':config?.retail_enabled?'Waiting':'Disabled';
-  byId('web-status').textContent=value.browser?'Listening':config?.web_enabled?'Offline':'Disabled';
-  const game=value.browser?.games?.[0];
-  byId('player-status').textContent=value.session?value.session.players+' / '+value.session.max:game?game.players+' / '+game.max:'—';
-  const bots=value.bots;
-  byId('bot-status').textContent=bots?.enabled?bots.joined_count+' / '+bots.configured_count+' · '+bots.state:'Disabled';
+  const presentation=panelPresentation(value,config||{});
+  for(const key of ['native','session','retail','web','player','display','map']) {
+    byId(key+'-status').textContent=presentation[key==='player'?'players':key];
+  }
+  window.jkSpectator?.updateStatus(value);
+  const bots=presentation.ready?value.bots:null;
+  byId('bot-status').textContent=bots?.enabled?bots.joined_count+' / '+bots.configured_count+' joined · '+bots.state:value.state==='disconnected'?'Status unavailable':config?.bots_enabled?'Configured for next session':'Disabled';
   byId('bot-player-detail').textContent=bots?.error||bots?.players?.map(player=>player.name+(player.joined?' · joined':' · joining')).join('  /  ')||'';
   const log=byId('logs'), atBottom=log.scrollHeight-log.scrollTop-log.clientHeight<50;
   log.textContent=value.logs?.map(row=>row.time+' ['+row.source+'] '+row.text).join('\n')||'No server output yet.';
   if(atBottom)log.scrollTop=log.scrollHeight;
-  const play=byId('play-link');play.hidden=!value.browser;
+  const play=byId('play-link');play.hidden=!value.browser||!presentation.ready;
   if(value.browser)play.href='http://127.0.0.1:'+config.web_port+'/';
-  renderAssets(value);
+  renderAssets(presentation.ready?value:{});
   renderUpdates(value.updates);
   updateControls();
 }
@@ -269,7 +289,7 @@ for(const id of ['updates-enabled','updates-auto-install'])byId(id).addEventList
   renderUpdates(await api('updates/settings','PUT',{enabled:byId('updates-enabled').checked,auto_install:byId('updates-auto-install').checked}));
   notice('Update preferences saved.');
 }));
-async function poll(){try{renderStatus(await api('status'));}catch(error){byId('state').textContent=reconnecting?'Restarting':'Disconnected';notice(reconnecting?'Reconnecting after the update…':error.message,reconnecting?'success':'error');}}
+async function poll(){try{renderStatus(await api('status'));}catch(error){renderStatus({state:reconnecting?'restarting':'disconnected',native_connected:false,session_ready:false});notice(reconnecting?'Reconnecting after the update…':error.message,reconnecting?'success':'error');}}
 (async()=>{try{
   const profiles=await api('bots/profiles');
   byId('bot-profiles').replaceChildren(...profiles.map(profile=>{
@@ -279,3 +299,5 @@ async function poll(){try{renderStatus(await api('status'));}catch(error){byId('
   }));
   fill(await api('config'));await poll();setInterval(poll,1500);await loadAuthority();
 }catch(error){notice(error.message,'error');}})();
+
+}

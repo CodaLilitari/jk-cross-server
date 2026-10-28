@@ -25,7 +25,9 @@ if ! git -C "$source_dir" apply --reverse --check "$native_dir/crossplay-dedicat
   git -C "$source_dir" apply "$native_dir/crossplay-dedicated.patch"
 fi
 build_dir="$build_root/build"
-cmake -S "$source_dir" -B "$build_dir" -DCMAKE_BUILD_TYPE=Release
+cmake -S "$source_dir" -B "$build_dir" -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
+  '-DCMAKE_INSTALL_RPATH=$ORIGIN'
 python3 -m venv "$build_dir/cogapp_venv"
 "$build_dir/cogapp_venv/bin/python" -m pip install 'cogapp==3.6.0'
 cmake --build "$build_dir" -j4

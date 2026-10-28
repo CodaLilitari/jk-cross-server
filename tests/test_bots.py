@@ -129,13 +129,13 @@ time.sleep(30)
                 run.endpoint(value)
         self.assertEqual(run.endpoint("example.local:03500"), "example.local:3500")
 
-    def test_host_and_human_capacity_gate_precedes_staging_and_client_spawn(self):
+    def test_conservative_headroom_gate_precedes_staging_and_client_spawn(self):
         profiles = list(run.load_profiles().values())
         for count, slots in ((1, 2), (4, 5)):
             self.config["max_players"] = slots
             self.profiles = profiles[:count]
             with self.subTest(bots=count, slots=slots), patch.object(run.subprocess, "Popen") as spawn:
-                with self.assertRaisesRegex(ValueError, "dedicated host"):
+                with self.assertRaisesRegex(ValueError, "headroom"):
                     self.launch()
                 spawn.assert_not_called()
                 self.assertFalse((self.root / "runs").exists())

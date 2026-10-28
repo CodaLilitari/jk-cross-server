@@ -1,4 +1,13 @@
 {
+  "historical_provenance": {
+    "repository": "https://gitlab.com/codalilitari/jk-cross-server",
+    "source_commit": "e7e1ed64128e95d0a091d169673b34194e80ea03",
+    "source_branch": "prototype/player-bots-recovery",
+    "source_path": "qa/retail-jk-departure-regression.json",
+    "source_url": "https://gitlab.com/codalilitari/jk-cross-server/-/blob/e7e1ed64128e95d0a091d169673b34194e80ea03/qa/retail-jk-departure-regression.json",
+    "original_receipt_sha256": "ee46513e97cd06fdbffe78bf91da7664354b7b16c1a47d0b8cd621255de56a1f",
+    "context": "Recorded during the separate bot-prototype qualification and retained as evidence for the adapter changes. The bot implementation, bot binary and bot-only support files are not included in this adapter-only integration. Importing this receipt does not represent a fresh live test of the main checkout. Original statuses, measurements, binary hashes and limitations are preserved."
+  },
   "status": "join_leave_rejoin_leave_pass_with_error_branch_unobserved",
   "date_utc": "2026-10-25",
   "scope": "Focused original JK1.00 retail join, ordinary leave, normal rediscovery and rejoin, ordinary second leave into one unchanged running four-bot dedicated session. No additional native or browser gameplay regression was performed in this round.",
@@ -249,5 +258,6 @@
     "test_output": "cc -std=c11 -O2 -Wall -Wextra -Werror -o test_protocol.tmp protocol.c test_protocol.c\n./test_protocol.tmp\nPASS: JK team-first roster, independent scoreboard fixtures, full S16 counts/scores, U8 team zero extension, bidirectional truncation, capacity, host aliases, saber-info, MotS chat and opaque-payload checks\nrm -f test_protocol.tmp\ncc -std=c11 -O2 -Wall -Wextra -Werror -o test_departure_policy.tmp test_departure_policy.c\n./test_departure_policy.tmp\nPASS: verified departed destination and empty broadcast; reject live targets/remotes, invalid or absent sender, incomplete enumeration and overflow\nrm -f test_departure_policy.tmp\n",
     "independent_source_review": "No blocking defect; actual MinGW DirectPlay API definitions and complete-snapshot failure cases reviewed by a separate agent.",
     "bot_binary_unchanged_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e"
-  }
+  },
+  "evidence_availability": "Raw evidence filenames identify artifacts from the original qualification workspace. This receipt preserves their recorded hashes and summarized observations; the raw screenshots, observations and runtime logs are not included in this adapter-only integration."
 }

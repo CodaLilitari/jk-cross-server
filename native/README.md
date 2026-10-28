@@ -2,7 +2,7 @@
 
 The server is built from [codalilitari/OpenJKDF2-MotS-Fixes](https://gitlab.com/codalilitari/OpenJKDF2-MotS-Fixes), pinned to **74e4657c4f1751d09af9ad9e056acb8f41997acb** (v0.9.9), plus `crossplay-dedicated.patch`. All engine changes are on the server. The ordinary native client still uses its existing Valve GameNetworkingSockets transport. The Python supervisor adds original DirectPlay and browser endpoints through a local transport bridge.
 
-The bundled `bin/linux-x86_64/openjkdf2` and `libGameNetworkingSockets.so` were built on Ubuntu 24.04 x86_64 with GCC 13.3.0. `BUILD.json` records exact source/dependency commits, hashes, sizes, and system library dependencies. This binary is not advertised as portable to every Linux distribution. Rebuild on the intended host when its libc or multimedia dependencies differ.
+The bundled `bin/linux-x86_64/openjkdf2` and `libGameNetworkingSockets.so` were built on Ubuntu 24.04 x86_64 with GCC 13.3.0. The current server uses a fresh full CMake Release build: all 206 application translation units and the enabled pinned bundled dependencies were compiled in a new build directory. `BUILD.json` records exact source/dependency commits, source and object hashes, sizes, build commands, and system library dependencies. This binary is not advertised as portable to every Linux distribution. Rebuild on the intended host when its libc or multimedia dependencies differ.
 
 ## Build
 
@@ -18,9 +18,9 @@ sudo apt-get install build-essential git cmake pkg-config python3-venv bison zsh
 bash native/build.sh
 ```
 
-The build requires network access to the source repositories and PyPI. `cogapp==3.6.0` is pinned for generated globals. The pinned engine's own CMake logic applies its existing GameNetworkingSockets 1.4.1, PhysicsFS, SDL_mixer and Ogg build adjustments. Those resulting submodule worktree changes are expected; the crossplay patch does not replace their pinned gitlinks or conceal unrelated dependency changes. Source, dependency commits, and build steps are pinned; byte-identical builds across different compiler/distribution versions are not claimed.
+The build requires network access to the source repositories and PyPI. `cogapp==3.6.0` is pinned for generated globals; the current package was built with CMake 3.31.10. The pinned engine's own CMake logic applies its existing GameNetworkingSockets 1.4.1, PhysicsFS, SDL_mixer and Ogg build adjustments. Those resulting submodule worktree changes are expected; the crossplay patch does not replace their pinned gitlinks or conceal unrelated dependency changes. The executable retains the literal `$ORIGIN` runtime library search path and the upstream Release strip step. Source, dependency commits, and build steps are pinned; byte-identical builds across different compiler/distribution versions are not claimed.
 
-For the bundled executable, runtime packages include `libgtk-3-0t64`, `libopenal1`, `libgl1`, `libcurl4t64`, `libsndio7.0`, `libssl3t64`, `xvfb`, `xauth`, and a working Mesa/OpenGL implementation, plus normal C/C++ runtime dependencies. The manager sets `LD_LIBRARY_PATH` to the engine directory. The engine's headless mode still creates an initial SDL/OpenGL context; the manager can use Xvfb if no display is set.
+For the bundled executable, runtime packages include `libgtk-3-0t64`, `libopenal1`, `libgl1`, `libegl1`, `libcurl4t64`, `libsndio7.0`, `libssl3t64`, and a working Mesa/OpenGL/EGL implementation, plus normal C/C++ runtime dependencies. The manager sets `LD_LIBRARY_PATH` to the engine directory. The engine's headless mode still initializes graphics. The manager accepts `engine_display` values `auto` (default), `offscreen`, `xvfb`, and `display`. Auto respects an inherited display or explicit SDL video driver; otherwise it selects SDL offscreen and surfaceless EGL. Xvfb mode requires `xvfb-run` and `xauth`. Bots and the original-retail Wine adapter have separately prepared display environments.
 
 ## Optional bot client
 
@@ -45,9 +45,37 @@ link. A fresh full dependency rebuild is not claimed by its receipts. See
 
 The patch adds an authenticated, bounded loopback TCP transport bridge. It accepts one supervisor and exposes session metadata, external peer creation/removal, canonical player IDs, and Sith packet delivery. It preserves the original GNS transport for native clients. Detailed framing, message types, ID-pool rules, and packet layouts are in `protocol.md` and the patched engine's `docs/crossplay-gateway.md`.
 
-Dedicated startup uses its isolated working directory and requires the original game-data marker. Redirected stdin is handled without repeatedly logging a prompt. The public GNS packet source is bound to its actual connection's assigned identity. Session metadata counts fully joined active human players, excluding the dedicated host and unused DirectPlay surrogate slots.
+Dedicated startup uses its isolated working directory and requires the original game-data marker. Redirected stdin is handled without repeatedly logging a prompt. The public GNS packet source is bound to its actual connection's assigned identity. Session metadata counts fully joined remote players, including ordinary bot clients and excluding the dedicated host and unused DirectPlay surrogate slots.
 
 Two existing serialization inconsistencies are corrected inside the server: UpdateState's light value is written as float32 to match the existing reader, and MotS absolute CreateThing's sector is read as int32 to match the retail/browser representation and existing sender.
+
+### Host observer
+
+The existing authenticated web panel can show a local observer camera. With
+`spectator_rendering` enabled at launch, the manager supplies a private inherited
+AF_UNIX frame socket and the dedicated engine retains a hidden graphics context.
+The camera starts off. A host can open a free camera or follow a joined player;
+closing the view or losing its viewer lease disables it. Setting the launch
+option to false uses the original headless graphics lifecycle.
+
+The observer owns a camera, with no joined identity, world thing, player slot,
+collision, damage, or host-actor movement. Free movement passes through geometry;
+an outside-world camera reports that condition. Follow binds to the native
+peer and connection generation and reacquires the player after respawn. A
+departed target leaves a free camera at its last pose. Control epochs reject
+stale input, and motion expires after 250 ms without an update. The renderer
+preserves gameplay visibility, COG sighting state, AI flags, animation/joint
+caches, model lighting, player tint, and explosion effects across the observer
+pass. Its stateful extra weapon-render hook is omitted, so some saber and weapon
+cosmetics can be absent in the observer view.
+
+Frames are bounded to 640×360 RGBA at five per second, on a separate nonblocking
+channel. A pending frame finishes before another is accepted; the engine never
+waits for the web viewer. Capture age survives backpressure, and frame/world/
+control epochs prevent stale images being shown as current. Native GNS, retail
+DirectPlay, and browser gameplay routes retain their existing packet formats
+and game-data checksums. See [Observer protocol](../docs/SPECTATOR_PROTOCOL.md)
+for the exact private command and frame layouts.
 
 ### Chat administration
 
@@ -73,11 +101,32 @@ JK and MotS use separate session modes and corresponding assets. A JK executable
 
 ## Validation evidence
 
+The current dedicated core is `af0d99d232da3d77a3bbd87dde917bd824775815df9ec420411452701f29e572`.
+[Native observer build](../qa/native-observer-build.json) records the fresh
+206-unit build and a second clean application of the complete patch to the
+pinned base. Every compiled source and all changed headers matched that
+independently patched tree. The complete patch also matches the final preserved
+pre-recovery patch byte for byte.
+
+[Native regressions](../qa/native-observer-regressions.json) records all eight
+existing server/bot runners, twelve observer behavior groups, and two packager
+tests. These controlled tests exercise actual engine code, including read-only
+render state, follow lifecycle, stale/replayed input, frame backpressure, capture
+age, and sky orientation. Actual graphics and mixed-client gameplay evidence
+belongs in the separate live receipts; fixture tests alone do not certify those
+paths. [Native client provenance](../qa/native-client-observer-provenance.json)
+records a separately configured unchanged client: all 204 original application
+units freshly compiled, with the freshly built server dependency libraries
+reused and no application objects reused.
+
+The older qualification receipts below retain their original artifact hashes
+and scopes.
+
 `qa/native-jk-synthetic.json` and `qa/native-mots-synthetic.json` record actual engine world loading, an authenticated synthetic peer, full synchronization and WELCOME, and joined-human metadata changing 0 → 1 → 0. These are engine/transport checks, not retail or browser gameplay certification.
 
 `qa/native-client-provenance.json` proves that the native test client was built from the exact unmodified base: all four modified translation units were rebuilt from their original git contents and linked with the remaining unchanged base objects and dependencies. No server changes are included in that client. Its SHA-256 is recorded in that receipt.
 
-The current dedicated binary `4be9e8fa` and its byte-identical supplied-object
+The earlier dedicated binary `4be9e8fa` and its byte-identical supplied-object
 relink are recorded in [server-reconnect-build.json](../qa/server-reconnect-build.json).
 The [identity lifecycle regression](../qa/server-surrogate-identity-regression.json)
 covers retirement of used canonical identities and replacement with fresh
@@ -93,7 +142,7 @@ uncertain connection follows the retirement/replacement path. Browser and retail
 ADD operations commit immediately. Pristine discovery release emits neither a
 retirement event nor a queued player-loss event that could affect the next holder.
 These controlled checks and build results supplement the source-specific live
-receipts; the current [chat-admin live receipt](../qa/chat-admin-live-4be9.json)
+receipts; the earlier [chat-admin live receipt](../qa/chat-admin-live-4be9.json)
 records completed stages and pending qualification separately. Historical client
 qualification and artifact hashes below remain unchanged.
 
@@ -114,4 +163,28 @@ g++ -std=c++17 -O1 -g -Wall -Wextra -Werror \
 
 The engine's exact original license and bundled dependency notices are under `licenses/native/`. Original game archives, game executables, ISOs, Microsoft runtimes, and player data are excluded from this package. The server patch retains the engine license; new integration/build scripts use the project license.
 
-`relink-linux-x86_64.tar.gz` includes the exact application object files, linked static libraries, the statically linked LGPL libsmacker's corresponding source, and a `relink.py` utility. To modify libsmacker and relink the supplied application, extract this archive to an empty folder, edit the included library source, and run `python3 relink.py` on a matching build environment. It produces `openjkdf2-relinked`. Run it alongside the supplied `libGameNetworkingSockets.so` through the same manager or with its directory on `LD_LIBRARY_PATH`. Full native source can also be rebuilt using the pinned source and patch above.
+`relink-linux-x86_64.tar.gz` includes all 206 application objects (including the
+observer), linked static libraries, the statically linked LGPL libsmacker's
+corresponding source, original link command, and a `relink.py` utility. Extract
+the archive into an empty directory and use a matching compiler/distribution.
+
+- `python3 relink.py` recompiles the included libsmacker source, then links the
+  application. Edit the library source before running this command to use a
+  modified version. This remains the default behavior.
+- `python3 relink.py --supplied-objects` skips the library recompile and relinks
+  all supplied objects unchanged. Use a fresh extraction for this check if the
+  default command has already replaced the three libsmacker objects.
+
+Both modes preserve the final link flags, including literal `$ORIGIN`, and
+repeat the Release strip step. They produce `openjkdf2-relinked`. Place the
+packaged `libGameNetworkingSockets.so` beside it, use the manager, or set
+`LD_LIBRARY_PATH` to that library's directory.
+
+[Packaging verification](../qa/native-observer-packaging.json) verifies every
+one of the 218 archived object/library inputs. The supplied-object output is
+byte-identical to the packaged core. The default source-rebuild path also
+completed successfully; its output hash is
+`8d7c01781629f8c8f1b57059f6202fbe7c5cd610c93ed449a6074e2353c54258`.
+That mode uses its documented smaller compiler option set for libsmacker, so
+byte identity is not promised. Full native source can also be rebuilt using the
+pinned source and patch above.

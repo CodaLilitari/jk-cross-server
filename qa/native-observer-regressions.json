@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "Actual patched engine translation units with controlled local fixtures and isolated AF_UNIX socketpairs; no game sessions or public listeners. Server and bot source trees are separate pinned checkouts with only their respective patches.",
+  "server_base": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "server_patch_sha256": "72f9402bd177f34ac05cd94d0233e81b61c557cb6a76cffe776c9edaebe11712",
+  "bot_patch_sha256": "94b425eff4527345e15dd589a356486d7e97f89243110ec06bc749d58841debd",
+  "existing_native_runners_passed": 8,
+  "observer_behavior_groups_passed": 12,
+  "packager_tests_passed": 2,
+  "results": [
+    {
+      "runner": "run_native_probe_traffic_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_native_probe_traffic_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.092,
+      "log_sha256": "decdb2db5bbfa092da9a5280c3d84526548b040ba2d9d1fbb5cb071e6a00995d",
+      "reported_checks": [
+        "PASS actual native retirement releases pristine discovery without a queued game-loss event",
+        "PASS actual native receive commits its authenticated sender before host delivery",
+        "PASS actual peer forwarding commits incoming and outgoing native identities before the send sink",
+        "PASS actual ordinary outbound game traffic commits only its native destination before transmission",
+        "PASS even malformed inbound native payload commits before its validation rejection",
+        "PASS actual receive drops a removed old handle without committing the newly reserved connection",
+        "PASS actual broadcast helper commits every destination except the explicitly excluded connection",
+        "PASS 7 actual-method native discovery traffic groups"
+      ]
+    },
+    {
+      "runner": "run_server_spawn_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_server_spawn_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.419,
+      "log_sha256": "8d530d8b62b2f51d5bebf3c45277f10bf9644623dfefa6dc3e896d66bd9bd29f",
+      "reported_checks": [
+        "PASS stock CTF first-spawn mask uses all lobby starts 16..31 at session capacity 8",
+        "PASS red and gold stock respawn masks retain their distinct spawn ranges",
+        "PASS configured capacity includes host, rejects eighth human, reuses only eligible freed slots",
+        "PASS shorter maps and invalid capacity cannot allocate unavailable records",
+        "PASS ordinary SyncPlayers serializes all 32 records without changing session capacity"
+      ]
+    },
+    {
+      "runner": "run_server_admin_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_server_admin_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.193,
+      "log_sha256": "de28306847444b5c8556ec9b1b526658a60594033be028f4d0ace91a762b62fb",
+      "reported_checks": [
+        "PASS bounded stock chat decoding rejects malformed lengths, terminators and control characters",
+        "PASS actual host chat hook uses transport sender and consumes proofs before any formatting or display",
+        "PASS joined actor resolution rejects the host, unknown peers, duplicate identities and loading/disconnected slots",
+        "PASS typed private replies use bounded ordinary DSS_CHAT only to the verified actor",
+        "PASS roster listing is private, bounded, labels stable slots and sanitizes display-only names",
+        "PASS exact kick selectors reject host/self/ambiguity/stale transports and use the actual QuitPlayer packet path",
+        "PASS next-level refuses single-level sessions, pending transitions and terminal/invalid/video episode links",
+        "PASS actual SendEndLevel broadcasts the stock packet three times and schedules the ordinary 10-second transition",
+        "PASS every action rechecks the actor's currently joined engine identity",
+        "PASS engine-owned nonzero incarnations are distinct and cannot be chosen by another peer",
+        "PASS execution rejects zero/duplicate requests and wrong actor generations",
+        "PASS a reused transport ID cannot execute an old occupant's pending authorization",
+        "PASS map/IPC resets invalidate old bindings and session clears never reuse the serial",
+        "PASS connection state is bounded to the host's 31 remote seats"
+      ]
+    },
+    {
+      "runner": "run_server_reliable_identity_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_server_reliable_identity_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.244,
+      "log_sha256": "68583639c49bd72da3ebafc69f642917a9054c714fe9455459b24127f004c5d3",
+      "reported_checks": [
+        "PASS reused identity's new WELCOME/chat are ACKed but suppressed by actual engine cache",
+        "PASS fresh canonical identity dispatches identical message numbers without clearing other histories",
+        "PASS duplicate suppression remains intact for both the new incarnation and unrelated peers",
+        "PASS ordinary unreliable delivery remains unchanged"
+      ]
+    },
+    {
+      "runner": "run_bot_loadout_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_bot_loadout_tests.py",
+        "--source",
+        "/tmp/jk-native-bot-recovery"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.072,
+      "log_sha256": "3e6a15ed58b424c1d49a5ffe83f6dbd33a861a0d01bdda2c5c7a3685d76c24ee",
+      "reported_checks": [
+        "Bot loadout: 36 legal rank/side/style combinations and invalid inputs passed."
+      ]
+    },
+    {
+      "runner": "run_bot_driver_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_bot_driver_tests.py",
+        "--source",
+        "/tmp/jk-native-bot-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.592,
+      "log_sha256": "3968b650f5d4310f156ca3e7f3c3c86ad7e32a37e9bbe133028d6468fd444784",
+      "reported_checks": [
+        "PASS remote-zero-health respawn eligibility and inactive/dead/team rejection",
+        "PASS unreached nearest-node goal retained until actually reached",
+        "PASS normal yaw/pitch axes and single-consumption press edge",
+        "PASS vertical jumping alone does not conceal a navigation stall",
+        "PASS sector110 low-ceiling graph/steering and actual obstruction rejection",
+        "PASS stationary mesh floors/blockers and moving/disabled/actor/steep-support exclusions",
+        "PASS authored C1 ramp follows supported ground; ceiling, wall, void and excessive rise rejected",
+        "PASS fists mesh identity, explicit damage/Force attribution, expiry and identity reset",
+        "PASS blinded perception/fire suppression and Persuasion visibility only with active Seeing",
+        "PASS missed/occluded fire, rapid swaps, persistent blocking and passing-player exclusions",
+        "PASS complete atomic behavior config and invalid/partial/duplicate rejection",
+        "PASS real ammo thresholds, saber-only switch/fire restraint, peace and team fire safety",
+        "PASS Force mana/availability/cooldown gates, held targeting/release and peaceful-target cancellation",
+        "PASS stock Force ranges/surge eligibility, restricted area powers and source-correct Throw cancellation",
+        "PASS bowcaster uses immediate alternate, no charged release into a newly peaceful target",
+        "PASS Force debris includes final active slot and respects empty/single/capacity bounds",
+        "PASS highest-active thing slot is included and bounded by allocation capacity",
+        "PASS stock pickup need scoring, saber-only/Force gates and inherited model aliases",
+        "PASS pickup respawn estimate remains bounded and rejects recycled thing identity",
+        "PASS shortest routes, directed low-health drops and legal Force-jump resource gate",
+        "PASS bounded normal/Force jump arcs and real low-ceiling rejection",
+        "PASS CTF corridor selection, capture/return/recover/escort/intercept and synchronized possession",
+        "PASS CTF vertical/sloped portal approach, ordinary input crossing and bounded server-response wait",
+        "PASS exact stock CTF script and bounded thing/sector binding validation",
+        "PASS C1 boundary anchor fallback has a collision-checked lobby route and rejects disconnected entry",
+        "PASS adjacent-sector static mesh overhang supports real graph route; moving/missing bridge rejected",
+        "PASS actual initial anchor segment uses bounded ordinary jump inputs; airborne continuation, range and height limits retained"
+      ]
+    },
+    {
+      "runner": "run_bot_collision_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_bot_collision_tests.py",
+        "--source",
+        "/tmp/jk-native-bot-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.605,
+      "log_sha256": "b46f23fe52fc0a823f11f3a014c720115d1c5594cd0fe70e7f7eb0cb79acadd6",
+      "reported_checks": [
+        "PASS one-ULP swept-sphere endpoint stays within requested travel without assertion",
+        "PASS ordinary interior hits, too-short sweeps, outward travel, and back faces retain behavior",
+        "PASS existing overlap and special radius-adjustment behavior is unchanged"
+      ]
+    },
+    {
+      "runner": "run_bot_portal_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_bot_portal_tests.py",
+        "--source",
+        "/tmp/jk-native-bot-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.09,
+      "log_sha256": "2fca0868cc09a3cb413b5118d621a4d0a7dfd38bfe5cf290846637805ce90afd",
+      "reported_checks": [
+        "PASS actual collision rejects the corner cut and .14 anchor, validates .04 supported bend segments",
+        "PASS actual graph builder and Dijkstra connect the bend through the validated fallback only",
+        "PASS closed/AI-only portals and unsupported landings remain rejected; query stack balanced",
+        "PASS narrow raised threshold rejects a false standing route despite clear raised chord",
+        "PASS ordinary low passage and supported step with headroom retain routes; query stack balanced"
+      ]
+    },
+    {
+      "runner": "run_spectator_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_spectator_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 3.064,
+      "log_sha256": "011e6b4b884a9d7b32354b600044dfa2435c0320334475a25865169d35cc06dd",
+      "reported_checks": [
+        "PASS observer draw preserves sighting, AI, visibility, extra hooks and transform",
+        "PASS observer does not consume explosion flashes or alter player palette effects",
+        "PASS ordinary renderer retains its pre-existing gameplay effects",
+        "PASS startup is opt-in, off, bounded, and roster excludes host/provisional peers",
+        "PASS follow reacquires respawn, rejects stale generation, and never moves host",
+        "PASS finite bounded inputs, radian angles, replay/epoch checks, and 250 ms motion expiry",
+        "PASS saturated socket never blocks, partial frames finish, old epochs stay stale, closure disables camera",
+        "PASS exact world/focus/visibility, animation cursors, saber matrices, mesh lighting and frame-counter restoration",
+        "PASS bounded snapshot rejects excessive worlds before drawing and remains reusable",
+        "PASS actual observer frame supplies yaw/pitch/roll to the engine horizon calculation and restores camera ownership",
+        "PASS actual frame retains its capture timestamp through three seconds of backpressure and status reports age 3000 ms",
+        "PASS subsequent free-camera rotation refreshes horizon offsets and roll"
+      ]
+    },
+    {
+      "runner": "test_package_native.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/test_package_native.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.146,
+      "log_sha256": "3ac748c7fc6dedd062d3f2967c58ff2fad5c801ee3613b7807a1bb2e5b228e09",
+      "reported_checks": [],
+      "unittest_summary": [
+        "Ran 2 tests in 0.093s",
+        "OK"
+      ]
+    }
+  ],
+  "notes": [
+    "The restricted execution sandbox denies local getsockname/getpeername; observer socket tests were therefore run with approved local socket access. The earlier restricted run failed capability detection before the camera tests; no source change was needed.",
+    "A full genuine CMake configuration and generated headers supplied native test flags; no fabricated flags.make or generated globals were used.",
+    "Renderer fixtures exercise world/camera/animation state and readback boundaries; actual EGL frames and mixed-client continuity require the separate live receipt."
+  ]
+}

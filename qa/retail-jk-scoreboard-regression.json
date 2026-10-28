@@ -1,4 +1,13 @@
 {
+  "historical_provenance": {
+    "repository": "https://gitlab.com/codalilitari/jk-cross-server",
+    "source_commit": "e7e1ed64128e95d0a091d169673b34194e80ea03",
+    "source_branch": "prototype/player-bots-recovery",
+    "source_path": "qa/retail-jk-scoreboard-regression.json",
+    "source_url": "https://gitlab.com/codalilitari/jk-cross-server/-/blob/e7e1ed64128e95d0a091d169673b34194e80ea03/qa/retail-jk-scoreboard-regression.json",
+    "original_receipt_sha256": "e566e2acab1a2ae2027b992a54e079a2a87f082abf44489f4205176f00c29180",
+    "context": "Recorded during the separate bot-prototype qualification and retained as evidence for the adapter changes. The bot implementation, bot binary and bot-only support files are not included in this adapter-only integration. Importing this receipt does not represent a fresh live test of the main checkout. Original statuses, measurements, binary hashes and limitations are preserved."
+  },
   "status": "score_mapping_pass_with_departure_stability_failure",
   "date_utc": "2026-10-25",
   "scope": "Narrow original-JK1.00 DirectPlay scoreboard regression after a separate adapter correction; frozen bot executable and unchanged native/original retail humans.",
@@ -21,6 +30,13 @@
     "native_and_retail_same_live_match": true
   },
   "baseline_failure_receipt": "bots-final-native-retail.json",
+  "baseline_failure_receipt_source": {
+    "repository": "https://gitlab.com/codalilitari/jk-cross-server",
+    "commit": "e7e1ed64128e95d0a091d169673b34194e80ea03",
+    "path": "qa/bots-final-native-retail.json",
+    "url": "https://gitlab.com/codalilitari/jk-cross-server/-/blob/e7e1ed64128e95d0a091d169673b34194e80ea03/qa/bots-final-native-retail.json",
+    "included_in_adapter_integration": false
+  },
   "original_binary_layout_proof": "retail-jk-score-layout-audit.json",
   "normal_actions": [
     "Joined both clients through ordinary graphical profile, discovery and character menus.",
@@ -353,5 +369,6 @@
     "dedicated_engine_sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
     "bot_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
     "scope": "JK roster correction only; native bot and dedicated engine unchanged. MotS roster branch preserved, semantics not newly qualified."
-  }
+  },
+  "evidence_availability": "Raw evidence filenames identify artifacts from the original qualification workspace. This receipt preserves their recorded hashes and summarized observations; the raw screenshots, observations and runtime logs are not included in this adapter-only integration."
 }

@@ -1,0 +1,57 @@
+{
+  "base_commit": "598049a2e7668747ff70009b249c6ca3115bc232",
+  "scope": "Existing bot executable/patch/relink kit, DirectPlay adapter, and browser-facing implementation remain byte-identical. Dedicated core and its pinned GNS dependency were freshly rebuilt; private supervisor IPC adds observer controls.",
+  "preserved": {
+    "bin/bots-linux-x86_64/jk-bot-client": {
+      "sha256": "50924ed74935a06edfb7ee5e937f756ea0a68a7386534740f2e2917ac835779c",
+      "byte_identical_to_feature_base": true
+    },
+    "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
+      "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+      "byte_identical_to_feature_base": true
+    },
+    "native/bot-client.patch": {
+      "sha256": "94b425eff4527345e15dd589a356486d7e97f89243110ec06bc749d58841debd",
+      "byte_identical_to_feature_base": true
+    },
+    "native/bot-relink-linux-x86_64.tar.gz": {
+      "sha256": "d44966fb988c17cc896546898481de30456350677dc20b769d669a051e917792",
+      "byte_identical_to_feature_base": true
+    },
+    "directplay/gateway.c": {
+      "sha256": "af4ceece2c8861c607fe02adf084bc109b525cc0a15d37499401fb26cd81b91b",
+      "byte_identical_to_feature_base": true
+    },
+    "directplay/gateway.exe": {
+      "sha256": "a6ee44527a7e60de8df02c6294a39e39a78c5e1745b2ed3c29b91e502f432082",
+      "byte_identical_to_feature_base": true
+    },
+    "directplay/protocol.c": {
+      "sha256": "1cfd68b2695d6faec44204a7b57ae443ffa632e013112f07778155886fcd5a30",
+      "byte_identical_to_feature_base": true
+    },
+    "directplay/protocol.h": {
+      "sha256": "fb27292ecd563b2372cb31998d8db32ed618451c53c30236bd358090e5485e40",
+      "byte_identical_to_feature_base": true
+    },
+    "web_gateway/gateway.py": {
+      "sha256": "9dba4b358bc2b5090cd3ef90b2feb98170b8d3c45be3908cc9a762c37fadb155",
+      "byte_identical_to_feature_base": true
+    },
+    "web_gateway/assets.py": {
+      "sha256": "ac459d0e6f21da8d25f89bbcba58a648e88546e60d778bdf7eb52b3c52f428b8",
+      "byte_identical_to_feature_base": true
+    },
+    "web_gateway/fetch_client.py": {
+      "sha256": "189529324455094947b6883fac751fc3702b276eb2c067f23ea4592b082889ca",
+      "byte_identical_to_feature_base": true
+    }
+  },
+  "published_client_assets": {
+    "index.html": "e470d21e3a351d3630b2b414ad4cd0410cbd51fde7ead772a6298e7a7a17acdc",
+    "openjkdf2.js": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+    "openjkdf2.wasm": "5f40d53acb6c92d11fb87342a9d06b5457f533603329bc59349298f6edfe28b6"
+  },
+  "new_core_sha256": "af0d99d232da3d77a3bbd87dde917bd824775815df9ec420411452701f29e572",
+  "rebuilt_gns_sha256": "45797fcd310f0812af9f55354ff22663859ca68c2d8bb0005efb88a748c471e7"
+}

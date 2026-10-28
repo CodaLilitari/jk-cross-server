@@ -47,7 +47,7 @@ python3 directplay/setup_wine.py \
 
 Wine must support 32-bit Windows programs and a win32 prefix. On a host without
 a display, run this setup command through `xvfb-run -a`. The supervisor supplies
-virtual displays for the engine and Wine bridge during subsequent headless
+a separate display environment for the Wine bridge during subsequent headless
 starts. Use `--check-only` to verify the original files and print the setup plan
 without creating a prefix.
 

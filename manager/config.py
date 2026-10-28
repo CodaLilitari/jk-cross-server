@@ -14,7 +14,8 @@ DEFAULT = {
     "rank": 0, "tick_ms": 100, "score_limit": 0, "time_limit": 0,
     "teams": False, "game_flags": 0, "password": "",
     "native_port": 3500, "ipc_port": 46000, "broker_port": 46001,
-    "engine": "", "game_data": "", "mod_dir": "", "web_client": "",
+    "engine": "", "engine_display": "auto", "spectator_rendering": True,
+    "game_data": "", "mod_dir": "", "web_client": "",
     "web_enabled": True, "web_asset_downloads": True,
     "web_bind": "127.0.0.1", "web_port": 8787,
     "web_origins": [], "web_ice_servers": [], "retail_enabled": False, "directplay_bridge": "",
@@ -39,6 +40,8 @@ def validate(value: dict, *, require_paths: bool = False) -> dict:
         out["rank"] = 7
     if out["version"] != 1 or out["game"] not in ("jk", "mots"):
         raise ConfigError("Use configuration version 1 and game jk or mots.")
+    if out["engine_display"] not in ("auto", "offscreen", "xvfb", "display"):
+        raise ConfigError("engine_display must be auto, offscreen, xvfb or display.")
     for key in ("name", "password"):
         text = out[key]
         if not isinstance(text, str) or len(text.encode("utf-16-le")) > 62:
@@ -68,7 +71,7 @@ def validate(value: dict, *, require_paths: bool = False) -> dict:
         raise ConfigError("MotS personality sessions need advertised rank 7 or 8 for unchanged native clients. Use rank 7, or enable ranked-Jedi flag 4096 for a ranked session.")
     if len({out[x] for x in ("ipc_port", "broker_port", "web_port")}) != 3:
         raise ConfigError("IPC, broker, and browser ports must be distinct.")
-    for key in ("teams", "web_enabled", "web_asset_downloads", "retail_enabled", "auto_restart",
+    for key in ("teams", "web_enabled", "web_asset_downloads", "retail_enabled", "auto_restart", "spectator_rendering",
                 "bots_enabled", "bots_sabers_only", "bots_fists_peace", "bots_force_enabled", "bots_taunts"):
         if type(out[key]) is not bool:
             raise ConfigError(f"{key} must be true or false.")
@@ -84,7 +87,7 @@ def validate(value: dict, *, require_paths: bool = False) -> dict:
             raise ConfigError(str(exc)) from None
     if out["retail_enabled"]:
         if out["max_players"] > 15:
-            raise ConfigError("Mixed retail sessions support at most 15 configured slots, including the dedicated host.")
+            raise ConfigError("Mixed retail sessions support at most 15 configured player slots; the dedicated host is added separately.")
         if not 100 <= out["tick_ms"] <= 300:
             raise ConfigError("Retail session tick interval must be 100–300 ms.")
     try:

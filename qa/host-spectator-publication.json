@@ -1,0 +1,16 @@
+{
+  "repository": "CodaLilitari/jk-cross-server",
+  "branch": "feature/configurable-player-bots",
+  "last_verified_remote_head": "598049a2e7668747ff70009b249c6ca3115bc232",
+  "main_merged": "8e73a68ffb78de900edd8b97915dd62f469c8033",
+  "published": false,
+  "attempted_action": "Create a Git source-checkpoint tree before branch publication",
+  "provider_status": 403,
+  "provider_message": "Resource not accessible by integration",
+  "account_repository_permissions": {
+    "admin": true,
+    "push": true
+  },
+  "limit": "User account permissions are sufficient, but this integration denied the repository write. No branch ref was updated.",
+  "remote_ref_note": "Read-only recheck confirmed both source refs remain at the recorded commits during final packaging. Publishing is blocked by the integration, not by a missing user authorization."
+}

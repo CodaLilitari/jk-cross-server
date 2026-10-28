@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "archive": {
+    "sha256": "24b4170a693f6debd707f9c5bf8876cc706779158a26f76ffc1355b44a28de4a",
+    "bytes": 5988864
+  },
+  "packaged_core": {
+    "sha256": "af0d99d232da3d77a3bbd87dde917bd824775815df9ec420411452701f29e572",
+    "bytes": 7496096
+  },
+  "archive_inputs_verified": 218,
+  "application_objects_verified": 206,
+  "observer_object": {
+    "path": "CMakeFiles/sith_engine.dir/src/Main/jkObserver.c.o",
+    "sha256": "4a802f85d76d8dd177bd2431fd7b8862e97e76e5abd73690684b8e070a1107ad"
+  },
+  "preserved_runtime_search_path": "$ORIGIN",
+  "post_link_commands": [
+    [
+      "strip",
+      "openjkdf2-relinked"
+    ]
+  ],
+  "supplied_objects": {
+    "command": [
+      "python3",
+      "relink.py",
+      "--supplied-objects"
+    ],
+    "exit_code": 0,
+    "output": {
+      "sha256": "af0d99d232da3d77a3bbd87dde917bd824775815df9ec420411452701f29e572",
+      "bytes": 7496096
+    },
+    "byte_identical_to_packaged_core": true
+  },
+  "libsmacker_source_rebuild": {
+    "command": [
+      "python3",
+      "relink.py"
+    ],
+    "exit_code": 0,
+    "output": {
+      "sha256": "8d7c01781629f8c8f1b57059f6202fbe7c5cd610c93ed449a6074e2353c54258",
+      "bytes": 7496096
+    },
+    "byte_identical_to_packaged_core": false,
+    "note": "Default path intentionally recompiles the three bundled libsmacker source files at -O2 -fshort-wchar. Pinned engine CMake has additional defines/optimization options; identical output is not promised. Existing upstream format warnings occurred, but compilation and link completed.",
+    "log": {
+      "sha256": "1c4616050e4699fc0a6dbb9725d834a17f33c5f34108cc11fa93ff6b88cd7a94",
+      "bytes": 50096
+    }
+  },
+  "focused_packager_regressions": {
+    "test": "native/tests/test_package_native.py",
+    "tests_passed": 2,
+    "covers": [
+      "CMake escaped literal $ORIGIN survives shell-free relinking and produces correct ELF RUNPATH",
+      "Arbitrary existing link flags and absolute static library inputs retained",
+      "Release stripping reproduced; supplied objects produce identical executable bytes"
+    ]
+  }
+}

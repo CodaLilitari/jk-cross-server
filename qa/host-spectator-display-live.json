@@ -1,0 +1,352 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-28T08:20:16.157411+00:00",
+  "result": "passed",
+  "command": [
+    "/tmp/jk-env/bin/python",
+    "/tmp/jk-spectator-display-smoke.py"
+  ],
+  "cwd": "/tmp/jk-cross-server-recovery",
+  "environment_overrides": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "removed_environment_keys": [
+    "DISPLAY",
+    "WAYLAND_DISPLAY",
+    "SDL_VIDEO_DRIVER",
+    "SDL_VIDEODRIVER",
+    "EGL_PLATFORM",
+    "XDG_RUNTIME_DIR",
+    "OPENJKDF2_SPECTATOR_FD"
+  ],
+  "excluded_ports": [
+    43501,
+    43879,
+    46110,
+    46111,
+    48766
+  ],
+  "scope": "Fresh real ServerManager startup, observer frame, and owned process cleanup for auto/offscreen and explicit Xvfb; no clients, bots, retail bridge or browser HTTP server.",
+  "core_sha256": "af0d99d232da3d77a3bbd87dde917bd824775815df9ec420411452701f29e572",
+  "cases": [
+    {
+      "requested_display": "auto",
+      "started_utc": "2026-10-28T08:20:16.169643+00:00",
+      "ports": {
+        "native_port": 34545,
+        "ipc_port": 43663,
+        "broker_port": 58051,
+        "web_port": 36405
+      },
+      "ambient_display_variables_absent": true,
+      "config_path": "/tmp/jk-spectator-display-live/auto/config.json",
+      "result": "passed",
+      "start_status": {
+        "state": "running",
+        "error": null,
+        "session_ready": true,
+        "native_connected": true,
+        "engine_display_backend": "offscreen",
+        "session": {
+          "name": "Observer display auto",
+          "episode": "JK1MP",
+          "map": "m2.jkl",
+          "locked": false,
+          "max": 7,
+          "transport_slots": 8,
+          "players": 0,
+          "mod": "",
+          "flags": 0,
+          "tick_ms": 100,
+          "game": "jk"
+        },
+        "processes": {
+          "engine": {
+            "pid": 32645,
+            "returncode": null
+          }
+        },
+        "run_directory": "/tmp/jk-spectator-display-live/auto/state/runs/20261028T082016Z-1b8142"
+      },
+      "owned_processes_before_close": [
+        {
+          "pid": 32645,
+          "name": "openjkdf2",
+          "state": "R",
+          "parent": 32641,
+          "group": 32645,
+          "start_ticks": 481426
+        }
+      ],
+      "xvfb_present": false,
+      "initial_observer_status": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": false,
+        "mode": "off",
+        "state": "off",
+        "reason": "View is closed.",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 2,
+        "target": null,
+        "players": [],
+        "frame": {
+          "available": false,
+          "sequence": 0,
+          "width": 0,
+          "height": 0,
+          "age_ms": null
+        },
+        "pose": {
+          "position": [
+            -0.9750000238418579,
+            -3.549949884414673,
+            1.4571139812469482
+          ],
+          "yaw": -1.5707963705062866,
+          "pitch": 0.0,
+          "roll": 0.0,
+          "sector": 12
+        }
+      },
+      "opened_observer_status": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "free",
+        "state": "active",
+        "reason": "",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 3,
+        "target": null,
+        "players": [],
+        "frame": {
+          "available": false,
+          "sequence": 0,
+          "width": 0,
+          "height": 0,
+          "age_ms": null
+        },
+        "pose": {
+          "position": [
+            -0.9750000238418579,
+            -3.549949884414673,
+            1.4571139812469482
+          ],
+          "yaw": -1.5707963705062866,
+          "pitch": 0.0,
+          "roll": 0.0,
+          "sector": 12
+        }
+      },
+      "frame": {
+        "width": 640,
+        "height": 360,
+        "world_epoch": 2,
+        "control_epoch": 3,
+        "sequence": 2,
+        "pixel_format": "RGBA8",
+        "payload_bytes": 921600,
+        "rgba_sha256": "2a957def339efe71aa377c78fd152c7b7f487c93b9846ca42510f4adcf8b2280",
+        "sampled_distinct_pixels": 1035
+      },
+      "after_close": {
+        "state": "stopped",
+        "error": null,
+        "session_ready": false,
+        "native_connected": false,
+        "engine_display_backend": null,
+        "session": null,
+        "processes": {},
+        "run_directory": "/tmp/jk-spectator-display-live/auto/state/runs/20261028T082016Z-1b8142"
+      },
+      "cleanup": {
+        "remaining_owned_process_entries": [],
+        "all_owned_processes_stopped": true,
+        "engine_subprocess_returncode": -15,
+        "manager_tasks_remaining": 0,
+        "session_cleared": true
+      },
+      "elapsed_seconds": 1.42
+    },
+    {
+      "requested_display": "xvfb",
+      "started_utc": "2026-10-28T08:20:17.589016+00:00",
+      "ports": {
+        "native_port": 44797,
+        "ipc_port": 45533,
+        "broker_port": 60795,
+        "web_port": 33019
+      },
+      "ambient_display_variables_absent": true,
+      "config_path": "/tmp/jk-spectator-display-live/xvfb/config.json",
+      "result": "passed",
+      "start_status": {
+        "state": "running",
+        "error": null,
+        "session_ready": true,
+        "native_connected": true,
+        "engine_display_backend": "xvfb",
+        "session": {
+          "name": "Observer display xvfb",
+          "episode": "JK1MP",
+          "map": "m2.jkl",
+          "locked": false,
+          "max": 7,
+          "transport_slots": 8,
+          "players": 0,
+          "mod": "",
+          "flags": 0,
+          "tick_ms": 100,
+          "game": "jk"
+        },
+        "processes": {
+          "engine": {
+            "pid": 32669,
+            "returncode": null
+          }
+        },
+        "run_directory": "/tmp/jk-spectator-display-live/xvfb/state/runs/20261028T082017Z-0ae6fe"
+      },
+      "owned_processes_before_close": [
+        {
+          "pid": 32669,
+          "name": "xvfb-run",
+          "state": "S",
+          "parent": 32641,
+          "group": 32669,
+          "start_ticks": 481566
+        },
+        {
+          "pid": 32679,
+          "name": "Xvfb",
+          "state": "S",
+          "parent": 32669,
+          "group": 32669,
+          "start_ticks": 481567
+        },
+        {
+          "pid": 32682,
+          "name": "openjkdf2",
+          "state": "R",
+          "parent": 32669,
+          "group": 32669,
+          "start_ticks": 481574
+        }
+      ],
+      "xvfb_present": true,
+      "initial_observer_status": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": false,
+        "mode": "off",
+        "state": "off",
+        "reason": "View is closed.",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 2,
+        "target": null,
+        "players": [],
+        "frame": {
+          "available": false,
+          "sequence": 0,
+          "width": 0,
+          "height": 0,
+          "age_ms": null
+        },
+        "pose": {
+          "position": [
+            -0.019950000569224358,
+            -0.5,
+            0.15711399912834167
+          ],
+          "yaw": 3.1415927410125732,
+          "pitch": 0.0,
+          "roll": 0.0,
+          "sector": 61
+        }
+      },
+      "opened_observer_status": {
+        "rendering_configured": true,
+        "available": true,
+        "enabled": true,
+        "mode": "free",
+        "state": "active",
+        "reason": "",
+        "restart_required": false,
+        "world_epoch": 2,
+        "control_epoch": 3,
+        "target": null,
+        "players": [],
+        "frame": {
+          "available": false,
+          "sequence": 0,
+          "width": 0,
+          "height": 0,
+          "age_ms": null
+        },
+        "pose": {
+          "position": [
+            -0.019950000569224358,
+            -0.5,
+            0.15711399912834167
+          ],
+          "yaw": 3.1415927410125732,
+          "pitch": 0.0,
+          "roll": 0.0,
+          "sector": 61
+        }
+      },
+      "frame": {
+        "width": 640,
+        "height": 360,
+        "world_epoch": 2,
+        "control_epoch": 3,
+        "sequence": 2,
+        "pixel_format": "RGBA8",
+        "payload_bytes": 921600,
+        "rgba_sha256": "494d52373cf3870b6f81d105610ae6997af61fe4063ba27f9e0a27da0083e7fe",
+        "sampled_distinct_pixels": 1626
+      },
+      "after_close": {
+        "state": "stopped",
+        "error": null,
+        "session_ready": false,
+        "native_connected": false,
+        "engine_display_backend": null,
+        "session": null,
+        "processes": {},
+        "run_directory": "/tmp/jk-spectator-display-live/xvfb/state/runs/20261028T082017Z-0ae6fe"
+      },
+      "cleanup": {
+        "remaining_owned_process_entries": [
+          {
+            "pid": 32679,
+            "name": "Xvfb",
+            "state": "Z",
+            "parent": 1,
+            "group": 32669,
+            "start_ticks": 481567
+          },
+          {
+            "pid": 32682,
+            "name": "openjkdf2",
+            "state": "Z",
+            "parent": 1,
+            "group": 32669,
+            "start_ticks": 481574
+          }
+        ],
+        "all_owned_processes_stopped": true,
+        "engine_subprocess_returncode": -15,
+        "manager_tasks_remaining": 0,
+        "session_cleared": true
+      },
+      "elapsed_seconds": 1.323
+    }
+  ],
+  "finished_utc": "2026-10-28T08:20:18.911795+00:00",
+  "script_sha256": "4795a4bbad30f3e6f100c715777e533470528f2470d3b4ff0b6b73f6c45042b8"
+}

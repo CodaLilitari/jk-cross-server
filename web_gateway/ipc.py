@@ -10,6 +10,7 @@ import contextlib
 import inspect
 import ipaddress
 import logging
+import math
 import struct
 from collections.abc import Callable
 
@@ -20,6 +21,9 @@ HELLO, INFO, ADD_PEER, REMOVE_PEER, DATA, PING, SET_ID_POOL = 1, 2, 3, 4, 5, 7, 
 HELLO_REPLY, INFO_REPLY, ADDED, REMOVED, DATA_REPLY, PONG, ID_POOL_REPLY, ERROR = 101, 102, 103, 104, 105, 107, 108, 199
 ADMIN_REQUEST, ADMIN_CHAT, ADMIN_REPLY, ADMIN_RESET = 9, 109, 110, 111
 REPLACE_POOL_ID, POOL_REPLACED, POOL_RETIRED = 10, 112, 113
+SPECTATOR_REQUEST, SPECTATOR_REPLY = 11, 114
+SPECTATOR_HEADER = struct.Struct("<16I6fi")
+SPECTATOR_PLAYER = struct.Struct("<III64s")
 ADMIN_MESSAGE, ADMIN_PLAYERS, ADMIN_KICK, ADMIN_NEXT_LEVEL = 1, 2, 3, 4
 MAX_ADMIN_TEXT = 127
 
@@ -46,6 +50,41 @@ async def read_frame(reader: asyncio.StreamReader) -> tuple[int, int, int, bytes
     body = await reader.readexactly(length)
     kind, source, destination = struct.unpack_from("<III", body)
     return kind, source, destination, body[12:]
+
+
+def spectator_reply(payload: bytes, operation: int) -> dict:
+    """Decode the bounded private observer reply without touching gameplay."""
+    if len(payload) < SPECTATOR_HEADER.size:
+        raise ProtocolError("Truncated observer reply")
+    values = SPECTATOR_HEADER.unpack_from(payload)
+    names = ("version", "result", "operation", "capabilities", "mode", "flags",
+             "world_epoch", "control_epoch", "target_peer", "target_generation",
+             "width", "height", "frame_age_ms", "reason", "roster_count", "frame_sequence")
+    result = dict(zip(names, values[:16]))
+    count = result["roster_count"]
+    width, height = result["width"], result["height"]
+    if (result["version"] != 1 or result["operation"] != operation or operation not in (0, 1, 2) or
+            result["result"] > 5 or result["capabilities"] & ~15 or result["mode"] > 2 or
+            result["flags"] & ~127 or result["reason"] > 7 or count > 31 or
+            (operation != 0 and count) or
+            len(payload) != SPECTATOR_HEADER.size + count * SPECTATOR_PLAYER.size or
+            not ((width == height == 0) or (1 <= width <= 640 and 1 <= height <= 360)) or
+            any(not math.isfinite(value) for value in values[16:22]) or values[22] < -1):
+        raise ProtocolError("Invalid observer reply")
+    result["pose"] = {"position": list(values[16:19]), "yaw": values[19],
+                      "pitch": values[20], "roll": values[21], "sector": values[22]}
+    players, peers, slots = [], set(), set()
+    for index in range(count):
+        peer, generation, slot, encoded_name = SPECTATOR_PLAYER.unpack_from(
+            payload, SPECTATOR_HEADER.size + index * SPECTATOR_PLAYER.size)
+        if peer < 2 or not generation or not 1 <= slot <= 31 or peer in peers or slot in slots:
+            raise ProtocolError("Invalid observer roster identity")
+        peers.add(peer)
+        slots.add(slot)
+        players.append({"peer_id": peer, "generation": generation, "slot": slot,
+                        "name": encoded_name.decode("utf-16-le", "replace").split("\0", 1)[0]})
+    result["players"] = players
+    return result
 
 
 class NativeIPC:
@@ -81,6 +120,7 @@ class NativeIPC:
         self._request_id = 0
         self._pending: dict[int, asyncio.Future] = {}
         self._admin_pending: dict[int, tuple[asyncio.Future, int, int]] = {}
+        self._spectator_pending: dict[int, tuple[asyncio.Future, int]] = {}
         self._info_waiters: list[asyncio.Future] = []
         self._pool_future: asyncio.Future | None = None
         self._pool_replacements: dict[int, tuple[asyncio.Future, int, int]] = {}
@@ -133,7 +173,7 @@ class NativeIPC:
     def _next_request(self) -> int:
         self._request_id = (self._request_id % 0xFFFFFFFF) + 1
         while (self._request_id in self._pending or self._request_id in self._admin_pending
-               or self._request_id in self._pool_replacements):
+               or self._request_id in self._pool_replacements or self._request_id in self._spectator_pending):
             self._request_id = (self._request_id % 0xFFFFFFFF) + 1
         return self._request_id
 
@@ -244,6 +284,48 @@ class NativeIPC:
         finally:
             self._admin_pending.pop(request_id, None)
 
+    async def spectator_request(self, operation: int, *, world_epoch=0, control_epoch=0,
+                                mode=0, peer_id=0, generation=0, sequence=0,
+                                axes=(0., 0., 0., 0., 0.)) -> dict:
+        """Typed host observer operations; pixels use a separate inherited FD.
+
+        Source zero identifies the authenticated supervisor, never a spoofed
+        gameplay actor. This method is not exposed by the public broker.
+        """
+        if type(operation) is not int or operation not in (0, 1, 2):
+            raise ValueError("Unknown observer operation")
+        if operation == 0:
+            payload = struct.pack("<II", 1, operation)
+        else:
+            if any(type(value) is not int or not 0 <= value <= 0xffffffff
+                   for value in (world_epoch, control_epoch)):
+                raise ValueError("Invalid observer epoch")
+            if operation == 1:
+                if (type(mode) is not int or mode not in (0, 1, 2) or
+                        any(type(value) is not int or not 0 <= value <= 0xffffffff
+                            for value in (peer_id, generation)) or
+                        (mode == 2 and (peer_id < 2 or not generation)) or
+                        (mode != 2 and (peer_id or generation))):
+                    raise ValueError("Invalid observer mode or target")
+                payload = struct.pack("<7I", 1, operation, world_epoch, control_epoch, mode, peer_id, generation)
+            else:
+                if (type(sequence) is not int or not 1 <= sequence <= 0xffffffff or
+                        not isinstance(axes, (tuple, list)) or len(axes) != 5 or
+                        any(type(value) not in (int, float) or not math.isfinite(value) for value in axes) or
+                        any(abs(value) > 1 for value in axes[:3]) or any(abs(value) > math.pi for value in axes[3:])):
+                    raise ValueError("Invalid bounded observer input")
+                payload = struct.pack("<5I5f", 1, operation, world_epoch, control_epoch, sequence, *axes)
+        if len(self._spectator_pending) >= 64:
+            raise EngineUnavailable("Observer request queue is full")
+        request_id = self._next_request()
+        future = asyncio.get_running_loop().create_future()
+        self._spectator_pending[request_id] = (future, operation)
+        try:
+            await self._write(SPECTATOR_REQUEST, 0, request_id, payload)
+            return await asyncio.wait_for(future, self.request_timeout)
+        finally:
+            self._spectator_pending.pop(request_id, None)
+
     async def set_id_pool(self, ids: list[int]) -> int:
         """Install real DirectPlay surrogate IDs before allocating clients."""
         if not ids or len(ids) > 64 or len(set(ids)) != len(ids) or any(not 2 <= i <= 0xFFFFFFFF for i in ids):
@@ -349,6 +431,21 @@ class NativeIPC:
                     raise ProtocolError("Admin reply actor incarnation does not match its request")
                 if not future.done():
                     future.set_result((status, payload[8:].decode("ascii")))
+        elif kind == SPECTATOR_REPLY:
+            pending = self._spectator_pending.get(destination)
+            if pending:
+                future, operation = pending
+                if not future.done():
+                    try:
+                        if source != 0:
+                            raise ProtocolError("Observer reply must come from the supervisor scope")
+                        value = spectator_reply(payload, operation)
+                    except (ProtocolError, ValueError, struct.error) as exc:
+                        # Optional observer failures must not tear down the
+                        # shared authenticated gameplay connection.
+                        future.set_exception(ProtocolError(str(exc)))
+                    else:
+                        future.set_result(value)
         elif kind == ERROR:
             reason = payload.decode("utf-8", "replace")[:256]
             error = ProtocolError(f"Engine request {source} rejected ({destination}): {reason}")
@@ -368,6 +465,10 @@ class NativeIPC:
                 for future, _, _ in self._pool_replacements.values():
                     if not future.done():
                         future.set_exception(ProtocolError("Engine rejected a pool replacement"))
+            elif source == SPECTATOR_REQUEST:
+                for future, _ in self._spectator_pending.values():
+                    if not future.done():
+                        future.set_exception(ProtocolError("Engine rejected or does not support observer control"))
             else:
                 LOG.warning("%s", error)
         elif kind == REMOVED:
@@ -409,6 +510,9 @@ class NativeIPC:
                     if not future.done():
                         future.set_exception(EngineUnavailable("Engine IPC connection ended"))
                 for future, _, _ in tuple(self._admin_pending.values()):
+                    if not future.done():
+                        future.set_exception(EngineUnavailable("Engine IPC connection ended"))
+                for future, _ in tuple(self._spectator_pending.values()):
                     if not future.done():
                         future.set_exception(EngineUnavailable("Engine IPC connection ended"))
                 for future, _, _ in tuple(self._pool_replacements.values()):

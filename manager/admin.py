@@ -13,6 +13,7 @@ import zipfile
 from aiohttp import web
 from . import config as conf
 from .content import catalog, preflight
+from .spectator import SpectatorError
 
 UI = Path(__file__).with_name("ui")
 OFFLINE_TOOLS = Path(__file__).resolve().parents[1] / "tools"
@@ -46,6 +47,8 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
             response = await handler(request)
         except (conf.ConfigError, ValueError, OSError) as exc:
             response = web.json_response({"error": str(exc)}, status=400)
+        except SpectatorError as exc:
+            response = web.json_response({"error": str(exc)}, status=exc.status)
         except (RuntimeError, ConnectionError, TimeoutError) as exc:
             response = web.json_response({"error": str(exc) or type(exc).__name__}, status=500)
         response.headers["Cache-Control"] = "no-store"
@@ -61,7 +64,7 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
 
     async def asset(request):
         name = request.match_info["name"]
-        if name not in ("app.js", "style.css"):
+        if name not in ("app.js", "style.css", "spectator.js"):
             raise web.HTTPNotFound()
         return web.FileResponse(UI / name)
 
@@ -84,6 +87,33 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
         if updates:
             result["updates"] = updates.status()
         return web.json_response(result)
+
+    async def get_spectator(request):
+        return web.json_response(await manager.spectator_status())
+
+    async def put_spectator(request):
+        return web.json_response(await manager.configure_spectator(await request.json()))
+
+    async def put_spectator_input(request):
+        return web.json_response(await manager.spectator_input(await request.json()))
+
+    async def get_spectator_frame(request):
+        if (set(request.query) - {"after", "world_epoch", "control_epoch"} or
+                len(request.query) != len(set(request.query))):
+            raise ValueError("Frame fetch accepts after and optional world/control epochs only.")
+        query = {}
+        for key, text in request.query.items():
+            if not text.isascii() or not text.isdecimal() or len(text) > 10:
+                raise ValueError("Frame counters must be uint32 integers.")
+            query[key] = int(text)
+        frame = manager.spectator_frame(**query)
+        if frame is None:
+            return web.Response(status=204)
+        return web.Response(body=frame["pixels"], content_type="application/octet-stream", headers={
+            "X-JK-Frame-Width": str(frame["width"]), "X-JK-Frame-Height": str(frame["height"]),
+            "X-JK-Frame-Sequence": str(frame["sequence"]),
+            "X-JK-World-Epoch": str(frame["world_epoch"]),
+            "X-JK-Control-Epoch": str(frame["control_epoch"]), "X-JK-Pixel-Format": "RGBA8"})
 
     def authority_store():
         store = getattr(manager, "authority_store", None)
@@ -184,6 +214,10 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
     app.router.add_put("/api/bots/behavior", put_bot_behavior)
     app.router.add_get("/api/bots/profiles", get_bot_profiles)
     app.router.add_get("/api/status", get_status)
+    app.router.add_get("/api/spectator", get_spectator)
+    app.router.add_put("/api/spectator", put_spectator)
+    app.router.add_put("/api/spectator/input", put_spectator_input)
+    app.router.add_get("/api/spectator/frame", get_spectator_frame)
     app.router.add_get("/api/admin-keys", get_admin_keys)
     app.router.add_post("/api/admin-keys", issue_admin_key)
     app.router.add_post("/api/admin-keys/{key_id}/revoke", revoke_admin_key)

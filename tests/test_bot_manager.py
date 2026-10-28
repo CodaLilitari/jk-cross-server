@@ -59,10 +59,10 @@ class BotConfigurationTests(unittest.TestCase):
             self.assertEqual(path.stat().st_mode & 0o777, 0o600)
             self.assertFalse(path.with_name("behavior.cfg.tmp").exists())
 
-    def test_enabled_bot_capacity_reserves_host_and_one_human(self):
+    def test_enabled_bot_capacity_reserves_conservative_launcher_headroom(self):
         for count, too_small, enough in ((1, 2, 3), (4, 5, 6)):
             settings = {"bots_enabled": True, "bots_profiles": list(PROFILE_IDS[:count])}
-            with self.subTest(bots=count, slots=too_small), self.assertRaisesRegex(conf.ConfigError, "dedicated host"):
+            with self.subTest(bots=count, slots=too_small), self.assertRaisesRegex(conf.ConfigError, "headroom"):
                 conf.validate({**settings, "max_players": too_small})
             with self.subTest(bots=count, slots=enough):
                 saved = conf.validate({**settings, "max_players": enough})

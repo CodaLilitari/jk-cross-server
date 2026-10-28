@@ -1,0 +1,80 @@
+{
+  "stage": "blocked_wine9_child_exec_requires_ia32_or_emulator_registration",
+  "created_utc": "2026-10-28T07:50:05.255888+00:00",
+  "prefix": "/tmp/jk-spectator-qa/retail-client/prefix",
+  "wine_executable": "/tmp/jk-spectator-qa/retail-client/wine32-qemu",
+  "generated_helper_launcher": "/tmp/jk-spectator-qa/retail-client/prefix/wine-dplay",
+  "game_directory": "/tmp/jk-spectator-qa/retail-client/game",
+  "game_executed": false,
+  "bridge_executed": false,
+  "windows_files_modified": false,
+  "runtime": "Installed Wine 9.0 i386 under QEMU i386 userspace emulation; native matching Wine 9.0 wineserver64",
+  "direct_i386_execution": "Unavailable: Exec format error; unchanged Wine32 --version succeeds through qemu-i386-static",
+  "game_file_sha256": {
+    "JK.EXE": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+    "SMACKW32.DLL": "a838b34f6e4a97f043bad25a26aee017197bbf82382ede6c9ed9d0f3f10abeae",
+    "DPLAY.DLL": "7f3978149dd401c33ab0cf34bf776d794005dccf8307cce5006710976c6df545",
+    "DPLAYX.DLL": "d31af8884552fd839661df03b16c0205d35ecdc610e278c2c12c616f28f38924",
+    "DPWSOCKX.DLL": "35ab9668eb501642bb2551a22dbd84a76f97d24a7fcc5ff8b8806af5fb52cd17",
+    "DPLAYSVR.EXE": "836862ad78fb9a0eaf6c91aa85890abf92257e256533e55ec7088c7820f3b357"
+  },
+  "data_file_sha256": {
+    "Resource/jk_.cd": "3e293a343ef0b2fcf917a6afa525c976ce0df9b457198ce21dafbb8056ae9db9",
+    "Resource/res1hi.gob": "6c6d51eca9c85dffe7dce9b449642a052f055352e3f817abf03b465da861aafd",
+    "Resource/res2.gob": "c75f7d5211bdd2e07a3af6a987c718037e8f0fd6909018ddb4327137bf3a7ebf",
+    "Episode/jk1.gob": "18b023a84a3948eed439888a767d629d40bec5c6fc05000edef77550b74c9ae6",
+    "Episode/jk1ctf.gob": "da98fe3fc769168f1bb562cc1f6532560b12d8e920fd6c34586d69b424b5b1fc",
+    "Episode/jk1mp.gob": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e"
+  },
+  "display": ":0",
+  "xvfb_pid": 21895,
+  "setup_returncode": 1,
+  "recorded_utc": "2026-10-28T07:53:44.444720+00:00",
+  "blocker": {
+    "wineboot_exit_code": 53,
+    "wine_error": "could not load kernel32.dll, status c0000135",
+    "diagnosed_cause": "The bootstrapping child directly execs /usr/lib/wine/wine-preloader (ENOENT), then /usr/lib/wine/wine (ENOEXEC / Exec format error). The top-level QEMU wrapper alone therefore does not initialize the fresh prefix on this kernel.",
+    "wine_version_via_qemu": "wine-9.0 (Ubuntu 9.0~repack-4build3)",
+    "native_i386_execution_available": false,
+    "binfmt_misc_mounted": false,
+    "old_seeded_wine_fixture_available": false
+  },
+  "setup_attempts": {
+    "repository_helper": "Failed immediately during wineboot; no original DLL installation or registry setup reached",
+    "module_diagnostic": "Bounded to 20 seconds; exited 53 immediately",
+    "owned_qemu_syscall_diagnostic": "Bounded to 10 seconds; exited 53 immediately"
+  },
+  "generated_helper_launcher_exists": false,
+  "cd_drive_configured": false,
+  "client_launcher_created": false,
+  "original_windows_files_reverified": true,
+  "root_panel_modified": false,
+  "other_project_processes_touched": false,
+  "owned_setup_cleanup": [
+    {
+      "target": "owned Wine prefix only",
+      "flag": "-k",
+      "returncode": 1,
+      "stderr": ""
+    },
+    {
+      "target": "owned Wine prefix only",
+      "flag": "-w",
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "target": "owned automatically allocated Xvfb",
+      "pid": 21895,
+      "stopped": true
+    }
+  ],
+  "display_running": false,
+  "ready_for_server": false,
+  "logs": {
+    "setup": "/tmp/jk-spectator-qa/retail-client/wine-setup.log",
+    "module_loader": "/tmp/jk-spectator-qa/retail-client/wine9-loader-diagnostic.log",
+    "owned_syscalls": "/tmp/jk-spectator-qa/retail-client/wine9-owned-syscalls.log",
+    "emulator_install": "/tmp/jk-spectator-qa/retail-client/qemu-install.log"
+  }
+}

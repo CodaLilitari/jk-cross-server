@@ -1,4 +1,13 @@
 {
+  "historical_provenance": {
+    "repository": "https://gitlab.com/codalilitari/jk-cross-server",
+    "source_commit": "e7e1ed64128e95d0a091d169673b34194e80ea03",
+    "source_branch": "prototype/player-bots-recovery",
+    "source_path": "qa/retail-jk-score-layout-audit.json",
+    "source_url": "https://gitlab.com/codalilitari/jk-cross-server/-/blob/e7e1ed64128e95d0a091d169673b34194e80ea03/qa/retail-jk-score-layout-audit.json",
+    "original_receipt_sha256": "a2ae13046d2972ce89cbd460be9a38006c25dc4833e095a7d93845e5f94203be",
+    "context": "Recorded during the separate bot-prototype qualification and retained as evidence for the adapter changes. The bot implementation, bot binary and bot-only support files are not included in this adapter-only integration. Importing this receipt does not represent a fresh live test of the main checkout. Original statuses, measurements, binary hashes and limitations are preserved."
+  },
   "date_utc": "2026-10-25",
   "scope": "Original JK1.00 active roster row used by DSS message32, compared with pinned native OpenJKDF2.",
   "original_jk_exe_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
@@ -91,6 +100,13 @@
   },
   "live_gui_corroboration": {
     "baseline_receipt": "bots-final-native-retail.json",
+    "baseline_receipt_source": {
+      "repository": "https://gitlab.com/codalilitari/jk-cross-server",
+      "commit": "e7e1ed64128e95d0a091d169673b34194e80ea03",
+      "path": "qa/bots-final-native-retail.json",
+      "url": "https://gitlab.com/codalilitari/jk-cross-server/-/blob/e7e1ed64128e95d0a091d169673b34194e80ea03/qa/bots-final-native-retail.json",
+      "included_in_adapter_integration": false
+    },
     "native_human_before_fix": "Native GUI score0,kills0,deaths4; original retail GUI score0,kills4,deaths0.",
     "explanation": "Previous converter copied native deaths into retail kills, suicides into deaths and team into suicides, while preserving score."
   },

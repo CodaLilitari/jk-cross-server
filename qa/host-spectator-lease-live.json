@@ -1,0 +1,65 @@
+{
+  "result": "passed",
+  "recorded_utc": "2026-10-28T08:15:39Z",
+  "authenticated_viewer_frames": 5764,
+  "continuous_view_seconds": 1243.36,
+  "frame_request_stop_time": "2026-10-28T08:15:32Z",
+  "lease_expired_status": {
+    "rendering_configured": true,
+    "available": true,
+    "enabled": false,
+    "mode": "off",
+    "state": "off",
+    "reason": "View is closed.",
+    "restart_required": false,
+    "world_epoch": 2,
+    "control_epoch": 12,
+    "target": null,
+    "players": [
+      {
+        "peer_id": 4,
+        "generation": 3,
+        "slot": 1,
+        "name": "Bot_BobaFett"
+      },
+      {
+        "peer_id": 5,
+        "generation": 4,
+        "slot": 2,
+        "name": "Bot_JanOrs"
+      }
+    ],
+    "frame": {
+      "available": false,
+      "sequence": 0,
+      "width": 0,
+      "height": 0,
+      "age_ms": null
+    },
+    "pose": {
+      "position": [
+        -0.5950700640678406,
+        0.70005202293396,
+        1.4570364952087402
+      ],
+      "yaw": 0.7860779166221619,
+      "pitch": 0.0471428781747818,
+      "roll": 0.047141678631305695,
+      "sector": 11
+    }
+  },
+  "same_core_pid_after_lease": 22478,
+  "remaining_players_after_lease": 2,
+  "after_server_stop": {
+    "state": "stopped",
+    "session": null,
+    "processes": {},
+    "native_connected": false,
+    "session_ready": false,
+    "engine_display_backend": null
+  },
+  "owned_core_pid_released": true,
+  "owned_bot_pid_released": true,
+  "owned_panel_pid_released": true,
+  "owned_browser_pid_released": true
+}

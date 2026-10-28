@@ -1,0 +1,445 @@
+{
+  "schema": 1,
+  "result": "passed",
+  "recorded_utc": "2026-10-28T08:20:05.677581+00:00",
+  "scope": "Final pre-commit rerun against the complete recovered merge tree. Packaging/qualification documentation are the only subsequent edits.",
+  "totals": {
+    "manager_python_tests": 159,
+    "web_gateway_python_tests": 27,
+    "node_ui_cases": 16,
+    "directplay_c_programs": 3,
+    "existing_native_runners": 8,
+    "observer_behavior_groups": 12,
+    "packager_tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "commands": [
+    {
+      "name": "manager",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test*.py",
+        "-v"
+      ],
+      "expected_passed": 159,
+      "count_unit": "test cases",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 68.354,
+      "log_sha256": "304758449f6c539dc3388ffa9f7a2da39d4ea53cc5afb551539c95bbde91ddf6",
+      "log": "/tmp/jk-spectator-qa/final-tests/manager.log",
+      "reported_summary": [
+        "Ran 159 tests in 67.976s",
+        "OK"
+      ]
+    },
+    {
+      "name": "web-gateway",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "web_gateway",
+        "-t",
+        ".",
+        "-p",
+        "test*.py",
+        "-v"
+      ],
+      "expected_passed": 27,
+      "count_unit": "test cases",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "JKDF2WEB_CLIENT_DIR": "/tmp/jk-cross-server-recovery/runtime/browser-client"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.569,
+      "log_sha256": "21a47feed364f88a85bac6e8594862baf34f20f8502d352278e2ce11807c3fac",
+      "log": "/tmp/jk-spectator-qa/final-tests/web-gateway.log",
+      "reported_summary": [
+        "Ran 27 tests in 1.264s",
+        "OK"
+      ]
+    },
+    {
+      "name": "node-ui",
+      "command": [
+        "node",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "tests/test_panel_ui.js",
+        "tests/test_spectator_ui.js"
+      ],
+      "expected_passed": 16,
+      "count_unit": "test cases",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.114,
+      "log_sha256": "8796fa57a38ed4a41ef3317a80a0798dcfa641194da901eeae595d3fb427ae0d",
+      "log": "/tmp/jk-spectator-qa/final-tests/node-ui.log",
+      "reported_summary": [
+        "# tests 16",
+        "# pass 16",
+        "# fail 0",
+        "# skipped 0"
+      ]
+    },
+    {
+      "name": "directplay-c",
+      "command": [
+        "make",
+        "-C",
+        "directplay",
+        "test"
+      ],
+      "expected_passed": 3,
+      "count_unit": "compiled C programs",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.416,
+      "log_sha256": "6e8db0b3a354ed13ea57b464d9a5277ef4ec2a45aaea8bc3f76e6bf8e5ff45b8",
+      "log": "/tmp/jk-spectator-qa/final-tests/directplay-c.log",
+      "reported_summary": []
+    },
+    {
+      "name": "run_native_probe_traffic_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_native_probe_traffic_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 1.167,
+      "log_sha256": "decdb2db5bbfa092da9a5280c3d84526548b040ba2d9d1fbb5cb071e6a00995d",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_native_probe_traffic_tests_py.log",
+      "reported_summary": [
+        "PASS actual native retirement releases pristine discovery without a queued game-loss event",
+        "PASS actual native receive commits its authenticated sender before host delivery",
+        "PASS actual peer forwarding commits incoming and outgoing native identities before the send sink",
+        "PASS actual ordinary outbound game traffic commits only its native destination before transmission",
+        "PASS even malformed inbound native payload commits before its validation rejection",
+        "PASS actual receive drops a removed old handle without committing the newly reserved connection",
+        "PASS actual broadcast helper commits every destination except the explicitly excluded connection",
+        "PASS 7 actual-method native discovery traffic groups"
+      ]
+    },
+    {
+      "name": "run_server_spawn_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_server_spawn_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 0.415,
+      "log_sha256": "8d530d8b62b2f51d5bebf3c45277f10bf9644623dfefa6dc3e896d66bd9bd29f",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_server_spawn_tests_py.log",
+      "reported_summary": [
+        "PASS stock CTF first-spawn mask uses all lobby starts 16..31 at session capacity 8",
+        "PASS red and gold stock respawn masks retain their distinct spawn ranges",
+        "PASS configured capacity includes host, rejects eighth human, reuses only eligible freed slots",
+        "PASS shorter maps and invalid capacity cannot allocate unavailable records",
+        "PASS ordinary SyncPlayers serializes all 32 records without changing session capacity"
+      ]
+    },
+    {
+      "name": "run_server_admin_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_server_admin_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 1.172,
+      "log_sha256": "de28306847444b5c8556ec9b1b526658a60594033be028f4d0ace91a762b62fb",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_server_admin_tests_py.log",
+      "reported_summary": [
+        "PASS bounded stock chat decoding rejects malformed lengths, terminators and control characters",
+        "PASS actual host chat hook uses transport sender and consumes proofs before any formatting or display",
+        "PASS joined actor resolution rejects the host, unknown peers, duplicate identities and loading/disconnected slots",
+        "PASS typed private replies use bounded ordinary DSS_CHAT only to the verified actor",
+        "PASS roster listing is private, bounded, labels stable slots and sanitizes display-only names",
+        "PASS exact kick selectors reject host/self/ambiguity/stale transports and use the actual QuitPlayer packet path",
+        "PASS next-level refuses single-level sessions, pending transitions and terminal/invalid/video episode links",
+        "PASS actual SendEndLevel broadcasts the stock packet three times and schedules the ordinary 10-second transition",
+        "PASS every action rechecks the actor's currently joined engine identity",
+        "PASS engine-owned nonzero incarnations are distinct and cannot be chosen by another peer",
+        "PASS execution rejects zero/duplicate requests and wrong actor generations",
+        "PASS a reused transport ID cannot execute an old occupant's pending authorization",
+        "PASS map/IPC resets invalidate old bindings and session clears never reuse the serial",
+        "PASS connection state is bounded to the host's 31 remote seats"
+      ]
+    },
+    {
+      "name": "run_server_reliable_identity_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_server_reliable_identity_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 0.266,
+      "log_sha256": "68583639c49bd72da3ebafc69f642917a9054c714fe9455459b24127f004c5d3",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_server_reliable_identity_tests_py.log",
+      "reported_summary": [
+        "PASS reused identity's new WELCOME/chat are ACKed but suppressed by actual engine cache",
+        "PASS fresh canonical identity dispatches identical message numbers without clearing other histories",
+        "PASS duplicate suppression remains intact for both the new incarnation and unrelated peers",
+        "PASS ordinary unreliable delivery remains unchanged"
+      ]
+    },
+    {
+      "name": "run_bot_loadout_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_bot_loadout_tests.py",
+        "--source",
+        "/tmp/jk-native-bot-recovery"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 0.114,
+      "log_sha256": "3e6a15ed58b424c1d49a5ffe83f6dbd33a861a0d01bdda2c5c7a3685d76c24ee",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_bot_loadout_tests_py.log",
+      "reported_summary": []
+    },
+    {
+      "name": "run_bot_driver_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_bot_driver_tests.py",
+        "--source",
+        "/tmp/jk-native-bot-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 1.722,
+      "log_sha256": "3968b650f5d4310f156ca3e7f3c3c86ad7e32a37e9bbe133028d6468fd444784",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_bot_driver_tests_py.log",
+      "reported_summary": [
+        "PASS remote-zero-health respawn eligibility and inactive/dead/team rejection",
+        "PASS unreached nearest-node goal retained until actually reached",
+        "PASS normal yaw/pitch axes and single-consumption press edge",
+        "PASS vertical jumping alone does not conceal a navigation stall",
+        "PASS sector110 low-ceiling graph/steering and actual obstruction rejection",
+        "PASS stationary mesh floors/blockers and moving/disabled/actor/steep-support exclusions",
+        "PASS authored C1 ramp follows supported ground; ceiling, wall, void and excessive rise rejected",
+        "PASS fists mesh identity, explicit damage/Force attribution, expiry and identity reset",
+        "PASS blinded perception/fire suppression and Persuasion visibility only with active Seeing",
+        "PASS missed/occluded fire, rapid swaps, persistent blocking and passing-player exclusions",
+        "PASS complete atomic behavior config and invalid/partial/duplicate rejection",
+        "PASS real ammo thresholds, saber-only switch/fire restraint, peace and team fire safety",
+        "PASS Force mana/availability/cooldown gates, held targeting/release and peaceful-target cancellation",
+        "PASS stock Force ranges/surge eligibility, restricted area powers and source-correct Throw cancellation",
+        "PASS bowcaster uses immediate alternate, no charged release into a newly peaceful target",
+        "PASS Force debris includes final active slot and respects empty/single/capacity bounds",
+        "PASS highest-active thing slot is included and bounded by allocation capacity",
+        "PASS stock pickup need scoring, saber-only/Force gates and inherited model aliases",
+        "PASS pickup respawn estimate remains bounded and rejects recycled thing identity",
+        "PASS shortest routes, directed low-health drops and legal Force-jump resource gate",
+        "PASS bounded normal/Force jump arcs and real low-ceiling rejection",
+        "PASS CTF corridor selection, capture/return/recover/escort/intercept and synchronized possession",
+        "PASS CTF vertical/sloped portal approach, ordinary input crossing and bounded server-response wait",
+        "PASS exact stock CTF script and bounded thing/sector binding validation",
+        "PASS C1 boundary anchor fallback has a collision-checked lobby route and rejects disconnected entry",
+        "PASS adjacent-sector static mesh overhang supports real graph route; moving/missing bridge rejected",
+        "PASS actual initial anchor segment uses bounded ordinary jump inputs; airborne continuation, range and height limits retained"
+      ]
+    },
+    {
+      "name": "run_bot_collision_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_bot_collision_tests.py",
+        "--source",
+        "/tmp/jk-native-bot-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 0.716,
+      "log_sha256": "b46f23fe52fc0a823f11f3a014c720115d1c5594cd0fe70e7f7eb0cb79acadd6",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_bot_collision_tests_py.log",
+      "reported_summary": [
+        "PASS one-ULP swept-sphere endpoint stays within requested travel without assertion",
+        "PASS ordinary interior hits, too-short sweeps, outward travel, and back faces retain behavior",
+        "PASS existing overlap and special radius-adjustment behavior is unchanged"
+      ]
+    },
+    {
+      "name": "run_bot_portal_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_bot_portal_tests.py",
+        "--source",
+        "/tmp/jk-native-bot-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 2.223,
+      "log_sha256": "2fca0868cc09a3cb413b5118d621a4d0a7dfd38bfe5cf290846637805ce90afd",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_bot_portal_tests_py.log",
+      "reported_summary": [
+        "PASS actual collision rejects the corner cut and .14 anchor, validates .04 supported bend segments",
+        "PASS actual graph builder and Dijkstra connect the bend through the validated fallback only",
+        "PASS closed/AI-only portals and unsupported landings remain rejected; query stack balanced",
+        "PASS narrow raised threshold rejects a false standing route despite clear raised chord",
+        "PASS ordinary low passage and supported step with headroom retain routes; query stack balanced"
+      ]
+    },
+    {
+      "name": "run_spectator_tests.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/run_spectator_tests.py",
+        "--source",
+        "/tmp/jk-native-recovery",
+        "--build",
+        "/tmp/jk-native-recovery-build"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 3.178,
+      "log_sha256": "011e6b4b884a9d7b32354b600044dfa2435c0320334475a25865169d35cc06dd",
+      "log": "/tmp/jk-spectator-qa/final-tests/run_spectator_tests_py.log",
+      "reported_summary": [
+        "PASS observer draw preserves sighting, AI, visibility, extra hooks and transform",
+        "PASS observer does not consume explosion flashes or alter player palette effects",
+        "PASS ordinary renderer retains its pre-existing gameplay effects",
+        "PASS startup is opt-in, off, bounded, and roster excludes host/provisional peers",
+        "PASS follow reacquires respawn, rejects stale generation, and never moves host",
+        "PASS finite bounded inputs, radian angles, replay/epoch checks, and 250 ms motion expiry",
+        "PASS saturated socket never blocks, partial frames finish, old epochs stay stale, closure disables camera",
+        "PASS exact world/focus/visibility, animation cursors, saber matrices, mesh lighting and frame-counter restoration",
+        "PASS bounded snapshot rejects excessive worlds before drawing and remains reusable",
+        "PASS actual observer frame supplies yaw/pitch/roll to the engine horizon calculation and restores camera ownership",
+        "PASS actual frame retains its capture timestamp through three seconds of backpressure and status reports age 3000 ms",
+        "PASS subsequent free-camera rotation refreshes horizon offsets and roll"
+      ]
+    },
+    {
+      "name": "test_package_native.py",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "native/tests/test_package_native.py"
+      ],
+      "environment": {},
+      "exit_code": 0,
+      "elapsed_seconds": 0.165,
+      "log_sha256": "5ccd76e8fb90bd81172f8cfe3eeec8a591d9d1ab0396345fccbed1630ed7bc50",
+      "log": "/tmp/jk-spectator-qa/final-tests/test_package_native_py.log",
+      "reported_summary": [
+        "Ran 2 tests in 0.080s",
+        "OK"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "manager/__init__.py": "0473c521e59b406646bd31bd5caae352fd3a450fb68b374dce1c6f58a8fd1618",
+    "manager/admin.py": "643beb5bfb3a1446a249a3665708400f97024c47a17b69b2955065f6e85038f2",
+    "manager/runtime.py": "720cf659716f6ca0644e6144dc6dd8e8602050fd7d6db80f40b3b57ed5c357a6",
+    "manager/broker.py": "fb1c3df88bff3d5ce18cae659ac4ec6cce60fc99796eb6c12b5327c0c3b0edd6",
+    "manager/updater.py": "5071f083a60437332e52c7c94367964e4c7d1ef90b2c0b44e338646780ef176e",
+    "manager/content.py": "d4dae8db1b658f0b545d476b2e324b39c79cee622fd7ac77d8ccc955ca7f7812",
+    "manager/spectator.py": "ce088fcf2e49c206ea54197e2034a4f67584bc74679172c447ba8aedf8d48fda",
+    "manager/display.py": "038c6b72608a93223c6798eb8e53e6eed34a6daa8f11a1939783df8d73f36aa8",
+    "manager/chat_admin.py": "1760705d4dc80a645bee9fa681d10369ba7b8827b70f8cc9e309e388ede8bdcb",
+    "manager/authority.py": "952b4e6013db9857d6a94b3b9881cccf0e15050cd93261f63b901acbe65727ee",
+    "manager/config.py": "fdc2a130e1b29677808a675193961213a412803369a5652777f00744e7bbdfb4",
+    "manager/updates.py": "f9a127c11f6270d799523a8693702d4d1d513276d31e9a5b0a794ed7d8d6ebba",
+    "manager/ui/style.css": "6ba755bf17cd7ee271ccc722c3fb9092f0c6f0f28c066a3798e8c1ef61bc0135",
+    "manager/ui/index.html": "bbc78d5272fade5de0c4cac075fff54cfbe92b43369b7d8462b7fd53f3d8116a",
+    "manager/ui/spectator.js": "b99c684acc9410609e5ec26637c2ce3ca31557a41acb4a9715cc8b78d41c15bc",
+    "manager/ui/app.js": "e735ba12c868854fe01754b61bed4fbd697d1143c5ecfda28d7244e82a0a0c7f",
+    "bots/__init__.py": "bcb2d17ad45888a115146a9491ee107f968593ede7cc98a1163b15b69a653893",
+    "bots/run.py": "c02f41dee9eeab5330c3e0a564839f2baf09a8093f907affc4fca019f2d2fe23",
+    "bots/map_audit.py": "32804e1c6df6a9ef2dfe12eedfd36d1b69c20d4ec5bc870977c47e6a6e4f11bf",
+    "bots/settings.py": "04f7187279f77f58e15ce9f7b8de864012e71337eede30dce96cbe0be461d288",
+    "web_gateway/__init__.py": "bd35ba197b4a0279ebefdec96da7756aa2ed41a3e26345e157d5818e8f1021cc",
+    "web_gateway/test_gateway.py": "fb98f5812bfcd84a707b10648e294e190714e6904e2121257ae43cb80e4d1bd4",
+    "web_gateway/fetch_client.py": "189529324455094947b6883fac751fc3702b276eb2c067f23ea4592b082889ca",
+    "web_gateway/gateway.py": "9dba4b358bc2b5090cd3ef90b2feb98170b8d3c45be3908cc9a762c37fadb155",
+    "web_gateway/test_published_client.py": "838c2575f94418f1abbc6128871b65140a3ec32e4049618b3f4a46f7180ad158",
+    "web_gateway/test_admin.py": "40dc1c240ff7205a1642ef72189619c9419e45dc702aec917fdcf9bebe8942ae",
+    "web_gateway/test_assets.py": "35f8df0937d150f47e240cbcdc0de2f6cdc3ced051b397e3d258d0ea5258cef8",
+    "web_gateway/ipc.py": "036477706687753bb24b73f4e62924c63da2baac73d0c03a72a9b9997193d624",
+    "web_gateway/assets.py": "ac459d0e6f21da8d25f89bbcba58a648e88546e60d778bdf7eb52b3c52f428b8",
+    "tests/test_spectator_ui.js": "3b70f4f604d5bcb1381a73fbc71049006b781d3b5e7ae4cb70a4d892516ec566",
+    "tests/test_authority.py": "8a0ddf90dee209d2f9a0bed26b7e0c015170e721e7131a6037e21694eccc9f04",
+    "tests/test_bot_maps.py": "abe799197fdad07b93e69ddb4c2260befcbc26f81a9a6864f5174cc140c5300e",
+    "tests/test_spectator.py": "a2b513ea2581d0c212427f52f024eb5fb525baebbc94de73d987534d59346848",
+    "tests/test_bot_manager.py": "5f6e35e1b95ec3298b0e63a8e2055325415d7e1c8cd165a3ad95274fbd585812",
+    "tests/test_surrogate_pool.py": "0b998b8191277729413da6ace06cdb7022cfdaad02a55780312586bc18e2984e",
+    "tests/test_chat_admin.py": "d540f59227de6902d2cd27fdd75067a0e50f11cc25f10f016bbb364a4c649e4d",
+    "tests/test_content_ctf.py": "3ec1d14f0c005d42ba6d4be5d61d22ae3e9b12543b6fadc0eab84638981d21f4",
+    "tests/test_panel_ui.js": "5a76084d429cf5f280980d54cde05d4e6d0b9df8baf072e72c6161d85963be25",
+    "tests/test_updater.py": "584b5ca4d382637b30be50fdddd028138a13253a5f877abdd9d837c5e7bfe1ca",
+    "tests/test_release_packaging.py": "af9e3e4f17478a927bc63f18e47bc2befb0d127a04c118f76fffd752fee3c456",
+    "tests/test_runtime_display.py": "ccf64527530a5d5716b8b87d58f259e07758ae23fd9059788609eba1ca2ce39b",
+    "tests/test_manager.py": "57cddaf0b67eff37f942a015917cc067a595dba544c4e742d6e7c4dbb8f728dc",
+    "tests/test_updates.py": "47df11f2e9b572918abbdf04116bb52f1fa3d38dc4f895f2a1269e5f3e04faaa",
+    "tests/test_launcher.py": "1dbac99731b7ae7934e1ef0ae5e061820fee301e1e0b1a27e2465d4e2eed39d1",
+    "tests/test_bots.py": "0314b5bf4ce9711392258619eceb1dd664ca17f9e50ab15b2f331a9f4375ceff",
+    "native/tests/test_server_spawns.c": "ced9053b7d62873171c8ef3acd011c22928ca7f017c0e33327fbbe0315e6192e",
+    "native/tests/run_bot_loadout_tests.py": "4d0e8a826367ee5770c94e5cb1662cde89a83df123a8c370415045caced5456b",
+    "native/tests/test_spectator_controller.c": "5b351e8818cffab5dcdcd8cb977e82898891ab270cfcdce95fcec52e5f768658",
+    "native/tests/test_server_admin.c": "85492ca2cef44141c27ae7b5eafdd3556d0de7cb3257c28d302d22271a463ca3",
+    "native/tests/run_bot_collision_tests.py": "29594eea7c7112870f4c2936f430c55c27f98b8110409fd58dc4111156b148c7",
+    "native/tests/run_spectator_tests.py": "9ebbafea645fc3f5da62dab54bf9b4f4abd6ff49f8021fcc4604a59db86fd5e6",
+    "native/tests/run_bot_driver_tests.py": "bdac9790732dd061dc6ae6e7b635bbf60ebe19a9b53ba586d97e10ef02982095",
+    "native/tests/run_server_spawn_tests.py": "644f0e60290f4a7827265001a862c9d1c9259b70faac573363ae43caab2277ef",
+    "native/tests/test_bot_loadout.c": "ee73838be9966facb56cee2d4a783e5cd0d55bc90cadc0ba301419583c765a32",
+    "native/tests/test_bot_collision.c": "5169007ec76144be733a08462126c2f123d0ec45ccfb6ca3da3a3b3fd7b43ae0",
+    "native/tests/test_bot_portal_collision.c": "e22e848bcf600a6fe17a8039fc2c2509dcf731084cdf3abcecdabf450c843ec9",
+    "native/tests/test_spectator_cache.c": "ea2265055ae6fd1bcf6e0abd6ba79bd95f4ee5c972d0b534d960882e6ddc73b2",
+    "native/tests/test_package_native.py": "0ded44ee50232c4b8a3bee30f1d856b5cd38cfa36438f1af59a7d2a885f8b8f3",
+    "native/tests/test_spectator_render.c": "426674bec6392bc1817dde599426d597f67d7c864e669be944888194a65e032f",
+    "native/tests/run_native_probe_traffic_tests.py": "b40ba71e62b7da33a41e2ff1918168bb80733096572d189154c48e18e7c85b35",
+    "native/tests/run_bot_portal_tests.py": "83dd444ada9e7f868a0aea826015139de50fd952c9780d9e7767d934aeb3093b",
+    "native/tests/test_bot_driver.c": "37924d13d431c777e9c8100db162289642dd556237ad88d8d1f924ef3d7a0ea0",
+    "native/tests/run_server_reliable_identity_tests.py": "110e0cefa15fe7b8cf0e809e93f7e0cf311acacd60f42ba49a93ec8f567b9cbd",
+    "native/tests/test_server_reliable_identity.c": "6e1c53bf9e8bfd088ea2623b0a20759745a90adad443a90ef276299633eb8ace",
+    "native/tests/run_server_admin_tests.py": "55b614608d784f465fff9a2d6e28eae7b27c9b44ca601c0420ce839dde9c7f4e",
+    "native/tests/test_spectator_frame.c": "1bd72ac680442bbb26a69b3f9ebedc63e0f8e05f00cfca93845fd56983dd3be8",
+    "native/crossplay-dedicated.patch": "72f9402bd177f34ac05cd94d0233e81b61c557cb6a76cffe776c9edaebe11712",
+    "native/package_native.py": "597c4f79e80da52ba59d05016160cb74fe4da851c382a0a869950f74a5172943",
+    "native/build.sh": "5b430bba50bad4c3403fca2583767816704b338814991770aec1ac3e3a7cedeb"
+  },
+  "source_changed_during_or_after_verification": []
+}

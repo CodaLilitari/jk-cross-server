@@ -6,24 +6,41 @@
   <meta name="admin-token" content="__ADMIN_TOKEN__">
   <title>JK Cross Server</title>
   <link rel="stylesheet" href="/ui/style.css">
+  <script src="/ui/spectator.js" defer></script>
   <script src="/ui/app.js" defer></script>
 </head>
 <body>
-  <main>
-    <header><div><p class="eyebrow">DEDICATED SERVER CONTROL</p><h1>JK Cross Server<span class="dot">.</span></h1>
-      <p class="subtitle">Retail · OpenJKDF2 · JKDF2Web</p></div>
+  <a class="skip-link" href="#server-controls">Skip to server controls</a>
+  <main id="server-controls">
+    <header><div class="masthead"><p class="eyebrow">DEDICATED SERVER CONTROL</p><h1>JK Cross Server<span class="dot">.</span></h1>
+      <p class="subtitle">Retail · JKWeb · OpenJKDF2</p></div>
       <div class="statebox"><span id="state" class="badge">Connecting</span><small id="uptime">Local control panel</small></div>
     </header>
+    <nav class="section-menu" aria-label="Control panel sections"><a href="#session-panel">Session</a><a href="#spectator-panel">Spectator</a><a href="#content-panel">Files</a><a href="#connections-panel">Connections</a><a href="#bots-panel">Bots</a><a href="#admin-keys-panel">Administration</a><a href="#logs-panel">Log</a></nav>
     <section class="status-strip" aria-label="Transport status">
-      <div><span class="stat-label">Native engine</span><strong id="native-status">—</strong></div>
+      <div><span class="stat-label">Engine IPC</span><strong id="native-status">—</strong></div>
+      <div><span class="stat-label">Game session</span><strong id="session-status">—</strong></div>
       <div><span class="stat-label">Retail bridge</span><strong id="retail-status">—</strong></div>
       <div><span class="stat-label">Browser gateway</span><strong id="web-status">—</strong></div>
-      <div><span class="stat-label">Players</span><strong id="player-status">—</strong></div>
+      <div><span class="stat-label">Joined / advertised limit</span><strong id="player-status">—</strong></div>
+      <div><span class="stat-label">Engine display</span><strong id="display-status">—</strong></div>
+      <div class="session-level"><span class="stat-label">Current level</span><strong id="map-status">No active session</strong></div>
     </section>
     <div id="notice" role="status" aria-live="polite" hidden></div>
+    <section id="spectator-panel" class="card spectator-panel">
+      <div class="section-heading"><div><p class="eyebrow">LIVE / HOST OBSERVATION</p><h2>Spectator view</h2></div><div class="spectator-heading-actions"><span id="spectator-state" class="badge">Unavailable</span><button id="spectator-toggle" class="primary" type="button" aria-controls="spectator-view" aria-expanded="false" disabled>Open spectator</button></div></div>
+      <p class="spectator-intro">Follow a player or fly through the level. Your camera is invisible, cannot be harmed, and does not take a player slot or interact with the match.</p>
+      <div class="spectator-choices"><label>Camera mode<select id="spectator-mode" disabled><option value="free">Free flight</option><option id="spectator-follow-choice" value="follow" disabled>Follow player</option></select></label><label>Follow target<select id="spectator-target" disabled><option value="">No joined players</option></select></label><p id="spectator-message" class="hint" role="status" aria-live="polite">Start a session to observe the game.</p></div>
+      <div id="spectator-view" hidden>
+        <div class="spectator-frame"><span class="spectator-watermark" aria-hidden="true">JKCS / OBSERVER</span><canvas id="spectator-canvas" width="640" height="360" tabindex="0" aria-label="Live spectator camera. Focus here to use movement keys." aria-describedby="spectator-controls">Your browser needs canvas support to show the spectator camera.</canvas><div id="spectator-overlay" role="status">Waiting for the game view…</div></div>
+        <div class="spectator-readout"><span id="spectator-position"></span><span id="spectator-frame-detail">Waiting for a frame</span></div>
+        <div id="spectator-movement"><button id="spectator-take-control" class="quiet" type="button" hidden>Take camera control</button><p id="spectator-controls" class="hint">Click the view, then use <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> to move; <kbd>Q</kbd> down and <kbd>E</kbd> up. Drag to look, or use the arrow keys. Movement passes through walls and floors. Press <kbd>Esc</kbd> to release movement.</p><div class="spectator-motion" aria-label="Camera movement"><button type="button" class="quiet" data-spectator-key="KeyW">Forward</button><button type="button" class="quiet" data-spectator-key="KeyS">Back</button><button type="button" class="quiet" data-spectator-key="KeyA">Left</button><button type="button" class="quiet" data-spectator-key="KeyD">Right</button><button type="button" class="quiet" data-spectator-key="KeyE">Up</button><button type="button" class="quiet" data-spectator-key="KeyQ">Down</button></div></div>
+        <p class="hint">The view pauses when this tab is hidden. Open it again if it closes after being inactive.</p>
+      </div>
+    </section>
     <form id="settings">
       <fieldset id="settings-fields">
-        <section class="card"><div class="section-heading"><div><p class="eyebrow">01 / SESSION</p><h2>Choose the game</h2></div><button type="button" id="catalog" class="quiet">Read map catalog</button></div>
+        <section id="session-panel" class="card"><div class="section-heading"><div><p class="eyebrow">01 / SESSION</p><h2>Choose the game</h2></div><button type="button" id="catalog" class="quiet">Read map catalog</button></div>
           <div class="grid three">
             <label>Game<select name="game"><option value="jk">Jedi Knight: Dark Forces II</option><option value="mots">Mysteries of the Sith</option></select></label>
             <label class="span-two">Server name<input name="name" maxlength="31" required></label>
@@ -33,7 +50,7 @@
           </div>
           <p class="hint">All players need matching game content. JK and MotS run as separate sessions. The legacy password prompt is not an access-control boundary across these transports.</p>
           <div class="grid five compact">
-            <label>Player slots (including host)<input name="max_players" type="number" min="1" max="31" required></label>
+            <label>Maximum playing clients<input name="max_players" type="number" min="1" max="31" required></label>
             <label>Force rank<input name="rank" type="number" min="0" max="8" required></label>
             <label>Tick interval · ms<input name="tick_ms" type="number" min="10" max="1000" required></label>
             <label>Score limit<input name="score_limit" type="number" min="0" max="9999" required></label>
@@ -41,9 +58,9 @@
           </div>
           <p id="rank-hint" class="hint" hidden>MotS defaults to personality mode. Use rank 7 for compatibility with all clients; lower ranks require ranked Jedi mode (additional game flag 4096).</p>
           <div class="checks"><label><input name="teams" type="checkbox"> Team game</label><label><input name="auto_restart" type="checkbox"> Restart after a component failure</label></div>
-          <p class="hint">A limit of 0 disables that limit. Retail sessions allow up to 15 configured slots, including the host, and a 100–300 ms tick interval.</p>
+          <p class="hint">A limit of 0 disables that limit. Retail sessions allow up to 15 playing clients and a 100–300 ms tick interval. The dedicated host is added separately; a map may support fewer players than the advertised limit.</p>
         </section>
-        <section class="card"><div class="section-heading"><div><p class="eyebrow">02 / CONTENT</p><h2>Local files</h2></div></div>
+        <section id="content-panel" class="card"><div class="section-heading"><div><p class="eyebrow">02 / CONTENT</p><h2>Local files</h2></div></div>
           <div class="grid two">
             <label class="span-two">Game data folder<input name="game_data" placeholder="Folder containing resource/ and episode/" spellcheck="false"></label>
             <label>Dedicated engine executable<input name="engine" placeholder="Full path to the built server engine" spellcheck="false"></label>
@@ -53,7 +70,7 @@
           <div class="checks"><label><input name="web_asset_downloads" type="checkbox"> Send missing custom maps and mods to browser players</label></div>
           <p class="hint">The browser verifies downloaded files and restarts when a mod change requires it. Players still need their own original game data. Retail and native players install matching custom content themselves.</p>
         </section>
-        <section class="card"><div class="section-heading"><div><p class="eyebrow">03 / CONNECTIONS</p><h2>Client transports</h2></div></div>
+        <section id="connections-panel" class="card"><div class="section-heading"><div><p class="eyebrow">03 / CONNECTIONS</p><h2>Client transports</h2></div></div>
           <div class="checks"><label><input name="retail_enabled" type="checkbox"> Retail DirectPlay</label><label><input name="web_enabled" type="checkbox"> Browser WebSocket + WebRTC</label></div>
           <div class="grid three">
             <label>OpenJKDF2 port<input name="native_port" type="number" min="1024" max="65535" required></label>
@@ -67,14 +84,16 @@
             <label>Wine prefix<input name="wine_prefix" spellcheck="false" placeholder="Optional"></label>
             <label>Native IPC port<input name="ipc_port" type="number" min="1024" max="65535" required></label>
             <label>Retail broker port<input name="broker_port" type="number" min="1024" max="65535" required></label>
+            <label>Engine display<select name="engine_display"><option value="auto">Auto</option><option value="offscreen">Offscreen · SDL / EGL</option><option value="xvfb">Virtual display · Xvfb</option><option value="display">Existing display</option></select></label>
+            <label class="spectator-prepare"><input name="spectator_rendering" type="checkbox"> Prepare spectator graphics when the server starts<span class="hint">Keeps the hidden graphics context ready. The live view starts closed. Changes apply to the next session.</span></label>
             <label>Additional game flags<input name="game_flags" type="number" min="0" max="65535" required></label>
             <label>Allowed browser origins<textarea name="web_origins" rows="2" placeholder="Optional; one exact https://origin per line" spellcheck="false"></textarea></label>
             <label class="span-two">Browser STUN / TURN servers · JSON<textarea name="web_ice_servers" rows="3" placeholder='[]' spellcheck="false"></textarea><span class="hint">Optional. Each entry has urls and, for TURN, username and credential. Empty [] uses direct connections.</span></label>
           </div></details>
         </section>
-        <section class="card"><div class="section-heading"><div><p class="eyebrow">04 / PLAYER BOTS</p><h2>Bot roster</h2></div><span id="bot-status" class="badge">Disabled</span></div>
+        <section id="bots-panel" class="card"><div class="section-heading"><div><p class="eyebrow">04 / PLAYER BOTS</p><h2>Bot roster</h2></div><span id="bot-status" class="badge">Disabled</span></div>
           <div class="checks"><label><input name="bots_enabled" type="checkbox"> Add bots when the server starts</label><label><input name="bots_taunts" type="checkbox"> Occasional character chat</label></div>
-          <p class="hint">Choose one to four bots. Player slots include the dedicated host: allow at least the bot count plus two slots for the host and one human. Roster changes apply when the next session starts.</p>
+          <p class="hint">Choose one to four bots. Set the playing-client limit to at least the bot count plus two, retaining the bot launcher’s existing headroom check. The dedicated host is added separately. Roster changes apply when the next session starts.</p>
           <div id="bot-profiles" class="bot-profile-grid" aria-label="Bot profiles"></div>
           <p id="bot-player-detail" class="hint" aria-live="polite"></p>
           <p class="hint">Stock JK1MP and JK1CTF on Linux. For CTF, enable Team game; bots enter the red and gold team corridors. JK1MP team games also need additional game flag 256. Team modes use the game's team skins.</p>
@@ -121,7 +140,7 @@
       <p id="update-checked" class="hint"></p>
     </section>
     <section id="asset-panel" class="card" hidden><div class="section-heading"><div><p class="eyebrow">LIVE / CONTENT</p><h2>Browser downloads</h2></div><span id="asset-policy" class="badge">—</span></div><div id="asset-offers" class="grid two"></div><p id="asset-transfer" class="hint" aria-live="polite"></p></section>
-    <section class="card logs"><div class="section-heading"><div><p class="eyebrow">LIVE / OUTPUT</p><h2>Server log</h2></div><a id="play-link" href="#" target="_blank" rel="noopener" hidden>Open browser client ↗</a></div><pre id="logs" aria-label="Server log">Waiting for status…</pre></section>
+    <section id="logs-panel" class="card logs"><div class="section-heading"><div><p class="eyebrow">LIVE / OUTPUT</p><h2>Server log</h2></div><a id="play-link" href="#" target="_blank" rel="noopener" hidden>Open browser client ↗</a></div><pre id="logs" aria-label="Server log">Waiting for status…</pre></section>
     <footer>Engine and transport readiness are shown here. In-game compatibility evidence is recorded separately in the project documentation.</footer>
   </main>
 </body>

@@ -1,6 +1,6 @@
 diff --git a/docs/crossplay-gateway.md b/docs/crossplay-gateway.md
 new file mode 100644
-index 0000000..4f4c862
+index 0000000000000000000000000000000000000000..4f4c8627acda9afedcac21138173727b80916960
 --- /dev/null
 +++ b/docs/crossplay-gateway.md
 @@ -0,0 +1,196 @@
@@ -202,7 +202,7 @@ index 0000000..4f4c862
 +be recorded separately, with the exact engine and asset identities.
 diff --git a/src/Dss/sithAdmin.c b/src/Dss/sithAdmin.c
 new file mode 100644
-index 0000000..7dd64fe
+index 0000000000000000000000000000000000000000..7dd64fe45730494a668da601cf3ad87ec9b38e87
 --- /dev/null
 +++ b/src/Dss/sithAdmin.c
 @@ -0,0 +1,252 @@
@@ -460,7 +460,7 @@ index 0000000..7dd64fe
 +}
 diff --git a/src/Dss/sithAdmin.h b/src/Dss/sithAdmin.h
 new file mode 100644
-index 0000000..89a7260
+index 0000000000000000000000000000000000000000..89a7260356be12b2ee3c39731f8c6b05d2b4e26c
 --- /dev/null
 +++ b/src/Dss/sithAdmin.h
 @@ -0,0 +1,32 @@
@@ -497,7 +497,7 @@ index 0000000..89a7260
 +#endif
 +#endif
 diff --git a/src/Dss/sithDSSThing.c b/src/Dss/sithDSSThing.c
-index b05fe1a..8f33ea7 100644
+index b05fe1a8014dfbe882651367dc7f7cb15b370cc3..8f33ea70379bf43775eb2fff5800403f6d375e12 100644
 --- a/src/Dss/sithDSSThing.c
 +++ b/src/Dss/sithDSSThing.c
 @@ -155,7 +155,8 @@ void sithDSSThing_UpdateState(SithThing *pThing, int toID, int outstream)
@@ -521,7 +521,7 @@ index b05fe1a..8f33ea7 100644
                  return 0;
              rdVector3 pos = NETMSG_POPVEC3();
 diff --git a/src/Dss/sithMulti.c b/src/Dss/sithMulti.c
-index 92f6076..ae1e3ae 100644
+index 92f6076996a5edc1743668ef6eaa62b8413a5fac..ae1e3ae76a83875f1914a1315b28a133fa037ddc 100644
 --- a/src/Dss/sithMulti.c
 +++ b/src/Dss/sithMulti.c
 @@ -13,6 +13,8 @@
@@ -634,11 +634,138 @@ index 92f6076..ae1e3ae 100644
 -}
 \ No newline at end of file
 +}
+diff --git a/src/Engine/rdPuppet.c b/src/Engine/rdPuppet.c
+index 4cf7214d7cd9c91943f85cf2884c241a37de89fe..4bdbeef99a74c1815fa7a02b535c09f55c393f33 100644
+--- a/src/Engine/rdPuppet.c
++++ b/src/Engine/rdPuppet.c
+@@ -1,4 +1,5 @@
+ #include "rdPuppet.h"
++#include "Main/jkObserver.h"
+ 
+ #include <math.h>
+ 
+@@ -182,6 +183,7 @@ void rdPuppet_BuildJointMatrices(rdThing *prdThing, rdMatrix34 *pPlacement)
+             // Added: this spot keeps crashing, add bounds checks
+             if (v8->nodeNum < 0 || v8->nodeNum >= RDPUPPET_MAX_NODES)
+             {
++                if (jkObserver_IsRenderPass()) continue;
+                 v8->nodeNum = 0;
+             }
+ 
+diff --git a/src/Engine/sithRender.c b/src/Engine/sithRender.c
+index d9657881610b7bb0a8c38db2d2c8023e8f20eb83..e1ea88e30bead0927e9ed8b2cdc0b3871708a310 100644
+--- a/src/Engine/sithRender.c
++++ b/src/Engine/sithRender.c
+@@ -5,6 +5,7 @@
+ 
+ #include "Cog/sithCog.h"
+ #include "Main/sithMain.h"
++#include "Main/jkObserver.h"
+ #include "World/sithMaterial.h"
+ #include "World/sithModel.h"
+ #include "Engine/sithKeyFrame.h"
+@@ -361,7 +362,8 @@ void sithRender_Draw()
+     if (!sithCamera_g_pCurCamera || !sithCamera_g_pCurCamera->sector)
+         return;
+ 
+-    sithPlayer_SetScreenTint(sithCamera_g_pCurCamera->sector->tint.x, sithCamera_g_pCurCamera->sector->tint.y, sithCamera_g_pCurCamera->sector->tint.z);
++    if (!jkObserver_IsRenderPass())
++        sithPlayer_SetScreenTint(sithCamera_g_pCurCamera->sector->tint.x, sithCamera_g_pCurCamera->sector->tint.y, sithCamera_g_pCurCamera->sector->tint.z);
+ 
+     // TODO: Verify this is expensive
+ #ifndef TARGET_TWL
+@@ -524,7 +526,7 @@ void sithRender_Draw()
+ 
+ #ifdef JKM_LIGHTING
+     // MOTS added
+-    if (sithRender_008d4094 != 0) {
++    if (!jkObserver_IsRenderPass() && sithRender_008d4094 != 0) {
+         int local_8, iVar6, iVar5;
+ 
+         if (0.0 <= sithRender_008d4098) {
+@@ -668,7 +670,7 @@ void sithRender_BuildVisibleSectorList(SithSector *pSector, rdClipFrustum *pFrus
+         }
+ 
+         sithRender_aVisibleSectors[sithRender_g_numVisibleSectors++] = pSector;
+-        if (!(pSector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
++        if (!jkObserver_IsRenderPass() && !(pSector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
+         {
+             pSector->flags |= SITH_SECTOR_SEEN;
+             if ( (pSector->flags & SITH_SECTOR_COGLINKED) != 0 )
+@@ -1015,7 +1017,7 @@ void sithRender_NoClip(SithSector *sector, rdClipFrustum *frustumArg, flex_t pre
+         }
+ 
+         sithRender_aVisibleSectors[sithRender_g_numVisibleSectors++] = sector;
+-        if (!(sector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
++        if (!jkObserver_IsRenderPass() && !(sector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
+         {
+             sector->flags |= SITH_SECTOR_SEEN;
+             if ( (sector->flags & SITH_SECTOR_COGLINKED) != 0 )
+@@ -1251,7 +1253,7 @@ void sithRender_KindaClipAssignFrustum(SithSector *sector, rdClipFrustum *frustu
+     }
+ 
+     sithRender_aVisibleSectors[sithRender_g_numVisibleSectors++] = sector;
+-    if (!(sector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
++    if (!jkObserver_IsRenderPass() && !(sector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
+     {
+         sector->flags |= SITH_SECTOR_SEEN;
+         if ( (sector->flags & SITH_SECTOR_COGLINKED) != 0 )
+@@ -3006,11 +3008,13 @@ void sithRender_RenderThings()
+ int sithRender_RenderThing(SithThing *pThing)
+ {
+     int ret;
++    const int observerPass = jkObserver_IsRenderPass();
++    const rdVector3 savedScale = pThing->orient.scale;
+ 
+     // Added: Ensure the clipping frustum doesn't get mutated
+     //rdClipFrustum* pFullCameraFrustum = rdCamera_g_pCurCamera->pClipFrustum;
+ 
+-    if (!(pThing->flags & SITH_TF_INCAMFOV) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip
++    if (!observerPass && !(pThing->flags & SITH_TF_INCAMFOV) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip
+     {
+         if (pThing->flags & SITH_TF_CAPTURED) {
+             sithCog_ThingSendMessage(pThing, 0, SITH_MESSAGE_SIGHTED);
+@@ -3023,7 +3027,7 @@ int sithRender_RenderThing(SithThing *pThing)
+         pThing->flags |= SITH_TF_INCAMFOV;
+     }
+ 
+-    pThing->renderFrame = jkPlayer_currentTickIdx;
++    if (!observerPass) pThing->renderFrame = jkPlayer_currentTickIdx;
+     pThing->orient.scale = pThing->position;
+ 
+ #ifdef TARGET_TWL
+@@ -3046,8 +3050,9 @@ int sithRender_RenderThing(SithThing *pThing)
+ #endif
+ 
+     ret = rdThing_Draw(&pThing->renderData, &pThing->orient);
+-    rdVector_Zero3(&pThing->orient.scale);
+-    if (sithRender_pExtraThingRenderFunc && (pThing->flags & SITH_TF_RENDERWEAPON)) {
++    if (observerPass) pThing->orient.scale = savedScale;
++    else rdVector_Zero3(&pThing->orient.scale);
++    if (!observerPass && sithRender_pExtraThingRenderFunc && (pThing->flags & SITH_TF_RENDERWEAPON)) {
+         sithRender_pExtraThingRenderFunc(pThing);
+     }
+ #ifdef TARGET_TWL
+@@ -3058,7 +3063,7 @@ int sithRender_RenderThing(SithThing *pThing)
+     }
+ #endif
+ 
+-    if (pThing->type == SITH_THING_EXPLOSION && (pThing->explosionParams.flags & SITHEXPLOSION_FLAG_FLASH_BLINDS_THINGS))
++    if (!observerPass && pThing->type == SITH_THING_EXPLOSION && (pThing->explosionParams.flags & SITHEXPLOSION_FLAG_FLASH_BLINDS_THINGS))
+     {
+         flex_t cameraDist = stdMath_Dist3D1(pThing->transformedPos.x, pThing->transformedPos.y, pThing->transformedPos.z);
+         uint32_t flashG = pThing->explosionParams.flashG;
 diff --git a/src/Main/Main.c b/src/Main/Main.c
-index fd2c8ac..aee025d 100644
+index fd2c8acec614cf2d22613c069ad97c562f02f83b..6e4d1b06b0efa893b4f36ed432fc448bfb51f734 100644
 --- a/src/Main/Main.c
 +++ b/src/Main/Main.c
-@@ -404,7 +404,16 @@ int Main_Startup(const char *cmdline)
+@@ -1,4 +1,5 @@
+ #include "Main.h"
++#include "Main/jkObserver.h"
+ 
+ #include "../jk.h"
+ #include "stdPlatform.h"
+@@ -404,7 +405,16 @@ int Main_Startup(const char *cmdline)
          }
      }
      stdStartup(&hs); // Added
@@ -656,9 +783,837 @@ index fd2c8ac..aee025d 100644
  
      wuRegistry_Startup(HKEY_LOCAL_MACHINE, "Software\\LucasArts Entertainment Company\\JediKnight\\v1.0", (BYTE*)"0.1");
      //stdStartup(&hs); // Moved
+@@ -509,6 +519,7 @@ int Main_Startup(const char *cmdline)
+ 
+ void Main_Shutdown()
+ {
++    jkObserver_Shutdown();
+     stdPlatform_Printf("OpenJKDF2: %s\n", __func__);
+ 
+     std3D_Shutdown(); // Added
+diff --git a/src/Main/jkGame.c b/src/Main/jkGame.c
+index e80722b7b3c755f0b04518ed48c2f77bc6b0d3db..282cd4672e8d9d608273637675dd6a8a626ae1e8 100644
+--- a/src/Main/jkGame.c
++++ b/src/Main/jkGame.c
+@@ -1,5 +1,6 @@
+ #include "jkGame.h"
+ #include "Main/stdCapture.h"
++#include "Main/jkObserver.h"
+ 
+ #include "General/stdPalEffects.h"
+ #include "Main/sithMain.h"
+@@ -134,6 +135,7 @@ void jkGame_SetDefaultSettings()
+ 
+ int jkGame_Update()
+ {
++    if (Main_bHeadless && jkObserver_IsCapable()) return jkObserver_RenderFrame();
+     int64_t v0; // rcx
+     SithThing *v2; // esi
+     int v3; // eax
+diff --git a/src/Main/jkObserver.c b/src/Main/jkObserver.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..72ee017fd171cc55f393710692e3862244120f1e
+--- /dev/null
++++ b/src/Main/jkObserver.c
+@@ -0,0 +1,481 @@
++/* A local dedicated-host camera. It owns no game identity or world thing.
++ * The only inputs are typed commands on the authenticated supervisor bridge.
++ * Frames use a separate inherited socket, never a client game transport. */
++#include "Main/jkObserver.h"
++#include "Main/Main.h"
++#include "Main/sithMain.h"
++#include "Engine/sithCamera.h"
++#include "Engine/sithRender.h"
++#include "Engine/rdroid.h"
++#include "Raster/rdCache.h"
++#include "World/sithWorld.h"
++#include "World/sithSector.h"
++#include "World/jkPlayer.h"
++#include "Primitives/rdMatrix.h"
++#include "Primitives/rdModel3.h"
++#include "General/stdPalEffects.h"
++#include "Platform/Networking/GNS/stdComm_GNS.h"
++#include "Platform/std3D.h"
++#include "Win95/Video.h"
++#include "Win95/stdDisplay.h"
++#include "stdPlatform.h"
++#include <stdlib.h>
++#include <string.h>
++#include <math.h>
++#include <limits.h>
++
++#if defined(PLATFORM_POSIX) && defined(SDL2_RENDER) && !defined(RENDER_GL11) && !defined(ARCH_WASM) && !defined(TARGET_ANDROID)
++#define JK_OBSERVER_SUPPORTED 1
++#include <sys/socket.h>
++#include <sys/un.h>
++#include <unistd.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <strings.h>
++#endif
++
++#define OBS_WIDTH 640u
++#define OBS_HEIGHT 360u
++#define OBS_PIXELS (OBS_WIDTH * OBS_HEIGHT * 4u)
++#define OBS_HEADER 36u
++#define OBS_REPLY 92u
++#define OBS_RECORD 76u
++#define OBS_PI 3.14159265358979323846
++#define OBS_SNAPSHOT_LIMIT (32u * 1024u * 1024u)
++#define OBS_RANGE_LIMIT 16384u
++
++typedef struct ObserverRange { void *address; size_t size, offset; } ObserverRange;
++static struct {
++    int capable, context, renderPass, worldReady, renderError, targetLost;
++    int fd;
++    uint32_t worldEpoch, controlEpoch, mode, targetPeer, targetGeneration;
++    uint32_t sequence, lastInputMs, lastPollMs, lastAttemptMs, frameSequence;
++    uint32_t sentWorld, sentControl, sentSequence, sentMs, pendingCapturedMs, reason;
++    float forward, right, up;
++    rdVector3 position, angles; /* Engine angles are degrees; wire angles are radians. */
++    SithCamera camera;
++    rdCanvas canvas;
++    uint8_t *pending;
++    size_t pendingBytes, pendingOffset;
++    ObserverRange *ranges;
++    uint8_t *snapshot;
++    size_t rangeCount, rangeCapacity, snapshotBytes, snapshotCapacity;
++} observer = {.fd = -1, .worldEpoch = 1, .controlEpoch = 1, .reason = 7};
++
++static uint32_t Observer_Next(uint32_t value) { return value == UINT32_MAX ? 1u : value + 1u; }
++static uint32_t Observer_Now(void) { return (uint32_t)stdPlatform_GetTimeMsec(); }
++static uint32_t Observer_Read32(const uint8_t *p)
++{ return (uint32_t)p[0] | (uint32_t)p[1]<<8 | (uint32_t)p[2]<<16 | (uint32_t)p[3]<<24; }
++static void Observer_Write32(uint8_t *p, uint32_t value)
++{ p[0]=value; p[1]=value>>8; p[2]=value>>16; p[3]=value>>24; }
++static float Observer_ReadFloat(const uint8_t *p)
++{ uint32_t bits=Observer_Read32(p); float value; memcpy(&value,&bits,4); return value; }
++static void Observer_WriteFloat(uint8_t *p, float value)
++{ uint32_t bits; memcpy(&bits,&value,4); Observer_Write32(p,bits); }
++
++static void Observer_ClearInput(void)
++{ observer.forward=observer.right=observer.up=0.0f; observer.sequence=0; observer.lastInputMs=0; }
++static void Observer_ControlChanged(void)
++{ observer.controlEpoch=Observer_Next(observer.controlEpoch); Observer_ClearInput(); }
++
++int jkObserver_IsCapable(void) { return observer.capable; }
++int jkObserver_HasContext(void) { return observer.context; }
++int jkObserver_IsRenderPass(void) { return observer.renderPass; }
++void jkObserver_SetContextAvailable(int available) { observer.context=observer.capable && available; }
++
++void jkObserver_Startup(int argc, char **argv)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    int dedicated=0, headless=0;
++    for (int i=1;i<argc;i++) {
++        dedicated |= !strcasecmp(argv[i],"-dedicatedServer") || !strcasecmp(argv[i],"/dedicatedServer");
++        headless |= !strcasecmp(argv[i],"-headless") || !strcasecmp(argv[i],"/headless");
++    }
++    const char *value=getenv("OPENJKDF2_SPECTATOR_FD");
++    if (!dedicated || !headless || !value || !*value) return;
++    char *end=NULL; errno=0;
++    long fd=strtol(value,&end,10);
++    if (errno || !end || *end || fd<3 || fd>INT_MAX) return;
++    int type=0; socklen_t typeLength=sizeof(type);
++    struct sockaddr_un address; socklen_t addressLength=sizeof(address);
++    if (getsockopt((int)fd,SOL_SOCKET,SO_TYPE,&type,&typeLength) || type!=SOCK_STREAM ||
++        getsockname((int)fd,(struct sockaddr *)&address,&addressLength) || address.sun_family!=AF_UNIX ||
++        getpeername((int)fd,(struct sockaddr *)&address,&addressLength) || address.sun_family!=AF_UNIX) return;
++    int flags=fcntl((int)fd,F_GETFL);
++    if (flags<0 || fcntl((int)fd,F_SETFL,flags|O_NONBLOCK)<0 || fcntl((int)fd,F_SETFD,FD_CLOEXEC)<0) return;
++    observer.pending=(uint8_t *)malloc(OBS_HEADER+OBS_PIXELS);
++    if (!observer.pending) return;
++    observer.fd=(int)fd;
++    observer.capable=1;
++#else
++    (void)argc; (void)argv;
++#endif
++}
++
++void jkObserver_Disconnect(void)
++{
++    observer.mode=0; observer.targetPeer=observer.targetGeneration=0;
++    observer.reason=7; observer.targetLost=0; Observer_ControlChanged();
++    /* A partly sent frame must finish to preserve stream framing. Its old
++     * control epoch makes it unusable after this transition. */
++    if (!observer.pendingOffset) observer.pendingBytes=0;
++}
++
++void jkObserver_SetRenderError(void)
++{ observer.renderError=1; jkObserver_Disconnect(); observer.reason=6; }
++
++static void Observer_CloseChannel(void)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    if (observer.fd>=0) close(observer.fd);
++#endif
++    observer.fd=-1; observer.pendingBytes=observer.pendingOffset=0;
++    jkObserver_Disconnect(); observer.reason=5;
++}
++
++static void Observer_Flush(uint32_t now)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    for (int attempts=0;observer.fd>=0 && observer.pendingOffset<observer.pendingBytes && attempts<8;attempts++) {
++        ssize_t result=send(observer.fd,observer.pending+observer.pendingOffset,
++                            observer.pendingBytes-observer.pendingOffset,MSG_DONTWAIT|MSG_NOSIGNAL);
++        if (result>0) observer.pendingOffset+=(size_t)result;
++        else if (result<0 && errno==EINTR) continue;
++        else if (result<0 && (errno==EAGAIN || errno==EWOULDBLOCK)) return;
++        else { Observer_CloseChannel(); return; }
++    }
++    if (observer.pendingBytes && observer.pendingOffset==observer.pendingBytes) {
++        observer.sentWorld=Observer_Read32(observer.pending+16);
++        observer.sentControl=Observer_Read32(observer.pending+20);
++        observer.sentSequence=Observer_Read32(observer.pending+24);
++        /* Congestion changes delivery time, never the age of these pixels. */
++        observer.sentMs=observer.pendingCapturedMs;
++        observer.pendingBytes=observer.pendingOffset=0;
++    }
++#else
++    (void)now;
++#endif
++}
++
++static uint32_t Observer_Generation(uint32_t peer)
++{
++#ifdef PLATFORM_GNS
++    return stdComm_GNS_ObserverPeerGeneration(peer);
++#else
++    (void)peer; return 0;
++#endif
++}
++
++static SithPlayer *Observer_Player(uint32_t peer, uint32_t generation)
++{
++    if (!observer.worldReady || !sithWorld_g_pCurrentWorld || peer<=1 || !generation || Observer_Generation(peer)!=generation) return NULL;
++    for (int i=1;i<jkPlayer_maxPlayers && i<JKPLAYER_NUM_INFOS;i++) {
++        SithPlayer *player=&jkPlayer_playerInfos[i];
++        if ((player->flags&1) && player->playerNetId==peer) return player;
++    }
++    return NULL;
++}
++
++static void Observer_ReadPose(const SithThing *thing)
++{
++    if (!thing) return;
++    rdMatrix34 matrix=thing->orient;
++    matrix.scale=thing->position;
++    if (thing->type==SITH_THING_PLAYER || thing->type==SITH_THING_ACTOR) {
++        rdMatrix_PreRotate34(&matrix,&thing->actorParams.headPYR);
++        rdMatrix_PreTranslate34(&matrix,&thing->actorParams.eyeOffset);
++    }
++    observer.position=matrix.scale;
++    rdMatrix_ExtractAngles34(&matrix,&observer.angles);
++}
++
++void jkObserver_WorldClosing(void)
++{
++    jkObserver_EndReadOnlyRender();
++    jkObserver_Disconnect();
++    observer.worldReady=0; observer.worldEpoch=Observer_Next(observer.worldEpoch);
++    observer.reason=2;
++    if (observer.camera.rdCamera.pClipFrustum) rdCamera_FreeEntry(&observer.camera.rdCamera);
++    memset(&observer.camera,0,sizeof(observer.camera));
++    memset(&observer.canvas,0,sizeof(observer.canvas));
++}
++
++void jkObserver_WorldOpened(void)
++{
++    if (!observer.capable) return;
++    observer.worldEpoch=Observer_Next(observer.worldEpoch); Observer_ControlChanged();
++    observer.worldReady=sithWorld_g_pCurrentWorld!=NULL;
++    observer.mode=0; observer.reason=7; observer.targetLost=observer.renderError=0;
++    memset(&observer.position,0,sizeof(observer.position));
++    memset(&observer.angles,0,sizeof(observer.angles));
++    if (observer.worldReady) Observer_ReadPose(sithWorld_g_pCurrentWorld->pLocalPlayer);
++    observer.lastPollMs=Observer_Now();
++}
++
++void jkObserver_Shutdown(void)
++{
++    jkObserver_WorldClosing(); Observer_CloseChannel();
++    free(observer.pending); observer.pending=NULL;
++    free(observer.ranges); observer.ranges=NULL;
++    free(observer.snapshot); observer.snapshot=NULL;
++    observer.rangeCapacity=observer.snapshotCapacity=0;
++    observer.capable=observer.context=0;
++}
++
++void jkObserver_Poll(void)
++{
++    if (!observer.capable) return;
++    const uint32_t now=Observer_Now();
++    Observer_Flush(now);
++    uint32_t elapsed=now-observer.lastPollMs; observer.lastPollMs=now;
++    if (elapsed>100) elapsed=100;
++    if (!observer.worldReady || !sithWorld_g_pCurrentWorld) return;
++    if (observer.mode==2) {
++        SithPlayer *player=Observer_Player(observer.targetPeer,observer.targetGeneration);
++        if (!player) {
++            observer.mode=1; observer.targetPeer=observer.targetGeneration=0;
++            observer.targetLost=1; observer.reason=3; Observer_ControlChanged();
++        } else if (player->pLocalPlayer) Observer_ReadPose(player->pLocalPlayer);
++    }
++    if (observer.mode==1 && observer.sequence) {
++        if (now-observer.lastInputMs>250) observer.forward=observer.right=observer.up=0.0f;
++        rdMatrix34 matrix; rdMatrix_Build34(&matrix,&observer.angles,&observer.position);
++        const flex_t distance=(flex_t)elapsed*0.003f;
++        observer.position.x+=distance*(observer.forward*matrix.lvec.x+observer.right*matrix.rvec.x);
++        observer.position.y+=distance*(observer.forward*matrix.lvec.y+observer.right*matrix.rvec.y);
++        observer.position.z+=distance*(observer.forward*matrix.lvec.z+observer.right*matrix.rvec.z+observer.up);
++    }
++}
++
++static uint32_t Observer_Roster(uint8_t *output, size_t capacity)
++{
++    uint32_t count=0;
++    if (!observer.worldReady || !sithWorld_g_pCurrentWorld) return 0;
++    for (int i=1;i<jkPlayer_maxPlayers && i<JKPLAYER_NUM_INFOS && count<31;i++) {
++        SithPlayer *player=&jkPlayer_playerInfos[i];
++        uint32_t generation=Observer_Generation(player->playerNetId);
++        if (!(player->flags&1) || player->playerNetId<=1 || !generation) continue;
++        if ((size_t)(count+1)*OBS_RECORD>capacity) break;
++        uint8_t *record=output+count*OBS_RECORD; memset(record,0,OBS_RECORD);
++        Observer_Write32(record,player->playerNetId); Observer_Write32(record+4,generation); Observer_Write32(record+8,(uint32_t)i);
++        for (int n=0;n<31 && player->player_name[n];n++) {
++            uint16_t value=(uint16_t)player->player_name[n]; record[12+n*2]=value; record[13+n*2]=value>>8;
++        }
++        ++count;
++    }
++    return count;
++}
++
++size_t jkObserver_Request(const uint8_t *request, size_t length, uint8_t *reply, size_t capacity)
++{
++    if (!reply || capacity<OBS_REPLY) return 0;
++    jkObserver_Poll();
++    uint32_t operation=length>=8 && request?Observer_Read32(request+4):UINT32_MAX;
++    uint32_t result=0;
++    if (!request || length<8 || Observer_Read32(request)!=1 || operation>2 ||
++        length!=(operation==0?8u:operation==1?28u:40u)) result=1;
++    else if (operation) {
++        if (Observer_Read32(request+8)!=observer.worldEpoch || Observer_Read32(request+12)!=observer.controlEpoch) result=2;
++        else if (operation==1) {
++            uint32_t mode=Observer_Read32(request+16), peer=Observer_Read32(request+20), generation=Observer_Read32(request+24);
++            if (mode>2 || (mode!=2 && (peer || generation))) result=1;
++            else if (mode && (!observer.capable || !observer.context || observer.fd<0 || !observer.worldReady || observer.renderError)) result=4;
++            else if (mode==2 && !Observer_Player(peer,generation)) result=3;
++            else {
++                Observer_ControlChanged(); observer.mode=mode; observer.targetPeer=peer; observer.targetGeneration=generation;
++                observer.targetLost=0; observer.reason=mode?0:7;
++                if (mode==2) Observer_ReadPose(Observer_Player(peer,generation)->pLocalPlayer);
++            }
++        } else {
++            const uint32_t sequence=Observer_Read32(request+16);
++            float values[5]; for (int i=0;i<5;i++) values[i]=Observer_ReadFloat(request+20+i*4);
++            if (observer.mode!=1) result=5;
++            else if (!sequence || sequence<=observer.sequence) result=1;
++            else {
++                for (int i=0;i<5;i++) if (!isfinite(values[i]) || fabsf(values[i])>(i<3?1.0f:(float)OBS_PI)) result=1;
++                if (!result) {
++                    observer.sequence=sequence; observer.lastInputMs=Observer_Now();
++                    observer.forward=values[0]; observer.right=values[1]; observer.up=values[2];
++                    observer.angles.y=(flex_t)remainder((double)observer.angles.y+values[3]*(180.0/OBS_PI),360.0);
++                    observer.angles.x=(flex_t)fmax(-89.0,fmin(89.0,(double)observer.angles.x+values[4]*(180.0/OBS_PI)));
++                }
++            }
++        }
++    }
++    memset(reply,0,OBS_REPLY);
++    SithSector *sector=observer.worldReady && sithWorld_g_pCurrentWorld?sithSector_FindSectorAtPos(sithWorld_g_pCurrentWorld,&observer.position):NULL;
++    int sectorIndex=sector && sithWorld_g_pCurrentWorld?(int)(sector-sithWorld_g_pCurrentWorld->aSectors):-1;
++    uint32_t ready=observer.sentSequence && observer.sentWorld==observer.worldEpoch && observer.sentControl==observer.controlEpoch;
++    uint32_t capabilities=(observer.context?1u:0u)|(observer.fd>=0?2u:0u)|(observer.capable?12u:0u);
++    uint32_t flags=(observer.worldReady?1u:0u)|(ready?2u:0u)|(observer.pendingBytes?4u:0u)|
++        (observer.worldReady && !sector?8u:0u)|(observer.targetLost?16u:0u)|(observer.mode?32u:0u)|(observer.renderError?64u:0u);
++    uint32_t reason=observer.reason;
++    if (!observer.capable) reason=1;
++    else if (observer.fd<0) reason=5;
++    else if (observer.renderError) reason=6;
++    else if (!observer.worldReady) reason=2;
++    else if (!observer.mode) reason=7;
++    else if (observer.targetLost) reason=3;
++    else if (!sector) reason=4;
++    uint32_t count=operation==0?Observer_Roster(reply+OBS_REPLY,capacity-OBS_REPLY):0;
++    uint32_t words[16]={1,result,operation,capabilities,observer.mode,flags,observer.worldEpoch,observer.controlEpoch,
++        observer.targetPeer,observer.targetGeneration,OBS_WIDTH,OBS_HEIGHT,ready?Observer_Now()-observer.sentMs:UINT32_MAX,
++        reason,count,observer.frameSequence};
++    for (int i=0;i<16;i++) Observer_Write32(reply+i*4,words[i]);
++    Observer_WriteFloat(reply+64,observer.position.x); Observer_WriteFloat(reply+68,observer.position.y); Observer_WriteFloat(reply+72,observer.position.z);
++    Observer_WriteFloat(reply+76,(float)(observer.angles.y*(OBS_PI/180.0))); Observer_WriteFloat(reply+80,(float)(observer.angles.x*(OBS_PI/180.0)));
++    Observer_WriteFloat(reply+84,(float)(observer.angles.z*(OBS_PI/180.0))); Observer_Write32(reply+88,(uint32_t)sectorIndex);
++    return OBS_REPLY+count*OBS_RECORD;
++}
++
++/* Renderer caches share allocations with saber collision and COG visibility.
++ * Preserve their bytes, including nested joint/puppet arrays. Snapshot failure
++ * happens before any drawing, and disables only observation. */
++static int Observer_Save(void *address, size_t count, size_t size)
++{
++    if (!address || !count || !size) return 1;
++    if (count>OBS_SNAPSHOT_LIMIT/size) return 0;
++    size_t bytes=count*size;
++    for (size_t i=0;i<observer.rangeCount;i++) if (observer.ranges[i].address==address) return observer.ranges[i].size==bytes;
++    if (observer.rangeCount>=OBS_RANGE_LIMIT || bytes>OBS_SNAPSHOT_LIMIT-observer.snapshotBytes) return 0;
++    if (observer.rangeCount==observer.rangeCapacity) {
++        size_t capacity=observer.rangeCapacity?observer.rangeCapacity*2:64;
++        ObserverRange *ranges=(ObserverRange *)realloc(observer.ranges,capacity*sizeof(*ranges));
++        if (!ranges) return 0;
++        observer.ranges=ranges; observer.rangeCapacity=capacity;
++    }
++    if (observer.snapshotBytes+bytes>observer.snapshotCapacity) {
++        size_t capacity=observer.snapshotCapacity?observer.snapshotCapacity:65536;
++        while (capacity<observer.snapshotBytes+bytes) capacity*=2;
++        if (capacity>OBS_SNAPSHOT_LIMIT) capacity=OBS_SNAPSHOT_LIMIT;
++        uint8_t *snapshot=(uint8_t *)realloc(observer.snapshot,capacity);
++        if (!snapshot) return 0;
++        observer.snapshot=snapshot; observer.snapshotCapacity=capacity;
++    }
++    ObserverRange *range=&observer.ranges[observer.rangeCount++];
++    range->address=address; range->size=bytes; range->offset=observer.snapshotBytes;
++    memcpy(observer.snapshot+observer.snapshotBytes,address,bytes); observer.snapshotBytes+=bytes;
++    return 1;
++}
++
++static int Observer_SaveModel(rdModel3 *model)
++{
++    if (!model) return 1;
++    if (model->numGeos>4 || model->numHNodes>4096 || !Observer_Save(model,1,sizeof(*model))) return 0;
++    for (unsigned int g=0;g<model->numGeos;g++) {
++        rdGeoset *geo=&model->aGeos[g];
++        if (geo->numMeshes>4096 || !Observer_Save(geo->aMeshes,geo->numMeshes,sizeof(rdMesh))) return 0;
++        for (unsigned int m=0;geo->aMeshes && m<geo->numMeshes;m++) {
++            rdMesh *mesh=&geo->aMeshes[m];
++            if (!Observer_Save(mesh->faces,mesh->numFaces,sizeof(rdFace)) ||
++                !Observer_Save(mesh->vertices_unk,mesh->numVertices,sizeof(flex_t))) return 0;
++        }
++    }
++    return 1;
++}
++
++int jkObserver_BeginReadOnlyRender(void)
++{
++    SithWorld *world=sithWorld_g_pCurrentWorld;
++    if (observer.renderPass || !world || world->numThings<0 || world->numThings>65535 ||
++        world->numSectors<0 || world->numSurfaces<0 || world->numVertices<0 || world->numAdjoins<0) return 0;
++    observer.rangeCount=observer.snapshotBytes=0;
++#define SAVE(value) do { if (!Observer_Save(&(value),1,sizeof(value))) goto failed; } while (0)
++#define ARRAY(address,count) do { if (!Observer_Save((address),(size_t)(count),sizeof(*(address)))) goto failed; } while (0)
++    SAVE(*world); ARRAY(world->aThings,world->numThings+1); ARRAY(world->aSectors,world->numSectors);
++    ARRAY(world->surfaces,world->numSurfaces); ARRAY(world->adjoins,world->numAdjoins);
++    ARRAY(world->aTransformedVertices,world->numVertices); ARRAY(world->alloc_unk98,world->numVertices);
++    ARRAY(world->alloc_unk9c,world->numVertices); ARRAY(world->aVertDynamicLights,world->numVertices);
++    for (int i=0;world->aThings && i<=world->numThings;i++) {
++        rdThing *thing=&world->aThings[i].renderData;
++        if (thing->type==RD_THING_MODEL3 && thing->model3) {
++            if (!Observer_SaveModel(thing->model3)) goto failed;
++            ARRAY(thing->paJointMatrices,thing->model3->numHNodes);
++            ARRAY(thing->hierarchyNodes2,thing->model3->numHNodes);
++            ARRAY(thing->paJointAmputationFlags,thing->model3->numHNodes);
++            if (thing->puppet) SAVE(*thing->puppet);
++        } else if (thing->type==RD_THING_SPRITE3 && thing->sprite3) SAVE(*thing->sprite3);
++        else if (thing->type==RD_THING_PARTICLE && thing->particlecloud) SAVE(*thing->particlecloud);
++        else if (thing->type==RD_THING_POLYLINE && thing->polyline) SAVE(*thing->polyline);
++    }
++    SAVE(rdroid_frameTrue); SAVE(sithRender_lastRenderTick); SAVE(sithPlayer_bNoClippingRend);
++    SAVE(sithCamera_g_pCurCamera); SAVE(rdCamera_g_pCurCamera); SAVE(rdCamera_g_camMatrix);
++    SAVE(rdroid_curColorEffects); SAVE(sithMain_lastAspect);
++    SAVE(rdroid_g_curRenderOptions); SAVE(rdroid_g_curGeometryMode); SAVE(rdroid_g_curLightingMode);
++    SAVE(rdroid_curTextureMode); SAVE(rdroid_curAcceleration); SAVE(rdroid_curCullFlags);
++    SAVE(rdroid_curSortingMethod); SAVE(rdroid_curOcclusionMethod); SAVE(rdroid_curZBufferMethod);
++    SAVE(rdroid_curProcFaceUserData); SAVE(rdroid_curVertexColorMode); SAVE(sithRender_renderflags);
++    SAVE(sithRender_bResetCameraAspect);
++#undef ARRAY
++#undef SAVE
++    observer.renderPass=1; return 1;
++failed:
++    observer.rangeCount=observer.snapshotBytes=0; return 0;
++}
++
++void jkObserver_EndReadOnlyRender(void)
++{
++    if (!observer.renderPass) return;
++    while (observer.rangeCount) {
++        ObserverRange *range=&observer.ranges[--observer.rangeCount];
++        memcpy(range->address,observer.snapshot+range->offset,range->size);
++    }
++    observer.snapshotBytes=0; observer.renderPass=0;
++}
++
++int jkObserver_RenderFrame(void)
++{
++    /* jkGame_Update also advances this stamp while observation is off. Saber
++     * collision lazily refreshes joint matrices against it; the 5 fps observer
++     * must never become the simulation's animation clock. */
++    rdroid_frameTrue=rdroid_frameTrue==INT_MAX?1:rdroid_frameTrue+1;
++    jkObserver_Poll();
++#ifdef JK_OBSERVER_SUPPORTED
++    const uint32_t now=Observer_Now();
++    if (!observer.mode || !observer.worldReady || !observer.context || observer.fd<0 || observer.renderError ||
++        observer.pendingBytes || now-observer.lastAttemptMs<200 || !Video_pCanvas || !Video_pMenuBuffer) return 1;
++    observer.lastAttemptMs=now;
++    if (!observer.camera.rdCamera.pClipFrustum) {
++        if (!rdCamera_NewEntry(&observer.camera.rdCamera,90.0f,0,SITHCAMERA_ZNEAR,SITHCAMERA_ZFAR,0.5625f)) {
++            jkObserver_SetRenderError(); return 1;
++        }
++        observer.camera.type=0; observer.camera.fov=90.0f; observer.camera.aspectRatio=0.5625f;
++        rdCamera_SetAttenuation(&observer.camera.rdCamera,SITHCAMERA_ATTENUATION_MIN,SITHCAMERA_ATTENUATION_MAX);
++    }
++    observer.canvas=*Video_pCanvas;
++    observer.canvas.xStart=observer.canvas.yStart=0;
++    observer.canvas.widthMinusOne=OBS_WIDTH-1; observer.canvas.heightMinusOne=OBS_HEIGHT-1;
++    observer.canvas.half_screen_width=OBS_WIDTH/2; observer.canvas.half_screen_height=OBS_HEIGHT/2;
++    rdCamera_SetCanvas(&observer.camera.rdCamera,&observer.canvas);
++    rdMatrix_Build34(&observer.camera.orient,&observer.angles,&observer.position);
++    observer.camera.sector=sithSector_FindSectorAtPos(sithWorld_g_pCurrentWorld,&observer.position);
++    observer.camera.lookPos=observer.position;
++    observer.camera.lookPYR=observer.angles;
++    if (!jkObserver_BeginReadOnlyRender()) { jkObserver_SetRenderError(); return 1; }
++    sithCamera_g_pCurCamera=&observer.camera;
++    rdCamera_SetCurrent(&observer.camera.rdCamera);
++    rdroid_curAcceleration=1; sithMain_lastAspect=0.5625f;
++    stdPalEffect neutral; stdPalEffects_ResetEffect(&neutral); rdSetColorEffects(&neutral);
++    stdDisplay_VBufferFill(Video_pMenuBuffer,Video_fillColor,0);
++    rdAdvanceFrame();
++    int ok=!observer.renderError;
++    if (ok) {
++        sithAdvanceRenderTick();
++        sithCamera_RenderScene();
++        rdCache_Flush();
++        std3D_DrawMenu();
++        rdFinishFrame();
++        ok=std3D_ObserverReadback(observer.pending+OBS_HEADER,OBS_WIDTH,OBS_HEIGHT);
++    }
++    jkObserver_EndReadOnlyRender();
++    if (!ok) { jkObserver_SetRenderError(); return 1; }
++    observer.frameSequence=Observer_Next(observer.frameSequence);
++    memcpy(observer.pending,"JKSV",4);
++    uint32_t header[8]={1,OBS_WIDTH,OBS_HEIGHT,observer.worldEpoch,observer.controlEpoch,observer.frameSequence,OBS_PIXELS,0};
++    for (int i=0;i<8;i++) Observer_Write32(observer.pending+4+i*4,header[i]);
++    observer.pendingCapturedMs=now;
++    observer.pendingBytes=OBS_HEADER+OBS_PIXELS; observer.pendingOffset=0;
++    Observer_Flush(now);
++#endif
++    return 1;
++}
+diff --git a/src/Main/jkObserver.h b/src/Main/jkObserver.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..8c0f9653e33052def4dccac43454ac3e96529489
+--- /dev/null
++++ b/src/Main/jkObserver.h
+@@ -0,0 +1,26 @@
++#ifndef _JK_OBSERVER_H
++#define _JK_OBSERVER_H
++#include <stddef.h>
++#include <stdint.h>
++#ifdef __cplusplus
++extern "C" {
++#endif
++void jkObserver_Startup(int argc, char **argv);
++void jkObserver_Shutdown(void);
++int jkObserver_IsCapable(void);
++int jkObserver_HasContext(void);
++int jkObserver_IsRenderPass(void);
++void jkObserver_SetContextAvailable(int available);
++void jkObserver_WorldOpened(void);
++void jkObserver_WorldClosing(void);
++void jkObserver_Disconnect(void);
++void jkObserver_Poll(void);
++int jkObserver_RenderFrame(void);
++void jkObserver_SetRenderError(void);
++size_t jkObserver_Request(const uint8_t *request, size_t length, uint8_t *reply, size_t capacity);
++int jkObserver_BeginReadOnlyRender(void);
++void jkObserver_EndReadOnlyRender(void);
++#ifdef __cplusplus
++}
++#endif
++#endif
+diff --git a/src/Main/sithMain.c b/src/Main/sithMain.c
+index b10ad70f0564bc2497a890cf0c69c5ca7976cffc..5e0e1a169873ea7b6647182385a04432d4f36042 100644
+--- a/src/Main/sithMain.c
++++ b/src/Main/sithMain.c
+@@ -1,5 +1,6 @@
+ #include "sithMain.h"
+ #include "Main/stdCapture.h"
++#include "Main/jkObserver.h"
+ 
+ #include "Main/jkGame.h"
+ #include "Main/Main.h"
+@@ -206,6 +207,7 @@ void sithClose()
+ {
+     if ( sith_bOpen )
+     {
++        jkObserver_WorldClosing();
+         sithSoundMixer_StopSong();
+         sithRender_Close();
+         sithAIAwareness_Close();
+@@ -556,4 +558,5 @@ void sithOpenPostProcess()
+ #endif
+         sithTime_Startup();
+     }
++    jkObserver_WorldOpened();
+ }
+diff --git a/src/Platform/GL/std3D.c b/src/Platform/GL/std3D.c
+index 13c9d22a5839cd3d4ac4bb10f795c135e2671050..89042fa26ae9a1d63a867445c04b433d1df8f205 100644
+--- a/src/Platform/GL/std3D.c
++++ b/src/Platform/GL/std3D.c
+@@ -9,6 +9,7 @@
+ #include "Engine/rdColormap.h"
+ #include "Engine/rdroid.h"
+ #include "Main/jkGame.h"
++#include "Main/jkObserver.h"
+ #include "World/jkPlayer.h"
+ #include "General/stdBitmap.h"
+ #include "stdPlatform.h"
+@@ -18,6 +19,7 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <math.h>
+ #include "Platform/GL/shader_utils.h"
+ #include "Platform/GL/jkgm.h"
+ 
+@@ -608,8 +610,14 @@ int init_resources()
+ 
+     for (int i = 0; i < 4*4; i++)
+     {
+-        tiledrand_data[i].x = (_frand() * 2.0) - 1.0;
+-        tiledrand_data[i].y = (_frand() * 2.0) - 1.0;
++        if (jkObserver_IsRenderPass()) {
++            /* Resource initialization must not consume simulation randomness. */
++            tiledrand_data[i].x = cosf((float)(i+1)*2.39996323f);
++            tiledrand_data[i].y = sinf((float)(i+1)*2.39996323f);
++        } else {
++            tiledrand_data[i].x = (_frand() * 2.0) - 1.0;
++            tiledrand_data[i].y = (_frand() * 2.0) - 1.0;
++        }
+         tiledrand_data[i].z = 0.0;
+         rdVector_Normalize3Acc(&tiledrand_data[i]);
+     }
+@@ -736,7 +744,7 @@ void std3D_FreeResources()
+ 
+ int std3D_StartScene()
+ {
+-    if (Main_bHeadless) return 1;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
+ 
+     ++std3D_frameCount;
+ 
+@@ -744,6 +752,7 @@ int std3D_StartScene()
+     if (!has_initted)
+     {
+         if (!init_resources()) {
++            if (jkObserver_IsRenderPass()) { jkObserver_SetRenderError(); return 0; }
+             stdPlatform_Printf("std3D: Failed to init resources, exiting...");
+             if (Window_bRenderProbe) fprintf(stderr,"RENDERPROBE_FAILED OpenGL resource initialization\n");
+             else SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Failed to init resources, exiting...", NULL);
+@@ -824,8 +833,14 @@ int std3D_StartScene()
+     glBindTexture(GL_TEXTURE_2D, tiledrand_texture);
+     for (int i = 0; i < 4*4; i++)
+     {
+-        tiledrand_data[i].x = (_frand() * 2.0) - 1.0;
+-        tiledrand_data[i].y = (_frand() * 2.0) - 1.0;
++        if (jkObserver_IsRenderPass()) {
++            /* Resource initialization must not consume simulation randomness. */
++            tiledrand_data[i].x = cosf((float)(i+1)*2.39996323f);
++            tiledrand_data[i].y = sinf((float)(i+1)*2.39996323f);
++        } else {
++            tiledrand_data[i].x = (_frand() * 2.0) - 1.0;
++            tiledrand_data[i].y = (_frand() * 2.0) - 1.0;
++        }
+         tiledrand_data[i].z = 0.0;
+         rdVector_Normalize3Acc(&tiledrand_data[i]);
+         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 4, 4, GL_RGB, GL_FLOAT, tiledrand_data);
+@@ -881,7 +896,7 @@ int std3D_StartScene()
+ 
+ int std3D_EndScene()
+ {
+-    if (Main_bHeadless) {
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) {
+         last_tex = NULL;
+         last_flags = 0;
+         std3D_ResetRenderList();
+@@ -1198,10 +1213,12 @@ static void std3D_PresentSWWorld(void)
+ 
+ void std3D_DrawMenu()
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     //printf("Draw menu\n");
+     std3D_DrawSceneFbo();
++    /* The live observer deliberately excludes host HUD, automap and console. */
++    if (jkObserver_IsRenderPass()) { last_flags=0; return; }
+     //glFlush();
+ 
+     // When the software renderer presented the world this frame, its buffer already contains the HUD
+@@ -1566,7 +1583,7 @@ void std3D_DrawMenu()
+ 
+ void std3D_DrawMapOverlay()
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     //glFlush();
+ 
+@@ -1964,7 +1981,7 @@ void std3D_DrawUIClearedRectRGBA(uint8_t color_r, uint8_t color_g, uint8_t color
+ 
+ void std3D_DrawUIRenderList()
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+     if (!GL_tmpUITrisAmt) return;
+ 
+     //glFlush();
+@@ -2541,7 +2558,7 @@ void std3D_DoTex(rdDDrawSurface* tex, rdTri* tri, int tris_left)
+ 
+ void std3D_DrawRenderList()
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     //printf("Draw render list\n");
+     glBindFramebuffer(GL_FRAMEBUFFER, std3D_pFb->fbo);
+@@ -2560,6 +2577,13 @@ void std3D_DrawRenderList()
+     float internalWidth = Video_menuBuffer.format.width;
+     float internalHeight = Video_menuBuffer.format.height;
+ 
++    /* Observer projection uses its private 640x360 canvas. The untouched
++     * host menu buffer remains 640x480 and must not scale the live camera. */
++    if (jkObserver_IsRenderPass()) {
++        internalWidth = Window_xSize;
++        internalHeight = Window_ySize;
++    }
++
+     if (jkGuiBuildMulti_bRendering) {
+         internalWidth = 640.0;
+         internalHeight = 480.0;
+@@ -2916,7 +2940,7 @@ int std3D_DrawOverlay()
+ void std3D_UnloadAllTextures()
+ {
+ #ifndef SDL2_RENDER
+-    if (!Main_bHeadless) {
++    if (!Main_bHeadless || jkObserver_HasContext()) {
+         glDeleteTextures(std3D_loadedTexturesAmt, std3D_aLoadedTextures);
+     }
+     std3D_loadedTexturesAmt = 0;
+@@ -2927,7 +2951,7 @@ void std3D_UnloadAllTextures()
+ 
+ void std3D_AddRenderListTris(rdTri *tris, unsigned int num_tris)
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     if (GL_tmpTrisAmt + num_tris > STD3D_MAX_TRIS)
+     {
+@@ -2941,7 +2965,7 @@ void std3D_AddRenderListTris(rdTri *tris, unsigned int num_tris)
+ 
+ void std3D_AddRenderListLines(rdLine* lines, uint32_t num_lines)
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     if (GL_tmpLinesAmt + num_lines > STD3D_MAX_VERTICES)
+     {
+@@ -2954,7 +2978,7 @@ void std3D_AddRenderListLines(rdLine* lines, uint32_t num_lines)
+ 
+ int std3D_AddRenderListVertices(D3DVERTEX *aVertices, int count)
+ {
+-    if (Main_bHeadless) return 1;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
+ 
+     if (GL_tmpVerticesAmt + count >= STD3D_MAX_VERTICES)
+     {
+@@ -2970,7 +2994,7 @@ int std3D_AddRenderListVertices(D3DVERTEX *aVertices, int count)
+ 
+ void std3D_AddRenderListUITris(rdUITri *tris, unsigned int num_tris)
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     if (GL_tmpUITrisAmt + num_tris > STD3D_MAX_TRIS)
+     {
+@@ -2984,8 +3008,9 @@ void std3D_AddRenderListUITris(rdUITri *tris, unsigned int num_tris)
+ 
+ int std3D_ClearZBuffer()
+ {
+-    // Headless startup does not initialize a framebuffer or retain a GL context.
+-    if (Main_bHeadless) return 1;
++    // Observer resources are lazy; the first rdAdvanceFrame clears before StartScene.
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
++    if (jkObserver_IsRenderPass() && (!has_initted || !std3D_pFb)) return 1;
+ 
+ #ifdef RDRASTER_SW_ZBUFFER
+     // Added: the software rasterizer keeps its own depth buffer; clear it on the same hook JK uses
+@@ -3000,7 +3025,7 @@ int std3D_ClearZBuffer()
+ 
+ int std3D_AddToTextureCache(tVBuffer *vbuf, rdDDrawSurface *texture, int is_alpha_tex, int no_alpha)
+ {
+-    if (Main_bHeadless) return 1;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
+     if (!vbuf || !texture) return 1;
+     if (texture->texture_loaded) return 1;
+ 
+@@ -3201,7 +3226,7 @@ int std3D_GetBitmapCacheIdx()
+ 
+ int std3D_AddBitmapToTextureCache(stdBitmap *texture, int mipIdx, int is_alpha_tex, int no_alpha)
+ {
+-    if (Main_bHeadless) return 1;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
+     if (!has_initted) return 0;
+     if (!texture) return 1;
+     if (mipIdx >= texture->numMips) return 1;
+@@ -3886,7 +3911,7 @@ int std3D_PurgeTextureCache(size_t size)
+ 
+ void std3D_PurgeEntireTextureCache()
+ {
+-    if (Main_bHeadless) {
++    if (Main_bHeadless && !jkObserver_HasContext()) {
+         std3D_loadedTexturesAmt = 0;
+         return;
+     }
+@@ -3978,3 +4003,37 @@ int std3D_IsReady()
+ {
+     return has_initted;
+ }
++
++/* Live observation uses its own authorization/lifecycle, never stdCapture. */
++int std3D_ObserverReadback(uint8_t *pixels, int width, int height)
++{
++    if (!jkObserver_IsRenderPass() || !jkObserver_HasContext() || !pixels ||
++        width<1 || height<1 || width>640 || height>360 || Window_xSize!=width || Window_ySize!=height) return 0;
++    GLint readFbo,readBuffer,pack,row,skipRows,skipPixels,pbo;
++    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,&readFbo);
++    glGetIntegerv(GL_READ_BUFFER,&readBuffer);
++    glGetIntegerv(GL_PACK_ALIGNMENT,&pack);
++    glGetIntegerv(GL_PACK_ROW_LENGTH,&row);
++    glGetIntegerv(GL_PACK_SKIP_ROWS,&skipRows);
++    glGetIntegerv(GL_PACK_SKIP_PIXELS,&skipPixels);
++    glGetIntegerv(GL_PIXEL_PACK_BUFFER_BINDING,&pbo);
++    for (int i=0;i<16 && glGetError()!=GL_NO_ERROR;i++) {}
++    glBindFramebuffer(GL_READ_FRAMEBUFFER,std3D_windowFbo);
++    glReadBuffer(std3D_windowFbo ? GL_COLOR_ATTACHMENT0 : GL_BACK);
++    glBindBuffer(GL_PIXEL_PACK_BUFFER,0);
++    glPixelStorei(GL_PACK_ALIGNMENT,1); glPixelStorei(GL_PACK_ROW_LENGTH,0);
++    glPixelStorei(GL_PACK_SKIP_ROWS,0); glPixelStorei(GL_PACK_SKIP_PIXELS,0);
++    glReadPixels(0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
++    GLenum error=glGetError();
++    glBindFramebuffer(GL_READ_FRAMEBUFFER,readFbo); glReadBuffer(readBuffer);
++    glBindBuffer(GL_PIXEL_PACK_BUFFER,pbo); glPixelStorei(GL_PACK_ALIGNMENT,pack);
++    glPixelStorei(GL_PACK_ROW_LENGTH,row); glPixelStorei(GL_PACK_SKIP_ROWS,skipRows);
++    glPixelStorei(GL_PACK_SKIP_PIXELS,skipPixels);
++    if (error!=GL_NO_ERROR) return 0;
++    uint8_t line[640*4]; size_t stride=(size_t)width*4;
++    for (int y=0;y<height/2;y++) {
++        uint8_t *top=pixels+(size_t)y*stride, *bottom=pixels+(size_t)(height-y-1)*stride;
++        memcpy(line,top,stride); memcpy(top,bottom,stride); memcpy(bottom,line,stride);
++    }
++    return 1;
++}
 diff --git a/src/Platform/Networking/GNS/AdminConnections.h b/src/Platform/Networking/GNS/AdminConnections.h
 new file mode 100644
-index 0000000..fcecd70
+index 0000000000000000000000000000000000000000..fcecd70461052afc860b2a79f5e786bfb5feb0fa
 --- /dev/null
 +++ b/src/Platform/Networking/GNS/AdminConnections.h
 @@ -0,0 +1,57 @@
@@ -721,7 +1676,7 @@ index 0000000..fcecd70
 +#endif
 diff --git a/src/Platform/Networking/GNS/GatewayBridge.h b/src/Platform/Networking/GNS/GatewayBridge.h
 new file mode 100644
-index 0000000..3e04f24
+index 0000000000000000000000000000000000000000..3e04f24e4f1322074471eb0331d85ebef47d87fd
 --- /dev/null
 +++ b/src/Platform/Networking/GNS/GatewayBridge.h
 @@ -0,0 +1,172 @@
@@ -899,7 +1854,7 @@ index 0000000..3e04f24
 +#endif
 diff --git a/src/Platform/Networking/GNS/TransportIdentities.h b/src/Platform/Networking/GNS/TransportIdentities.h
 new file mode 100644
-index 0000000..780eb54
+index 0000000000000000000000000000000000000000..780eb549896e4925348e273688d3990f784c1d79
 --- /dev/null
 +++ b/src/Platform/Networking/GNS/TransportIdentities.h
 @@ -0,0 +1,193 @@
@@ -1097,10 +2052,12 @@ index 0000000..780eb54
 +}
 +#endif
 diff --git a/src/Platform/Networking/GNS/stdComm_GNS.cpp b/src/Platform/Networking/GNS/stdComm_GNS.cpp
-index c0c10f6..7107acf 100644
+index c0c10f6ffbe1e28b739bd8463fe1300a22793f46..03ae9a51157d23efcfb163e0a6859dc2bfa727d3 100644
 --- a/src/Platform/Networking/GNS/stdComm_GNS.cpp
 +++ b/src/Platform/Networking/GNS/stdComm_GNS.cpp
-@@ -2,6 +2,7 @@
+@@ -1,7 +1,9 @@
+ #include "stdComm_GNS.h"
++#include "Main/jkObserver.h"
  
  #include "Win95/stdComm.h"
  #include "Dss/sithMulti.h"
@@ -1108,7 +2065,7 @@ index c0c10f6..7107acf 100644
  #include "General/stdString.h"
  #include "stdPlatform.h"
  #include "jk.h"
-@@ -21,6 +22,10 @@
+@@ -21,6 +23,10 @@
  #include <queue>
  #include <map>
  #include <cctype>
@@ -1119,7 +2076,7 @@ index c0c10f6..7107acf 100644
  
  #include <steam/steamnetworkingsockets.h>
  #include <steam/isteamnetworkingmessages.h>
-@@ -74,6 +79,7 @@ extern char16_t jkGuiMultiplayer_ipText[256];
+@@ -74,6 +80,7 @@ extern char16_t jkGuiMultiplayer_ipText[256];
  char jkGuiMultiplayer_ipText_conv[256];
  static int sithDplayGNS_numEnumd = 0;
  extern int Main_bVerboseNetworking;
@@ -1127,7 +2084,7 @@ index c0c10f6..7107acf 100644
  
  typedef bool (*GameNetworkingSockets_Init_t)( const SteamNetworkingIdentity *pIdentity, SteamNetworkingErrMsg &errMsg );
  typedef ISteamNetworkingUtils* (*SteamNetworkingUtils_t)(void);
-@@ -319,10 +325,37 @@ public:
+@@ -319,10 +326,37 @@ public:
          // the next host's join handshake, which aborts the new client's sync (matching
          // sithMulti_sendto_id) and removes them -> they time out and never appear.
          std::queue<int>().swap(m_DisconnectedPeers);
@@ -1146,7 +2103,7 @@ index c0c10f6..7107acf 100644
 +            if (!Main_bDedicatedServer || !tail || *tail || port < 1 || port > 65535 || !token ||
 +                !m_gateway.start(uint16_t(port), token,
 +                    [this](const jk_gateway::Frame& f) { HandleGateway(f); },
-+                    [this]() { DropGatewayPeers(); })) {
++                    [this]() { jkObserver_Disconnect(); DropGatewayPeers(); })) {
 +                fprintf(stderr, "GATEWAY_FAILED invalid configuration or loopback bind\n");
 +                exit(78);
 +            }
@@ -1165,7 +2122,7 @@ index c0c10f6..7107acf 100644
          // Close all the connections
          Printf( "Closing connections...\n" );
          for ( auto it: m_mapClients )
-@@ -347,9 +380,13 @@ public:
+@@ -347,9 +381,13 @@ public:
  
      void RunStep()
      {
@@ -1179,7 +2136,7 @@ index c0c10f6..7107acf 100644
          //TickBroadcastOut();
      }
  
-@@ -375,11 +412,28 @@ public:
+@@ -375,11 +413,28 @@ public:
              int dis_id = m_DisconnectedPeers.front();
              m_DisconnectedPeers.pop();
  
@@ -1208,7 +2165,7 @@ index c0c10f6..7107acf 100644
          ISteamNetworkingMessage *pIncomingMsg = nullptr;
          int numMsgs = m_pInterface->ReceiveMessagesOnPollGroup( m_hPollGroup, &pIncomingMsg, 1 );
          if ( numMsgs == 0 )
-@@ -390,16 +444,27 @@ public:
+@@ -390,16 +445,27 @@ public:
          }
          assert( numMsgs == 1 && pIncomingMsg );
          auto itClient = m_mapClients.find( pIncomingMsg->m_conn );
@@ -1239,7 +2196,7 @@ index c0c10f6..7107acf 100644
          int idTo = *(uint32_t*)&dataBuf[4];
          *pIdOut = idFrom;
  
-@@ -430,25 +495,304 @@ public:
+@@ -430,25 +496,314 @@ public:
  
      int Send(uint32_t idFrom, uint32_t idTo, void *lpData, uint32_t dwDataSize)
      {
@@ -1515,6 +2472,13 @@ index c0c10f6..7107acf 100644
 +            m_gateway.sendFrame(112, frame.src, frame.dst, frame.data.data(), frame.data.size());
 +            if (result == jk_gateway::TransportIdentities::Replacement::Applied)
 +                stdPlatform_Printf("GATEWAY_ID_REPLACED %u %u\n", frame.src, replacement);
++        } else if (frame.type == 11) {
++            if (frame.src || !frame.dst || frame.data.size() > 40) {
++                m_gateway.error(11, 12, "invalid observer request envelope"); return;
++            }
++            uint8_t reply[92 + 31 * 76];
++            size_t length=jkObserver_Request(frame.data.data(),frame.data.size(),reply,sizeof(reply));
++            if (length) m_gateway.sendFrame(114,0,frame.dst,reply,length);
 +        } else if (frame.type == 9) {
 +            if (frame.src <= 1 || !frame.dst || frame.data.size() < 8 || frame.data.size() > 135) {
 +                m_gateway.error(9, 9, "invalid admin request envelope"); return;
@@ -1537,6 +2501,9 @@ index c0c10f6..7107acf 100644
 +    }
 +
      uint32_t id;
++    uint32_t ObserverPeerGeneration(uint32_t peer) const {
++        return PeerUsed(peer) ? m_adminConnections.generation(peer) : 0;
++    }
 +    bool PeerUsed(uint32_t peer) const {
 +        if (m_externalPeers.count(peer)) return true;
 +        for (const auto& c : m_mapClients) if (c.second.m_id == peer) return true;
@@ -1545,7 +2512,7 @@ index c0c10f6..7107acf 100644
  private:
  
      HSteamListenSocket m_hListenSock;
-@@ -463,11 +807,22 @@ private:
+@@ -463,11 +818,22 @@ private:
      struct Client_t
      {
          uint32_t m_id;
@@ -1568,7 +2535,7 @@ index c0c10f6..7107acf 100644
  
      void SendBytesToClient( HSteamNetConnection conn, void *pData, uint32_t len)
      {
-@@ -478,7 +833,7 @@ private:
+@@ -478,7 +844,7 @@ private:
      {
          for ( auto &c: m_mapClients )
          {
@@ -1577,7 +2544,7 @@ index c0c10f6..7107acf 100644
                  SendBytesToClient( c.first, pData, len );
          }
      }
-@@ -493,9 +848,11 @@ private:
+@@ -493,9 +859,11 @@ private:
          m_pInterface->SetConnectionName( hConn, nick );
      }
  
@@ -1590,7 +2557,7 @@ index c0c10f6..7107acf 100644
      }
  
  #if 0
-@@ -508,8 +865,6 @@ private:
+@@ -508,8 +876,6 @@ private:
  
      void OnSteamNetConnectionStatusChanged( SteamNetConnectionStatusChangedCallback_t *pInfo )
      {
@@ -1599,7 +2566,7 @@ index c0c10f6..7107acf 100644
          // What's the state of the connection?
          switch ( pInfo->m_info.m_eState )
          {
-@@ -520,59 +875,15 @@ private:
+@@ -520,59 +886,15 @@ private:
              case k_ESteamNetworkingConnectionState_ClosedByPeer:
              case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
              {
@@ -1667,7 +2634,7 @@ index c0c10f6..7107acf 100644
                  }
  
                  // Clean up the connection.  This is important!
-@@ -591,9 +902,13 @@ private:
+@@ -591,9 +913,13 @@ private:
                  assert( m_mapClients.find( pInfo->m_hConn ) == m_mapClients.end() );
  
                  Printf( "Connection request from %s", pInfo->m_info.m_szConnectionDescription );
@@ -1682,7 +2649,7 @@ index c0c10f6..7107acf 100644
                      stdPlatform_Printf("Rejecting request too many players connected (%u)\n", ConnectedPlayers());
                      break;
                  }
-@@ -618,16 +933,25 @@ private:
+@@ -618,16 +944,25 @@ private:
                      break;
                  }
  
@@ -1711,7 +2678,7 @@ index c0c10f6..7107acf 100644
                  sithDplayGNS_verbosePrintf("Assigning ID: %x\n", nextId);
  
                  sithDplayGNS_storedEntry.multiModeFlags = sithMulti_multiModeFlags;
-@@ -638,17 +962,20 @@ private:
+@@ -638,17 +973,20 @@ private:
                  infoPkt.entry.numPlayers = RealConnectedPlayers();
                  infoPkt.entry.maxPlayers = sithDplayGNS_storedEntry.maxPlayers;
  
@@ -1735,7 +2702,7 @@ index c0c10f6..7107acf 100644
                  break;
              }
  
-@@ -704,11 +1031,9 @@ private:
+@@ -704,11 +1042,9 @@ private:
              if (!i && jkGuiNetHost_bIsDedicated) continue;
  
  
@@ -1750,7 +2717,7 @@ index c0c10f6..7107acf 100644
                  amt++;
              }
          }
-@@ -1060,8 +1385,30 @@ char addrServerLast[256];
+@@ -1060,8 +1396,35 @@ char addrServerLast[256];
  GNSClient client;
  GNSServer server;
  
@@ -1771,6 +2738,11 @@ index c0c10f6..7107acf 100644
 +    return !stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer && server.PeerUsed(peer);
 +}
 +
++uint32_t stdComm_GNS_ObserverPeerGeneration(uint32_t peer)
++{
++    return !stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer ? server.ObserverPeerGeneration(peer) : 0;
++}
++
  void Hack_ResetClients()
  {
 +    if (stdComm_bIsServer) {
@@ -1781,7 +2753,7 @@ index c0c10f6..7107acf 100644
      DirectPlay_numPlayers = 32;
      for (int i = 0; i < 32; i++)
      {
-@@ -1143,6 +1490,7 @@ int DirectPlay_Receive(int *pIdOut, int *pMsgIdOut, int *pLenOut)
+@@ -1143,6 +1506,7 @@ int DirectPlay_Receive(int *pIdOut, int *pMsgIdOut, int *pLenOut)
      if (stdComm_bIsServer)
      {
          server.RunStep();
@@ -1789,7 +2761,7 @@ index c0c10f6..7107acf 100644
          return server.Receive(pIdOut, (void*)pMsgIdOut, pLenOut);
      }
      else 
-@@ -1239,6 +1587,9 @@ int DirectPlay_SendLobbyMessage(void* pPkt, uint32_t pktLen)
+@@ -1239,6 +1603,9 @@ int DirectPlay_SendLobbyMessage(void* pPkt, uint32_t pktLen)
  void DirectPlay_SetSessionDesc(const char* a1, DWORD maxPlayers)
  {
      _strncpy(sithDplayGNS_storedEntry.mapJklFname, jkMain_aLevelJklFname, 0x20);
@@ -1800,7 +2772,7 @@ index c0c10f6..7107acf 100644
  
  BOOL DirectPlay_SetSessionFlagidk(int a1)
 diff --git a/src/Platform/Networking/GNS/stdComm_GNS.h b/src/Platform/Networking/GNS/stdComm_GNS.h
-index 9567814..4367c85 100644
+index 9567814bee5cc634c65ee70ad505bda52f18314b..e384ec8fdedf7fabf786fac524ff9b1ee15461ac 100644
 --- a/src/Platform/Networking/GNS/stdComm_GNS.h
 +++ b/src/Platform/Networking/GNS/stdComm_GNS.h
 @@ -1,6 +1,8 @@
@@ -1812,13 +2784,14 @@ index 9567814..4367c85 100644
  #ifdef __cplusplus
  extern "C" {
  #endif
-@@ -10,10 +12,14 @@ extern "C" {
+@@ -10,10 +12,15 @@ extern "C" {
  void stdComm_GNS_Startup();
  void stdComm_GNS_Shutdown();
  
 +void stdComm_GNS_AdminChat(uint32_t actualPeer, const char *text);
 +void stdComm_GNS_AdminReset(void);
 +int stdComm_GNS_AdminPeerConnected(uint32_t peer);
++uint32_t stdComm_GNS_ObserverPeerGeneration(uint32_t peer);
 +
  #endif // PLATFORM_GNS
  
@@ -1829,9 +2802,30 @@ index 9567814..4367c85 100644
 -#endif // _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
 \ No newline at end of file
 +#endif // _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
+diff --git a/src/Platform/std3D.h b/src/Platform/std3D.h
+index b46ea4784f024b2d9bace00d766b8dd757d1de07..da18e1a09a43b07203b1bc3cb11e97211576db70 100644
+--- a/src/Platform/std3D.h
++++ b/src/Platform/std3D.h
+@@ -2,12 +2,16 @@
+ #define _STD3D_H
+ 
+ #include "types.h"
++
+ #include "globals.h"
+ 
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+ 
++/* Bounded local observer readback; does not activate the isolated capture mode. */
++int std3D_ObserverReadback(uint8_t *pixels, int width, int height);
++
+ #define std3D_Startup_ADDR (0x00429310)
+ #define std3D_Shutdown_ADDR (0x00429390)
+ #define std3D_FindClosestDevice_ADDR (0x004293B0)
 diff --git a/src/Tests/gateway_bridge_test.cpp b/src/Tests/gateway_bridge_test.cpp
 new file mode 100644
-index 0000000..bb81266
+index 0000000000000000000000000000000000000000..bb8126668d8c0674777ed638fe272b685eb87a7c
 --- /dev/null
 +++ b/src/Tests/gateway_bridge_test.cpp
 @@ -0,0 +1,61 @@
@@ -1898,7 +2892,7 @@ index 0000000..bb81266
 +}
 diff --git a/src/Tests/transport_identities_test.cpp b/src/Tests/transport_identities_test.cpp
 new file mode 100644
-index 0000000..c353e96
+index 0000000000000000000000000000000000000000..c353e96e0b0b5fdea7ec24cb5d8360e3b5e38256
 --- /dev/null
 +++ b/src/Tests/transport_identities_test.cpp
 @@ -0,0 +1,270 @@
@@ -2173,10 +3167,36 @@ index 0000000..c353e96
 +                 "committed external/no-pool claims; fresh no-pool identities; bounded lifetime history\n";
 +}
 diff --git a/src/Win95/Window.c b/src/Win95/Window.c
-index 012b5cb..1d0a9c3 100644
+index 012b5cb53ed6c4b443b1c1a877f4017c10b6f9db..5c74ae9f83c0af041b5cb252f99a9e91ca0d7d3a 100644
 --- a/src/Win95/Window.c
 +++ b/src/Win95/Window.c
-@@ -661,16 +661,17 @@ int my_kbhit() {
+@@ -3,6 +3,7 @@
+ #include "Win95/stdGdi.h"
+ #include "Platform/std3D.h"
+ #include "Main/Main.h"
++#include "Main/jkObserver.h"
+ #include "Main/jkMain.h"
+ #include "Main/jkGame.h"
+ #include "Engine/rdroid.h"
+@@ -69,7 +70,7 @@ int Window_bRenderProbe = 0;
+ 
+ void Window_SetHiDpi(int val)
+ {
+-    if (Window_bRenderProbe) return;
++    if (Window_bRenderProbe || jkObserver_IsCapable()) return;
+     if (Window_isHiDpi != val)
+     {
+         Window_isHiDpi = val;
+@@ -82,7 +83,7 @@ void Window_SetHiDpi(int val)
+ 
+ void Window_SetFullscreen(int val)
+ {
+-    if (Window_bRenderProbe) return;
++    if (Window_bRenderProbe || jkObserver_IsCapable()) return;
+     if (Window_isFullscreen != val)
+     {
+         // Reset window when exiting fullscreen
+@@ -661,16 +662,17 @@ int my_kbhit() {
      if (! initialized) {
          // Use termios to turn off line buffering
          struct termios term;
@@ -2200,7 +3220,15 @@ index 012b5cb..1d0a9c3 100644
      return bytesWaiting;
  }
  #endif
-@@ -689,7 +690,8 @@ void Window_UpdateHeadless()
+@@ -679,6 +681,7 @@ static char Window_headlessBuffer[256];
+ 
+ void Window_UpdateHeadless()
+ {
++    jkObserver_Poll();
+     char buffer[32];
+     size_t bytes_read = 0;
+ 
+@@ -689,7 +692,8 @@ void Window_UpdateHeadless()
          bytes_read = 1;
  #else
          int fd = STDIN_FILENO;
@@ -2210,7 +3238,7 @@ index 012b5cb..1d0a9c3 100644
          buffer[bytes_read] = 0;
  #endif
  
-@@ -712,11 +714,16 @@ void Window_UpdateHeadless()
+@@ -712,11 +716,16 @@ void Window_UpdateHeadless()
              }
  
              char tmp[2] = {buffer[i], 0};
@@ -2228,3 +3256,83 @@ index 012b5cb..1d0a9c3 100644
      //printf("> %x %x %s\n", buffer[0], my_kbhit(), Window_headlessBuffer);
      fflush(stdout);
  
+@@ -1353,13 +1362,14 @@ void Window_RecreateSDL2Window()
+     onlyOnce = 1;
+ #endif
+ 
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && (!jkObserver_IsCapable() || jkObserver_HasContext())) return;
+ 
+     stdPlatform_Printf("Recreating SDL2 Window!\n");
+     Window_needsRecreate = 0;
+ 
+     if (displayWindow) {
+         std3D_FreeResources();
++        jkObserver_SetContextAvailable(0);
+         SDL_GL_DestroyContext(glWindowContext);
+         SDL_DestroyWindow(displayWindow);
+     }
+@@ -1427,6 +1437,12 @@ void Window_RecreateSDL2Window()
+         Window_screenXSize = Window_probe.width;
+         Window_screenYSize = Window_probe.height;
+     }
++    if (jkObserver_IsCapable()) {
++        flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_NOT_FOCUSABLE;
++        Window_isFullscreen=Window_isHiDpi=0;
++        Window_xSize=Window_screenXSize=640;
++        Window_ySize=Window_screenYSize=360;
++    }
+ 
+     // SDL3 SDL_CreateWindow() dropped the x/y position params; position is set
+     // separately below via SDL_SetWindowPosition() on desktop.
+@@ -1446,6 +1462,7 @@ void Window_RecreateSDL2Window()
+         else {
+             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", errtmp, NULL);
+         }
++        if (jkObserver_IsCapable()) { jkObserver_SetContextAvailable(0); return; }
+         exit (-1);
+     }
+     //SDL_SetRenderDrawBlendMode(displayRenderer, SDL_BLENDMODE_BLEND);
+@@ -1492,10 +1509,16 @@ void Window_RecreateSDL2Window()
+         else {
+             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", errtmp, NULL);
+         }
++        if (jkObserver_IsCapable()) {
++            jkObserver_SetContextAvailable(0);
++            SDL_DestroyWindow(displayWindow); displayWindow=NULL;
++            return;
++        }
+         exit(-1);
+     }
+ 
+     SDL_GL_MakeCurrent(displayWindow, glWindowContext);
++    jkObserver_SetContextAvailable(glWindowContext != NULL);
+     SDL_GL_SetSwapInterval(jkPlayer_enableVsync); // Disable vsync
+ #ifndef TARGET_ANDROID
+     if (!Window_bHeadlessStartup && !Window_bRenderProbe) {
+@@ -1532,6 +1555,7 @@ int Window_Main_Linux(int argc, char** argv)
+     int result;
+ 
+     if (!stdCapture_Init(argc, argv)) { fprintf(stderr, "capture: invalid request or isolated session\n"); return 6; }
++    if (!stdCapture_IsActive()) jkObserver_Startup(argc,argv);
+     if (stdCapture_IsActive()) {
+ #if defined(RENDER_GL11) || defined(ARCH_WASM) || defined(TARGET_ANDROID)
+         fprintf(stderr, "capture: this backend is unsupported\n"); return 6;
+@@ -1649,7 +1673,7 @@ int Window_Main_Linux(int argc, char** argv)
+ 
+     Window_RecreateSDL2Window();
+ #if !defined(TARGET_ANDROID) && !defined(ARCH_WASM) && !defined(RENDER_GL11)
+-    glewInit();
++    if (glWindowContext) glewInit();
+ #endif
+     
+     //SDL_RenderClear(displayRenderer);
+@@ -1693,7 +1717,7 @@ int Window_Main_Linux(int argc, char** argv)
+         return result;
+     }
+ 
+-    if (Main_bHeadless && !stdCapture_IsActive())
++    if (Main_bHeadless && !stdCapture_IsActive() && !jkObserver_IsCapable())
+     {
+         if (displayWindow) {
+             std3D_FreeResources();

@@ -30,7 +30,7 @@ python app.py
 
 Open **http://127.0.0.1:8765**. Set the engine path to the included `bin/linux-x86_64/openjkdf2`, the game-data directory to your install containing `resource` and `episode`, and the browser build folder to `runtime/browser-client`. Read the episode catalog, select a map, save, then start.
 
-The engine needs an X/GL context during startup even in headless mode. The supervisor uses `xvfb-run` automatically when `DISPLAY` is unset; install Xvfb, xauth, and Mesa for a display-free Linux host. Sound uses null/dummy drivers. The control panel remains a browser UI.
+The native engine can start without an X server using SDL's offscreen driver and Mesa/EGL. **Engine display** in Advanced settings defaults to **Auto**: it respects an existing display or explicit SDL video driver, and otherwise selects offscreen rendering. Choose **Offscreen**, **Xvfb**, or **Existing display** to select a backend explicitly. A working OpenGL/EGL implementation is still required; sound uses null/dummy drivers. Player bots and the retail Wine adapter have separate display requirements. Install Xvfb and xauth for those components on a host without a display. The panel distinguishes engine IPC connection, actual session readiness and the selected backend.
 
 For stock JK use episode `JK1MP` and map `m2.jkl`. For stock MotS use `JKM_MP` and `mdm02_freezer.jkl`, with the MotS resource archives installed. The original data directory is not used for generated profiles or configuration. The supervisor stages data with normalized filename case and saves each run's settings and logs separately.
 
@@ -58,6 +58,12 @@ the panel with the game still stopped.
 Existing 0.2 installations need the 0.3 ZIP installed manually once. Git
 checkouts use Git rather than the in-place installer. See [update instructions](docs/UPDATES.md)
 for migration, recovery, multi-instance behavior, and publishing new releases.
+
+## Host spectator view
+
+Open **Spectator view** in the existing control panel to follow a joined player or fly an invisible camera through walls and floors. It does not take a player slot, interact with the game, or change client checksums. Closing the view keeps the match running. The Linux implementation provides a 640 × 360 view at up to five frames per second; see [controls, setup and compatibility limits](docs/SPECTATOR.md).
+
+![Host spectator view in the JK Cross Server control panel](docs/images/spectator-view.png)
 
 ## Optional player bots
 
@@ -113,7 +119,7 @@ Disabling downloads prevents asset chunks from being sent. The server still adve
 
 Set the DirectPlay bridge path, enable the retail adapter, and on Linux set a Wine executable/launcher and a dedicated Wine prefix. That prefix needs a working original DirectPlay TCP/IP provider. The bridge itself contains no original game or Microsoft binaries. See `directplay/README.md` for tested runtime setup and precise provenance.
 
-Mixed sessions reserve DirectPlay identities for native/browser participants. The engine uses those real identities, so an ordinary retail peer can address them. Mixed mode supports up to 15 configured slots, including the dedicated host; that leaves up to 14 playing clients, shared by humans and bots. Stock maps may impose a lower practical spawn limit. The retail session browser also counts reserved transport identities. The administration panel's joined-player count excludes these reservations.
+Mixed sessions reserve DirectPlay identities for native/browser participants. The engine uses those real identities, so an ordinary retail peer can address them. Mixed mode supports up to 15 playing clients, shared by humans and bots. The engine adds the dedicated host separately. Stock maps may impose a lower practical spawn limit. The retail session browser also counts reserved transport identities. The administration panel's joined-player count excludes these reservations.
 
 ## Network configuration
 

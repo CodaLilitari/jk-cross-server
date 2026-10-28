@@ -24,7 +24,7 @@ def check_scope(config: dict, count: int) -> None:
     if not 1 <= count <= 4:
         raise ValueError("Choose between one and four bots.")
     if count + 1 >= config["max_players"]:
-        raise ValueError("max_players includes the dedicated host; allow at least the bot count plus two slots for the host and one human.")
+        raise ValueError("Allow at least the bot count plus two player slots for conservative launcher headroom; the dedicated host is added separately.")
 
 
 def behavior_values(config: dict) -> dict:
