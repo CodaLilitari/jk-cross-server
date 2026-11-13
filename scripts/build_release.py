@@ -27,7 +27,7 @@ FIXED_DATE = (1980, 1, 1, 0, 0, 0)
 MAX_PAYLOAD_BYTES = 512 * 1024 * 1024
 MAX_FILES = 10_000
 REQUIRED = {"VERSION", "app.py", "LICENSE", "NOTICE.md", "web_gateway/requirements-lock.txt"}
-SAFE_DOTFILES = {".gitignore", ".gitattributes", ".gitlab-ci.yml"}
+SAFE_DOTFILES = {".gitignore", ".gitattributes", ".gitlab-ci.yml", ".dockerignore"}
 LOCAL_DIRECTORIES = {
     "config", "runtime", "venv", "env", "__pycache__", "node_modules",
     "dist", "build", "deliverables", "downloads", "game-data", "game_data",

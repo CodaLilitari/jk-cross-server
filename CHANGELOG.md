@@ -1,5 +1,16 @@
 # Changes
 
+## 0.4.0-dev — Bots, spectator and desktop launchers
+
+- Bring configurable player bots, persistent chat administration, noclip/free-flight
+  and player-follow spectators, and the optional browser geometry view into main.
+- Ship native Linux x86-64 and Windows/macOS Docker launcher bundles from the same
+  source payload. Desktop launchers run the Linux amd64 server, not a native port.
+- Keep the administration panel on host localhost, mount original game data read-only,
+  and persist configuration and writable application updates separately.
+- Preserve the retail scoreboard and departure corrections. Original retail/Wine
+  setup and Docker networking remain separate from native/browser hosting.
+
 ## Unreleased — Bot branch refresh and host spectator
 
 - Incorporate main into the configurable-player-bots branch while retaining

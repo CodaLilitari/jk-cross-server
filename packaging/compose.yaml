@@ -1,0 +1,34 @@
+services:
+  server:
+    image: jk-cross-server:0.4.0-dev
+    platform: linux/amd64
+    build:
+      context: ..
+      dockerfile: packaging/Dockerfile
+    container_name: jk-cross-server
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 60s
+    ports:
+      - "127.0.0.1:8765:8766/tcp"
+      - "3500:3500/udp"
+      - "8787:8787/tcp"
+    volumes:
+      - type: volume
+        source: application
+        target: /app
+      - type: bind
+        source: ${JK_STATE_DIR:?Set JK_STATE_DIR to your persistent settings directory}
+        target: /data
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${JK_GAME_DATA:?Set JK_GAME_DATA to your installed game data directory}
+        target: /game-data
+        read_only: true
+        bind:
+          create_host_path: false
+
+volumes:
+  application:
+    name: jk-cross-server-app-0.4.0-dev

@@ -1,0 +1,61 @@
+name: Release checks
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  launchers:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Platform packaging and launcher checks
+        run: python -m unittest tests.test_platform_releases -v
+
+  linux-container:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+      - name: Python runtime dependencies
+        run: python -m pip install -r web_gateway/requirements-lock.txt
+      - name: Focused server and packaging tests
+        run: python -m unittest tests.test_container_runtime tests.test_platform_releases tests.test_spectator tests.test_spectator_geometry tests.test_bots tests.test_bot_manager tests.test_content_ctf -v
+      - name: Browser controls and DirectPlay protocol
+        run: |
+          node --test --test-isolation=none tests/test_panel_ui.js tests/test_spectator_ui.js tests/test_spectator_geometry_ui.js
+          make -C directplay test
+      - name: Build and inspect Linux runtime
+        run: docker build --platform linux/amd64 -f packaging/Dockerfile -t jk-cross-server:0.4.0-dev .
+      - name: Container startup, authentication and persistence smoke test
+        run: python scripts/smoke_container.py --image jk-cross-server:0.4.0-dev
+      - name: Build updater and platform archives
+        shell: bash
+        run: |
+          python scripts/build_release.py --check
+          python scripts/build_release.py --output-dir "$RUNNER_TEMP/jk-release"
+          python scripts/build_platform_releases.py --input "$RUNNER_TEMP/jk-release/JK_Cross_Server_0.4.0-dev.zip" --output-dir "$RUNNER_TEMP/jk-release"
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: jk-cross-server-release
+          path: ${{ runner.temp }}/jk-release/*
+          if-no-files-found: error
+          retention-days: 7

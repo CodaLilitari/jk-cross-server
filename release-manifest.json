@@ -1,8 +1,12 @@
 {
   "files": {
+    ".dockerignore": {
+      "mode": 420,
+      "sha256": "df716e4ed3cbbbffbf5f3fd9d9d24933600ae49806128342c008e929a25e7488"
+    },
     ".gitattributes": {
       "mode": 420,
-      "sha256": "e252ca10817033b4644dc2e06224aed4e74b912193eac3fe0624566975ed904e"
+      "sha256": "3b2e7f51ef05175419b00c8486fbcbc724830e946836d6e0e0e4d022b49b4af7"
     },
     ".gitignore": {
       "mode": 420,
@@ -10,7 +14,7 @@
     },
     "CHANGELOG.md": {
       "mode": 420,
-      "sha256": "cf8e512aec7bbe1e17a31fc47cecea7f225c833a33ec19dbe09f112520e8e332"
+      "sha256": "0d8a959f9b382a5b7771e793594cddaa490a232e18cfe90e4ae83fd59826cdf0"
     },
     "LICENSE": {
       "mode": 420,
@@ -22,11 +26,19 @@
     },
     "README.md": {
       "mode": 420,
-      "sha256": "e4707961dc2bf8983f32df21f9f1b77b3b27611a7411b49fb2cf166fc86590b7"
+      "sha256": "4d7698e609cf3e46b55adcaef595b3a9018948da9fd39510e4e71ace1ee4e804"
+    },
+    "Start-Server.command": {
+      "mode": 493,
+      "sha256": "c1cc5bfecf9d2e3832a7e30365aac0253e107f70b4588a04088a223c09a8175f"
+    },
+    "Start-Server.ps1": {
+      "mode": 420,
+      "sha256": "82a165a8ffee9d75f537372012db87e19cba8b7255074dfa4111b6de71cdbe15"
     },
     "VERSION": {
       "mode": 420,
-      "sha256": "90325c8f60537581cade7378c9dd5776f7fc918641cbc2929b4a60094ed07751"
+      "sha256": "0dbec988e5c9fecb60bdf0f155f2147c6a376b0f35e5fab2d39d2672cceaf03c"
     },
     "app.py": {
       "mode": 420,
@@ -168,6 +180,10 @@
       "mode": 420,
       "sha256": "1647f09f1fb1fc81b4080ec8aa0d97309857e83ebf20c99bc1047564e31f279a"
     },
+    "docs/PLATFORMS.md": {
+      "mode": 420,
+      "sha256": "1a9b703e23918cae01ee4a245f87fff72ccef13700e6eea4f23214287163a497"
+    },
     "docs/QUALIFICATION.md": {
       "mode": 420,
       "sha256": "d2c20d2047f645977a206bda73eec3aae2b7c9d147a31ff17d7d3044075ccd77"
@@ -203,6 +219,10 @@
     "docs/superpowers/plans/2026-10-28-browser-spectator.md": {
       "mode": 420,
       "sha256": "8b424e08cfb8c2ed223665953f7c0c7083ccdd61e3b0995e27855ca3ab03aa9c"
+    },
+    "docs/superpowers/plans/2026-11-13-platform-releases.md": {
+      "mode": 420,
+      "sha256": "d6c9c8faa363647e65fdce82be028a634924825115633cee289669cd33354272"
     },
     "docs/superpowers/specs/2026-10-28-browser-spectator-design.md": {
       "mode": 420,
@@ -611,6 +631,18 @@
     "native/tests/test_spectator_render.c": {
       "mode": 420,
       "sha256": "426674bec6392bc1817dde599426d597f67d7c864e669be944888194a65e032f"
+    },
+    "packaging/Dockerfile": {
+      "mode": 420,
+      "sha256": "21b6cefbd682391a1874f6cb3975e0349c764d136cbbf717d97254f68b5021fc"
+    },
+    "packaging/compose.yaml": {
+      "mode": 420,
+      "sha256": "2fad892bb56394e3f86260dc9edf61876a98af615d1a0e024f90d42e65bda2ee"
+    },
+    "packaging/container_runtime.py": {
+      "mode": 420,
+      "sha256": "57c7865853ce897d37b1931adbe5585dd77bda3096bdc6fa90e1a623679a8116"
     },
     "qa/admin-browser-layout.json": {
       "mode": 420,
@@ -1320,9 +1352,21 @@
       "mode": 420,
       "sha256": "33749b794ae6f518356ebae8f388a6b84b46cb1c8a996a6ff2e69f5cd0fb24a5"
     },
+    "scripts/build_platform_releases.py": {
+      "mode": 420,
+      "sha256": "82eb3b977e55bd48494f0011e6018c5fbeeab61af092c451314c11ad5ada7926"
+    },
     "scripts/build_release.py": {
       "mode": 420,
-      "sha256": "7eb04afadf2eb702c84cd72eeff67f1bdf293bcaeb35ac7539e5c78ee0f95fc0"
+      "sha256": "27e5bda98045413ff52cf43ad13dfb376c89c2e24bc66298b9bbdda66a5eae61"
+    },
+    "scripts/smoke_container.py": {
+      "mode": 420,
+      "sha256": "187fde4dee40c90fac4273cc9dd8c064c31fb968c3d6349c6d14642480564c22"
+    },
+    "start-server.sh": {
+      "mode": 493,
+      "sha256": "aba384c718143824cc6a53f497a2b0aeee564f4301a2c978f46f4b891dc1af33"
     },
     "tests/fixtures/spectator_geometry.html": {
       "mode": 420,
@@ -1364,6 +1408,10 @@
       "mode": 420,
       "sha256": "d540f59227de6902d2cd27fdd75067a0e50f11cc25f10f016bbb364a4c649e4d"
     },
+    "tests/test_container_runtime.py": {
+      "mode": 420,
+      "sha256": "d50a070ddf38da888fada9df56e63c77c96cde468fc0c132229f09d4b8b29662"
+    },
     "tests/test_content_ctf.py": {
       "mode": 420,
       "sha256": "3ec1d14f0c005d42ba6d4be5d61d22ae3e9b12543b6fadc0eab84638981d21f4"
@@ -1379,6 +1427,10 @@
     "tests/test_panel_ui.js": {
       "mode": 420,
       "sha256": "7fa9c288c38ca0fcbac39328678383dbac1d14701d287baee4f4c2eb4af3c572"
+    },
+    "tests/test_platform_releases.py": {
+      "mode": 420,
+      "sha256": "b293ab621cd3dc52526e8d106fd47e3932d207ee265aeca8d158de779a917296"
     },
     "tests/test_release_packaging.py": {
       "mode": 420,
@@ -1490,5 +1542,5 @@
     }
   },
   "schema": 1,
-  "version": "0.3.0-dev"
+  "version": "0.4.0-dev"
 }

@@ -16,6 +16,22 @@ A dedicated JKDF2 / Mysteries of the Sith host with a small browser control pane
 
 Commercial game archives, retail executables, DirectPlay DLLs, and ISOs are not included. Point the server at your installed game data. Browser players select their own game data through the existing client.
 
+## Downloads for Windows, Linux and macOS
+
+The [0.4.0-dev release](https://github.com/CodaLilitari/jk-cross-server/releases/tag/v0.4.0-dev)
+is also available on [GitLab](https://gitlab.com/codalilitari/jk-cross-server/-/releases/v0.4.0-dev).
+All downloads include the bots, chat administration and spectator features on main.
+
+| Host | Package | Runtime |
+| --- | --- | --- |
+| Windows | `JK_Cross_Server_0.4.0-dev-windows-docker.zip` | Docker Desktop running Linux containers |
+| macOS | `JK_Cross_Server_0.4.0-dev-macos-docker.zip` | Docker Desktop; Apple Silicon uses amd64 emulation |
+| Linux x86-64 | `JK_Cross_Server_0.4.0-dev-linux-x86_64.zip` | Native Ubuntu 24.04-compatible runtime, or Docker |
+
+See [platform setup and launch commands](docs/PLATFORMS.md). Windows and Mac
+packages are Linux-backed launchers, not native engine ports. The existing
+`JK_Cross_Server_0.4.0-dev.zip` remains the updater-compatible package.
+
 ## Start on Linux
 
 Use Python 3.11 or newer. The tested build environment and exact dependency pins are recorded under `native/` and `web_gateway/`.
