@@ -1430,7 +1430,7 @@
     },
     "tests/test_platform_releases.py": {
       "mode": 420,
-      "sha256": "c28cafb6bf07e0e33cc5853cac3425dbe551862b4c09889d7b59405d967bebd7"
+      "sha256": "90b6ccc5dd16a44e3b4475686f695a4b131c2a41f7d22053a248713123ec97b9"
     },
     "tests/test_release_packaging.py": {
       "mode": 420,
