@@ -221,8 +221,9 @@ exit $LASTEXITCODE
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         calls = self.records()
         start = next(row for row in calls if "up" in row["args"])
-        self.assertEqual(Path(start["game"]), self.game.resolve())
-        self.assertEqual(Path(start["state"]), self.state.resolve())
+        # macOS exposes the same temporary directory through /var and /private/var.
+        self.assertEqual(Path(start["game"]).resolve(), self.game.resolve())
+        self.assertEqual(Path(start["state"]).resolve(), self.state.resolve())
         compose_index = start["args"].index("-f") + 1
         self.assertEqual(Path(start["args"][compose_index]), self.package / "packaging/compose.yaml")
         self.assertEqual(start["args"][-3:], ["up", "--build", "-d"])

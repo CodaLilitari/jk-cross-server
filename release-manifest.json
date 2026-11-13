@@ -1362,7 +1362,7 @@
     },
     "scripts/smoke_container.py": {
       "mode": 420,
-      "sha256": "187fde4dee40c90fac4273cc9dd8c064c31fb968c3d6349c6d14642480564c22"
+      "sha256": "130071ed203af5786b5b11cbf643fcf3dadca36d94f63346998a881590b0bb47"
     },
     "start-server.sh": {
       "mode": 493,
@@ -1430,7 +1430,7 @@
     },
     "tests/test_platform_releases.py": {
       "mode": 420,
-      "sha256": "b293ab621cd3dc52526e8d106fd47e3932d207ee265aeca8d158de779a917296"
+      "sha256": "c28cafb6bf07e0e33cc5853cac3425dbe551862b4c09889d7b59405d967bebd7"
     },
     "tests/test_release_packaging.py": {
       "mode": 420,

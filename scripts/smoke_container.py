@@ -56,16 +56,17 @@ def main():
     args = parser.parse_args()
     name = "jk-cross-smoke-" + uuid.uuid4().hex[:12]
     volume = name + "-app"
+    state_volume = name + "-state"
     with tempfile.TemporaryDirectory(prefix="jk-cross-smoke-") as directory:
         root = Path(directory)
-        game, state = root / "game", root / "state"
-        game.mkdir(); state.mkdir()
+        game = root / "game"
+        game.mkdir()
         try:
             for attempt in range(2):
                 docker("run", "--detach", "--name", name, "--platform", "linux/amd64",
                        "--publish", "127.0.0.1:8765:8766",
                        "--mount", f"type=bind,src={game},dst=/game-data,readonly",
-                       "--mount", f"type=bind,src={state},dst=/data",
+                       "--mount", f"type=volume,src={state_volume},dst=/data",
                        "--mount", f"type=volume,src={volume},dst=/app", args.image)
                 token = wait_for_panel()
                 assert request("/api/status")[0] == 401, "Unauthenticated API request was accepted"
@@ -100,6 +101,7 @@ def main():
         finally:
             docker("rm", "--force", name, check=False)
             docker("volume", "rm", volume, check=False)
+            docker("volume", "rm", state_volume, check=False)
 
 
 if __name__ == "__main__":
