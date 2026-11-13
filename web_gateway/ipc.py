@@ -10,6 +10,7 @@ import contextlib
 import inspect
 import ipaddress
 import logging
+import math
 import struct
 from collections.abc import Callable
 
@@ -18,6 +19,13 @@ MAX_FRAME = 65536
 MAX_SITH_PAYLOAD = 2052
 HELLO, INFO, ADD_PEER, REMOVE_PEER, DATA, PING, SET_ID_POOL = 1, 2, 3, 4, 5, 7, 8
 HELLO_REPLY, INFO_REPLY, ADDED, REMOVED, DATA_REPLY, PONG, ID_POOL_REPLY, ERROR = 101, 102, 103, 104, 105, 107, 108, 199
+ADMIN_REQUEST, ADMIN_CHAT, ADMIN_REPLY, ADMIN_RESET = 9, 109, 110, 111
+REPLACE_POOL_ID, POOL_REPLACED, POOL_RETIRED = 10, 112, 113
+SPECTATOR_REQUEST, SPECTATOR_REPLY = 11, 114
+SPECTATOR_HEADER = struct.Struct("<16I6fi")
+SPECTATOR_PLAYER = struct.Struct("<III64s")
+ADMIN_MESSAGE, ADMIN_PLAYERS, ADMIN_KICK, ADMIN_NEXT_LEVEL = 1, 2, 3, 4
+MAX_ADMIN_TEXT = 127
 
 
 class EngineUnavailable(ConnectionError):
@@ -44,13 +52,50 @@ async def read_frame(reader: asyncio.StreamReader) -> tuple[int, int, int, bytes
     return kind, source, destination, body[12:]
 
 
+def spectator_reply(payload: bytes, operation: int) -> dict:
+    """Decode the bounded private observer reply without touching gameplay."""
+    if len(payload) < SPECTATOR_HEADER.size:
+        raise ProtocolError("Truncated observer reply")
+    values = SPECTATOR_HEADER.unpack_from(payload)
+    names = ("version", "result", "operation", "capabilities", "mode", "flags",
+             "world_epoch", "control_epoch", "target_peer", "target_generation",
+             "width", "height", "frame_age_ms", "reason", "roster_count", "frame_sequence")
+    result = dict(zip(names, values[:16]))
+    count = result["roster_count"]
+    width, height = result["width"], result["height"]
+    if (result["version"] != 1 or result["operation"] != operation or operation not in (0, 1, 2, 3) or
+            result["result"] > 5 or result["capabilities"] & ~31 or result["mode"] > 2 or
+            result["flags"] & ~127 or result["reason"] > 7 or count > 31 or
+            (operation != 0 and count) or
+            len(payload) != SPECTATOR_HEADER.size + count * SPECTATOR_PLAYER.size or
+            not ((width == height == 0) or (1 <= width <= 640 and 1 <= height <= 360)) or
+            any(not math.isfinite(value) for value in values[16:22]) or values[22] < -1):
+        raise ProtocolError("Invalid observer reply")
+    result["pose"] = {"position": list(values[16:19]), "yaw": values[19],
+                      "pitch": values[20], "roll": values[21], "sector": values[22]}
+    players, peers, slots = [], set(), set()
+    for index in range(count):
+        peer, generation, slot, encoded_name = SPECTATOR_PLAYER.unpack_from(
+            payload, SPECTATOR_HEADER.size + index * SPECTATOR_PLAYER.size)
+        if peer < 2 or not generation or not 1 <= slot <= 31 or peer in peers or slot in slots:
+            raise ProtocolError("Invalid observer roster identity")
+        peers.add(peer)
+        slots.add(slot)
+        players.append({"peer_id": peer, "generation": generation, "slot": slot,
+                        "name": encoded_name.decode("utf-16-le", "replace").split("\0", 1)[0]})
+    result["players"] = players
+    return result
+
+
 class NativeIPC:
     """One engine connection shared by all server-side transport adapters.
 
     Call start(), then wait_ready(). The reconnect loop clears obsolete peers
     when an engine connection is lost; adapters must close their own sessions
     on a False state callback. Subscribers may be sync or async functions and
-    must not await another IPC request inside an INFO callback.
+    must not await another IPC request inside a reader callback. Admin chat
+    callbacks receive engine-verified transport identity and incarnation, not
+    a player name or the sender claimed inside a game chat packet.
     """
 
     def __init__(self, port: int, token: str, host: str = "127.0.0.1", *,
@@ -74,12 +119,19 @@ class NativeIPC:
         self._session: tuple[int, bytes] | None = None
         self._request_id = 0
         self._pending: dict[int, asyncio.Future] = {}
+        self._admin_pending: dict[int, tuple[asyncio.Future, int, int]] = {}
+        self._spectator_pending: dict[int, tuple[asyncio.Future, int]] = {}
         self._info_waiters: list[asyncio.Future] = []
         self._pool_future: asyncio.Future | None = None
+        self._pool_replacements: dict[int, tuple[asyncio.Future, int, int]] = {}
         self._pool_lock = asyncio.Lock()
         self._data_callbacks: list[Callable] = []
         self._state_callbacks: list[Callable] = []
         self._info_callbacks: list[Callable] = []
+        self._admin_callbacks: list[Callable] = []
+        self._admin_reset_callbacks: list[Callable] = []
+        self._removed_callbacks: list[Callable] = []
+        self._pool_retired_callbacks: list[Callable] = []
         self.last_error: str | None = None
 
     @property
@@ -101,6 +153,29 @@ class NativeIPC:
     def subscribe_info(self, callback: Callable) -> Callable:
         self._info_callbacks.append(callback)
         return lambda: self._info_callbacks.remove(callback) if callback in self._info_callbacks else None
+
+    def subscribe_admin(self, callback: Callable) -> Callable:
+        self._admin_callbacks.append(callback)
+        return lambda: self._admin_callbacks.remove(callback) if callback in self._admin_callbacks else None
+
+    def subscribe_admin_reset(self, callback: Callable) -> Callable:
+        self._admin_reset_callbacks.append(callback)
+        return lambda: self._admin_reset_callbacks.remove(callback) if callback in self._admin_reset_callbacks else None
+
+    def subscribe_removed(self, callback: Callable) -> Callable:
+        self._removed_callbacks.append(callback)
+        return lambda: self._removed_callbacks.remove(callback) if callback in self._removed_callbacks else None
+
+    def subscribe_pool_retired(self, callback: Callable) -> Callable:
+        self._pool_retired_callbacks.append(callback)
+        return lambda: self._pool_retired_callbacks.remove(callback) if callback in self._pool_retired_callbacks else None
+
+    def _next_request(self) -> int:
+        self._request_id = (self._request_id % 0xFFFFFFFF) + 1
+        while (self._request_id in self._pending or self._request_id in self._admin_pending
+               or self._request_id in self._pool_replacements or self._request_id in self._spectator_pending):
+            self._request_id = (self._request_id % 0xFFFFFFFF) + 1
+        return self._request_id
 
     async def _notify(self, subscribers: list[Callable], *args) -> None:
         for callback in tuple(subscribers):
@@ -154,8 +229,7 @@ class NativeIPC:
     async def add_peer(self, requested_id: int = 0) -> int:
         if requested_id != 0 and not 2 <= requested_id <= 0xFFFFFFFF:
             raise ValueError("External player IDs must be 2..4294967295, or zero for allocation")
-        self._request_id = (self._request_id % 0xFFFFFFFF) + 1
-        request_id = self._request_id
+        request_id = self._next_request()
         future = asyncio.get_running_loop().create_future()
         self._pending[request_id] = future
         try:
@@ -178,6 +252,84 @@ class NativeIPC:
     async def ping(self) -> None:
         await self._write(PING)
 
+    async def admin_command(self, peer_id: int, generation: int, operation: int,
+                            argument: str = "") -> tuple[int, str]:
+        """Send one typed, manager-authorized operation over private IPC.
+
+        This method is deliberately absent from the public transport broker.
+        The engine rechecks the actor's current transport incarnation before
+        executing it, including private replies. There is no console command.
+        """
+        if (type(peer_id) is not int or not 2 <= peer_id <= 0xFFFFFFFF or
+                type(generation) is not int or not 1 <= generation <= 0xFFFFFFFF):
+            raise ValueError("Invalid admin actor incarnation")
+        if type(operation) is not int or operation not in (ADMIN_MESSAGE, ADMIN_PLAYERS, ADMIN_KICK, ADMIN_NEXT_LEVEL):
+            raise ValueError("Unknown admin operation")
+        if (not isinstance(argument, str) or len(argument) > MAX_ADMIN_TEXT or
+                any(not 32 <= ord(ch) <= 126 for ch in argument)):
+            raise ValueError("Admin argument must be at most 127 printable ASCII characters")
+        if operation in (ADMIN_PLAYERS, ADMIN_NEXT_LEVEL) and argument:
+            raise ValueError("This admin operation does not accept an argument")
+        if operation in (ADMIN_MESSAGE, ADMIN_KICK) and not argument:
+            raise ValueError("This admin operation requires an argument")
+        if len(self._admin_pending) >= 64:
+            raise EngineUnavailable("Admin request queue is full")
+        request_id = self._next_request()
+        future = asyncio.get_running_loop().create_future()
+        self._admin_pending[request_id] = (future, peer_id, generation)
+        try:
+            await self._write(ADMIN_REQUEST, peer_id, request_id,
+                              struct.pack("<II", generation, operation) + argument.encode("ascii"))
+            return await asyncio.wait_for(future, self.request_timeout)
+        finally:
+            self._admin_pending.pop(request_id, None)
+
+    async def spectator_request(self, operation: int, *, world_epoch=0, control_epoch=0,
+                                mode=0, peer_id=0, generation=0, sequence=0,
+                                axes=(0., 0., 0., 0., 0.), geometry_enabled=0) -> dict:
+        """Typed observer operations; image and geometry use independent inherited FDs.
+
+        Source zero identifies the authenticated supervisor, never a spoofed
+        gameplay actor. This method is not exposed by the public broker.
+        """
+        if type(operation) is not int or operation not in (0, 1, 2, 3):
+            raise ValueError("Unknown observer operation")
+        if operation == 0:
+            payload = struct.pack("<II", 1, operation)
+        else:
+            if any(type(value) is not int or not 0 <= value <= 0xffffffff
+                   for value in (world_epoch, control_epoch)):
+                raise ValueError("Invalid observer epoch")
+            if operation == 1:
+                if (type(mode) is not int or mode not in (0, 1, 2) or
+                        any(type(value) is not int or not 0 <= value <= 0xffffffff
+                            for value in (peer_id, generation)) or
+                        (mode == 2 and (peer_id < 2 or not generation)) or
+                        (mode != 2 and (peer_id or generation))):
+                    raise ValueError("Invalid observer mode or target")
+                payload = struct.pack("<7I", 1, operation, world_epoch, control_epoch, mode, peer_id, generation)
+            elif operation == 3:
+                if type(geometry_enabled) is not int or geometry_enabled not in (0, 1):
+                    raise ValueError("Invalid geometry activation")
+                payload = struct.pack("<5I", 1, operation, world_epoch, control_epoch, geometry_enabled)
+            else:
+                if (type(sequence) is not int or not 1 <= sequence <= 0xffffffff or
+                        not isinstance(axes, (tuple, list)) or len(axes) != 5 or
+                        any(type(value) not in (int, float) or not math.isfinite(value) for value in axes) or
+                        any(abs(value) > 1 for value in axes[:3]) or any(abs(value) > math.pi for value in axes[3:])):
+                    raise ValueError("Invalid bounded observer input")
+                payload = struct.pack("<5I5f", 1, operation, world_epoch, control_epoch, sequence, *axes)
+        if len(self._spectator_pending) >= 64:
+            raise EngineUnavailable("Observer request queue is full")
+        request_id = self._next_request()
+        future = asyncio.get_running_loop().create_future()
+        self._spectator_pending[request_id] = (future, operation)
+        try:
+            await self._write(SPECTATOR_REQUEST, 0, request_id, payload)
+            return await asyncio.wait_for(future, self.request_timeout)
+        finally:
+            self._spectator_pending.pop(request_id, None)
+
     async def set_id_pool(self, ids: list[int]) -> int:
         """Install real DirectPlay surrogate IDs before allocating clients."""
         if not ids or len(ids) > 64 or len(set(ids)) != len(ids) or any(not 2 <= i <= 0xFFFFFFFF for i in ids):
@@ -189,6 +341,26 @@ class NativeIPC:
                 return await asyncio.wait_for(self._pool_future, self.request_timeout)
             finally:
                 self._pool_future = None
+
+    async def replace_pool_id(self, old_id: int, new_id: int) -> int:
+        """Register a fresh ordinary DirectPlay identity for one retired slot.
+
+        Called by the pool-owning broker outside the IPC reader callbacks.
+        Serialize replacements with initial pool registration; normal data,
+        removals and INFO continue through the independent reader/write lock.
+        """
+        if (type(old_id) is not int or type(new_id) is not int or old_id == new_id
+                or not 65 <= old_id < 0xFFFFFFFE or not 65 <= new_id < 0xFFFFFFFE):
+            raise ValueError("Expected distinct valid DirectPlay identities")
+        async with self._pool_lock:
+            request_id = self._next_request()
+            future = asyncio.get_running_loop().create_future()
+            self._pool_replacements[request_id] = (future, old_id, new_id)
+            try:
+                await self._write(REPLACE_POOL_ID, old_id, request_id, struct.pack("<I", new_id))
+                return await asyncio.wait_for(future, self.request_timeout)
+            finally:
+                self._pool_replacements.pop(request_id, None)
 
     async def _dispatch(self, kind: int, source: int, destination: int, payload: bytes) -> None:
         if kind == INFO_REPLY:
@@ -218,10 +390,66 @@ class NativeIPC:
                     self._pool_future.set_result(struct.unpack("<I", payload)[0])
                 else:
                     self._pool_future.set_exception(ProtocolError("Invalid ID pool reply"))
+        elif kind == POOL_REPLACED:
+            if (not 65 <= source < 0xFFFFFFFE or not destination or len(payload) != 4):
+                raise ProtocolError("Invalid pool replacement reply")
+            new_id = struct.unpack("<I", payload)[0]
+            if not 65 <= new_id < 0xFFFFFFFE or new_id == source:
+                raise ProtocolError("Invalid replacement identity")
+            pending = self._pool_replacements.get(destination)
+            if pending:
+                future, expected_old, expected_new = pending
+                if source != expected_old or new_id != expected_new:
+                    raise ProtocolError("Pool replacement does not match its request")
+                if not future.done():
+                    future.set_result(new_id)
+        elif kind == POOL_RETIRED:
+            if not 65 <= source < 0xFFFFFFFE or destination or payload:
+                raise ProtocolError("Invalid pool retirement event")
+            await self._notify(self._pool_retired_callbacks, source)
         elif kind == DATA_REPLY:
             if not 4 <= len(payload) <= MAX_SITH_PAYLOAD:
                 raise ProtocolError("Engine emitted an invalid Sith payload length")
             await self._notify(self._data_callbacks, source, destination, payload)
+        elif kind == ADMIN_CHAT:
+            if (source < 2 or destination == 0 or not 1 <= len(payload) <= MAX_ADMIN_TEXT or
+                    any(not 32 <= byte <= 126 for byte in payload)):
+                raise ProtocolError("Invalid verified admin chat event")
+            await self._notify(self._admin_callbacks, source, destination, payload.decode("ascii"))
+        elif kind == ADMIN_RESET:
+            if source or destination or payload:
+                raise ProtocolError("Invalid admin reset event")
+            await self._notify(self._admin_reset_callbacks)
+            for future, _, _ in tuple(self._admin_pending.values()):
+                if not future.done():
+                    future.set_exception(EngineUnavailable("Admin connection context changed"))
+        elif kind == ADMIN_REPLY:
+            if (not 8 <= len(payload) <= MAX_ADMIN_TEXT + 8 or
+                    any(not 32 <= byte <= 126 for byte in payload[8:])):
+                raise ProtocolError("Invalid admin command reply")
+            generation, status = struct.unpack_from("<II", payload)
+            pending = self._admin_pending.get(destination)
+            if pending:
+                future, expected_peer, expected_generation = pending
+                if source != expected_peer or generation != expected_generation:
+                    raise ProtocolError("Admin reply actor incarnation does not match its request")
+                if not future.done():
+                    future.set_result((status, payload[8:].decode("ascii")))
+        elif kind == SPECTATOR_REPLY:
+            pending = self._spectator_pending.get(destination)
+            if pending:
+                future, operation = pending
+                if not future.done():
+                    try:
+                        if source != 0:
+                            raise ProtocolError("Observer reply must come from the supervisor scope")
+                        value = spectator_reply(payload, operation)
+                    except (ProtocolError, ValueError, struct.error) as exc:
+                        # Optional observer failures must not tear down the
+                        # shared authenticated gameplay connection.
+                        future.set_exception(ProtocolError(str(exc)))
+                    else:
+                        future.set_result(value)
         elif kind == ERROR:
             reason = payload.decode("utf-8", "replace")[:256]
             error = ProtocolError(f"Engine request {source} rejected ({destination}): {reason}")
@@ -231,9 +459,27 @@ class NativeIPC:
                         future.set_exception(error)
             elif source == SET_ID_POOL and self._pool_future and not self._pool_future.done():
                 self._pool_future.set_exception(error)
+            elif source == ADMIN_REQUEST:
+                # Protocol-level errors contain no command/proof text. Normal
+                # actor/action denials use a correlated ADMIN_REPLY instead.
+                for future, _, _ in self._admin_pending.values():
+                    if not future.done():
+                        future.set_exception(ProtocolError("Engine rejected an admin request"))
+            elif source == REPLACE_POOL_ID:
+                for future, _, _ in self._pool_replacements.values():
+                    if not future.done():
+                        future.set_exception(ProtocolError("Engine rejected a pool replacement"))
+            elif source == SPECTATOR_REQUEST:
+                for future, _ in self._spectator_pending.values():
+                    if not future.done():
+                        future.set_exception(ProtocolError("Engine rejected or does not support observer control"))
             else:
                 LOG.warning("%s", error)
-        elif kind not in (HELLO_REPLY, REMOVED, PONG):
+        elif kind == REMOVED:
+            if source < 2 or destination or payload:
+                raise ProtocolError("Invalid engine peer removal")
+            await self._notify(self._removed_callbacks, source)
+        elif kind not in (HELLO_REPLY, PONG):
             raise ProtocolError(f"Unknown engine IPC response {kind}")
 
     async def _run(self) -> None:
@@ -265,6 +511,15 @@ class NativeIPC:
                 self._ready.clear()
                 self._session = None
                 for future in tuple(self._pending.values()) + tuple(self._info_waiters):
+                    if not future.done():
+                        future.set_exception(EngineUnavailable("Engine IPC connection ended"))
+                for future, _, _ in tuple(self._admin_pending.values()):
+                    if not future.done():
+                        future.set_exception(EngineUnavailable("Engine IPC connection ended"))
+                for future, _ in tuple(self._spectator_pending.values()):
+                    if not future.done():
+                        future.set_exception(EngineUnavailable("Engine IPC connection ended"))
+                for future, _, _ in tuple(self._pool_replacements.values()):
                     if not future.done():
                         future.set_exception(EngineUnavailable("Engine IPC connection ended"))
                 if self._pool_future and not self._pool_future.done():

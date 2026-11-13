@@ -1,0 +1,403 @@
+{
+  "status": "gameplay_pass_with_retail_scoreboard_failure",
+  "date_utc": "2026-10-25",
+  "bot_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+  "bot_patch_sha256": "02dc798472f00337373dc3336544335b8ee83e6ef62714ff656e388b10a67c43",
+  "session": {
+    "name": "Mixed Bot Recovery QA",
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "rank": 0,
+    "teams": false,
+    "players": 7,
+    "bot_players": 4,
+    "human_clients": 3,
+    "human_names": [
+      "RetailHuman",
+      "NativeHuman",
+      "WebClient"
+    ],
+    "same_live_session": true,
+    "configured_player_limit": 8,
+    "transport_slots_including_dedicated_host": 9
+  },
+  "unchanged_server": {
+    "engine_sha256": "34737bb3239577ea2178fa9b2a63e7772a3fff186110dd73c91a1e442c3549f3",
+    "directplay_gateway_sha256": "0777e6898cb0991c1237ec59d806efa181225f7790b04b26c89862403e3fcac3",
+    "server_or_protocol_changes_for_bots": false
+  },
+  "method": "Standard graphical joins and keyboard/mouse gameplay controls. Passive observers perform only bounded O_RDONLY reads of hash-pinned owned processes; no pauses, debugger, gameplay state writes, forced positioning, patched game executable or synthetic network packets.",
+  "clients": {
+    "native": {
+      "executable_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33",
+      "ordinary_join_completed": true,
+      "local_slot": 7,
+      "roster_names_excluding_dedicated_host": [
+        "Bot_BobaFett",
+        "Bot_JanOrs",
+        "Bot_Katarn",
+        "Bot_Trooper",
+        "NativeHuman",
+        "RetailHuman",
+        "WebClient"
+      ],
+      "samples": 133,
+      "sample_errors": 0,
+      "duration_seconds": 44.962,
+      "sample_start_utc": "2026-10-25T03:52:18.194237+00:00",
+      "local_health_changes": [
+        {
+          "seconds": 0.0,
+          "health": 99.88480377197266
+        },
+        {
+          "seconds": 3.891,
+          "health": 95.99360656738281
+        },
+        {
+          "seconds": 6.8,
+          "health": 78.29899597167969
+        },
+        {
+          "seconds": 7.697,
+          "health": 50.43737030029297
+        },
+        {
+          "seconds": 22.953,
+          "health": 30.93734359741211
+        },
+        {
+          "seconds": 23.29,
+          "health": 11.43731689453125
+        },
+        {
+          "seconds": 23.95,
+          "health": 0.0
+        }
+      ],
+      "bots": {
+        "Bot_Trooper": {
+          "distinct_positions_rounded_4dp": 131,
+          "sectors": [
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            38,
+            58,
+            61,
+            83
+          ],
+          "model": "kym13.3do",
+          "thing_types": [
+            10
+          ]
+        },
+        "Bot_JanOrs": {
+          "distinct_positions_rounded_4dp": 114,
+          "sectors": [
+            30,
+            34,
+            37
+          ],
+          "model": "kya10.3do",
+          "thing_types": [
+            10
+          ]
+        },
+        "Bot_BobaFett": {
+          "distinct_positions_rounded_4dp": 97,
+          "sectors": [
+            27,
+            29,
+            30,
+            34,
+            35,
+            37,
+            109
+          ],
+          "model": "kyh4.3do",
+          "thing_types": [
+            10
+          ]
+        },
+        "Bot_Katarn": {
+          "distinct_positions_rounded_4dp": 131,
+          "sectors": [
+            44,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55
+          ],
+          "model": "ky.3do",
+          "thing_types": [
+            10
+          ]
+        }
+      },
+      "projectiles": {
+        "samples_with_projectiles": 64,
+        "maximum_simultaneously_sampled": 7,
+        "models": [
+          "bry0.3do",
+          "det0.3do",
+          "rpt0.3do",
+          "str0.3do"
+        ]
+      },
+      "correctly_observed_final_scores": {
+        "Bot_Trooper": {
+          "kills": 5,
+          "deaths": 4,
+          "score": 4
+        },
+        "Bot_JanOrs": {
+          "kills": 5,
+          "deaths": 4,
+          "score": 5
+        },
+        "Bot_BobaFett": {
+          "kills": 8,
+          "deaths": 5,
+          "score": 8
+        },
+        "Bot_Katarn": {
+          "kills": 7,
+          "deaths": 5,
+          "score": 7
+        },
+        "WebClient": {
+          "kills": 0,
+          "deaths": 2,
+          "score": 0
+        },
+        "RetailHuman": {
+          "kills": 0,
+          "deaths": 2,
+          "score": 0
+        },
+        "NativeHuman": {
+          "kills": 0,
+          "deaths": 4,
+          "score": 0
+        }
+      },
+      "evidence_sha256": {
+        "native-final-samples.jsonl": "b4aa031b2d30afdc0da9b309ee627ca5738a2f3d84e917f9b089af314e6a77cd",
+        "native-final-last.json": "bc8b8a9336ade66e1f5b6ae0cff4749ec422c7ba7e67fcf68edd149fcda7303d",
+        "native-final-world.png": "05a9c07ec1adf42cae8da7d7e67228a5530a5c33ce2705e0a8bc554d2d083e9f",
+        "native-final-respawn.json": "270527924d98b523b33e3085581db9d16eb76d1286657870b55e04e231ec2297",
+        "native-final-scoreboard.png": "b0d86c0ddf98dd560c728bcce807b28ceb21554515d4abbc241dc80c3164751d",
+        "native-directional-attempt.png": "0e833374a8aa2be154dbc769501874cccf9e16ad3f0ad14e7fde37f841e71552",
+        "native-directional-after.json": "8081537264231d1f009f9eba1f737b0965dc58fcf2ef3be4febe89264715a296"
+      },
+      "source_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+      "bot_code_compiled_in": false,
+      "received_themed_chat": [
+        "Bot_BobaFett says 'Patience is cheaper than replacement armor.'",
+        "Bot_Trooper says 'Unscheduled movement will be investigated.'"
+      ],
+      "rendered_hud_kill_line": "NativeHuman was killed by Bot_Katarn",
+      "ordinary_fire_key_respawn_health": 100.0
+    },
+    "retail": {
+      "executable_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "ordinary_join_completed": true,
+      "local_slot": 6,
+      "roster_names_excluding_dedicated_host": [
+        "Bot_BobaFett",
+        "Bot_JanOrs",
+        "Bot_Katarn",
+        "Bot_Trooper",
+        "NativeHuman",
+        "RetailHuman",
+        "WebClient"
+      ],
+      "samples": 208,
+      "sample_errors": 0,
+      "duration_seconds": 44.826,
+      "sample_start_utc": "2026-10-25T03:52:19.715432+00:00",
+      "local_health_changes": [
+        {
+          "seconds": 0.0,
+          "health": 0.0
+        },
+        {
+          "seconds": 24.038,
+          "health": 100.0
+        }
+      ],
+      "bots": {
+        "Bot_Trooper": {
+          "distinct_positions_rounded_4dp": 45,
+          "sectors": [
+            5,
+            6,
+            7,
+            11,
+            12,
+            58,
+            61
+          ],
+          "model": "kym13.3do",
+          "thing_types": [
+            10
+          ]
+        },
+        "Bot_JanOrs": {
+          "distinct_positions_rounded_4dp": 52,
+          "sectors": [
+            34,
+            37
+          ],
+          "model": "kya10.3do",
+          "thing_types": [
+            10
+          ]
+        },
+        "Bot_BobaFett": {
+          "distinct_positions_rounded_4dp": 48,
+          "sectors": [
+            27,
+            29,
+            30,
+            34,
+            35,
+            37,
+            109
+          ],
+          "model": "kyh4.3do",
+          "thing_types": [
+            10
+          ]
+        },
+        "Bot_Katarn": {
+          "distinct_positions_rounded_4dp": 30,
+          "sectors": [
+            44,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55
+          ],
+          "model": "ky.3do",
+          "thing_types": [
+            10
+          ]
+        }
+      },
+      "projectiles": {
+        "samples_with_projectiles": 138,
+        "maximum_simultaneously_sampled": 10,
+        "models": [
+          "bry0.3do",
+          "det0.3do",
+          "rpt0.3do",
+          "str0.3do"
+        ]
+      },
+      "evidence_sha256": {
+        "retail-final-samples.jsonl": "0ab697039a86338755e7544180c45045f5c051a61075fe85b3558a5f57842f23",
+        "retail-final-last.json": "ec4d48705b69b35f38664ec68ea2628e53e75b3aadec59cf83f305a2b0df186e",
+        "retail-main.png": "b61256387f982ba0dc6ba88b3f369ae51ddec27a4f3ebd153759d3eab58847f5",
+        "retail-character.png": "1bf54650b02a199a94a6e0f4e1f8dd72ac8e1bfcc38eec9e8d26c5f49e3a8301",
+        "retail-world.png": "704624b194f343d81ea4cbce2d891305e658380d052ac4f257256b427eeb8080",
+        "retail-world.json": "e3a0d123c9027e0636eda7b51450d35847c98dc878ed809cd94faf84b7f46cc6",
+        "retail-after-walk.json": "c0b8c48bc78741afa9846948f482df9e4fbd25873a2067e6230b2dd53084c24e",
+        "retail-combat.png": "4cac86cd3891036bec71f21b046233815c3f9dc49333bb9ca47c694932b82e8d",
+        "retail-respawn.png": "d9329071e5c8bd5d667e9e6a9723cd8d1e4aca3ff1c798ad00379b606e3eb87d",
+        "retail-respawn.json": "da134f02b37a121c500d1539a76d8f459819943d56f69befbbe2af4896e68a99",
+        "retail-final-scoreboard.png": "459d6961744c780fb5c92df8c3ad2e02194f05270f1ef97c89ab0330407f8310"
+      },
+      "original_executable": "JK.EXE original JK1.00",
+      "game_executable_modified": false,
+      "ordinary_discovery": "Original Internet TCP/IP Connection For DirectPlay address dialog and character menu.",
+      "before_first_death_health_sequence": [
+        100.0,
+        36.125,
+        0.0
+      ],
+      "ordinary_fire_key_respawn_health": 100.0,
+      "killer_corroboration": "Bot_Trooper: normal kill feeds and same-ID DEAD\u2192alive sequence in bots-final-live-gameplay.json.",
+      "original_score_offsets": "Original JK1.00: team+0x139c,kills+0x13a0,deaths+0x13a4,suicides+0x13a8,score+0x13ac. Death routine4cbc50 increments victim13a4 and killer13a0.",
+      "historical_raw_sample_caveat": "208-sample retail-final-samples.jsonl uses correct original kills/deaths offsets and records the existing adapter score-column discrepancy. During diagnosis one-off retail-final-last.json mistakenly read team as kills and kills as deaths; those two labels are excluded from conclusions. Observer restored to verified original offsets. Raw evidence was not rewritten.",
+      "rendered_final_scoreboard": {
+        "NativeHuman": {
+          "score": 0,
+          "kills": 4,
+          "deaths": 0,
+          "self_kills": 0
+        },
+        "RetailHuman": {
+          "score": 0,
+          "kills": 2,
+          "deaths": 0,
+          "self_kills": 0
+        },
+        "WebClient": {
+          "score": 0,
+          "kills": 2,
+          "deaths": 0,
+          "self_kills": 0
+        }
+      }
+    }
+  },
+  "human_to_bot_direction": {
+    "normal_input_attempt": "NativeHuman slot7: standard Bryar selection, 2s forward+primary fire, then8s primary fire.",
+    "rendered_bryar_ammunition": {
+      "before": 50,
+      "after": 34
+    },
+    "independent_bot_observation": "15 distinct normal projectile GUIDs parented to NativeHuman slot7 observed across all four bot clients in the final bounded30s capture.",
+    "hit_or_kill_attributed_to_human": false,
+    "limit": "Human projectile propagation is verified. Human-to-bot damage or kill attribution was not established; other bots were firing during health losses, and the human kill counter stayed0. No landed shot is claimed."
+  },
+  "retail_fixture": {
+    "wine_prefix_isolation": "Separate owned client and gateway prefixes; private loopback test namespace and X displays.",
+    "original_runtime_placement": "Original qualified DirectPlay files in an owned application directory outside Wine-maintained system32; native DLL overrides and explicit COM/provider registry paths select these unchanged files.",
+    "why": "Wine initialization restored builtin system32 files, preventing the original helper from loading. Application-directory placement and prefix warmup resolved the fixture failure.",
+    "helper_readiness": "Original wait_helper.exe readiness check succeeded before game/gateway launch.",
+    "runtime_sha256": {
+      "DPLAY.DLL": "7f3978149dd401c33ab0cf34bf776d794005dccf8307cce5006710976c6df545",
+      "DPLAYX.DLL": "d31af8884552fd839661df03b16c0205d35ecdc610e278c2c12c616f28f38924",
+      "DPWSOCKX.DLL": "35ab9668eb501642bb2551a22dbd84a76f97d24a7fcc5ff8b8806af5fb52cd17",
+      "DPLAYSVR.EXE": "836862ad78fb9a0eaf6c91aa85890abf92257e256533e55ec7088c7820f3b357"
+    },
+    "caveat": "This is original JK1.00 executed through the recovered Wine/QEMU/Xvfb runtime with local registry and installation setup. It is not a fresh Windows hardware or retail MotS qualification."
+  },
+  "limits": [
+    "Only stock JK1MP/m2.jkl rank-zero FFA is covered. MotS, Force powers, teams, custom maps/mods and password sessions are not covered.",
+    "Position changes can include ordinary respawns and do not constitute a general navigation-quality measurement.",
+    "Remote actor health is not treated as authoritative; damage conclusions use each human client own health and normal HUD/death state.",
+    "Projectile observations are sampled states, not total shot counts; type3 union memory is not interpreted as health.",
+    "Retail runtime setup is a QA fixture adjustment; server/game/network protocol bytes were unchanged.",
+    "Human-to-bot projectile propagation passed; attributable damage or kill remains unobserved in the bounded attempt.",
+    "Unchanged existing DirectPlay adapter misorders retail roster score fields. Original retail Kills/Deaths/Self-Kills columns are inconsistent with native state; scoreboard compatibility failed and needs separate correction."
+  ],
+  "cleanup": {
+    "native_left_and_quit_normally": true,
+    "retail_left_and_quit_normally": true,
+    "owned_x_and_prefixes": "preserved for follow-up narrow adapter scoreboard correction test",
+    "shared_server_and_namespace": "preserved for root lifecycle owner"
+  },
+  "retail_scoreboard_failure": {
+    "status": "observed_existing_adapter_defect",
+    "original_retail_gui": "NativeHuman score0,kills4,deaths0; RetailHuman score0,kills2,deaths0.",
+    "unchanged_native_gui": "NativeHuman score0,kills0,deaths4; RetailHuman score0,kills0,deaths2.",
+    "cause": "Original roster has U8 team then S16 kills,deaths,suicides,score; existing adapter mistakenly treats firstfield as U8 kills and retains upstream order.",
+    "scope": "Server/adapter unchanged for this test. Gameplay, correctmodels, projectilepropagation, own-health damage, normalHUDkillmessages and same-IDrespawns independently observed. Fullretailscore-column compatibility notclaimed.",
+    "changed_in_bot_prototype": false
+  }
+}

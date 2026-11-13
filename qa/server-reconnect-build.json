@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "recorded_epoch": 1792915279.1717274,
+  "kind": "dedicated_reconnect_build_and_exact_relink",
+  "status": "pass",
+  "expected_binary_sha256": "4be9e8fa996065eb531f5a8693516d7f799e1cfc0dc9d81ff7d6573577fc392c",
+  "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "manifest_sha256": "3d69f2a6e2552cc738f1bf8a9fca3ef76337c63a6472f7b838e96bf8fae8b295",
+  "published_files": {
+    "bin/linux-x86_64/openjkdf2": {
+      "sha256": "4be9e8fa996065eb531f5a8693516d7f799e1cfc0dc9d81ff7d6573577fc392c",
+      "bytes": 8587704
+    },
+    "bin/linux-x86_64/libGameNetworkingSockets.so": {
+      "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+      "bytes": 3644744
+    },
+    "native/crossplay-dedicated.patch": {
+      "sha256": "4076a08c60bf985d7399d3631a96fb2f371f51e2d131cf2b5060551190fff5eb",
+      "bytes": 99144
+    },
+    "native/relink-linux-x86_64.tar.gz": {
+      "sha256": "580947daf1c0ab9eefe999d97557874a9321589680b92296e092e50293480321",
+      "bytes": 5976699
+    }
+  },
+  "compiled_sources": {
+    "src/Dss/sithAdmin.c": "1c50955511c5f089e4d3698a4438ed7a7652285d66b7e45465f8e0d604d28763",
+    "src/Dss/sithAdmin.h": "4412645ebe4ff20909426036495870874a4c85b7cb236138d756536dcb8ca9c8",
+    "src/Dss/sithDSSThing.c": "15c6ccd7cdb18dbb5ac8f952fd7de8bd474508b9b15f607817e678d6386cc4e3",
+    "src/Dss/sithMulti.c": "f7947f2386dd43cc2061fcc5d085d1e0db50129c32f439fe945541605ceff826",
+    "src/Main/Main.c": "25898ff7d4a182f0f34c9abe68d640646f7e110c8b9caf406069a3591bcb3fcf",
+    "src/Platform/Networking/GNS/AdminConnections.h": "b7547f2280270fb326f8544b8e604663bb0533f12c92b673f3ec7656bf440116",
+    "src/Platform/Networking/GNS/GatewayBridge.h": "05d40c739f905b94da6a1fb48ec8a4afe90d684a86e704634c6fff772a30036d",
+    "src/Platform/Networking/GNS/TransportIdentities.h": "40134c6e79f34502ee5f63b7ada50a5c40818944e73e2b7a5b99eb97ecef1840",
+    "src/Platform/Networking/GNS/stdComm_GNS.cpp": "292651441d2bb49614578fc10b81c57e361a02ffe106d043c79edd5dfd8105ba",
+    "src/Platform/Networking/GNS/stdComm_GNS.h": "a1f5ddbdc5640d82ed4acbf588e497ea0c9adb564104adfa93e37531d8fe2045",
+    "src/Tests/gateway_bridge_test.cpp": "3d5ad135ac16a12387bf917d009cd5af54eb84d295962bfb3a7627fe02118ce0",
+    "src/Tests/transport_identities_test.cpp": "4e212e68d3151fccaa9490d5c65e3c8da84869f13ab47b314c8fd9aaeb8a7482",
+    "src/Win95/Window.c": "188d8e4e0ae76c807c9f04d4eaed3be05753fc649367d08629c1673849cf233a"
+  },
+  "source_patch_matches_worktree": true,
+  "source_patch_reverse_check": true,
+  "all_build_inputs_match": true,
+  "link_input_count": 217,
+  "supplied_object_relink_sha256": "4be9e8fa996065eb531f5a8693516d7f799e1cfc0dc9d81ff7d6573577fc392c",
+  "supplied_object_byte_identity": true,
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "relink_helper_sha256": "7fcc6dff19b11b51dfe7d1e403abc89ed013b7720f9459db63e5ad3399b85f70",
+  "relink_helper_unchanged_from_previous_qualified_archive": true,
+  "previous_modifiable_dependency_relink_receipt": "qa/server-admin-build.json",
+  "limitations": [
+    "This is the pinned-source partial rebuild using unchanged dependency/application objects recorded in BUILD.json, not a fresh dependency build.",
+    "Exact supplied-object reconstruction is verified in this compiler/linker/dependency environment.",
+    "The unchanged libsmacker source recompilation utility was qualified in the prior receipt and was not needlessly rerun here.",
+    "Connected gameplay qualification is separate."
+  ],
+  "private_log": "bot-qa/reconnect-relink-4be9e8fa9960/exact-link.log",
+  "private_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "temporary_outputs_removed": true
+}

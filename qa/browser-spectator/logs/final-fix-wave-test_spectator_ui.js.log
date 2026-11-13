@@ -1,0 +1,17 @@
+✔ camera motion cancels opposing keys and releases both movement and accumulated look (4.236025ms)
+✔ sequence advances within an epoch and only a new world/control epoch resets replay protection (0.276948ms)
+✔ look deltas stay finite and bounded, are consumed once, and arrows follow native yaw convention (1.597775ms)
+✔ a follow choice carries canonical peer plus connection generation, never just a slot or name (0.498564ms)
+✔ older snapshots cannot undo newer epochs and a reloaded/read-only tab does not own active controls (0.329518ms)
+✔ current RGBA frame retains dimensions, sequence and exact pixel order (57.033394ms)
+✔ malformed, oversized, mismatched and replayed frames are rejected before drawing (5.863776ms)
+✔ a mounted reload waits for explicit control, then starts a fresh sequence and rightward drag turns right (14.268314ms)
+✔ an external epoch revokes mounted control and stale status cannot re-enable input (5.243338ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 111.759579

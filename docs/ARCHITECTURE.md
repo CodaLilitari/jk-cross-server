@@ -41,7 +41,7 @@ The bridge therefore creates real local DirectPlay player objects as transport s
 
 The actual DirectPlay 5 runtime rejected additional local player objects in a `DPSESSION_CLIENTSERVER` session. The bridge uses the original peer-session layout instead. It translates the host's special canonical ID, 1, to the host's real DirectPlay ID at the retail boundary. Only the source-audited host-ID fields in management messages are translated; arbitrary payload bytes, object GUIDs, and script arguments are not searched and replaced.
 
-This arrangement reserves physical DirectPlay slots before all human players arrive. A mixed session therefore has a maximum of 15 configured human seats, and the original retail session browser includes reserved transport objects in its displayed player count. The administration panel separately reports the simulation's fully joined human players. Native/browser sessions with the retail adapter disabled do not need Wine or a DirectPlay ID pool.
+This arrangement reserves physical DirectPlay slots before all players arrive. A mixed session supports up to 15 playing clients shared by humans and bots; the engine adds the dedicated host separately. The original retail session browser includes reserved transport objects in its displayed player count. The administration panel separately reports the simulation's fully joined players. Native/browser sessions with the retail adapter disabled do not need Wine or a DirectPlay ID pool.
 
 ## Dedicated-host and join differences
 
@@ -77,11 +77,15 @@ The Python service provides a small local browser panel for selecting JK or MotS
 
 Before startup, the supervisor validates configuration and the selected archive. It stages a separate run tree, normalizes filename case for the Linux engine, and keeps generated registry/profile/log files out of the installed game directory. Archives are hard-linked when possible and copied otherwise. Each run records its settings, episode hash, and logs.
 
-The engine still needs an initial X/OpenGL context during headless startup. On a Linux host without `DISPLAY`, the supervisor launches it through Xvfb. Audio uses dummy/null drivers. The desktop game UI is not the server control interface.
+The engine still initializes an OpenGL context during headless startup. The supervisor selects an explicit auto/offscreen/Xvfb/existing-display policy; auto uses SDL offscreen and surfaceless EGL when no display is inherited. Wine and player bots retain separate display environments. Audio uses dummy/null drivers. A valid current session descriptor, in addition to the IPC handshake, is required before startup reports success. Stale descriptors are cleared after disconnect or stop.
 
 Startup waits for the actual engine IPC handshake, checks the game mode, starts the broker, and waits for the DirectPlay identity pool before opening the browser room. A component exit stops the whole session. Optional automatic restart is bounded. Shutdown closes active browser and adapter connections before waiting for their servers, then terminates owned child processes.
 
 The administration listener binds to loopback, checks its host/origin, and requires a per-process token on its API. Game-facing ports are separate. Native IPC and the adapter broker bind to loopback and use a fresh token for each session. Incoming network source IDs are bound to the transport connection that owns them. These controls support normal operation; this project does not claim a security audit of the original game engines or legacy DirectPlay runtime.
+
+## Optional host observation
+
+The authenticated panel can control a separate native camera and read bounded RGBA frames through an inherited Unix socket. The camera never becomes a gameplay actor or network peer. Its render pass suppresses gameplay callbacks and restores shared renderer/animation caches before simulation resumes. Controls carry current world and camera-control epochs; player following uses canonical peer identity plus connection generation. A departed target returns the view to free flight. No game-facing packet layout or checksum input is changed. See [the spectator guide](SPECTATOR.md) and [private protocol](SPECTATOR_PROTOCOL.md).
 
 ## Scope of the evidence
 

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; form-action 'none'; base-uri 'none'">
+  <title>JK Cross Server · Offline admin proof</title>
+  <link rel="stylesheet" href="admin-helper.css">
+  <script src="admin-helper.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><p class="eyebrow">JK CROSS SERVER / OFFLINE TOOL</p><h1>Admin proof</h1><p class="intro">Use your private key file to answer a server challenge. This page performs the calculation locally and makes no network requests.</p></header>
+    <section class="card">
+      <form id="proof-form">
+        <label for="key-file">1. Select your issued key file</label>
+        <input id="key-file" type="file" accept=".cog" required>
+        <p class="hint">Keep the key outside game folders and archives. This tool reads the credential comment; it never executes COG code.</p>
+        <label for="challenge">2. Paste the server challenge</label>
+        <input id="challenge" type="text" maxlength="74" placeholder="JKADMIN1:server-id:nonce" autocomplete="off" spellcheck="false" required>
+        <p class="hint">Enter <code>admin login</code> in game chat, then copy its immediate private response exactly. It expires after two minutes. Never use a challenge forwarded by another player; this helper cannot authenticate the chat sender.</p>
+        <button id="generate" type="submit">Generate proof</button>
+      </form>
+      <p id="message" role="status" aria-live="polite">No key has been read.</p>
+    </section>
+    <section class="card">
+      <label for="proof">3. Copy this line into game chat</label>
+      <textarea id="proof" rows="3" readonly spellcheck="false" aria-label="Generated admin proof"></textarea>
+      <div class="actions"><button id="copy" type="button" disabled>Copy proof</button><button id="clear" type="button" class="secondary">Clear</button></div>
+      <p class="hint">The key itself is never sent. Each proof answers one challenge on one connection. After authentication, use <code>admin help</code>; privileges last 15 minutes or until the connection/session ends or the key is revoked.</p>
+    </section>
+    <footer>Extract the helper's three files into one folder and open this HTML file locally. You can close the page after copying the proof.</footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,146 @@
+{
+  "kind": "dedicated_admin_build_and_relink_verification",
+  "started_epoch": 1792909480.6693757,
+  "scope": "Pinned dedicated build provenance, exact supplied-object relink, and included libsmacker source recompilation; no live gameplay in this check.",
+  "expected_binary_sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+  "manifest_sha256": "5feb9119dc9462a0b63e156bb1161c56603e4c624b13da73892dc8475a1dbecc",
+  "published_files_verified": {
+    "bin/linux-x86_64/openjkdf2": {
+      "sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+      "bytes": 8578104
+    },
+    "bin/linux-x86_64/libGameNetworkingSockets.so": {
+      "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+      "bytes": 3644744
+    },
+    "native/crossplay-dedicated.patch": {
+      "sha256": "0147665539dac3e1ae7652e97e1afdde12e3a46188141de0796795272f1da369",
+      "bytes": 69149
+    },
+    "native/relink-linux-x86_64.tar.gz": {
+      "sha256": "3e342920b782eea38b422460f45b048e0c762f39beff81b60342ce9e69fc7fe9",
+      "bytes": 5972132
+    }
+  },
+  "toolchain": {
+    "cc": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "cxx": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "linker": "GNU ld (GNU Binutils for Ubuntu) 2.42"
+  },
+  "environment": {
+    "distribution": "PRETTY_NAME=\"Ubuntu 24.04.3 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.3 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "LIBRARY_PATH": "/tmp/bfp3_prototype/runtime_lane/apt/root/usr/lib/x86_64-linux-gnu:/tmp/bfp3_prototype/runtime_lane/apt/root/usr/lib:/workspace/scratch/3cdb8ff42680/jk-cross-server/bin/linux-x86_64",
+    "LD_LIBRARY_PATH": "/tmp/bfp3_prototype/runtime_lane/apt/root/usr/lib/x86_64-linux-gnu:/tmp/bfp3_prototype/runtime_lane/apt/root/usr/lib:/workspace/scratch/3cdb8ff42680/jk-cross-server/bin/linux-x86_64"
+  },
+  "relink_inputs": {
+    "verified_count": 217,
+    "all_match_manifest": true
+  },
+  "link_json_sha256": "309499f41afb72f8c21557345ffe0cc1d08b417dbff9e9b3b568e420aaa30035",
+  "relink_script_sha256": "7fcc6dff19b11b51dfe7d1e403abc89ed013b7720f9459db63e5ad3399b85f70",
+  "output_location": "Private scratch evidence only; packaged executable and manifests are never replaced.",
+  "dedicated_source": {
+    "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "manifest_source_entry_count": 11,
+    "engine_translation_units_recompiled_in_recorded_build": 6,
+    "manifest_also_tracks_header_and_standalone_test": true,
+    "all_compiled_sources_match_manifest": true,
+    "full_current_diff_matches_published_patch": true,
+    "published_patch_reverse_check": true,
+    "build_receipt_binary_matches_published": true,
+    "method": "Recompile every changed dedicated engine translation unit; reuse published unchanged application objects and dependency libraries.",
+    "reused_unchanged_objects": true,
+    "fresh_full_dependency_build": false
+  },
+  "supplied_object_link": {
+    "command": "Execute JSON argv from archive link.json unchanged, with the documented local dependency search environment.",
+    "exit_code": 0,
+    "sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+    "bytes": 8578104,
+    "matches_published_binary": true,
+    "recompiled_sources": 0
+  },
+  "modifiable_libsmacker_link": {
+    "command": "Run the unmodified extracted relink.py; it compiles each of the three included libsmacker sources and executes link.json.",
+    "exit_code": 0,
+    "sha256": "ba91c57e43342225a999f3cf032b62ad681d1f43e7bd3095ae6cd19e51deac53",
+    "bytes": 8578104,
+    "matches_published_binary": false,
+    "recompiled_translation_units": 3,
+    "changed_input_paths": [
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smacker.c.o",
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_bitstream.c.o",
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_hufftree.c.o"
+    ],
+    "all_other_link_inputs_unchanged": true,
+    "observed_embedded_source_paths": {
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smacker.c.o": {
+        "supplied": [
+          "/workspace/scratch/66b0203ff71a/research/native/OpenJKDF2-MotS-Fixes/src/external/libsmacker/smacker.c"
+        ],
+        "recompiled": [
+          "/workspace/scratch/3cdb8ff42680/bot-qa/server-admin-relink-check/extracted/libsmacker/smacker.c"
+        ]
+      },
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_bitstream.c.o": {
+        "supplied": [
+          "/workspace/scratch/66b0203ff71a/research/native/OpenJKDF2-MotS-Fixes/src/external/libsmacker/smk_bitstream.c"
+        ],
+        "recompiled": [
+          "/workspace/scratch/3cdb8ff42680/bot-qa/server-admin-relink-check/extracted/libsmacker/smk_bitstream.c"
+        ]
+      },
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_hufftree.c.o": {
+        "supplied": [
+          "/workspace/scratch/66b0203ff71a/research/native/OpenJKDF2-MotS-Fixes/src/external/libsmacker/smk_hufftree.c"
+        ],
+        "recompiled": [
+          "/workspace/scratch/3cdb8ff42680/bot-qa/server-admin-relink-check/extracted/libsmacker/smk_hufftree.c"
+        ]
+      }
+    },
+    "byte_identity_claimed": false
+  },
+  "path_normalization_diagnostic": {
+    "scope": "Private scratch-only diagnostic; not a change to packaged relink.py or a cross-environment reproducibility promise.",
+    "macro_prefix_map": {
+      "/workspace/scratch/3cdb8ff42680/bot-qa/server-admin-relink-check/extracted/libsmacker": "/workspace/scratch/66b0203ff71a/research/native/OpenJKDF2-MotS-Fixes/src/external/libsmacker"
+    },
+    "sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+    "matches_published_binary": true,
+    "recompiled_objects_match_supplied": {
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smacker.c.o": true,
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_bitstream.c.o": true,
+      "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_hufftree.c.o": true
+    }
+  },
+  "limitations": [
+    "This verifies the supplied objects and source-relocatable libsmacker workflow with the recorded GCC/linker and dependency environment. It is not a fresh rebuild of all dependency libraries.",
+    "Direct supplied-object byte identity is demonstrated in this environment only; other compilers, linkers, or system libraries may produce different output.",
+    "The ordinary libsmacker rebuild embeds its extraction directory in source-path strings; its successful relink is reported separately from exact supplied-object reconstruction.",
+    "This check does not qualify CTF gameplay or mixed-client interoperability."
+  ],
+  "packages_and_manifest_unchanged": true,
+  "finished_epoch": 1792909483.6819448,
+  "private_logs": [
+    "bot-qa/server-admin-relink-check/supplied-object-link.log",
+    "bot-qa/server-admin-relink-check/modifiable-libsmacker-link.log",
+    "bot-qa/server-admin-relink-check/path-normalized-diagnostic.log"
+  ],
+  "private_logs_sha256": {
+    "bot-qa/server-admin-relink-check/modifiable-libsmacker-link.log": "0b75bdf95b790229d62e83720062953ef423b4afa0faabe5f493ff601ccc900c",
+    "bot-qa/server-admin-relink-check/path-normalized-diagnostic.log": "0baae28f2b89138fc00f6d56309f176f9d9e478e1d9f597ac7a16451ab8e56a5",
+    "bot-qa/server-admin-relink-check/supplied-object-link.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "temporary_build_outputs_removed": true,
+  "documentation_refresh": {
+    "epoch": 1792910236.8362074,
+    "path": "docs/crossplay-gateway.md",
+    "source_sha256": "a2893454e79c3619661989c3abc4d47da3cd244ff1687c4d32d070d99e5b37ca",
+    "previous_patch_sha256": "b7702f89db252b7e589751720b027e1781246f2dbbe18652f54ed0b4d2ee8ffd",
+    "current_patch_sha256": "0147665539dac3e1ae7652e97e1afdde12e3a46188141de0796795272f1da369",
+    "compiled_sources_unchanged": true,
+    "relink_archive_and_executable_unchanged": true,
+    "published_patch_reverse_check": true
+  }
+}

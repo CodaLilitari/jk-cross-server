@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-25T05:23:49+00:00",
+  "status": "pass",
+  "scope": "Actual engine CTF spawn selection, common join-slot allocation, and ordinary player-sync serialization with controlled collision/delivery fixtures. Launcher and manager metadata checked with helper clients. This is not live CTF or mixed-client qualification.",
+  "base_engine_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "server_change": [
+    "Stop assigning advertised session capacity to the authored player/spawn count when a native GNS connection arrives.",
+    "Use a separate common free-slot allocator bounded by configured session capacity, authored records, and the engine array capacity; configured capacity already includes the dedicated host.",
+    "Preserve authored-count existing-player lookup, spawn selection, and SyncPlayers serialization."
+  ],
+  "regression": {
+    "command": "python3 native/tests/run_server_spawn_tests.py --source /path/to/patched-dedicated-engine --build /path/to/configured-engine-build",
+    "groups": 5,
+    "checks": [
+      "The actual selector reproduces the old fallback to start0 when a CTF lobby mask0xffff is combined with a truncated count8.",
+      "Keeping all32 authored starts exercises every lobby start16..31 while session capacity stays8.",
+      "Red mask0xffffff00 selects0..7 and gold mask0xffff00ff selects8..15.",
+      "With host0 occupied, capacity8 admits only human slots1..7, rejects an eighth human despite unused authored records, and reuses only a free eligible slot.",
+      "A four-start map cannot allocate a fifth record even with configured capacity8; nonpositive capacity rejects admission.",
+      "Actual SyncPlayers serializes all32 records in its existing packet format while configured capacity remains8."
+    ]
+  },
+  "metadata": {
+    "change": "Rename launcher receipt and manager API team field to requested_team; no actual assignment is inferred from environment configuration.",
+    "command": "python3 -m unittest tests.test_bots.BotRunnerTests.test_team_force_metadata_and_external_behavior_file_are_passed_without_mutation tests.test_bot_manager.BotManagerTests.test_managed_roster_live_rules_and_stop_leave_unrelated_process_alive -v",
+    "tests": 2,
+    "status": "pass",
+    "execution": "An initial run with restricted process visibility failed the cleanup assertion. Rerunning with normal process visibility passed both tests, including cleanup and preservation of an unrelated process."
+  },
+  "engine_source_sha256": {
+    "src/Dss/sithMulti.c": "71195893eaddafe622ef1ef63c5f6fcd82bf0da11303f904ac89435d3f4011e1",
+    "src/Platform/Networking/GNS/stdComm_GNS.cpp": "8152b7e53c29fb8a729080e7541887cb4d81c40ed70139489691ba273d0ed785"
+  },
+  "repository_source_sha256": {
+    "native/tests/test_server_spawns.c": "ced9053b7d62873171c8ef3acd011c22928ca7f017c0e33327fbbe0315e6192e",
+    "native/tests/run_server_spawn_tests.py": "644f0e60290f4a7827265001a862c9d1c9259b70faac573363ae43caab2277ef",
+    "bots/run.py": "f8c368a664808fe6c0d9bea0632af53cc440e9f34662d6b0a2e7d2a55593576d",
+    "manager/runtime.py": "9cef2230ee9ba726f107e3398041cc6095f25eafbb22bd9677fa344069a0ff0d",
+    "tests/test_bots.py": "f00d68ae9338ae0964cd6128dfa99507beb1964810437c3b3a7cf7f6c844ee48",
+    "tests/test_bot_manager.py": "0fdc9810c97bc8c4fd06b4b7f5673fd86f61049dec07111d0a8f955831689482"
+  },
+  "not_established": [
+    "GNS callback execution in a live session",
+    "CTF lobby traversal or flag captures",
+    "unchanged retail/native/browser gameplay with the rebuilt server"
+  ]
+}

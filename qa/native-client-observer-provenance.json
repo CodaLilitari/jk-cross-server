@@ -1,0 +1,1270 @@
+{
+  "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "method": "Unchanged native client: genuine separate CMake configuration; all 204 original application units compiled freshly, freshly built pinned server dependency libraries reused via symlinks. No application object reused.",
+  "original_application_source_clean": true,
+  "compiled_application_units": 204,
+  "reused_application_objects": [],
+  "compiled": [
+    {
+      "source": "src/AI/sithAI.c",
+      "source_sha256": "7f911dfd549a765f07f1a1da61660204ca51eba5f9f5ec4305d068e0001b3012",
+      "object": "CMakeFiles/sith_engine.dir/src/AI/sithAI.c.o",
+      "object_sha256": "11713cd75eb547d41af736970ccb7e2ee939d0eed5c3f8c7883da995f07fd6ff"
+    },
+    {
+      "source": "src/AI/sithAIAwareness.c",
+      "source_sha256": "f1c06b50a3e78d455e7d40c6df10ba10499556e7eabb40fc4074342061923e11",
+      "object": "CMakeFiles/sith_engine.dir/src/AI/sithAIAwareness.c.o",
+      "object_sha256": "2b590541a50ed915d863874172cf0a84d9398a6114e62adb8da8e2ed6dea0cfb"
+    },
+    {
+      "source": "src/AI/sithAIClass.c",
+      "source_sha256": "23c367c2ecd61f7455c0ce308df8b0c2e1b66fca6451fa1483b991f978bee210",
+      "object": "CMakeFiles/sith_engine.dir/src/AI/sithAIClass.c.o",
+      "object_sha256": "bd8c6e38f6a945b9af8b1b2b852008af022768d29c77f65f7fdcb10823195892"
+    },
+    {
+      "source": "src/AI/sithAICmd.c",
+      "source_sha256": "a55dff1a68ef28debb607fbf182628eda8b0e174881bf6b08a362414c4e24653",
+      "object": "CMakeFiles/sith_engine.dir/src/AI/sithAICmd.c.o",
+      "object_sha256": "bf2d694cb81f01ee91dde194f0d6e4b227df8676b7903b66729b016fb9307e7d"
+    },
+    {
+      "source": "src/Cog/jkCog.c",
+      "source_sha256": "415b53b7d1558f24435aa5495a9787b4ec21d648e9e4194804d88dabc4d6c323",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/jkCog.c.o",
+      "object_sha256": "72bba9240e439d2e4a7e8bc8cc7f0f3820db548c3bfbd079873b36caf9888abb"
+    },
+    {
+      "source": "src/Cog/lex.yy.c",
+      "source_sha256": "ae49994a0da217fe97ff5ea7ed983de5492c9de6a6278d35722c4ee9716aa608",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/lex.yy.c.o",
+      "object_sha256": "b584b71bdf4c8e3b47abee76786f3ce9db94ccc7d6f77d351a64e75a9086a396"
+    },
+    {
+      "source": "src/Cog/sithCog.c",
+      "source_sha256": "be7568b4b8dc8fdf5d3179af6d6d75d08285d3acc9c740ea17c59e27a27f2f08",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCog.c.o",
+      "object_sha256": "40b530e8d45003594e539009f8913d1c90029aac99e66259841c92e97d03b26e"
+    },
+    {
+      "source": "src/Cog/sithCogExec.c",
+      "source_sha256": "b727eef5a471966f75ae4be21ed4ec17c24ffcf2ae5dab174d69cd4c338da1f9",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogExec.c.o",
+      "object_sha256": "cbc59b0db09e8f38d040ad8944e3adfffc353c557e202efa04ed5cc124467bbd"
+    },
+    {
+      "source": "src/Cog/sithCogFunction.c",
+      "source_sha256": "5e4c59dbcfe224aa3881747f2608ff8e07ff6d9347663d010fc3daa01be8d76f",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunction.c.o",
+      "object_sha256": "6cabc5a77e8aaaf8bd9fe144b14b466359034ba3165f6535052cc222f0488a7a"
+    },
+    {
+      "source": "src/Cog/sithCogFunctionAI.c",
+      "source_sha256": "8f8cd5fd10b9966868daecba7e73e29589d0da1497698b65da4f2a88126ba47e",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionAI.c.o",
+      "object_sha256": "f9f8706b05df43d62379f809d848d142a04900acce16f092ee1b644b9d42d3ae"
+    },
+    {
+      "source": "src/Cog/sithCogFunctionPlayer.c",
+      "source_sha256": "0169d3e99a19fc09dd5c1d135584e6b46c815e70e7a0437959c6a124abbadd79",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionPlayer.c.o",
+      "object_sha256": "307f66150b7a4e32030dbf22c3b0e8e7f5967e8efbd60cccf0e2c2f8086a74b1"
+    },
+    {
+      "source": "src/Cog/sithCogFunctionSector.c",
+      "source_sha256": "9d6a78063ed44cf378fe9b5da7b4bc4ba8da2d2543f77880096a5c5781411549",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionSector.c.o",
+      "object_sha256": "905f0c1c90c8a69d7b1d03cddcdf1a0bea68b9fda1e0d447bbd9cff5ac65fffa"
+    },
+    {
+      "source": "src/Cog/sithCogFunctionSound.c",
+      "source_sha256": "a1bfbc21f226ac29576fa39776a9826006ea2f05ef74058a086b18b99d955143",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionSound.c.o",
+      "object_sha256": "039fb1d3b985184d2646581ae3b297c9e2ff17e894fc43efb5bd9c4b6ff0b622"
+    },
+    {
+      "source": "src/Cog/sithCogFunctionSurface.c",
+      "source_sha256": "a4f78ee7c902fa96458655287ba0479b370f973222ed76c2013177d805026687",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionSurface.c.o",
+      "object_sha256": "af491ae6ee573984eea1e3a40d2623229b90453db7af071b339a1188ddfa0655"
+    },
+    {
+      "source": "src/Cog/sithCogFunctionThing.c",
+      "source_sha256": "569f0d2a419365ba1f3078dd728e1a43749501dc0694b242ebdb56dd26f5cfbd",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogFunctionThing.c.o",
+      "object_sha256": "23c907a85914e9489e2454be4e17451e80356d86db47e19fa01e97c4dc169380"
+    },
+    {
+      "source": "src/Cog/sithCogParse.c",
+      "source_sha256": "5fd1126890ea4831133b08f09ee6fe8fca29c6454bb33fc0938f8a767c00427b",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/sithCogParse.c.o",
+      "object_sha256": "45a0e71512e1803992e238ad5ecf102a37f143ef55731f2dd27dbfd8239fd46f"
+    },
+    {
+      "source": "src/Cog/y.tab.c",
+      "source_sha256": "e06fecedc351571ad747cf49b5b9b78ff46e9a945709fb321a477d2728349083",
+      "object": "CMakeFiles/sith_engine.dir/src/Cog/y.tab.c.o",
+      "object_sha256": "f893b7a10cb9f0a68d33620a2a920fb9ba919b0314c2848bd94325146c91f5f4"
+    },
+    {
+      "source": "src/Devices/sithComm.c",
+      "source_sha256": "7e706b2c961b0cfa94faa9daa59593f6cea804db8364a0df18203989dfee5c54",
+      "object": "CMakeFiles/sith_engine.dir/src/Devices/sithComm.c.o",
+      "object_sha256": "78143208b9e596242f69acd815ebd92861cd080502aad696704e0c5b802dffd6"
+    },
+    {
+      "source": "src/Devices/sithConsole.c",
+      "source_sha256": "da061408087d4495344fee8d00683bd87c8adac81f75c3b253bab94fdc8ff9b7",
+      "object": "CMakeFiles/sith_engine.dir/src/Devices/sithConsole.c.o",
+      "object_sha256": "244aad4eff8199d653580509f6d571c3cccecc5015f912cd7fde053f872798ef"
+    },
+    {
+      "source": "src/Devices/sithControl.c",
+      "source_sha256": "874e378f5e9584000ee03dbab09b9ead319a3cb23020051a7093709c1f7f91a8",
+      "object": "CMakeFiles/sith_engine.dir/src/Devices/sithControl.c.o",
+      "object_sha256": "35de15d9a9f31c2809f613cdef501f21d9ca15f146f4b919dc4ca3362c366adb"
+    },
+    {
+      "source": "src/Devices/sithSound.c",
+      "source_sha256": "c0e21ca7c193492adb094ab6c9452b64c8e3922782a10ae3380d5dd124adf417",
+      "object": "CMakeFiles/sith_engine.dir/src/Devices/sithSound.c.o",
+      "object_sha256": "eacd07753e70c7da617e654d76cec9f32d9bb25b073d87771062ac52853bdc3c"
+    },
+    {
+      "source": "src/Devices/sithSoundMixer.c",
+      "source_sha256": "7775908935d6245a41a8664efce221a111f7e809a34fdfa0c2f2c29080b5b9f4",
+      "object": "CMakeFiles/sith_engine.dir/src/Devices/sithSoundMixer.c.o",
+      "object_sha256": "4694285bf82664472645680bd178f8f00e64ef4ee59fbc50baf75867d9ab3b6d"
+    },
+    {
+      "source": "src/Dss/jkDSS.c",
+      "source_sha256": "bfe5e90735f5e02b742fd6ef7e82060936b09a650015db44b51067aa5b010cd5",
+      "object": "CMakeFiles/sith_engine.dir/src/Dss/jkDSS.c.o",
+      "object_sha256": "cf8bd7f824b9ec11774eed68e084695175a78c6942def013c312e15f48494536"
+    },
+    {
+      "source": "src/Dss/sithDSS.c",
+      "source_sha256": "7f24ae4a3a3d39e8aba3d7d445886debfeb5691e38f476a66715a8d165837000",
+      "object": "CMakeFiles/sith_engine.dir/src/Dss/sithDSS.c.o",
+      "object_sha256": "d46b86f80a52414c6356acc0fbfd258328dca8358423dff4b3e79e61376da980"
+    },
+    {
+      "source": "src/Dss/sithDSSCog.c",
+      "source_sha256": "b9a4b2909a9b5cb2343fc57c80d4a5234383bb9d228b2c671baf365bac9fb042",
+      "object": "CMakeFiles/sith_engine.dir/src/Dss/sithDSSCog.c.o",
+      "object_sha256": "c592507b4b629d4e9c96fd11919b164ae681711f774987b9057a57c304ea348d"
+    },
+    {
+      "source": "src/Dss/sithDSSThing.c",
+      "source_sha256": "277c5ea276b8b6f0e2835e434eb3e3325159edb19e67e086890b9748f2f34b29",
+      "object": "CMakeFiles/sith_engine.dir/src/Dss/sithDSSThing.c.o",
+      "object_sha256": "ac40cfabe3c742dca33aac9607361158ffc54cf3adceb9311e7ba7f72aba1687"
+    },
+    {
+      "source": "src/Dss/sithGamesave.c",
+      "source_sha256": "6741ce725f41aa0f4cc89c76ce6d84830f44da438971ff1d4794fe5b26cfbab0",
+      "object": "CMakeFiles/sith_engine.dir/src/Dss/sithGamesave.c.o",
+      "object_sha256": "d805b6d03dc4840aa0df58fe9a69d952c828d86e2cc69e23141d32a3ba7e8a59"
+    },
+    {
+      "source": "src/Dss/sithMulti.c",
+      "source_sha256": "971511d3167ca2ddca113a2d3e84018feba7c967991654dda99d344718b18b26",
+      "object": "CMakeFiles/sith_engine.dir/src/Dss/sithMulti.c.o",
+      "object_sha256": "f41507593819f06006eafb5ec355f90ef92315e1eaba69aca63d10dc6148a63b"
+    },
+    {
+      "source": "src/Engine/rdActive.c",
+      "source_sha256": "6b303813a648d68624e72d590870b1fbcab68aeec7168889ad42d8d00dd3c777",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdActive.c.o",
+      "object_sha256": "16682f08a6f2cf13a99200e9fc30354e1b76a28619619f1a80d49dc9f3bb213c"
+    },
+    {
+      "source": "src/Engine/rdCamera.c",
+      "source_sha256": "88346ddb6d91e88050ff7739a76476c2189e35971b9c46c359f8149618062958",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdCamera.c.o",
+      "object_sha256": "2bbbecadb8a05d04aa0978b5b078d7f5524b472668d507ee38cc46e764cff90b"
+    },
+    {
+      "source": "src/Engine/rdCanvas.c",
+      "source_sha256": "b950fa4ba4526163b7b90b9b8746c6b0e2ad6c741325150798020fcf47405ac4",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdCanvas.c.o",
+      "object_sha256": "b7592b8ad5b6baabde4c6b35ca5a84ca5dd9b18a1ae52b21d19b6aa47e0df6f2"
+    },
+    {
+      "source": "src/Engine/rdClip.c",
+      "source_sha256": "487a397e9aa4da6f3dba03e06e68afe5d3fbb84132c499031e6c88d39991adec",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdClip.c.o",
+      "object_sha256": "e3dd9afedf127c93456ba85bbb89e81ed4d4a21e34621bbcadb4244ff56d537d"
+    },
+    {
+      "source": "src/Engine/rdColormap.c",
+      "source_sha256": "49680f74b373678daf7aaaa0e6e5050efbeabe26a6d84b5d088bc9c95ba6c535",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdColormap.c.o",
+      "object_sha256": "fbb353b30ec8730760557548122d5524939e4c75d6933eb242d913e3dc0c74a8"
+    },
+    {
+      "source": "src/Engine/rdKeyframe.c",
+      "source_sha256": "6120cca71c3a436d471d8a9ca5d6b942ad12316dc572202ac701bcf09e7e11f1",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdKeyframe.c.o",
+      "object_sha256": "f25c5919f24a84fbfc5e468cae87ffa005985e06512f3f76830a973f7dadeba4"
+    },
+    {
+      "source": "src/Engine/rdLight.c",
+      "source_sha256": "b0136c977b4fa72b2476aa2b5b5bda2625f9efb9a16bb483929a6d4f427695b1",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdLight.c.o",
+      "object_sha256": "90c438efc64f27610e36f057f3205e2d07c7fcd4b3e5fb2ce17ed85b21b374da"
+    },
+    {
+      "source": "src/Engine/rdMaterial.c",
+      "source_sha256": "b215ead7def22df75a04b930b27d65fbde7be15984eba9cc2b143b0e6a8fbf61",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdMaterial.c.o",
+      "object_sha256": "3b5906024c897965f71bbce5a8b2b857faa8c6ae2e4d53581aaccd5b895ea9c8"
+    },
+    {
+      "source": "src/Engine/rdPuppet.c",
+      "source_sha256": "c6770bc5902457995e4246fbb56db02aa109087d3e5a98c5612cca682dd4c8d5",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdPuppet.c.o",
+      "object_sha256": "efc93bd9bef49645d6ab88b8368c740f0ac75070b680a8599be6a73df3741765"
+    },
+    {
+      "source": "src/Engine/rdThing.c",
+      "source_sha256": "77161faa58ba110786ceb08533ff47a7e0e3af671daf17e656a82367a811a143",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdThing.c.o",
+      "object_sha256": "4fda5412efbb28c53ed95eb230d1d273748426df5ce9e830de10d0632be76eb9"
+    },
+    {
+      "source": "src/Engine/rdroid.c",
+      "source_sha256": "afecf2efe1edfda39bcba3021b6569dfeab6accff65251131f17c11acb24ee92",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/rdroid.c.o",
+      "object_sha256": "4996f2845d609962aaa406470bf8da5bfba143c4aab22c54774ee91a86822f9f"
+    },
+    {
+      "source": "src/Engine/sithAnimClass.c",
+      "source_sha256": "50ce8279eb7c8265de0908bd1620c97239fa5d568bb40477c6be69f2a5f44b45",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithAnimClass.c.o",
+      "object_sha256": "82df11fcfb3b484012b3ae0ee8081387234ace59dc268e38dd9bbe50c79e523f"
+    },
+    {
+      "source": "src/Engine/sithCamera.c",
+      "source_sha256": "100640918b95d67fb61b6dc3cf842ed4391feadbbf9824d7b85a0751fd12a364",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithCamera.c.o",
+      "object_sha256": "cef6b3cb55f408a07f322f38ccebceac3db4276d4ad2b007660de89cbe5f962c"
+    },
+    {
+      "source": "src/Engine/sithCollision.c",
+      "source_sha256": "ac54301bdf0da274af87ff6c8d20e6905c5688f92984f0f5d7321ea0235d4c63",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithCollision.c.o",
+      "object_sha256": "e8aba4615f668810edad93895c6190c8c94a77976d8b80fd7ec54ebdd1743867"
+    },
+    {
+      "source": "src/Engine/sithIntersect.c",
+      "source_sha256": "d502c7b34c7de70e99bcc33591ebd4f58ed664344e2521287b2d96a76b751b56",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithIntersect.c.o",
+      "object_sha256": "53ab45853a4886e447cd9e7df42d7811e2b8b737e33ef792c19c653bfb792140"
+    },
+    {
+      "source": "src/Engine/sithKeyFrame.c",
+      "source_sha256": "c02178cb37d3ead2df0ff671c1a8c5095abb9465440920d4492b06ddc4026e72",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithKeyFrame.c.o",
+      "object_sha256": "807adbf0c3148137f9e35d7f1f985496e0b510c318d2a01139d0924933dba1a1"
+    },
+    {
+      "source": "src/Engine/sithParticle.c",
+      "source_sha256": "3034ef24d66474f9786aa2fc598a0bf6c7bc8dabf9ecdb6f273004f80fff4b09",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithParticle.c.o",
+      "object_sha256": "74ce69c0ab3acb49338b6dee9b5a0de80b725840959785834d39a841370a0c38"
+    },
+    {
+      "source": "src/Engine/sithPhysics.c",
+      "source_sha256": "bfd0e3e70ad7e88162805617744f1536d7bae0a4ee08b18c58bc673755d4796b",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithPhysics.c.o",
+      "object_sha256": "f5c3834ef503ef3351401239f59e0a0aa95fa0d8acd20905644f084a0de688e6"
+    },
+    {
+      "source": "src/Engine/sithPuppet.c",
+      "source_sha256": "b536f0b6e274d1b8acb585785f83dcc968f26e2bdd4ca83478a5e1918ffe0b41",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithPuppet.c.o",
+      "object_sha256": "f188b922908c60fb6185e646bfcd5450da016abe4f50b01b91af7eeca3ab4907"
+    },
+    {
+      "source": "src/Engine/sithRender.c",
+      "source_sha256": "528391a9a20522cf9f695686c5095efde7934b91f290118c9bc53e3d4654769f",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithRender.c.o",
+      "object_sha256": "a30a5284b01c8bda5363fd502564d92759e8577f2d2203f1300d99a11051deb6"
+    },
+    {
+      "source": "src/Engine/sithRenderSky.c",
+      "source_sha256": "ce3350cbea9851c2bba0da40c9377b66466478b04f732f1c0c6c6807d41073d9",
+      "object": "CMakeFiles/sith_engine.dir/src/Engine/sithRenderSky.c.o",
+      "object_sha256": "66823a7e21253d6764b8c38cf6df22c14e1f2cf9dd1a876371ffd584f1127e28"
+    },
+    {
+      "source": "src/Gameplay/jkSaber.c",
+      "source_sha256": "ca275bf1359ca460a4ca13f87e77d59aaaa4e5afbaa4fcb8e641f4e069ac0fdb",
+      "object": "CMakeFiles/sith_engine.dir/src/Gameplay/jkSaber.c.o",
+      "object_sha256": "abb6736f8e25e6c4db3af540bb802bde6ff865a9f648895b0acb0c82787e563b"
+    },
+    {
+      "source": "src/Gameplay/sithEvent.c",
+      "source_sha256": "8add49d0677b7e11e67262dc16fd83ccd1d2b8fc91f72f808c07605a37623035",
+      "object": "CMakeFiles/sith_engine.dir/src/Gameplay/sithEvent.c.o",
+      "object_sha256": "c3d385e3ba9dfb6e8296ee8de4b69520ccd13aeb9dffbe9405a90b3d4d1fbab6"
+    },
+    {
+      "source": "src/Gameplay/sithInventory.c",
+      "source_sha256": "13df52993ff024324a6a27729c3be2686abd6a17f5eebbd3436b513d4acc5810",
+      "object": "CMakeFiles/sith_engine.dir/src/Gameplay/sithInventory.c.o",
+      "object_sha256": "e7f88688232ca8d6f2c43fabceb5d8e5e99036aa133685e0fd29540e3c591d31"
+    },
+    {
+      "source": "src/Gameplay/sithOverlayMap.c",
+      "source_sha256": "73904b764e7eb9662ff5ca59f5c848c7fac09fdab17fbdbee01821904dee48f1",
+      "object": "CMakeFiles/sith_engine.dir/src/Gameplay/sithOverlayMap.c.o",
+      "object_sha256": "18e5abe2402ebfbfd19c77a7c5203666d22c16a5c4a96548b769f6b00a90fbd1"
+    },
+    {
+      "source": "src/Gameplay/sithPlayer.c",
+      "source_sha256": "b712cb00ddaf56fa6739ad422efdc575428c944342ef506af3cba56d964403d3",
+      "object": "CMakeFiles/sith_engine.dir/src/Gameplay/sithPlayer.c.o",
+      "object_sha256": "40b8805c0ea328c1deb1cc090cf3c890d9001d4ae71a08b41196de47358a8687"
+    },
+    {
+      "source": "src/Gameplay/sithPlayerActions.c",
+      "source_sha256": "f8f8e156acdbaa251f1a10cafe06437b204db20034add746decaa5ab805d717c",
+      "object": "CMakeFiles/sith_engine.dir/src/Gameplay/sithPlayerActions.c.o",
+      "object_sha256": "fee3008062e6983c51ff68ae832d35187e54521c087884fb23b383e68f0634c8"
+    },
+    {
+      "source": "src/Gameplay/sithTime.c",
+      "source_sha256": "3ca9eec4edf00b96d5f3624290f904f6073588e440bf7e25cd5999b736a72e7f",
+      "object": "CMakeFiles/sith_engine.dir/src/Gameplay/sithTime.c.o",
+      "object_sha256": "97078f44f45f9426a9f081d6edcf85a23e6cbe070a383362792e34af48ad13a8"
+    },
+    {
+      "source": "src/General/Darray.c",
+      "source_sha256": "addbdfe805a861e8282fa681eff926c10f4c00c10a046882c2793109d0c6f9ba",
+      "object": "CMakeFiles/sith_engine.dir/src/General/Darray.c.o",
+      "object_sha256": "3c1fbbbae3af2431cc349d1b974150add3ead30ee97c0edc82b6352d9b6924ed"
+    },
+    {
+      "source": "src/General/crc32.c",
+      "source_sha256": "7864aa5cd04d91b0fd4a5299c8f9585944ea6d00e14eb5c974f17cf1cd5a3831",
+      "object": "CMakeFiles/sith_engine.dir/src/General/crc32.c.o",
+      "object_sha256": "0b775725bda73bc5f02d183ab93cdadee92d25acde60f8b7c652834010006495"
+    },
+    {
+      "source": "src/General/md5.c",
+      "source_sha256": "35627f0acff6186a82829f90fdee8a82b538eaf02e3529d436ae879572642efd",
+      "object": "CMakeFiles/sith_engine.dir/src/General/md5.c.o",
+      "object_sha256": "026e73194fae74f0f3a941c390d6d10726843737ad5cf20fc7e6dcd362a80fca"
+    },
+    {
+      "source": "src/General/sithStrTable.c",
+      "source_sha256": "8d73e7bfc813be6f637cff7da9b8ae586bca184f028893d64a3476737a547588",
+      "object": "CMakeFiles/sith_engine.dir/src/General/sithStrTable.c.o",
+      "object_sha256": "5117d7191eb8cd050bf85dcf001df616c7d6784ef89758e1323bb0e7452ca319"
+    },
+    {
+      "source": "src/General/stdBitmap.c",
+      "source_sha256": "948ee46de3d1d085266f4d1a35f02921e8836696a3b3b06146496cbe9e81f0e5",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdBitmap.c.o",
+      "object_sha256": "d90cffca7eba3337f3d492c2fc963fcdcdcc940e3cc2f2b614a7b6eb1aded8a5"
+    },
+    {
+      "source": "src/General/stdBitmapRle.c",
+      "source_sha256": "8335a91ca9fc1d9f1a0622c5bb4d982255be4467b78979d185f7f53e957444c6",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdBitmapRle.c.o",
+      "object_sha256": "77dfd6f8ebb1147049454b7d8b01bea152564d2ad17fc4ee95f94a4bf925eafb"
+    },
+    {
+      "source": "src/General/stdBmp.c",
+      "source_sha256": "dbb82a8ab3c521dd963804e8a87144de533e27b1ec0a566dd6b417b7bf9fe86e",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdBmp.c.o",
+      "object_sha256": "9d60f752cacb46dcb14e44262366a6c16d1a647dccf59e0c0a4d117a44f572aa"
+    },
+    {
+      "source": "src/General/stdColor.c",
+      "source_sha256": "5cd2f2ce9c7f63e70bcdbcc52c8d1d12597aad2ed452666d12ce58e7f7f8b53d",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdColor.c.o",
+      "object_sha256": "0cab7c61f39871a85d3140e9815b9e0404dff340c1b0a2edea54aaf3fe25f98a"
+    },
+    {
+      "source": "src/General/stdConffile.c",
+      "source_sha256": "f6ccb59cc793caa6a7895aed51addec9ab1c203b02e694ff4fa4216dd11de691",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdConffile.c.o",
+      "object_sha256": "127598ebd1ed05b37c52e9201273a0e280e9b33f87b64cccdbfc937f6ed3fe9c"
+    },
+    {
+      "source": "src/General/stdFileUtil.c",
+      "source_sha256": "0bea29173b383826f412f566e8d9981564556e256f6588c3436fc27a7634bef5",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdFileUtil.c.o",
+      "object_sha256": "bf3aee8677a7452071e2c4e3d3d8a4d79313a5e31d0c3ae896ae92aeb6aeef2b"
+    },
+    {
+      "source": "src/General/stdFnames.c",
+      "source_sha256": "aaa38674c108d8924c695d60e9660926e79a99e7a0ad4ee99d3200a2f86898ec",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdFnames.c.o",
+      "object_sha256": "2f25d13bc3451998d1307363ce75ac01d85dcdc66fc734c5306e2c0ae0097e6f"
+    },
+    {
+      "source": "src/General/stdFont.c",
+      "source_sha256": "efd023ab79ced27b7ba6bfca138914df2f1b0fef29561a9e31109ee57db470e6",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdFont.c.o",
+      "object_sha256": "4bcb7c6d7ac9c032b9448e41a805e36aa983cefd5984016bc7b2e4e285fbc7f0"
+    },
+    {
+      "source": "src/General/stdHashtbl.c",
+      "source_sha256": "17240447811f584b2bda78071846b59960b2618d7547d3d91cde8fe51b9a5e1b",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdHashtbl.c.o",
+      "object_sha256": "26ffcdb74afd8cba779643d6784afcd4ba126cb7adf957a95dbcbe75e0ba132e"
+    },
+    {
+      "source": "src/General/stdJSON.cpp",
+      "source_sha256": "264a2e3a4dccf8d477aeba591ce80893e131c3878a400be1a7c806ff63c32275",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdJSON.cpp.o",
+      "object_sha256": "ae372162bf8bc2aad3330096cf25440dac2fc406c6414ed92c859bd4f2b9be0d"
+    },
+    {
+      "source": "src/General/stdLbm.c",
+      "source_sha256": "96857ac6947ea74b9549d6cdd1d7eb63bcda93c489f646283ec0c2e9bae3f1c5",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdLbm.c.o",
+      "object_sha256": "693331a8fb9b908606031ccb82a57f9dfc76ef4cd6f022d36a5bd54864b5cba6"
+    },
+    {
+      "source": "src/General/stdLinkList.c",
+      "source_sha256": "1ae3b280e7e4a7052add99a536b13199b8fade57a59230604dd3034e42f4faef",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdLinkList.c.o",
+      "object_sha256": "75db77215024f179a31262befa392797e75125f31b7f88e417ef2df37185ebbe"
+    },
+    {
+      "source": "src/General/stdMath.c",
+      "source_sha256": "ed3f12a57d4454ad8731ba94a68f42c5f983631e5540da7649cd4488a7c75995",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdMath.c.o",
+      "object_sha256": "5e1b1bc65ed4312b4ac98a323d228f56411ba83db6e02e55b4bb3399aa2c4999"
+    },
+    {
+      "source": "src/General/stdMemory.c",
+      "source_sha256": "33d46f6e0b322f13ad13d0e2f2a3be69ffdf90f8a9f516a5750b66fe72b4ac7c",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdMemory.c.o",
+      "object_sha256": "b3dde30b88e02937be450a145627567f397d0eadd42ad01443f80aa128f560fa"
+    },
+    {
+      "source": "src/General/stdPalEffects.c",
+      "source_sha256": "a74e7ca15393f774172958ef4ea8430df89fdae6932fd9d97d62589db4a62ae8",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdPalEffects.c.o",
+      "object_sha256": "4c42dd4bbc20c6204bfce85b501064e3593664ba1d60ecdb29fec8dbc9c22b2a"
+    },
+    {
+      "source": "src/General/stdPcx.c",
+      "source_sha256": "f5a6755edc6d3af19e4e3828df37548f2055802a269f0e58dbc55b6e86aa4ed0",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdPcx.c.o",
+      "object_sha256": "3e6fcee7fe4fac8da57a1741e7d5a558e51c27e1f1838832aac95a6f018764a1"
+    },
+    {
+      "source": "src/General/stdSingleLinklist.c",
+      "source_sha256": "886dc534ddc07ba3e3ed40d5019b360ac568991274745e1ceaabe2260118b1ad",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdSingleLinklist.c.o",
+      "object_sha256": "6c2b957080a698a4142b2dcad3793e23fc88c690eac29c57cd7f3b3085c2cdf3"
+    },
+    {
+      "source": "src/General/stdStrTable.c",
+      "source_sha256": "f3aecb22d883c94639297d34370c4b37ce0279398bef7f9876e57167e8003d60",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdStrTable.c.o",
+      "object_sha256": "438f1a95b75c8340d1e6246758b76bc0deb23f85666064b402e588e194ddd198"
+    },
+    {
+      "source": "src/General/stdString.c",
+      "source_sha256": "d872c6d4ecc9b93c24719ea738652614c4cdf62991de66cd3a9903d6e02ba783",
+      "object": "CMakeFiles/sith_engine.dir/src/General/stdString.c.o",
+      "object_sha256": "1c75dc64f8459d5ee75c11cbb322be40d9e813ed9be3e2d15743592faa0ed004"
+    },
+    {
+      "source": "src/General/util.c",
+      "source_sha256": "50d7aab979d8d701ee36bc7d7abfac5348da0ea6146846fcc51c1a1e1c868e7d",
+      "object": "CMakeFiles/sith_engine.dir/src/General/util.c.o",
+      "object_sha256": "d58985791c85a56006cb22272af9d50d56673c2ee14e79a501ad9285c6aebece"
+    },
+    {
+      "source": "src/Gui/jkGUI.c",
+      "source_sha256": "e3605bf461e1d0a7d1670cf823019c63c6cd378900f7f1acad5545db42ba7df1",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUI.c.o",
+      "object_sha256": "f7ff26daf5bcef471b2a3b7892c073c6cd939f6fd5c99f04a9bd7a81a2c404c0"
+    },
+    {
+      "source": "src/Gui/jkGUIBuildMulti.c",
+      "source_sha256": "c15882d30a2f7135245469413405d8dd97df845dc993250e5f43fcf1867bb972",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIBuildMulti.c.o",
+      "object_sha256": "628cd487618b58412f9278d7a1f0f8de4cbbfc013ec2a4e537570788f1ed5d89"
+    },
+    {
+      "source": "src/Gui/jkGUIControlOptions.c",
+      "source_sha256": "707cf7ba1a3a52fef5e4fc9af74a76d5997b214b3db731ffd34dfbb4d1f98096",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIControlOptions.c.o",
+      "object_sha256": "a8c4427ee1cb62f5a3fb8f1d725c8411a4d870a833c6c3d535c290d79c3d6bf0"
+    },
+    {
+      "source": "src/Gui/jkGUIControlSaveLoad.c",
+      "source_sha256": "db36b6ae09c2cf4b504a9c784c1a13dfd3e169253b708c9769e48d50b609d617",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIControlSaveLoad.c.o",
+      "object_sha256": "6f90bf36d6b7ac7cbc1d85d439a0199f0ecf8d7f212dbb66bbd029a7f11feb9e"
+    },
+    {
+      "source": "src/Gui/jkGUIDecision.c",
+      "source_sha256": "a2ea396ae12511787a05ef15e992b66afaefd52d0d637c43e506a0d124821ed5",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIDecision.c.o",
+      "object_sha256": "8fd344101ef28424feb130a5c8a3e5b4d05d6230ef5f13d67a89f52368333313"
+    },
+    {
+      "source": "src/Gui/jkGUIDialog.c",
+      "source_sha256": "39105a4012e11b9b517069e20f0573ece269e66c883ae341cdf166450a05bf6c",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIDialog.c.o",
+      "object_sha256": "f26ca43c634bd08504cb1733abbd91085fbb6663b0aaed29bb77718b37d73f4b"
+    },
+    {
+      "source": "src/Gui/jkGUIEsc.c",
+      "source_sha256": "b79e6accc3d6a85e6ea2b57cf46353ec8e051bae9cb4f8be80634045dd3f0240",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIEsc.c.o",
+      "object_sha256": "9f59a225d044b4ea12f8950b1711e1c4ee5d7ced94a2f57da5d5a3e72f532a59"
+    },
+    {
+      "source": "src/Gui/jkGUIForce.c",
+      "source_sha256": "baca5e96aa727be9f3220621e1ba9f5b0528d201f0be7f6bd49dfae77053ba67",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIForce.c.o",
+      "object_sha256": "3db88aaea46fdca370de60db2fc8154cd524512bec377ac714ef9472ea754f08"
+    },
+    {
+      "source": "src/Gui/jkGUIGameplay.c",
+      "source_sha256": "846d76c76bbe465276e211a3af7ee088a380504cf22773a1e8d6220f7fa173f1",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIGameplay.c.o",
+      "object_sha256": "a5526971affa839759dbeb391939b4ff91f7c56bc2a295082a4e262a75d1c984"
+    },
+    {
+      "source": "src/Gui/jkGUIGeneral.c",
+      "source_sha256": "b5773def389d3cc9ab5a83bcf803b6aecc839227a22db98eb06a5cac382b4e27",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIGeneral.c.o",
+      "object_sha256": "2f18c4076282a17aaabc91702ce816c0911691f44cbc232a0ef1c1a95dd11280"
+    },
+    {
+      "source": "src/Gui/jkGUIJoystick.c",
+      "source_sha256": "6f26114c033d276f945e94d6f4cc543e6213d3da50111226396282fc9589d81a",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIJoystick.c.o",
+      "object_sha256": "4cfecc9a942c90427294fa382ba73efd30dde440dbe1590386adc263a71992e0"
+    },
+    {
+      "source": "src/Gui/jkGUIKeyboard.c",
+      "source_sha256": "8c519350cf1eaa2fbfc403caaa9d439bfe2381b1e57650a38382ca5243201c78",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIKeyboard.c.o",
+      "object_sha256": "99dbfdec8c4de64684c22ac94ff70416e920770badb0e7255572a0c8ae9e8835"
+    },
+    {
+      "source": "src/Gui/jkGUIMain.c",
+      "source_sha256": "35becf9638c8be4604b84744faa21060870cc58887a77aea5fb8dac1f1865c0c",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMain.c.o",
+      "object_sha256": "7bd13125cacd480584e930c248b7bcdf531339d2781584209f9274cb7d96f3a5"
+    },
+    {
+      "source": "src/Gui/jkGUIMap.c",
+      "source_sha256": "5659c3ee08c7a1815d487843e3e25ba60363a55f40f98bfd751d8c4f5d4c389c",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMap.c.o",
+      "object_sha256": "6101c7f9f0322c3d9aedf217f526ddcb68d83171bf97cd19ecf5f023c1ca9404"
+    },
+    {
+      "source": "src/Gui/jkGUIMods.c",
+      "source_sha256": "268fe75e6841868da74854ddbde34804e68c2783e838422a28d5e48d4433be17",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMods.c.o",
+      "object_sha256": "c6c5f35c391a857c4ac56067fe7dbf6f480e538db637b70e8e2080c7ea7d7b71"
+    },
+    {
+      "source": "src/Gui/jkGUIMouse.c",
+      "source_sha256": "354938b69308961984520d83eea1b00ee7a287c2193bbd7d852907a2b067c9d2",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMouse.c.o",
+      "object_sha256": "5c7b43a5ce836b69549be14363fe200e767b2b905dfe867c784e4d6f69dfbca4"
+    },
+    {
+      "source": "src/Gui/jkGUIMultiTally.c",
+      "source_sha256": "af19fd10389b73e949616e9393ce2996bb47224c0ef15248c3d0e43b2fc6bd3a",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMultiTally.c.o",
+      "object_sha256": "3201529150582f224b0fd6452fbd66625e595d9daf1fb234e63f1fa2a48f1cd0"
+    },
+    {
+      "source": "src/Gui/jkGUIMultiplayer.c",
+      "source_sha256": "3524aaf693c3d2aae939227c6c902ea08c77dc12bf698ce23e41a2f5f2997992",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMultiplayer.c.o",
+      "object_sha256": "c5fa1484ec75594e0bbda36e693d289a21dfc69401395d694ad4b8c0d12a5097"
+    },
+    {
+      "source": "src/Gui/jkGUINetHost.c",
+      "source_sha256": "e8b60437e6a454d159c6e38d5af02ab424ccc727a30934299a6e4cece92f8912",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUINetHost.c.o",
+      "object_sha256": "78c76015f1200075bd46ec8cc44cc490ab8829579139c278836df075bf57f2f0"
+    },
+    {
+      "source": "src/Gui/jkGUIObjectives.c",
+      "source_sha256": "7ee102b5b2684e30359712ae999f020f294ed9a408931f9e8b08936d53cea9a9",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIObjectives.c.o",
+      "object_sha256": "e038a72e9fa764fdfd591566dd43bda09140074f5ddb16c8503d7e9fbf2f3ee3"
+    },
+    {
+      "source": "src/Gui/jkGUIPlayer.c",
+      "source_sha256": "8381c345c0edce954c3623d788d0c89846e60948c70e3407634beeb7121093e7",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIPlayer.c.o",
+      "object_sha256": "9f59e960dcc9a642ca014336193c07cbefe42b25a9165ea20c6fa42d2f67d8cb"
+    },
+    {
+      "source": "src/Gui/jkGUIRend.c",
+      "source_sha256": "8553c90396ada001180471c26820f3cbd45aab484876f3781b94f37a0aaeb449",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIRend.c.o",
+      "object_sha256": "afb893c82df98034951f09b6cc4d5324cdf3655810b1e762d94db9da3564c455"
+    },
+    {
+      "source": "src/Gui/jkGUISaveLoad.c",
+      "source_sha256": "d938004afe09b81d259b1646d3deb7f42d60efe7d5dd9a19b0abec12882078e5",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUISaveLoad.c.o",
+      "object_sha256": "ed9b01563910ad598696184f34f7b74a060b640072521b214c54f8cc5e166f31"
+    },
+    {
+      "source": "src/Gui/jkGUISetup.c",
+      "source_sha256": "4bd1bfa365f46d2ae2f0019102f6925506684a387f0c8230c8ee1d9be7fab77e",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUISetup.c.o",
+      "object_sha256": "c670c1c87d8fc4fa3562fa7e85070e1c67d105aed650dc65c400ddb372ac85e9"
+    },
+    {
+      "source": "src/Gui/jkGUISingleTally.c",
+      "source_sha256": "fefaa99d8a98eced6a89a092431776bea405350b970a834b1664140e277d344e",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUISingleTally.c.o",
+      "object_sha256": "f14f857184145e65e5e46941ed3d08161486379e791c9457ca98f270a363a112"
+    },
+    {
+      "source": "src/Gui/jkGUISingleplayer.c",
+      "source_sha256": "f80071f7404122b15cb2dd87ce9330e087c6af8490dad4729ec6141fad88885a",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUISingleplayer.c.o",
+      "object_sha256": "e29bb04b9744a466cb628f00cee1a3dc876968d48072e8fe356a581136aa50c3"
+    },
+    {
+      "source": "src/Gui/jkGUISound.c",
+      "source_sha256": "6b20780be68185a1c3da3d73629677bf83aac786b9001ee53e1483524c9de70d",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUISound.c.o",
+      "object_sha256": "b1f4020bc186d97151e454f50fb20e11674fd9e4392c6dd1ec3a11f0a062a03a"
+    },
+    {
+      "source": "src/Gui/jkGUITitle.c",
+      "source_sha256": "587d50c060d0781550ace89d8bdd4c5ae17c4fe15810767e6b7f339eda31aeef",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUITitle.c.o",
+      "object_sha256": "6e56250c934bcd9579d8b7dc74acd276bba868775c8958ad8a4ea012604dfcd3"
+    },
+    {
+      "source": "src/Main/InstallHelper.c",
+      "source_sha256": "f0d65af330767b4ed0e18464b35082852a8acdaf6bf8e5d470a80c1a72f30dee",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/InstallHelper.c.o",
+      "object_sha256": "e953a9fa02019cca7031134970b4ab28e9007dfe7fc18b9f7d3b363a5724f446"
+    },
+    {
+      "source": "src/Main/Main.c",
+      "source_sha256": "104cb06987693164bc1aac6e01248176dc2343b3d9b1da0eae6c9ad2ccf1250a",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/Main.c.o",
+      "object_sha256": "f879a237415e2ee36942c343db0a786b76ef2ffcef9b7b117bec071b08ea8b66"
+    },
+    {
+      "source": "src/Main/jkAI.c",
+      "source_sha256": "da6b596e3aaa8a5d57b597b1faa48d4a6c7367f992abcb87555b073f6834432c",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkAI.c.o",
+      "object_sha256": "666aecb32e9f51c743216a6f6e982b0cd9951f963365df061de0e87e70756585"
+    },
+    {
+      "source": "src/Main/jkControl.c",
+      "source_sha256": "0407696ad3700af42ad6b0b6c8d5e73ca091849b7af4f7d007d6722b913f9d72",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkControl.c.o",
+      "object_sha256": "e540e1c264debb3b13d497d3012c926e6e06cfd299b60a29c41eeb479a0310ed"
+    },
+    {
+      "source": "src/Main/jkCredits.c",
+      "source_sha256": "1a82c0d10a85e889262875fbb9e3783ea4a54edef1093e0d4319778c3255f17a",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkCredits.c.o",
+      "object_sha256": "4c323f9b3ad95a8d7c4081a82dd72231865d41a0ef4256f0f5db8f62402eec47"
+    },
+    {
+      "source": "src/Main/jkCutscene.c",
+      "source_sha256": "0095ab5beb05ca0f5ef45e6348755f298f501f8928d7e22a8940bf11cc39a222",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkCutscene.c.o",
+      "object_sha256": "4850b605d276d1a17069321e1c2818b607e7acc1c0867a4969f15d9464e8102a"
+    },
+    {
+      "source": "src/Main/jkDev.c",
+      "source_sha256": "69d80dc873cd5ffab1a21aa0087cb550db678e15c72a7441e5a3d022800c1602",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkDev.c.o",
+      "object_sha256": "25ee0a3c6574b64b84e4b3935620fac3791060ec2fc6e54af4062afe1b7aa8fb"
+    },
+    {
+      "source": "src/Main/jkEpisode.c",
+      "source_sha256": "0312199ac11ca01d29e970b86e4056230235f9422e17d5bffd40b5428efea51b",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkEpisode.c.o",
+      "object_sha256": "85a008a9ab203df668c8a0cd88c74973b82f46af897d907eb746a02498a807e7"
+    },
+    {
+      "source": "src/Main/jkGame.c",
+      "source_sha256": "bfc2cbc520558ebb890b8f2587cf512338c1817d987377838de9f692c4e00916",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkGame.c.o",
+      "object_sha256": "6306ca698a018cfa6d526956f24f384c8183e3bdd3d0d2f9a9e76ca6d7194341"
+    },
+    {
+      "source": "src/Main/jkGob.c",
+      "source_sha256": "dacfc18e9fe95aa7939c645edd04d392086c0a2512ce64a39cd5d41007ed2b44",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkGob.c.o",
+      "object_sha256": "646a983ca9a684b15b560fb7c93de67e3320df03e6861c75f6f78fc9fe8e9d46"
+    },
+    {
+      "source": "src/Main/jkHud.c",
+      "source_sha256": "585051489ae1dfbc1f8163af457d833da5c6f4ece74c4b2ac15739f1465a2978",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkHud.c.o",
+      "object_sha256": "b69228478fcc34f1548e6c872addba4b3350828d485ab8ca0d7927d62d9653ff"
+    },
+    {
+      "source": "src/Main/jkHudCameraView.c",
+      "source_sha256": "0491b58da2981294c654cdca9cd648c8a2101aa6c57e31bca0235cb476657860",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkHudCameraView.c.o",
+      "object_sha256": "c349c94cc451114ab3cfe1bbc4267fc8a6dd44a660528c20f833ab4d19693e38"
+    },
+    {
+      "source": "src/Main/jkHudInv.c",
+      "source_sha256": "54360124492a62c0da3c4586850de060ba047ccddd08aede3b70d5e015bd925f",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkHudInv.c.o",
+      "object_sha256": "8f54952e5eadea4a633ecfc868007a686d6476e24ad4a6f57ee3f067f6b6b2ee"
+    },
+    {
+      "source": "src/Main/jkHudScope.c",
+      "source_sha256": "3524e13d576053879cf8410da616e449bff3b8bb7a2021a603f542f87b7e9908",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkHudScope.c.o",
+      "object_sha256": "15da551768e722ec494a5c9ae46f6466957ddc36dd961777e84524cc17066f9e"
+    },
+    {
+      "source": "src/Main/jkMain.c",
+      "source_sha256": "5ad2f07005f0e9372575dc651d6f10f52ff3962a90b3f23fcc60178e2e11fda6",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkMain.c.o",
+      "object_sha256": "3893341852acffd1337d0b76827a8a9bfb1895c89c91dbf4aecaf89fd76aff73"
+    },
+    {
+      "source": "src/Main/jkQuakeConsole.c",
+      "source_sha256": "eb1514c1f6e85eb4da21aa0cfd45df5c94e1361aea079a66f1f443d16a4c3cb9",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkQuakeConsole.c.o",
+      "object_sha256": "d39407a6344c03efcabf7d465438602dcbe207fe7c24cbcc55fa0fefb729bef9"
+    },
+    {
+      "source": "src/Main/jkRes.c",
+      "source_sha256": "c2f5838778b055fc089d23fb288bcd595aed7c8e5270f81443e4b7b37c4d079e",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkRes.c.o",
+      "object_sha256": "0363024d8b5b3c74b12e5539f294508f7f3f3e0e9d6ffa62ee3ff13437375099"
+    },
+    {
+      "source": "src/Main/jkSmack.c",
+      "source_sha256": "4d2c752add84f7e53cbb1d5b4e6782b007a6b9bb81f2e1b7537b3cc0197026cb",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkSmack.c.o",
+      "object_sha256": "4954fc1d1c08abaeda70ee0f93cfab77c6cde27f63da6daf97dbb4c4b55a3a00"
+    },
+    {
+      "source": "src/Main/jkStrings.c",
+      "source_sha256": "660eabb9e709f49f8221b281f09725d8374be37fdc574079254539bf650d2de2",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/jkStrings.c.o",
+      "object_sha256": "b94a8b1d05e7eecc0ad375ba3918091d5cf4be3bbbb5e0a252617e1ed1525809"
+    },
+    {
+      "source": "src/Main/sithCommand.c",
+      "source_sha256": "35508fec2c4e964eb414c043b18b0f728217f9d3bb87111ea8a524abafb00399",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/sithCommand.c.o",
+      "object_sha256": "9e37cb833834de3dec6c3e4322b0e542f4bce1a1febe3878d4a08d0f20d304e2"
+    },
+    {
+      "source": "src/Main/sithCvar.c",
+      "source_sha256": "c2aee66f492da6461619d591af5f941ef0d0d8c05c532f85f2a43167561eb3f7",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/sithCvar.c.o",
+      "object_sha256": "d03df2fb344fbace4957fc0c08f4d77515ec3b98047c55e4fdd23335b3d8b305"
+    },
+    {
+      "source": "src/Main/sithMain.c",
+      "source_sha256": "92eecdcd0e74060c103e402689282ff2b163ea4144517073acf07ade37030a95",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/sithMain.c.o",
+      "object_sha256": "552d57d260aa8588829d79d18cc8ef4226ce7effce0fa04357ba7ba38cd8b486"
+    },
+    {
+      "source": "src/Main/stdCapture.c",
+      "source_sha256": "c5c83f41e5169e590d4f718d9bd937f5b21ac63b0328f7ed42ddad41e87406cd",
+      "object": "CMakeFiles/sith_engine.dir/src/Main/stdCapture.c.o",
+      "object_sha256": "0ff8109e44cd700b55784a1ce7236419b97400293e08a63f4a7beabe6e252695"
+    },
+    {
+      "source": "src/Platform/Common/stdControl.c",
+      "source_sha256": "b5f34a390854eec0cad559572697d4151266742a2549a795b4dc75dc3d81be7e",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/Common/stdControl.c.o",
+      "object_sha256": "57658824782dd41b5e81cad6885b596514ea28551f7c8100b19598ec311f264f"
+    },
+    {
+      "source": "src/Platform/Common/stdEmbeddedRes.c",
+      "source_sha256": "713ed46ad705ca91bb44afe54a5668c0823a65baa7560ce083c2ed7372e2440d",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/Common/stdEmbeddedRes.c.o",
+      "object_sha256": "a1842cb29918df063316865a433cde58f68d3a8c216c878d225e156fd062e62b"
+    },
+    {
+      "source": "src/Platform/Common/stdHttp.c",
+      "source_sha256": "34aff12a64c605e0852924004e1be54fa019bef77d5f0604b7ae28d88a6de823",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/Common/stdHttp.c.o",
+      "object_sha256": "894304256c71ea13b3dfca563d24ca738b066ac759b9b073f0098d69661647b0"
+    },
+    {
+      "source": "src/Platform/Common/stdUpdater.cpp",
+      "source_sha256": "aca32db0ea6b5691cb8f0ca594149bc88644483a6432c862e22440086f826dec",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/Common/stdUpdater.cpp.o",
+      "object_sha256": "b65fa728c9c29b9301f5ac2673543a94ddbcd4fd8665ef595db8e200e3ef868d"
+    },
+    {
+      "source": "src/Primitives/rdDebug.c",
+      "source_sha256": "f8aa5e94c0c98905ca2bd59fc21d9877e926bb7f63a0aff13c7e7741a413937b",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdDebug.c.o",
+      "object_sha256": "0bfea7879a1ea09edf056855e6ef9a95c7ec7db36efc44591f0d22e44b8f5a5e"
+    },
+    {
+      "source": "src/Primitives/rdMath.c",
+      "source_sha256": "b3587b90480a02df9178779f424441f6111d87da470a8e17bb72fd5ad026539a",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdMath.c.o",
+      "object_sha256": "4ff3b8a1410569a678703f6d3308f09f3f12e14ef82151508e410a86a74daa02"
+    },
+    {
+      "source": "src/Primitives/rdMatrix.c",
+      "source_sha256": "0f0889fd0c9ce05fb768062061d4435b1df455fd6e16d629ea84e435581d1658",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdMatrix.c.o",
+      "object_sha256": "b00af9529f1bc0832c00b1df4a492738cd36aacf002ec86a45c9a0726066ed21"
+    },
+    {
+      "source": "src/Primitives/rdModel3.c",
+      "source_sha256": "19d60906b74d1aeaeaceca7fde9de94405047a581ff70c23eb1779f1f4cb3827",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdModel3.c.o",
+      "object_sha256": "9759c0131e5158af64943469fa2f36eae6bf9b6ec79c5dc2f47a02ec2ccddcf2"
+    },
+    {
+      "source": "src/Primitives/rdParticle.c",
+      "source_sha256": "b86ce5976023c2d6e2af62d5453e3f26f6f629974f9872d1d6475e538782129b",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdParticle.c.o",
+      "object_sha256": "0dd74199175392f0513e9ad5b6c33759c214a0e6b96a314746043503bdbf37a8"
+    },
+    {
+      "source": "src/Primitives/rdPolyline.c",
+      "source_sha256": "5021bdf53817197c35f2b4763e7e39db6e91828721d3fb3b669f423dc15035f1",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdPolyline.c.o",
+      "object_sha256": "988fe96967f5504339b93122770a9383f818707fee0ca5415b4f38e9ad493690"
+    },
+    {
+      "source": "src/Primitives/rdPrimit2.c",
+      "source_sha256": "6d513534dbf3603ec9f460bc4bce7f68ec821db287bac6d9f9c17d7b84c4e063",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdPrimit2.c.o",
+      "object_sha256": "e9f85b667dc6e0df105835f13df691a845d8c834accc93bc933f49250a560f49"
+    },
+    {
+      "source": "src/Primitives/rdPrimit3.c",
+      "source_sha256": "f87d747920388470362171a608103c1ed63ac757e20adc7a98275f423ca147fc",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdPrimit3.c.o",
+      "object_sha256": "e633a0fea37682d35767cad8b4d4b46795a8df2c99de528751eff7fbd8e6d0c8"
+    },
+    {
+      "source": "src/Primitives/rdSprite.c",
+      "source_sha256": "112b5a1124efce2cd8847825791cf42e80ff3eeb9e993cd19f61577e85c5e0c9",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdSprite.c.o",
+      "object_sha256": "9e8b13f39ac20afc27979caf68dff247c001070d53e46b95c0f28817fb54b489"
+    },
+    {
+      "source": "src/Primitives/rdVector.c",
+      "source_sha256": "097638a3da4264865ed16e95a486f85a69c415c12c17781e3bcf2a0802a9edca",
+      "object": "CMakeFiles/sith_engine.dir/src/Primitives/rdVector.c.o",
+      "object_sha256": "41bb4bcf37c435ecb60efc09387cf7e58d5317209f8721312db62b9543353d66"
+    },
+    {
+      "source": "src/Raster/rdAFRaster.c",
+      "source_sha256": "d5f7a9973c40a8129fac83c6a983959559cfc7d3c92c50ac67059fc378e9e760",
+      "object": "CMakeFiles/sith_engine.dir/src/Raster/rdAFRaster.c.o",
+      "object_sha256": "6d40951fbe4bc1e9996179cc2953974070e36823ca432a1772ced7babdebfedf"
+    },
+    {
+      "source": "src/Raster/rdCache.c",
+      "source_sha256": "81a6b5daf8ba1e2fb7f076089cc85f769e825ed19de974c318de02fe041d129e",
+      "object": "CMakeFiles/sith_engine.dir/src/Raster/rdCache.c.o",
+      "object_sha256": "56aa1ab84dddc5c57b2823bdf5fe74d404ee4f440d7c326d2741b332049d788e"
+    },
+    {
+      "source": "src/Raster/rdFace.c",
+      "source_sha256": "c2f92983686cad974e35b33739587f5d140ddd318b0fbd07d9c82f7ef7a851ad",
+      "object": "CMakeFiles/sith_engine.dir/src/Raster/rdFace.c.o",
+      "object_sha256": "98fd361d4186892f7632c1242930103cab69d0dcc842013529c73a51c81276fe"
+    },
+    {
+      "source": "src/Raster/rdNRaster.c",
+      "source_sha256": "bbee797a4a25f1d0dfc4b4094cb4dc3a51bfbcd293ea89624d82de5a38b565b9",
+      "object": "CMakeFiles/sith_engine.dir/src/Raster/rdNRaster.c.o",
+      "object_sha256": "5830179aabad68ea8522f337d8f1bad840656cc81f4d902fd6d2c4bd7e42b2ae"
+    },
+    {
+      "source": "src/Raster/rdRaster.c",
+      "source_sha256": "68c7389112ade7955f8aaee38c02a1a433c3b884eecfeccd0120af0866de2939",
+      "object": "CMakeFiles/sith_engine.dir/src/Raster/rdRaster.c.o",
+      "object_sha256": "60964423cc67500d84cd08cbbd9f5382d40991488ea750da14aae30456e4dd61"
+    },
+    {
+      "source": "src/Raster/rdZRaster.c",
+      "source_sha256": "bbc568d6ba54d0de1bd028ac8de7720e29d0d7102170614dc65eeea652e52ee2",
+      "object": "CMakeFiles/sith_engine.dir/src/Raster/rdZRaster.c.o",
+      "object_sha256": "81589a8e509ecd3ca1b0ead6ba68544f4fd900a16919a45e6a70b28ab1d438d1"
+    },
+    {
+      "source": "src/Win95/DirectX.c",
+      "source_sha256": "f30ce60a440d12c70d1e8d6890f834e8348ae535695796d849ea99b735046477",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/DirectX.c.o",
+      "object_sha256": "7b5759581ae4805327399440ef85043e2558cbab1f3795462b70304b864c83e1"
+    },
+    {
+      "source": "src/Win95/Video.c",
+      "source_sha256": "257160355fda335cbd54ade9267ad929b974fc56c6415e07375a0878be99d1b5",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/Video.c.o",
+      "object_sha256": "7c3fc153bfe13b6de374608cdf7e31b5c22a3f3e221471db8cd6f2d299424ced"
+    },
+    {
+      "source": "src/Win95/WinIdk.c",
+      "source_sha256": "3e2b7f7e43fa67cc0451f3326bc3128d8a06a2ebfe0c54fc09ed3174ae5cbce6",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/WinIdk.c.o",
+      "object_sha256": "36a68a29c199f70d0d6cd588d0b36a7290c05efe8bb0947be9c5be967e0db2c2"
+    },
+    {
+      "source": "src/Win95/Window.c",
+      "source_sha256": "b0ded0ea388d71b408f53097fc2ea71d512d4d8cd5934b7e78a1012b1578cb55",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/Window.c.o",
+      "object_sha256": "8dfe13d0724e29de2e36835d280cd06013746e7a3cde3cac3efe5e0e40f809d5"
+    },
+    {
+      "source": "src/Win95/Windows.c",
+      "source_sha256": "6014472558866678578f9183c3d2d22047ecee96c9aa71b0c40433e38e6a3da2",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/Windows.c.o",
+      "object_sha256": "c4d484ac9c8057abea93fe330c8b42f6691739b3aa4ab3655ad291bb0401d19e"
+    },
+    {
+      "source": "src/Win95/std.c",
+      "source_sha256": "470f23b737fcc1ff18f7c15194f952a1429ffa321b669050ebace7d5ca6f16dc",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/std.c.o",
+      "object_sha256": "699a7dc085a14ccefa005e24b366b27aaba38ba11be57376b86e7232873f4686"
+    },
+    {
+      "source": "src/Win95/stdComm.c",
+      "source_sha256": "9fc1df25595ddfe5ac80c13d6ff0b60a5b7a254272e7cd99536190e6454f0d9b",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/stdComm.c.o",
+      "object_sha256": "fb02c90e20c76b439a6cda7f5c3c0a178fa729295d296b19eb779eec9984e648"
+    },
+    {
+      "source": "src/Win95/stdConsole.c",
+      "source_sha256": "63d6803d4b8ee38608b84f252cf922fe3050e1af7e384c0d8a50e9c34d806ec1",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/stdConsole.c.o",
+      "object_sha256": "0af2bbb5de2aa312adb6f65f8984ba98cf86821d61a64f3beedc0eb80bdc878d"
+    },
+    {
+      "source": "src/Win95/stdDisplay.c",
+      "source_sha256": "3880c494e2540f0a32c751c363850dca470bc051641e70fcb27d87e477cad17e",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/stdDisplay.c.o",
+      "object_sha256": "4e9d35ca1a5d3998ab8fbdf215bace07ddacb20e8a128f420efab4d3416dc3ff"
+    },
+    {
+      "source": "src/Win95/stdGdi.c",
+      "source_sha256": "d5a615ccda41f7bf571e2389aa413f752ca958ef5345bd6781ffb87c0e6e6876",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/stdGdi.c.o",
+      "object_sha256": "fc40b52a0fac2844cc85867f80103221c32af96ef269569b29c823d4724989cc"
+    },
+    {
+      "source": "src/Win95/stdGob.c",
+      "source_sha256": "4ad8e282de003330d2b670fb3cdeae1c962c9c1c9b4923d7be3c6ecf66185126",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/stdGob.c.o",
+      "object_sha256": "c5a474ccfc4beb314f40f4a80137fcdf8b80fa808ea437aa419461f16bb2cb5d"
+    },
+    {
+      "source": "src/Win95/stdMci.c",
+      "source_sha256": "d3b51ae7529fb02591add103fcb8e45c15e202e1a293e76752fae13d94149918",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/stdMci.c.o",
+      "object_sha256": "484e7b8a9fc0d7b3d6fef0a1b58531c29332bc49ffcb8193095f6fb5307dafc3"
+    },
+    {
+      "source": "src/Win95/stdSound.c",
+      "source_sha256": "40d22de61aa27664eb45c4145cf4a647054b0f35576e7d81c2ae75dcac457401",
+      "object": "CMakeFiles/sith_engine.dir/src/Win95/stdSound.c.o",
+      "object_sha256": "e96523a31ccb148b92515d4023a4ec7000a253dead57b1d7a5fbafadfe88013a"
+    },
+    {
+      "source": "src/World/jkPlayer.c",
+      "source_sha256": "fad78733b6ea6ae03e7323a728a82701d75892c12ef79e0f614f40c6223b90a9",
+      "object": "CMakeFiles/sith_engine.dir/src/World/jkPlayer.c.o",
+      "object_sha256": "72c317f305bbc1c54dd18af4b3d7f4888dff69bd862f34169582ced58816589e"
+    },
+    {
+      "source": "src/World/sithActor.c",
+      "source_sha256": "8ff7b7025d7318c9e53a797c95d125274b5da707aa4b939aac8a65cbdb532e71",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithActor.c.o",
+      "object_sha256": "b075623c005a7834e745f3ce8626ae04924af97861e41ae4d8028d632e2f5293"
+    },
+    {
+      "source": "src/World/sithArchLighting.c",
+      "source_sha256": "10d40881dddde79bcd9ba09e81b14a3ea93da0b0e2f6be7411e5c5934ac2a99f",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithArchLighting.c.o",
+      "object_sha256": "d3c44ba2febe43d0a821a84588cd8520752ae9f36fe04e7efcfb448f7cc5ec1f"
+    },
+    {
+      "source": "src/World/sithExplosion.c",
+      "source_sha256": "042f208500055d7153148474fc90d91c71dfdefc99ce487be17e1b29fe1cf3c8",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithExplosion.c.o",
+      "object_sha256": "5b6f0e78ad5a1d3708bbd13d068bdcd0a14298c4965f576dc166cf8ebb6c06a8"
+    },
+    {
+      "source": "src/World/sithItem.c",
+      "source_sha256": "fea4399ee9bee11e57e5f82f0a9584c3bea76805e40d7c21a7d7e1ea0a8d0a96",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithItem.c.o",
+      "object_sha256": "2aaa21a8e081fa115b61875ee209963cb8a9bb388d75606c32d5d5a98d0403bc"
+    },
+    {
+      "source": "src/World/sithMap.c",
+      "source_sha256": "cfd43b9418fb138adeef1c30d3cec946d6263b3a32fa8b736caa5b99bfd3794f",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithMap.c.o",
+      "object_sha256": "e5b2daa191968cbca5d11259a0adc74b0b194a9f14158c129c714b74e04180b3"
+    },
+    {
+      "source": "src/World/sithMaterial.c",
+      "source_sha256": "cc0ca5df6f8ff7ff68bd5f3e65d98723c8116076ee7b3456ae0981f1bcb4e1e4",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithMaterial.c.o",
+      "object_sha256": "e716b2140dd748d4d14c11c174b531d8c78cfe4a369184112ba6db54d0d84105"
+    },
+    {
+      "source": "src/World/sithModel.c",
+      "source_sha256": "a9c8b983637790e89696faa70bd703c375f59bfaea55c137ed37c11d2bfe7550",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithModel.c.o",
+      "object_sha256": "71f1fdfd7880656785b8420560acc717fc167e6fd927c732ede4998b52c03892"
+    },
+    {
+      "source": "src/World/sithSector.c",
+      "source_sha256": "0a6e9cb0113e2d602a5550ceb7c2ffd203e81d6b385099729cede2edbb3e3e17",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithSector.c.o",
+      "object_sha256": "848773545daa3af584bdf1e364add6c61e780d7f2c143b5faa2c8b951679f24b"
+    },
+    {
+      "source": "src/World/sithSoundClass.c",
+      "source_sha256": "7ffd7d50fef74a6e0802971beac42ac233bc8a1073825043f400b506e19d8649",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithSoundClass.c.o",
+      "object_sha256": "652849676216fedf2b26b8dc7377bf2feb39746a9ae59420d746652fa3f91d70"
+    },
+    {
+      "source": "src/World/sithSprite.c",
+      "source_sha256": "266291bcf179d5e257ec2187d0c92dbdd0f6a22850714f9a5d571d13d04898a7",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithSprite.c.o",
+      "object_sha256": "d405c6bb9e3ccb6707ef0c90091f26c687a036bab8c545e437ed81721e53c005"
+    },
+    {
+      "source": "src/World/sithSurface.c",
+      "source_sha256": "9fee80ea11a6f2df680c205c3f93bfe6cf5b47a0996d848a9855366fb11c005c",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithSurface.c.o",
+      "object_sha256": "d71f104f76c99e2f245efd155d4e8fb64701006ffe32704b872ca871856c1fa9"
+    },
+    {
+      "source": "src/World/sithTemplate.c",
+      "source_sha256": "ce41dcbb988004a625d43644da5295c2195392100c37cd34b3a9973e7d3e03b5",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithTemplate.c.o",
+      "object_sha256": "c47e860fa87f659393e02a286d463b7aab7d8b7483cd6ce85adabab0d9185e67"
+    },
+    {
+      "source": "src/World/sithThing.c",
+      "source_sha256": "24bb370e91397dadc510900d3f66aac237eec44ccb881d497e21233692422249",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithThing.c.o",
+      "object_sha256": "41fecca598a732d3715dcf8d6fed1bd410bdaed324684f5f9aa5096ec4b1e364"
+    },
+    {
+      "source": "src/World/sithTrackThing.c",
+      "source_sha256": "fca330e1be0a3032e06b1fa92e1e1893653eb63ce5191bf753677ab1b54f4be4",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithTrackThing.c.o",
+      "object_sha256": "6eb99949b7004faf73cace4d32e1149793fdf77299fa4457f76fddcdee1eca53"
+    },
+    {
+      "source": "src/World/sithWeapon.c",
+      "source_sha256": "ef7092ed0f996ba87bf6cd36c073e51ecc141a34b5b83522c1c09da14a850426",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithWeapon.c.o",
+      "object_sha256": "5f0f22c48ed4f5e9289cd00f594e705be799bc8e560590b65be3d2b1b9c0b8a5"
+    },
+    {
+      "source": "src/World/sithWorld.c",
+      "source_sha256": "d63e1a2d6b64827693a559659dc1db6b506c4fb40b47abc761ccc20889ae5e0c",
+      "object": "CMakeFiles/sith_engine.dir/src/World/sithWorld.c.o",
+      "object_sha256": "2c17d5c534155ccde0d575825b1e5f80e9a004a096db7b64b6c0fabfd9ebfe75"
+    },
+    {
+      "source": "src/hook.c",
+      "source_sha256": "716878e75f81e98cb7a642d5d8851544b65d3126e04bca721c0fac978187c021",
+      "object": "CMakeFiles/sith_engine.dir/src/hook.c.o",
+      "object_sha256": "c02cde662019b9bac737b0e6eec9e5f7489bd4e5788ce2e0d1de895c2d4f078d"
+    },
+    {
+      "source": "src/jk.c",
+      "source_sha256": "7daba9e9497d554c343fd25bed98c02848b95a093684fdec518dfbfe47e441dc",
+      "object": "CMakeFiles/sith_engine.dir/src/jk.c.o",
+      "object_sha256": "17987a0365949b2b3b0805243d2f012750517d378dc67d3df3fe52d61f2b2a1d"
+    },
+    {
+      "source": "src/main_globals.c",
+      "source_sha256": "8d9b0ca1b861799157d6570d7a504328f52b5259ebb8ca131eab974c047ffa00",
+      "object": "CMakeFiles/sith_engine.dir/src/main_globals.c.o",
+      "object_sha256": "3d5bab86f454b73658863845d582cd3484b589798dbec9417969d6b2fd448fc3"
+    },
+    {
+      "source": "src/stdPlatform.c",
+      "source_sha256": "87ea8e609b616498adcfd8e78972e43ae643d9aa9a3537f3e883e62f8ef0231e",
+      "object": "CMakeFiles/sith_engine.dir/src/stdPlatform.c.o",
+      "object_sha256": "27c56068874408bd184249db61c5653c3cd912600b7c55466fe0cdc13b1a76ae"
+    },
+    {
+      "source": "src/unusedWontImpl.c",
+      "source_sha256": "d144e14802283e51cc2bd0302221461e5ed07385dd066cc602ea797aa73022b2",
+      "object": "CMakeFiles/sith_engine.dir/src/unusedWontImpl.c.o",
+      "object_sha256": "87826be5e5316058d4a8785622d0890e2f7a1e50f56df6c7c65e4a7dab2d847e"
+    },
+    {
+      "source": "src/version.c",
+      "source_sha256": "3125e0f5189c99e0d5dcf82f77ac93b149e1e563bdb49fe567dc1336c84aebab",
+      "object": "CMakeFiles/sith_engine.dir/src/version.c.o",
+      "object_sha256": "9d2c186a292f22934835357a513ffe7067d9584dcb6fe839c1092be46a8ffa0e"
+    },
+    {
+      "source": "src/wprintf.c",
+      "source_sha256": "d36b2c469aebbc213e2332cef684a1b2dd16870cfeec355d22e4d00e77edc98d",
+      "object": "CMakeFiles/sith_engine.dir/src/wprintf.c.o",
+      "object_sha256": "16923190df38824a1b2549d2d2bd6cae5fc61ed19e6e4f71df83a5887aa05b78"
+    },
+    {
+      "source": "src/external/fcaseopen/fcaseopen.c",
+      "source_sha256": "16fd416555fdc9b91ab0356a1712e5ddfb53f1f92f53697f6958f256363711bc",
+      "object": "CMakeFiles/sith_engine.dir/src/external/fcaseopen/fcaseopen.c.o",
+      "object_sha256": "98025ea8223aa06f1f3cc6e687e061a36f1e1f7e95a79f20d7d23c138f8f243a"
+    },
+    {
+      "source": "src/Platform/Networking/GNS/stdComm_GNS.cpp",
+      "source_sha256": "60ec7b204b0e2a0aa2180fa9d2218b371bf6e78aaa683fc62ad897a2bb4e7fdd",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/Networking/GNS/stdComm_GNS.cpp.o",
+      "object_sha256": "449ce55dc8977ada09bf8ca6d3f0911f0ce41e30cffa9b77d3f4205172621869"
+    },
+    {
+      "source": "src/external/libsmacker/smacker.c",
+      "source_sha256": "ba4e9ad856913127957d5854e445c01cb990771cec9150f64f61967ee19cacc7",
+      "object": "CMakeFiles/sith_engine.dir/src/external/libsmacker/smacker.c.o",
+      "object_sha256": "6033379cbf85050943961af086b1573bcf8657a6e7b5958d6f740fca911a2d3c"
+    },
+    {
+      "source": "src/external/libsmacker/smk_bitstream.c",
+      "source_sha256": "403abfbffb2c2c37c136a00efaf23391fede3c504ea47c2934bcbeab74263b8b",
+      "object": "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_bitstream.c.o",
+      "object_sha256": "fb956d706a6572bc4eb63391c8ae7a72929b86f1f387ec3dd4947c1af6877402"
+    },
+    {
+      "source": "src/external/libsmacker/smk_hufftree.c",
+      "source_sha256": "030ee6bff1dfb8d79e058c001f1f8b45cfefc7f57a8ede44f32d68255aee4851",
+      "object": "CMakeFiles/sith_engine.dir/src/external/libsmacker/smk_hufftree.c.o",
+      "object_sha256": "1e329187cf9710d875a019ca02f1a891dbeeebfbf0995c72e2dbc864480dafd5"
+    },
+    {
+      "source": "src/external/libsmusher/src/smush.c",
+      "source_sha256": "b3c3c5b8e7cadeb1984ee33ad888365093582064908bd25058805fe80af3fda4",
+      "object": "CMakeFiles/sith_engine.dir/src/external/libsmusher/src/smush.c.o",
+      "object_sha256": "28e34aaa5fda2877881b836c6b03ea7c193ccca58d1d40271b99c6a567b6b9ad"
+    },
+    {
+      "source": "src/external/libsmusher/src/codec48.c",
+      "source_sha256": "c14d65d73d2583ef281a3c3a2f9f0665975d69e5737e807e191192ecd8b5171b",
+      "object": "CMakeFiles/sith_engine.dir/src/external/libsmusher/src/codec48.c.o",
+      "object_sha256": "08ee97c2d6fabe188935934ed6044ff8632200136b6454d66c214501e8105ff8"
+    },
+    {
+      "source": "src/Platform/SDL2/jkGUIDisplay.c",
+      "source_sha256": "7f3a8ed394bf8a85fe2ec141ba4f8342c044fc31c53ae299a3b4f8a9dfbf2947",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/SDL2/jkGUIDisplay.c.o",
+      "object_sha256": "25843a0a9b98f3adf97493c2eb51046bdaaf43c65a78138f140d7d410c887666"
+    },
+    {
+      "source": "src/Platform/SDL2/stdControl.c",
+      "source_sha256": "6233ce60ef7c7b3ee944e6cf6a55180b6397081bbbb1728eec4bf9501de87f92",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/SDL2/stdControl.c.o",
+      "object_sha256": "3308673f78877ad4aa51b520ff8519d348abf8c29c7c12a3d101c081fa212ecd"
+    },
+    {
+      "source": "src/Platform/GL/shader_utils.c",
+      "source_sha256": "acb8079ea9d672fb4fb78d3de78a23c4d3712fa1931af71300ca130ab3f62637",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/GL/shader_utils.c.o",
+      "object_sha256": "963eca403159420b8ff7a5e26badb167bca7f2e5e0b6573595718a3977f19965"
+    },
+    {
+      "source": "src/Platform/GL/std3D.c",
+      "source_sha256": "979cd912df95f570e101217aa2f82565ad3dd3c4a8d926aa36ddc323f7d4cfd6",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/GL/std3D.c.o",
+      "object_sha256": "326f56ffd520b0c0ced0e8a10e281b1d99cf9de76dade581b967fe05bf74117a"
+    },
+    {
+      "source": "src/Platform/GL/jkgm.cpp",
+      "source_sha256": "510ec01619af99089f5ec38913784987163741b377e67fc53be7051d0c6db60d",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/GL/jkgm.cpp.o",
+      "object_sha256": "172a446aaa458ebfa34a42bb57a4ef0a9042ecd300b159a1c5c1393a06593360"
+    },
+    {
+      "source": "src/Platform/Posix/wuRegistry.c",
+      "source_sha256": "75dbd71f5982b45a308093198ab0abef4b1410a7247734bbcdf712b4bc1e2a97",
+      "object": "CMakeFiles/sith_engine.dir/src/Platform/Posix/wuRegistry.c.o",
+      "object_sha256": "12e0606ed478574d0229171db0c10131df1cd2fa41d389bc596d98c15c919c07"
+    },
+    {
+      "source": "src/external/nativefiledialog-extended/nfd_gtk.cpp",
+      "source_sha256": "0a2cc7f1360fd4143c28a96b0fcf2d426602bdbeacac0dfcb9e5d4529c2a5fc9",
+      "object": "CMakeFiles/sith_engine.dir/src/external/nativefiledialog-extended/nfd_gtk.cpp.o",
+      "object_sha256": "bee62eb905b31c28991aba9f60ae71d898f3cd9acf7d1d036516aa872c235c2f"
+    },
+    {
+      "source": "generated/globals.c",
+      "source_sha256": "d626a431fedad507ea7ff01a08c906501a75f11fde473190421738823edaf3ad",
+      "object": "CMakeFiles/sith_engine.dir/generated/globals.c.o",
+      "object_sha256": "b8ea7a66262f5d97d72f6fbf66522fb48d49a57e62d9b4d0a8cf95a7603ca713"
+    },
+    {
+      "source": "src/main.c",
+      "source_sha256": "8fdde463ad11575881c7d08f92b390044533f1b9c30bd549ecf0ce0049d97625",
+      "object": "CMakeFiles/openjkdf2.dir/src/main.c.o",
+      "object_sha256": "5cac74e46ccdb6f00cfe4b60d06df1a8282ddc27ad1c7001009af728d3d88c95"
+    }
+  ],
+  "dependency_inputs": {
+    "SDL/lib/libSDL3.a": "50c22608336c4a0e6d01c2b100a448b8b16b8cf644edbfe9a90215b4ace88f4a",
+    "SDL_mixer/lib/libvorbisfile.a": "74665db32cf43ebda3ed7ed5766a0f8343f91f23d0649b47fa87567fb909c775",
+    "SDL_mixer/lib/libvorbis.a": "9b9c541cb3e5cdfc03b75976c6acfbb2dfb2f030a4ba87e1c352d26ec21d1e1a",
+    "SDL_mixer/lib/libogg.a": "7620717596799a7d6cc4a482726b03c4ab3db485680f31651a71fc96040b7234",
+    "SDL_mixer/lib/libopusfile.a": "4f674bdac1bfa27b913e1913e0b3c351ef8e5d0580227c325c07a22965b276d2",
+    "SDL_mixer/lib/libopus.a": "3a2c02c583429f9d0aaf46bc79f9e0ca3d94681a46dfaac48040f03462bf7b50",
+    "SDL_mixer/lib/libSDL3_mixer.a": "83ddcfbfeeedf31f675dab234e36ff90f48b6feaba2258b0250ac362fa3dd824",
+    "/usr/lib/x86_64-linux-gnu/libopenal.so": "89bf02dc4e8f13680b3aae45770f9436627841b427693a565c15d4895f4c7331",
+    "physfs/lib/libphysfs.a": "60f1ab416e778ef4cadcb141bcec6b53d2c8adac1c7f2b3cf2d2792a1841c418",
+    "libpng/lib/libpng.a": "72f35aa5162176876e85d08d6d2966708230558f5777e6a8c0d2d010b154af32",
+    "zlib/Linux/x86_64/lib/libz.a": "5a71244efcb324aebb6e95accd0cce114b899107ebf96de4e3c280a5d7c790c8",
+    "/usr/lib/x86_64-linux-gnu/libGLEW.a": "e44719462c8191b83d8cdd29399530148d5a05faf0fac4357c06db79fb93f5fa",
+    "GameNetworkingSockets/lib/libGameNetworkingSockets.so": "45797fcd310f0812af9f55354ff22663859ca68c2d8bb0005efb88a748c471e7"
+  },
+  "elapsed_seconds": 14.735,
+  "files": {
+    "openjkdf2": {
+      "sha256": "0d706478fd8275819e8ea441c62f8987524852005300c9edd82a803f79d28105",
+      "bytes": 7428736
+    },
+    "openjkdf2-unstripped": {
+      "sha256": "2da15882d8b35cc6a2433f403ef4ce15811e00e0a4f60327ebf0c06ec57224e9",
+      "bytes": 8528064
+    },
+    "libGameNetworkingSockets.so": {
+      "sha256": "45797fcd310f0812af9f55354ff22663859ca68c2d8bb0005efb88a748c471e7",
+      "bytes": 3640648
+    }
+  },
+  "status": "passed",
+  "scope_limit": "Unchanged client build provenance only; this file does not claim live connectivity.",
+  "genuine_compilation_database": {
+    "sha256": "2cd1875a6bc2b65f858d51e9745d83f12a227e38ea81206036aaf7ca71dab0f2",
+    "entries": 204,
+    "generated_by": "CMake 3.31.10 with CMAKE_EXPORT_COMPILE_COMMANDS=ON"
+  }
+}

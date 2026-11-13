@@ -20,7 +20,7 @@ class LauncherTests(unittest.TestCase):
             root = Path(directory)
             for name in ("app.py", "VERSION"):
                 shutil.copy2(source / name, root / name)
-            for name in ("manager", "web_gateway"):
+            for name in ("manager", "web_gateway", "bots", "tools"):
                 shutil.copytree(source / name, root / name,
                                 ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
             state = root / "runtime"

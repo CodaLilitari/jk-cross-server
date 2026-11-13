@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Original JKSG geometry fixture</title>
+<style>body{background:#101810;color:#dceccc;font:16px/1.5 system-ui,sans-serif;margin:24px auto;padding:0 20px;max-width:980px}canvas{display:block;width:100%;max-width:960px;height:auto;aspect-ratio:16/9;border:1px solid #bde785}pre{white-space:pre-wrap;background:#080e08;padding:16px}button{padding:12px;margin:8px 8px 8px 0}code{color:#bde785}.pass{color:#bde785}.fail{color:#ff9b9b}</style>
+<script src="../../manager/ui/spectator-geometry.js" defer></script><script src="spectator_geometry_harness.js" defer></script></head>
+<body><h1>Original synthetic WebGL geometry</h1><p>This fixture draws numeric clip-space indexed triangles using the production decoder and renderer. It contains no game media or image payload. It is a synthetic renderer check, separate from live-world qualification.</p>
+<canvas id="geometry" width="640" height="360" aria-label="Synthetic six-shape geometry scene"></canvas>
+<p>Expected: green 60 × 60 square at top left; magenta 60 × 60 square at bottom left; yellow 60 × 60 square at top right; cyan triangle at bottom right. Orange covers the centre of a larger blue rectangle even though blue is submitted later. Both windings render.</p>
+<button id="redraw" type="button">Redraw fixture</button><button id="lose" type="button">Simulate context loss</button><pre id="result" role="status">Loading original JKSG fixture…</pre>
+<p>Run a local static server from the repository root, then open <code>/tests/fixtures/spectator_geometry.html</code>. The checks read actual GPU pixels immediately after drawing. Exposed for automation: <code>window.fixtureResult</code>, <code>window.fixtureRenderer</code>, <code>window.fixtureFrame</code>.</p>
+</body></html>

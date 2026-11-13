@@ -58,7 +58,9 @@ def catalog(data: Path) -> dict:
                 text = f.read(ep["size"]).decode("latin-1")
             kind = re.search(r"(?im)^\s*TYPE\s+(\d+)\b", text)
             episode_type = int(kind[1]) if kind else 0
-            if maps and episode_type & 6:
+            # Stock JK1CTF declares TYPE 8 (special/CTF), independently of
+            # the deathmatch and cooperative episode bits.
+            if maps and episode_type & 14:
                 episodes.append({"episode": path.stem, "file": path.name, "maps": maps,
                                  "type": episode_type, "title": text.splitlines()[0].strip('"'),
                                  "size": path.stat().st_size})

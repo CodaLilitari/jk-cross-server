@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "scope": "Unchanged native client, second shared admin compatibility round; qualified stages only",
+  "recorded_epoch": 1792914761.0779314,
+  "native": {
+    "pid": 109076,
+    "source_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33"
+  },
+  "server": {
+    "panel_pid": 177841,
+    "engine_pid": 177878,
+    "engine_binary_sha256": "234edc4f600f74986e21969644ad650876b9ead4a20cf61d6be38c0215605e70",
+    "adapter_pid": 177901,
+    "bot_supervisor_pid": 178040
+  },
+  "same_key_after_panel_restart": {
+    "peer": 26427359,
+    "generation": 166,
+    "slot": 4,
+    "map": "m2.jkl",
+    "same_key_id": "c18bc0bcad5841f9",
+    "new_credential_issued": false,
+    "authentication_reply": "Admin authenticated for 15 minutes on this connection.",
+    "status_reply": "Admin verified for this connection.",
+    "grant": [
+      {
+        "peer": 26427359,
+        "generation": 166,
+        "key_id": "c18bc0bcad5841f9"
+      }
+    ],
+    "pass": true
+  },
+  "ordinary_map_progression": {
+    "command_count": 1,
+    "enter_epoch": 1792914610.386947,
+    "private_reply": "Next level scheduled: m4.jkl (normal 10-second transition).",
+    "before": "m2.jkl",
+    "after": "m4.jkl",
+    "native_fully_joined_epoch": 1792914656.3735738,
+    "normal_tally_input_sent": false,
+    "automatic_countdown": true,
+    "same_native_and_engine_processes": true,
+    "full_m4_roster": [
+      {
+        "slot": 1,
+        "peer": 26427359,
+        "name": "NativeHuman",
+        "flags": 7
+      },
+      {
+        "slot": 2,
+        "peer": 18497502,
+        "name": "RetailHuman",
+        "flags": 7
+      },
+      {
+        "slot": 3,
+        "peer": 18497499,
+        "name": "Bot_JanOrs",
+        "flags": 7
+      },
+      {
+        "slot": 4,
+        "peer": 18497498,
+        "name": "Bot_BobaFett",
+        "flags": 7
+      }
+    ]
+  },
+  "post_map_authority": {
+    "actor": {
+      "peer": 26427359,
+      "slot": 1,
+      "generation": 170,
+      "previous_generation": 166
+    },
+    "reset_denial": "Admin permission required. Type admin login.",
+    "reset_denial_epoch": 1792914709.3607557,
+    "grants_after_denial": [],
+    "reauthentication": "Admin authenticated for 15 minutes on this connection.",
+    "reauthentication_epoch": 1792914727.5964553,
+    "status": "Admin verified for this connection.",
+    "grant": [
+      {
+        "peer": 26427359,
+        "generation": 170,
+        "key_id": "c18bc0bcad5841f9"
+      }
+    ]
+  },
+  "browser_scope": "Closed during this transition; no browser progression qualification.",
+  "retail_scope": "Passive sampler observed quit_state1 then normal endlevel/tally and m4 world loading, with no quit_state2 observed. Actual retail full-join qualification belongs to root. This run did not reproduce round1 ejection.",
+  "method": "Normal existing menus and T/chat input, production offline proof helper, read-only identity and chat-buffer verification; no client patch or memory/network injection",
+  "privacy": "No credential, challenge, raw proof or raw chat log in this receipt. Private event evidence redacts proof/challenge. Owned client stdout is sanitized after actions and must be sanitized again after its eventual exit.",
+  "private_evidence_sha256": {
+    "panel-restart-auth.json": "ae643f12ad476e982cfd5ed55abd5f53f14a32214a3cf1df67f8335fbeaf2d44",
+    "next-level-report.json": "eced8caa8d17cc2d8700027224ffc89d2b002f4d082fb619f0c72618664a8bd6",
+    "post-map-auth.json": "27fe70e9eec613029d42a837244ed8cd636f85680264bdb6c7afba2f4c539d5d",
+    "transition.png": "b22008df90a8106869f379b2a3d5b16a623668d1a0775cf532be3d7eff5b4988",
+    "after-countdown.png": "1c8133507f67dceddb148d1760456b6bb8db06b36eecd2ba50d47b9f2c42c1df"
+  },
+  "pending": [
+    "Coordinated browser/retail/native targeted-kick cycle",
+    "Same-key authentication after game-only restart",
+    "Live revocation denial"
+  ]
+}

@@ -1,0 +1,45 @@
+✔ JKSG literal preserves four clip coordinates, opaque colour and index order (3.426519ms)
+✔ JKSG rejects malformed envelope size and hostile count products before allocating (1.709424ms)
+✔ JKSG rejects nonfinite coordinates, nonopaque colours and out-of-range indices (0.967212ms)
+✔ JKSG checks current epochs, sequence and inclusive capture plus transfer age (0.324631ms)
+✔ JKSG accepts empty geometry as an explicitly cleared current frame (0.133843ms)
+✔ mounted image default never activates geometry; explicit selection polls geometry and retains read-only ownership (8.81728ms)
+✔ backend selection releases held movement and geometry canvas uses existing explicit camera ownership (105.343909ms)
+✔ late geometry replies after switching away and back cannot draw in the newly selected view (1.42891ms)
+✔ late geometry replies after epoch change or engine restart never draw (5.681609ms)
+✔ unavailable or lost WebGL falls back to usable image and stops geometry polling without claiming controls (1.87922ms)
+✔ fresh geometry reaches indexed opaque WebGL draw; hidden page stops polling (0.908273ms)
+✔ geometry channel failure returns to image and cannot disable the observer (0.624724ms)
+✔ falling back while a geometry body is delayed immediately permits image polling (0.885268ms)
+✔ a native sequence superseding an in-flight envelope prevents older geometry from being drawn (0.673909ms)
+✖ an authoritative newer image status rejects delayed geometry when geometry status has no current frame (1.579868ms)
+✔ original visual fixture decodes the full independent clip-space shape and index set (0.361587ms)
+✔ JKSG rejects invalid replay cursors rather than bypassing sequence comparison (0.342338ms)
+✔ a session readiness interruption revokes input ownership even if PID and epochs are reused (128.105539ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 276.967303
+
+✖ failing tests:
+
+test at tests/test_spectator_geometry_ui.js:187:1
+✖ an authoritative newer image status rejects delayed geometry when geometry status has no current frame (1.579868ms)
+  AssertionError [ERR_ASSERTION]: capture 9 is superseded by known image capture 10
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/workspace/scratch/55e850edc256/jk-browser-spectator/tests/test_spectator_geometry_ui.js:197:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

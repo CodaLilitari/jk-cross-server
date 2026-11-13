@@ -39,7 +39,7 @@ MAX_METADATA = 4 * 1024 * 1024
 MAX_ARCHIVE = 128 * 1024 * 1024
 MAX_UNPACKED = 512 * 1024 * 1024
 MAX_FILES = 20000
-RESERVED = {".git", ".jk-update", ".venv", "config", "runtime", "state"}
+RESERVED = {".git", ".jk-update", ".venv", "config", "runtime", "state", "authority"}
 
 
 class UpdateError(ValueError):
@@ -123,6 +123,11 @@ def _relative(name):
         raise UpdateError("Release paths must be ordinary relative file paths.")
     if path.parts[0].casefold() in RESERVED:
         raise UpdateError("Release includes a reserved local-data path.")
+    filename = path.name.casefold()
+    if ("authority" in (part.casefold() for part in path.parts[:-1]) or
+            filename.startswith("jk-admin-key-") and filename.endswith(".cog") or
+            filename in ("keys.sqlite3", "keys.sqlite3-journal", "keys.sqlite3-wal", "keys.sqlite3-shm")):
+        raise UpdateError("Release includes private administrator credential storage.")
     return name
 
 

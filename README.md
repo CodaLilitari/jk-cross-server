@@ -7,6 +7,7 @@ A dedicated JKDF2 / Mysteries of the Sith host with a small browser control pane
 ## What is included
 
 - Python administration: start/stop, saved settings, stock/custom episode catalog, map selection, limits, log output, file preflight and isolated run directories.
+- Persistent admin credentials for ordinary player chat commands, with explicit key issuance/revocation, an offline proof helper, and server-executed kick/next-level actions. See [Chat administration](docs/CHAT_ADMIN.md).
 - GitLab release checks on startup and every six hours, verified package installation, optional automatic installation between sessions, and rollback recovery.
 - A compiled Linux x86-64 dedicated engine, built from the pinned OpenJKDF2-MotS-Fixes source with server-side transport changes.
 - A compiled Windows 32-bit DirectPlay bridge and its C source. On Linux it runs through Wine with a compatible original DirectPlay runtime.
@@ -29,7 +30,7 @@ python app.py
 
 Open **http://127.0.0.1:8765**. Set the engine path to the included `bin/linux-x86_64/openjkdf2`, the game-data directory to your install containing `resource` and `episode`, and the browser build folder to `runtime/browser-client`. Read the episode catalog, select a map, save, then start.
 
-The engine needs an X/GL context during startup even in headless mode. The supervisor uses `xvfb-run` automatically when `DISPLAY` is unset; install Xvfb, xauth, and Mesa for a display-free Linux host. Sound uses null/dummy drivers. The control panel remains a browser UI.
+The native engine can start without an X server using SDL's offscreen driver and Mesa/EGL. **Engine display** in Advanced settings defaults to **Auto**: it respects an existing display or explicit SDL video driver, and otherwise selects offscreen rendering. Choose **Offscreen**, **Xvfb**, or **Existing display** to select a backend explicitly. A working OpenGL/EGL implementation is still required; sound uses null/dummy drivers. Player bots and the retail Wine adapter have separate display requirements. Install Xvfb and xauth for those components on a host without a display. The panel distinguishes engine IPC connection, actual session readiness and the selected backend.
 
 For stock JK use episode `JK1MP` and map `m2.jkl`. For stock MotS use `JKM_MP` and `mdm02_freezer.jkl`, with the MotS resource archives installed. The original data directory is not used for generated profiles or configuration. The supervisor stages data with normalized filename case and saves each run's settings and logs separately.
 
@@ -58,6 +59,42 @@ Existing 0.2 installations need the 0.3 ZIP installed manually once. Git
 checkouts use Git rather than the in-place installer. See [update instructions](docs/UPDATES.md)
 for migration, recovery, multi-instance behavior, and publishing new releases.
 
+## Host spectator view
+
+Open **Spectator view** in the existing control panel to follow a joined player or fly an invisible camera through walls and floors. It does not take a player slot, interact with the game, or change client checksums. Closing the view keeps the match running. The Linux implementation provides a 640 × 360 view at up to five frames per second; see [controls, setup and compatibility limits](docs/SPECTATOR.md).
+
+**Image view** remains the default. The optional **Experimental geometry (WebGL 2)** view draws the observer's validated triangle stream in the browser. It shares the same camera and player roster. This first geometry profile uses vertex colours, with no textures and approximate transparency/effects; the server still prepares and renders the native scene. See [browser geometry setup and qualification](docs/BROWSER_SPECTATOR.md).
+
+![Host spectator view in the JK Cross Server control panel](docs/images/spectator-view.png)
+
+## Optional player bots
+
+The Linux server panel can start one to four ordinary player bots, chosen from
+eight stock multiplayer identities with occasional original character chat.
+Each bot runs a separate native client and uses the stock movement, weapons,
+inventory, Force powers, damage, scoring and respawn rules. Retail, OpenJKDF2
+and JKWeb human clients keep their existing executables and connection routes.
+
+The panel's **Sabers only**, **Fists = peace**, and **Use Force powers** checkboxes
+can be applied during a match without restarting it. Bots seek useful pickups,
+choose weapons according to ammunition and range, and pursue stock CTF
+objectives. Supported content is stock **JK1MP and JK1CTF, ranks 0–8**; the
+implementation remains experimental. MotS bots, passwords and mods are outside
+this version's scope.
+
+The server also preserves all authored spawn points independently of the
+configured player limit. This is required by stock CTF's lobby and team spawn
+masks and applies to every connection route. Normal admission still enforces
+the configured limit. See [the bot guide](bots/README.md) and
+[behavior, build evidence and limitations](docs/BOTS_BEHAVIOR.md). The
+[earlier recovery qualification](docs/BOTS_PROTOTYPE.md) is retained with its
+original executable hashes.
+
+```bash
+python3 -m bots.run --list-profiles
+python3 -m bots.run --server-config config/server.json --profiles boba_fett,jan_ors
+```
+
 ## Client connection routes
 
 | Client | How it connects |
@@ -84,7 +121,7 @@ Disabling downloads prevents asset chunks from being sent. The server still adve
 
 Set the DirectPlay bridge path, enable the retail adapter, and on Linux set a Wine executable/launcher and a dedicated Wine prefix. That prefix needs a working original DirectPlay TCP/IP provider. The bridge itself contains no original game or Microsoft binaries. See `directplay/README.md` for tested runtime setup and precise provenance.
 
-Mixed sessions reserve DirectPlay identities for native/browser participants. The engine uses those real identities, so an ordinary retail peer can address them. The maximum configured human count in mixed mode is 15; the dedicated host occupies one engine slot. Stock maps may impose a lower practical spawn limit. The retail session browser also counts reserved transport identities. The administration panel's joined-player count excludes these reservations.
+Mixed sessions reserve DirectPlay identities for native/browser participants. The engine uses those real identities, so an ordinary retail peer can address them. Mixed mode supports up to 15 playing clients, shared by humans and bots. The engine adds the dedicated host separately. Stock maps may impose a lower practical spawn limit. The retail session browser also counts reserved transport identities. The administration panel's joined-player count excludes these reservations.
 
 ## Network configuration
 

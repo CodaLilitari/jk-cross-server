@@ -1,0 +1,57 @@
+{
+  "version": 2,
+  "status": "reconstructed_prototype_extended_with_configurable_rules_force_and_stock_ctf",
+  "implementation": "Original ordinary-client input driver and roster; no historical bot code or game asset archives imported.",
+  "engine": {
+    "url": "https://gitlab.com/codalilitari/OpenJKDF2-MotS-Fixes",
+    "commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "role": "Native client base; engine changes are carried as a separate source patch."
+  },
+  "server": {
+    "url": "https://gitlab.com/codalilitari/jk-cross-server",
+    "role": "Existing ordinary native, retail DirectPlay, and JKWeb transport; bot runner does not alter those protocols."
+  },
+  "historical_references": [
+    {
+      "name": "Rbots",
+      "url": "https://rbots.massassi.net/",
+      "role": "Earlier research into COG actor bots and authored map routes; not a normal network-player implementation.",
+      "imported_code": false,
+      "redistribution": "No original downloadable bundles redistributed; archive/map/asset rights are distinct from COG source permissions."
+    },
+    {
+      "name": "JKBOT at Oasis",
+      "url": "https://forums.massassi.net/Main_Massassi_Forums/Discussion_Forum/thread_67385_page_1.html",
+      "role": "Author-described Rbots derivative discussed during earlier research.",
+      "imported_code": false,
+      "limitation": "Source downloads were not recovered; no claim to have audited or ported this project's source."
+    },
+    {
+      "name": "OpenJKDF2ogx WIP bot branch",
+      "url": "https://github.com/GTTeancum/OpenJKDF2ogx/tree/150cb1132729cfc0c37748c232df36c88182fae7",
+      "commit": "150cb1132729cfc0c37748c232df36c88182fae7",
+      "role": "Earlier design reference for automatic geometry navigation and persistent targeting; its synthetic-player engine architecture was not imported.",
+      "imported_code": false
+    }
+  ],
+  "roster": {
+    "profiles": 8,
+    "original_lines": 128,
+    "registry_sha256_from_earlier_audit": "b14aac1feed2ff56a37ab7303f8a2c814114e91f6caa120e97a1edd94f1c6cb1",
+    "provenance": "PROFILES_PROVENANCE.md",
+    "registry_sha256_verified_during_recovery": "b14aac1feed2ff56a37ab7303f8a2c814114e91f6caa120e97a1edd94f1c6cb1",
+    "verification_receipt": "../qa/bots-recovery-assets.json",
+    "current_registry_sha256": "6e439a854243678158e9956ea169ab785fe84f5a550fcd8592797c328880fd82",
+    "extension": "Original names, models, sound classes and 128 chat lines preserved; added legal Force side/style metadata."
+  },
+  "workflows": [
+    {
+      "name": "JK/MotS COG Workshop",
+      "url": "https://gitlab.com/codalilitari/jk-mots-cog-workshop",
+      "commit": "ab3c4782ab7b474f2ab5def503eb8afd5065cfef",
+      "version": "0.1.6",
+      "role": "Inspect same-game stock COG lifecycle, inventory bins, Force activation/cancellation, and exact CTF bindings; distinguish static, controlled and connected evidence.",
+      "imported_game_assets": false
+    }
+  ]
+}

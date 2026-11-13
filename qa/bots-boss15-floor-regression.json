@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "evidence": "controlled_navigation_regression_not_live_traversal",
+  "preceding_bot_sha256": "cd64c7b9bac33e65b274fe82ca7cf5cfc5f32b06ac5dd66c632234b37c24412a",
+  "map": "m_boss15.jkl",
+  "observed_issue": {
+    "origin_sector": 66,
+    "nodes": 282,
+    "reachable_nodes": 5,
+    "anchored_items": 13,
+    "reachable_items": 1,
+    "ordinary_live_pad_exit_observed": false
+  },
+  "cause": "A stationary bridge mesh extends across its owning sector boundary; a vertical zero-radius floor query in the adjacent sector omits the bridge unless adjacent-sector thing search is enabled.",
+  "correction": "Use the existing engine RAYCAST_800 adjacent-sector thing query in Bot_Floor; resolve the supported standing point to its geometric sector. No per-map special case or added mesh-node expansion.",
+  "controlled_checks": [
+    "original query misses the overhanging bridge at an actual walk-sampling coordinate",
+    "corrected floor probe finds stationary support and preserves the geometric sector",
+    "ordinary Bot_Walkable plus actual graph builder and Dijkstra reaches the bridge destination",
+    "moving and disabled bridges reject the route",
+    "collision query stack remains balanced"
+  ],
+  "integrated_strict_driver_groups_passed": 25,
+  "regression_failed_before_fix": true,
+  "subsequent_live_qualification": "pending",
+  "files": {
+    "native/tests/test_bot_static_bridge.inc": "d41869ee433eec91681bb6a3526ae7848024c67de14e86cfaad67fd8e087420d",
+    "native/tests/test_bot_navigation.inc": "e1bddcc6ad748bf7c3338ba08bd88f8c395708ccaaf4da5062bbe94eea639489",
+    "native/tests/test_bot_driver.c": "ba58984ff84d1948a91614be8bcf5013b319f5516ed775faaf4a8246bbd0577a"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "utc": "2026-10-28T23:15:07.086Z",
+  "binary_sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
+  "panel_pid": 387599,
+  "viewport": {
+    "width": 1440,
+    "height": 1050
+  },
+  "players": 2,
+  "max": 7,
+  "pose": {
+    "position": [
+      -0.019950000569224358,
+      -0.5,
+      0.15711399912834167
+    ],
+    "yaw": 3.1415927410125732,
+    "pitch": 0,
+    "roll": 0,
+    "sector": 61
+  },
+  "world_epoch": 2,
+  "control_epoch": 3,
+  "frame_detail": "640 \u00d7 360 \u00b7 Geometry Frame 9 \u00b7 126 ms old",
+  "screenshot": "final-demonstration.png",
+  "spectator_closed": true,
+  "panel_state_after_close": "running",
+  "sequence": 9,
+  "visually_inspected": true,
+  "visual_content": "Interior room and corridor with visible ceiling, floor and stepped side structures"
+}

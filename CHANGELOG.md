@@ -1,5 +1,25 @@
 # Changes
 
+## Unreleased — Bot branch refresh and host spectator
+
+- Incorporate main into the configurable-player-bots branch while retaining
+  bots, normal map progression, persistent chat administration, reconnect
+  identities and the later DirectPlay surrogate lifecycle behavior.
+- Add explicit auto/offscreen/Xvfb/existing-display startup, separate Wine
+  display preparation, and readiness based on a valid current session descriptor.
+- Retain the web interface and its controls in an original JK-inspired console
+  with section navigation, responsive layouts and clear keyboard focus.
+- Add toggleable free-flight and player-follow spectator modes. The host camera
+  has no gameplay actor, collision, health or network identity, and consumes no
+  player slot. It uses an authenticated private frame/control path.
+- Protect gameplay from render-pass side effects, expire held movement, tie
+  camera commands to current epochs, reject departed follow identities, and
+  close observation when the viewer lease expires.
+- Retain retail, native OpenJKDF2 and unchanged JKWeb connection routes and
+  game-facing packet formats. Keep the JK Cross Server name.
+- Correct player-limit wording: the dedicated host is added separately.
+  Configuration ceilings and the existing conservative bot headroom rule remain.
+
 ## Unreleased — Original JK DirectPlay adapter corrections
 
 - Correct original JK roster statistics: team is U8 before signed 16-bit
@@ -18,9 +38,12 @@
   rejoin and leave; its failed-send reconciliation branch was not exercised
   live. See `docs/QUALIFICATION.md` for exact scope and provenance.
 
-This integration changes the adapter and its documentation/tests only. The
-native engine, browser transport, updater, dependencies and version remain
-unchanged. The separate bot prototype used by the test fixture is not included.
+At that earlier main-branch checkpoint, the integration changed only the
+adapter and its documentation/tests. The native engine, browser transport,
+updater, dependencies and version were unchanged, and the separate bot
+prototype used by its test fixture was not included. The current bot-branch
+refresh above retains the newer bot and adapter behavior and rebuilds the
+dedicated engine with the host spectator.
 
 ## 0.3.0-dev — GitLab release updates
 

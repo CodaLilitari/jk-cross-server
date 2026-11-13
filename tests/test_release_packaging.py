@@ -90,6 +90,8 @@ class ReleasePackagingTests(unittest.TestCase):
             "instance.json", "server.json", "settings.json",
             "tools/credentials.json", "game-data/episode.jk", "mods/custom.gob",
             "qa/private-key.pem", "dist/previous.zip", "media/original.iso",
+            "authority/keys.sqlite3", "copied/keys.sqlite3-wal", "jk-admin-key-fixture.cog",
+            "qa/JK-ADMIN-KEY-EXAMPLE.COG",
         ]
         for name in private:
             self.write(name, b"private fixture, never publish\n")

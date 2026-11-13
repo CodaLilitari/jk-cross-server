@@ -1,0 +1,479 @@
+{
+  "description": "Original synthetic numeric geometry; no game assets or pixels. Pixel coordinates use top-left origin.",
+  "world_epoch": 7,
+  "control_epoch": 3,
+  "sequence": 9,
+  "width": 640,
+  "height": 360,
+  "vertex_count": 23,
+  "index_count": 33,
+  "shapes": [
+    {
+      "name": "near orange",
+      "clip_positions": [
+        [
+          -0.3125,
+          0.4444444444,
+          -1,
+          2
+        ],
+        [
+          0.3125,
+          0.4444444444,
+          -1,
+          2
+        ],
+        [
+          0.3125,
+          -0.4444444444,
+          -1,
+          2
+        ],
+        [
+          -0.3125,
+          -0.4444444444,
+          -1,
+          2
+        ]
+      ],
+      "rgba": [
+        255,
+        128,
+        0,
+        255
+      ],
+      "indices": [
+        0,
+        1,
+        2,
+        0,
+        3,
+        2
+      ],
+      "native_projected_xyz": [
+        [
+          270,
+          140,
+          0.5
+        ],
+        [
+          370,
+          140,
+          0.5
+        ],
+        [
+          370,
+          220,
+          0.5
+        ],
+        [
+          270,
+          220,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "far blue",
+      "clip_positions": [
+        [
+          -1.25,
+          1.7777777778,
+          -1,
+          4
+        ],
+        [
+          1.25,
+          1.7777777778,
+          -1,
+          4
+        ],
+        [
+          1.25,
+          -1.7777777778,
+          -1,
+          4
+        ],
+        [
+          -1.25,
+          -1.7777777778,
+          -1,
+          4
+        ]
+      ],
+      "rgba": [
+        32,
+        80,
+        255,
+        255
+      ],
+      "indices": [
+        4,
+        5,
+        6,
+        4,
+        7,
+        6
+      ],
+      "native_projected_xyz": [
+        [
+          220,
+          100,
+          0.75
+        ],
+        [
+          420,
+          100,
+          0.75
+        ],
+        [
+          420,
+          260,
+          0.75
+        ],
+        [
+          220,
+          260,
+          0.75
+        ]
+      ]
+    },
+    {
+      "name": "top-left green",
+      "clip_positions": [
+        [
+          -0.875,
+          0.7777777778,
+          -1,
+          1
+        ],
+        [
+          -0.6875,
+          0.7777777778,
+          -1,
+          1
+        ],
+        [
+          -0.6875,
+          0.4444444444,
+          -1,
+          1
+        ],
+        [
+          -0.875,
+          0.4444444444,
+          -1,
+          1
+        ]
+      ],
+      "rgba": [
+        0,
+        255,
+        0,
+        255
+      ],
+      "indices": [
+        8,
+        9,
+        10,
+        8,
+        11,
+        10
+      ],
+      "native_projected_xyz": [
+        [
+          40,
+          40,
+          0
+        ],
+        [
+          100,
+          40,
+          0
+        ],
+        [
+          100,
+          100,
+          0
+        ],
+        [
+          40,
+          100,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "bottom-left magenta",
+      "clip_positions": [
+        [
+          -1.75,
+          -0.8888888889,
+          -1,
+          2
+        ],
+        [
+          -1.375,
+          -0.8888888889,
+          -1,
+          2
+        ],
+        [
+          -1.375,
+          -1.5555555556,
+          -1,
+          2
+        ],
+        [
+          -1.75,
+          -1.5555555556,
+          -1,
+          2
+        ]
+      ],
+      "rgba": [
+        255,
+        0,
+        255,
+        255
+      ],
+      "indices": [
+        12,
+        13,
+        14,
+        12,
+        15,
+        14
+      ],
+      "native_projected_xyz": [
+        [
+          40,
+          260,
+          0.5
+        ],
+        [
+          100,
+          260,
+          0.5
+        ],
+        [
+          100,
+          320,
+          0.5
+        ],
+        [
+          40,
+          320,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "top-right yellow",
+      "clip_positions": [
+        [
+          2.75,
+          3.1111111111,
+          -1,
+          4
+        ],
+        [
+          3.5,
+          3.1111111111,
+          -1,
+          4
+        ],
+        [
+          3.5,
+          1.7777777778,
+          -1,
+          4
+        ],
+        [
+          2.75,
+          1.7777777778,
+          -1,
+          4
+        ]
+      ],
+      "rgba": [
+        255,
+        255,
+        0,
+        255
+      ],
+      "indices": [
+        16,
+        17,
+        18,
+        16,
+        19,
+        18
+      ],
+      "native_projected_xyz": [
+        [
+          540,
+          40,
+          0.75
+        ],
+        [
+          600,
+          40,
+          0.75
+        ],
+        [
+          600,
+          100,
+          0.75
+        ],
+        [
+          540,
+          100,
+          0.75
+        ]
+      ]
+    },
+    {
+      "name": "bottom-right cyan",
+      "clip_positions": [
+        [
+          2.5,
+          -1.7777777778,
+          -1,
+          4
+        ],
+        [
+          3.75,
+          -1.7777777778,
+          -1,
+          4
+        ],
+        [
+          3.125,
+          -3.1111111111,
+          -1,
+          4
+        ]
+      ],
+      "rgba": [
+        0,
+        255,
+        255,
+        255
+      ],
+      "indices": [
+        20,
+        21,
+        22
+      ],
+      "native_projected_xyz": [
+        [
+          520,
+          260,
+          0.75
+        ],
+        [
+          620,
+          260,
+          0.75
+        ],
+        [
+          570,
+          320,
+          0.75
+        ]
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "label": "near surface survives later far draw",
+      "x": 320,
+      "y": 180,
+      "rgba": [
+        255,
+        128,
+        0,
+        255
+      ]
+    },
+    {
+      "label": "far surface remains around near surface",
+      "x": 240,
+      "y": 120,
+      "rgba": [
+        32,
+        80,
+        255,
+        255
+      ]
+    },
+    {
+      "label": "green clockwise triangle",
+      "x": 90,
+      "y": 60,
+      "rgba": [
+        0,
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "label": "green counterclockwise triangle",
+      "x": 50,
+      "y": 80,
+      "rgba": [
+        0,
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "label": "magenta bottom-left marker",
+      "x": 70,
+      "y": 290,
+      "rgba": [
+        255,
+        0,
+        255,
+        255
+      ]
+    },
+    {
+      "label": "yellow top-right marker (w=4)",
+      "x": 570,
+      "y": 70,
+      "rgba": [
+        255,
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "label": "cyan bottom-right triangle",
+      "x": 570,
+      "y": 280,
+      "rgba": [
+        0,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "label": "clear background",
+      "x": 320,
+      "y": 40,
+      "rgba": [
+        6,
+        10,
+        7,
+        255
+      ]
+    }
+  ],
+  "projection_note": "Clip coordinates are independently tabulated from the protocol mapping for the listed synthetic native projected positions. w=1/(1-z); clip z is -1 here. The test fixture does not execute or validate native capture code."
+}

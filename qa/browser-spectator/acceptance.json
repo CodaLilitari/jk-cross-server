@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "milestone": "optional-browser-geometry-flat-colour-v1",
+  "status": "qualified_experimental_linux_branch",
+  "utc": "2026-10-28T23:15:19.655848+00:00",
+  "approved_by_user": true,
+  "base_source_commit": "d7009dcebe259db98003bfc668e2ca98909cf20f",
+  "native_base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "native_binary": {
+    "sha256": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
+    "bytes": 7496192
+  },
+  "native_patch_sha256": "cbc3cb1d1d22e072f4427ecaa926e604163b2520dd2f21effcd7b0710871a542",
+  "tests": [
+    {
+      "suite": "manager",
+      "passed": 176,
+      "failed": 0,
+      "skipped": 0,
+      "unit": "test cases",
+      "evidence": "manager-tests.json"
+    },
+    {
+      "suite": "web-gateway",
+      "passed": 27,
+      "unit": "test cases",
+      "evidence": "logs/web-gateway.log"
+    },
+    {
+      "suite": "node-ui",
+      "passed": 34,
+      "unit": "test cases",
+      "evidence": "node-tests.json"
+    },
+    {
+      "suite": "native-observer",
+      "passed": 19,
+      "unit": "printed behavior groups across five native test programs",
+      "evidence": "logs/final-fix-wave-native-green.log"
+    },
+    {
+      "suite": "native-packager",
+      "passed": 2,
+      "unit": "test cases",
+      "evidence": "logs/native-packager.log"
+    }
+  ],
+  "webgl_fixture": {
+    "passed": true,
+    "pixel_checks": 8,
+    "context_loss_observed": true,
+    "browser": "156.0.8078.73",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "console_404_note": "The isolated static fixture server returned 404 for the browser favicon request; no page exceptions or shader/pixel errors occurred.",
+    "evidence": "synthetic-webgl.json"
+  },
+  "live": {
+    "passed": true,
+    "checks": {
+      "image_default": true,
+      "backend_switch_preserves_epochs": true,
+      "geometry_and_image_share_capture_sequence": true,
+      "free_camera_moved": true,
+      "follow_tracks_player": true,
+      "mobile_no_horizontal_overflow": true,
+      "context_loss_fallback": true,
+      "close_keeps_server_running": true,
+      "players_unchanged": true,
+      "actual_geometry_draws": true,
+      "world_geometry_changes": true,
+      "unsupported_webgl_fallback": true
+    },
+    "frames_received": 22,
+    "draws_observed": 19,
+    "paired_capture": {
+      "matched": true,
+      "geometry_sequence": 27,
+      "image_sequence": 27,
+      "world_epoch": 2,
+      "control_epoch": 5,
+      "geometry_bytes": 27048,
+      "image_bytes": 921600
+    },
+    "payload_changes_observed": 21,
+    "bytes_range": [
+      12032,
+      27048
+    ],
+    "players": 2,
+    "maximum_players": 7,
+    "transport_slots": 8,
+    "map": "JK1MP/m2.jkl",
+    "clients": "Two existing ordinary packaged native bot clients",
+    "page_errors": [],
+    "input_429_count": 2,
+    "viewer_lease_expired_after_tab_close": true,
+    "evidence": [
+      "final-reviewed-live-panel.json",
+      "final-viewer-lease.json"
+    ]
+  },
+  "packaging": {
+    "supplied_object_relink_byte_identical": true,
+    "default_libsmacker_source_relink_succeeded": true,
+    "archive_inputs": 218,
+    "fresh_application_objects": 2,
+    "reused_application_objects": 204,
+    "reused_dependency_inputs": 12,
+    "evidence": "../browser-spectator-native-packaging.json"
+  },
+  "review": {
+    "native": "approved after diagnostics and RPATH fixes",
+    "manager": "approved after retryable stale-epoch fix",
+    "browser": "approved",
+    "whole_branch": "approved after single final fix wave; no open findings",
+    "resolved_findings": [
+      "Late geometry response compared against current image sequence as well as geometry sequence.",
+      "Conditional triangle hook compiles under Linux SDL2 plus n-gon renderer."
+    ],
+    "correction": "Prior absent-type/TARGET_TWL claim was overbroad; actual rdTri integer member-access failure was Linux SDL2 plus RDCACHE_RENDER_NGONS.",
+    "evidence": "review/whole-branch-review.md"
+  },
+  "limits": [
+    "Experimental opaque vertex-colour triangles; no textures; sky/transparency/special rendering state approximate.",
+    "Native scene preparation, hidden graphics context and RGBA rendering remain active.",
+    "No performance, graphics-free startup, complete visual parity or every-browser certification.",
+    "Fresh live qualification covers stock JK1MP/m2 with two local bot clients; no new retail/JKWeb mixed-client, MotS, mod, map-transition or long-duration qualification.",
+    "Native backpressure/lease isolation is controlled-test evidence; sustained congested live gameplay is not measured."
+  ],
+  "disclosed_attempts": [
+    "The first standard manager invocation exited zero but its output lacked a completion summary. A separate explicit TestResult run completed all176 tests successfully; no incomplete run is counted as a pass.",
+    "The first live launch used an incorrect bot binary path in the external QA config; correcting the harness path started the unchanged existing bot binary.",
+    "The early live geometry hash check included envelope headers; final evidence compares payload-only hashes and verifies paired native/image capture sequences."
+  ],
+  "native_ngon_compile": {
+    "passed": true,
+    "scope": "Actual Linux SDL2 compile command plus RDCACHE_RENDER_NGONS, syntax-only; no full TWL build claim.",
+    "evidence": "review/final-fix-wave-report.md"
+  },
+  "source_scope_note": "Manager176 and gateway27 cover unchanged Python production code. Final Node34 and native19 plus n-gon syntax check cover the later JS/native guard wave. Historical source hash snapshots are retained without rewriting them."
+}

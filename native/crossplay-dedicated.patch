@@ -1,9 +1,9 @@
 diff --git a/docs/crossplay-gateway.md b/docs/crossplay-gateway.md
 new file mode 100644
-index 0000000..27e4eaf
+index 00000000..4f4c8627
 --- /dev/null
 +++ b/docs/crossplay-gateway.md
-@@ -0,0 +1,111 @@
+@@ -0,0 +1,196 @@
 +# Dedicated-server transport gateway
 +
 +Server-only integration based on `codalilitari/OpenJKDF2-MotS-Fixes` commit
@@ -28,8 +28,8 @@ index 0000000..27e4eaf
 +The existing registry options are plain JSON: `gameName`, `serverPassword`,
 +`portNum`, `maxPlayers`, `maxRank`, `tickRate`, `scoreLimit`, `timeLimit`,
 +`bIsDedicated`, `bUseScoreLimit`, `bUseTimeLimit`, `bIsSingleLevel`, and
-+`bIsTeams`. Set `bIsDedicated` to true before startup. `maxPlayers` is the human
-+limit; the engine reserves one additional host slot. Use 100 ms tick intervals
++`bIsTeams`. Set `bIsDedicated` to true before startup. `maxPlayers` includes the
++dedicated host slot; humans and bots share the remaining slots. Use 100 ms tick intervals
 +for the original retail default (the retail interface supports 100–300 ms).
 +
 +## Transports
@@ -51,7 +51,7 @@ index 0000000..27e4eaf
 +DirectPlay IDs. This preserves IDs embedded inside game packets and allows
 +unmodified retail clients to address those peers. A pool of at most 15 IDs,
 +15 real retail players and a host fit within DirectPlay's 32 physical slots.
-+Use at most 15 human slots for this mixed configuration. The original retail
++Use at most 15 configured slots, including the host, for this mixed configuration. The original retail
 +session browser may count unused surrogate transport slots; the control panel
 +should display the engine's actual player count.
 +
@@ -73,12 +73,97 @@ index 0000000..27e4eaf
 +| 5 | DATA: src=registered peer, dst=recipient (0 or 1 means engine host) | Game output uses type 105 with canonical src/dst |
 +| 7 | PING: payload up to 256 bytes | 107, payload echoed |
 +| 8 | SET_ID_POOL: payload 1–15 unique uint32 DirectPlay IDs; before clients join | 108, payload uint32 ID count |
++| 9 | ADMIN_REQUEST: src=actor transport ID, dst=request ID; payload uint32 generation, uint32 operation, then up to 127 printable ASCII bytes | 110, actor/request echoed; payload uint32 generation, uint32 status (0 success), then bounded ASCII summary |
++| 10 | REPLACE_POOL_ID: src=retired surrogate ID, dst=nonzero request correlation; payload uint32 fresh DirectPlay ID | 112, old ID/correlation echoed; payload uint32 accepted new ID |
 +
 +Errors use type 199, src=request type, dst=error code, payload UTF-8 reason.
 +Without a DirectPlay pool, automatic external IDs begin at 65536 and native
-+GNS IDs retain their ordinary small-number allocation. ID 1 is always the
++GNS IDs begin at 2. New connections receive previously unused identities within
++that transport session. ID 1 is always the
 +engine host; a DirectPlay gateway must acquire the server-player ID 1 or
 +translate the host identity consistently.
++
++### Player identities across reconnects
++
++An ordinary client remembers recent reliable messages by sender ID and sequence
++number. Reusing a departed sender's ID for a restarted client can cause new
++messages to be acknowledged as duplicates without reaching the game handler.
++Player slots may be reused; transport identities must identify a new connection.
++
++The engine immediately retires a surrogate identity exposed to game traffic
++when its actual native or external connection ends, including an administrative
++kick. Type 113 is an
++unsolicited retirement event with `src=old ID`, zero `dst`, and no payload.
++The broker forwards it only to the adapter that registered the DirectPlay pool.
++The old identity remains unavailable while replacement is pending.
++
++There is one native discovery exception. A pool-backed native connection starts
++with a pristine reservation so the stock server browser can read its initial
++descriptor and disconnect without spending a player identity on every refresh.
++The first incoming payload commits that identity before validation or forwarding;
++any ordinary outbound Sith packet commits it before sending. Only a reservation
++that has carried neither inbound nor outbound game traffic may return to the
++unused pool on close, without event 113 or a queued player-loss event. Old
++connection handles cannot affect a later reservation. Used or uncertain
++connections are retired normally. Browser/retail registrations and native
++connections without a pool are committed immediately.
++
++The adapter uses ordinary DirectPlay `DestroyPlayer` and `CreatePlayer` calls
++to obtain a fresh ID for that reserved pool entry, then submits request 10.
++The engine accepts replacement only for an inactive, retired pool entry and
++a previously unused valid ID. Duplicate matching replacements and retirement
++notifications are idempotent. A conflicting acknowledgement or failed replacement
++ends the adapter session instead of recycling an old identity. Other slots are
++not rewritten.
++
++The adapter serializes a bounded retirement queue while continuing normal game,
++metadata, and departure processing. The broker preserves retirement notices
++that arrive alongside a registration or replacement acknowledgement. Delayed
++packets and DirectPlay notifications for retired identities cannot recreate a
++retail player or remove a replacement player.
++
++Identity history survives ordinary map changes. Brief browser connection
++resumptions that retain the same game connection also retain its ID. A new
++transport session clears history. The engine and broker bound the session
++history to 65,536 canonical identities, including the canonical host; the
++adapter independently tracks its physical DirectPlay host and issued IDs with
++the same limit. Exhaustion requires a session restart rather than ID reuse.
++
++Deploy the matching engine, manager, and DirectPlay adapter together. This
++protocol extension changes server-side membership management; human client
++executables and Sith packet formats remain unchanged.
++
++### Private administrator events and actions
++
++Type 9 exists only on the dedicated engine's authenticated supervisor socket.
++The public adapter broker rejects it. Operations are 1 (private chat reply),
++2 (private current player list), 3 (kick by `#slot` or exact unambiguous name),
++and 4 (ordinary next authored level). List/next-level take no argument. There
++is no arbitrary console or script operation. The engine rechecks a fully joined
++actor's transport identity and nonzero connection generation before execution.
++
++Type 109 is a verified host-directed admin chat event: src is the actual
++transport ID, dst its generation, and payload is at most 127 printable ASCII
++characters. It is emitted after ordinary message deduplication. A player name
++or speaker field inside chat does not identify the actor. Type 111, with zero
++src/dst and no payload, clears manager grants when the map or IPC context resets.
++Generations change on reconnect/reset. A bounded recent-request cache also
++rejects accidental duplicate supervisor actions.
++
++The manager verifies persistent credentials outside the game and authorizes
++typed requests; the engine executes normal host actions. A kick sends the
++ordinary quit packet and retires transport membership. An unsolicited 104
++event instructs the relevant adapter to retire its corresponding seat. Late
++packets from that retired seat do not affect other players in the shared
++DirectPlay adapter. A level change uses stock end-level/tally messages and
++requires episode progression. Updated INFO descriptors keep browser and
++DirectPlay discovery synchronized with the actual map.
++
++See [Chat administration](../docs/CHAT_ADMIN.md) for issuance, the inert key-file
++container, offline proof workflow, and the limits of a human-pasted challenge
++on unchanged clients. No credential is loaded into world COG bytecode.
++
++### Sith packet representation
 +
 +The Sith packet header is uint16 message type plus uint16 reliability sequence;
 +it is not a uint32 message type. Player enumeration is message 41, with body
@@ -115,8 +200,304 @@ index 0000000..27e4eaf
 +transport validation; it does not by itself prove a retail, browser or native
 +client has completed a game join. Runtime and multi-client observations must
 +be recorded separately, with the exact engine and asset identities.
+diff --git a/src/Dss/sithAdmin.c b/src/Dss/sithAdmin.c
+new file mode 100644
+index 00000000..7dd64fe4
+--- /dev/null
++++ b/src/Dss/sithAdmin.c
+@@ -0,0 +1,252 @@
++#include "sithAdmin.h"
++
++#include "Devices/sithComm.h"
++#include "Dss/jkDSS.h"
++#include "Dss/sithMulti.h"
++#include "Main/Main.h"
++#include "Main/jkEpisode.h"
++#include "Platform/Networking/GNS/stdComm_GNS.h"
++#include "Win95/stdComm.h"
++#include "jk.h"
++
++#include <stdio.h>
++#include <string.h>
++
++int sithAdmin_Printable(const char *text, size_t length)
++{
++    if (!text || length > SITH_ADMIN_TEXT_MAX) return 0;
++    for (size_t i = 0; i < length; ++i)
++        if ((unsigned char)text[i] < 32 || (unsigned char)text[i] > 126) return 0;
++    return 1;
++}
++
++int sithAdmin_DecodeChat(const SithMessage *message, char text[128], int32_t *speaker)
++{
++    uint32_t length;
++    const unsigned char *payload;
++    if (!message || !text || !speaker || message->netMsg.msg_size < 13 ||
++        message->netMsg.msg_size > sizeof(message->pktData)) return 0;
++    payload = (const unsigned char *)message->pktData;
++    memcpy(speaker, payload + 4, sizeof(*speaker));
++    memcpy(&length, payload + 8, sizeof(length));
++    if (!length || length > 128 || length > message->netMsg.msg_size - 12 ||
++        payload[12 + length - 1] || memchr(payload + 12, 0, length - 1)) return 0;
++    /* Preserve ordinary extended-character chat, but reject embedded control
++     * characters before any display/log path. Admin IPC itself is ASCII only. */
++    for (uint32_t i = 0; i + 1 < length; ++i)
++        if (payload[12 + i] < 32 || payload[12 + i] == 127) return 0;
++    memcpy(text, payload + 12, length);
++    return 1;
++}
++
++int sithAdmin_IsCommand(const char *text)
++{
++    static const char prefix[] = "admin";
++    if (!text) return 0;
++    while (*text == ' ') ++text;
++    for (unsigned i = 0; i < sizeof(prefix) - 1; ++i) {
++        unsigned char c = (unsigned char)text[i];
++        if (c >= 'A' && c <= 'Z') c += 'a' - 'A';
++        if (c != (unsigned char)prefix[i]) return 0;
++    }
++    return text[5] == 0 || text[5] == ' ';
++}
++
++int sithAdmin_JoinedSlot(uint32_t peer)
++{
++    int found = -1;
++    unsigned count = jkPlayer_maxPlayers;
++    if (!Main_bDedicatedServer || !stdComm_bIsServer || !sithNet_isServer ||
++        !sithNet_isMulti || !sith_bOpen || !sithWorld_g_pCurrentWorld ||
++        peer <= 1 || peer == (uint32_t)sithNet_serverNetId ||
++        peer == (uint32_t)stdComm_dplayIdSelf) return -1;
++    if (count > JKPLAYER_NUM_INFOS) count = JKPLAYER_NUM_INFOS;
++    for (unsigned i = 1; i < count; ++i) {
++        const SithPlayer *player = &jkPlayer_playerInfos[i];
++        if (player->playerNetId == peer && (player->flags & 3) == 3 && player->pLocalPlayer) {
++            if (found >= 0) return -1; /* A corrupt duplicate identity is not authority. */
++            found = (int)i;
++        }
++    }
++    return found;
++}
++
++static int sithAdmin_Reply(uint32_t actor, const char *text)
++{
++    SithMessage message;
++    const size_t length = strlen(text);
++    if (!length || !sithAdmin_Printable(text, length)) return 0;
++    memset(&message, 0, sizeof(message));
++    message.netMsg.cogMsgId = DSS_CHAT;
++    message.netMsg.msg_size = (uint32_t)(12 + length + 1);
++    message.pktData[0] = 0;
++    message.pktData[1] = (uint32_t)-1;
++    message.pktData[2] = (uint32_t)(length + 1);
++    memcpy((unsigned char *)message.pktData + 12, text, length + 1);
++    return sithComm_SendMsgToPlayer(&message, (int)actor, 1, 1);
++}
++
++static void sithAdmin_Name(const SithPlayer *player, char name[33])
++{
++    unsigned i;
++    for (i = 0; i < 32 && player->player_name[i]; ++i) {
++        const unsigned c = player->player_name[i];
++        name[i] = c >= 32 && c <= 126 ? (char)c : '?';
++    }
++    name[i] = 0;
++}
++
++static int sithAdmin_ExactName(const SithPlayer *player, const char *name)
++{
++    unsigned i;
++    for (i = 0; i < 32 && player->player_name[i]; ++i)
++        if (!name[i] || (unsigned char)name[i] != player->player_name[i]) return 0;
++    return i < 32 && name[i] == 0;
++}
++
++static int sithAdmin_KickSlot(uint32_t actor, const char *selector, char summary[128])
++{
++    int target = -1;
++    unsigned count = jkPlayer_maxPlayers;
++    if (count > JKPLAYER_NUM_INFOS) count = JKPLAYER_NUM_INFOS;
++    if (selector[0] == '#') {
++        unsigned slot = 0;
++        if (!selector[1]) goto badSelector;
++        for (size_t i = 1; selector[i]; ++i) {
++            if (selector[i] < '0' || selector[i] > '9') goto badSelector;
++            slot = slot * 10 + (unsigned)(selector[i] - '0');
++            if (slot >= JKPLAYER_NUM_INFOS) goto badSelector;
++        }
++        if (slot < count) target = (int)slot;
++    } else {
++        for (unsigned i = 0; i < count; ++i) {
++            const SithPlayer *player = &jkPlayer_playerInfos[i];
++            if (player->playerNetId && (player->flags & 2) && sithAdmin_ExactName(player, selector)) {
++                if (target >= 0) {
++                    strcpy(summary, "That name is ambiguous. Use admin players and kick #slot.");
++                    return -1;
++                }
++                target = (int)i;
++            }
++        }
++    }
++    if (target < 0 || !jkPlayer_playerInfos[target].playerNetId) {
++        strcpy(summary, "No connected player matches that selector.");
++        return -1;
++    }
++    const uint32_t peer = jkPlayer_playerInfos[target].playerNetId;
++    if (!target || peer <= 1 || peer == (uint32_t)sithNet_serverNetId ||
++        peer == (uint32_t)stdComm_dplayIdSelf || peer == actor) {
++        strcpy(summary, "The host and your own connection cannot be kicked.");
++        return -1;
++    }
++    if (sithAdmin_JoinedSlot(peer) != target) {
++        strcpy(summary, "That player is no longer fully joined.");
++        return -1;
++    }
++#ifdef PLATFORM_GNS
++    if (!stdComm_GNS_AdminPeerConnected(peer)) {
++        strcpy(summary, "That player's transport has already disconnected.");
++        return -1;
++    }
++#else
++    strcpy(summary, "This transport does not support dedicated administration.");
++    return -1;
++#endif
++    return target;
++badSelector:
++    strcpy(summary, "Use #slot from admin players, or an exact player name.");
++    return -1;
++}
++
++static int sithAdmin_NextLevel(char summary[128])
++{
++    const jkEpisodeLoad *episode = &jkEpisode_mLoad;
++    const jkEpisodeEntry *current, *next = NULL;
++    if (sithMulti_quitGameState || sithMain_bEndLevel) {
++        strcpy(summary, "A level or session transition is already pending.");
++        return 5;
++    }
++    if (sithNet_MultiModeFlags & MULTIMODEFLAG_SINGLE_LEVEL) {
++        strcpy(summary, "Single-level sessions cannot advance. Enable episode progression before starting the server.");
++        return 5;
++    }
++    if (!episode->paEntries || episode->numSeq <= 0 ||
++        episode->currentEpisodeEntryIdx < 0 || episode->currentEpisodeEntryIdx >= episode->numSeq) {
++        strcpy(summary, "The loaded episode has no valid current level.");
++        return 5;
++    }
++    current = &episode->paEntries[episode->currentEpisodeEntryIdx];
++    if (current->gotoA >= 0) {
++        for (int i = 0; i < episode->numSeq; ++i)
++            if (episode->paEntries[i].lineNum == current->gotoA) {
++                if (next) { next = NULL; break; }
++                next = &episode->paEntries[i];
++            }
++    }
++    if (!next || next->type != 0 || !next->fileName[0] ||
++        !memchr(next->fileName, 0, sizeof(next->fileName)) ||
++        !sithAdmin_Printable(next->fileName, strlen(next->fileName)) ||
++        !strncmp(current->fileName, next->fileName, sizeof(current->fileName))) {
++        strcpy(summary, "The episode does not define a different next multiplayer level.");
++        return 5;
++    }
++    /* The exact same host action as the game's endlevel command: normal
++     * DSS_ENDLEVEL, ten-second timer, tally, authored episode and join/sync. */
++    jkDSS_SendEndLevel();
++    snprintf(summary, 128, "Next level scheduled: %.31s (normal 10-second transition).", next->fileName);
++    return 0;
++}
++
++int sithAdmin_Execute(uint32_t actor, uint32_t operation, const char *argument,
++                      uint32_t *kickedPeer, char summary[128])
++{
++    size_t length;
++    if (!summary || !kickedPeer) return 1;
++    *kickedPeer = 0;
++    strcpy(summary, "Invalid admin request.");
++    if (!argument) return 1;
++    length = strnlen(argument, SITH_ADMIN_TEXT_MAX + 1);
++    if (!sithAdmin_Printable(argument, length) || operation < SITH_ADMIN_MESSAGE ||
++        operation > SITH_ADMIN_NEXT_LEVEL ||
++        ((operation == SITH_ADMIN_MESSAGE || operation == SITH_ADMIN_KICK) ? !length : length != 0)) return 1;
++    if (sithAdmin_JoinedSlot(actor) < 0) {
++        strcpy(summary, "Your connection is no longer fully joined. Authenticate again after joining.");
++        return 2;
++    }
++    if (operation == SITH_ADMIN_MESSAGE) {
++        if (!sithAdmin_Reply(actor, argument)) {
++            strcpy(summary, "The private reply could not be sent.");
++            return 6;
++        }
++        strcpy(summary, "Private reply sent.");
++    } else if (operation == SITH_ADMIN_PLAYERS) {
++        unsigned count = jkPlayer_maxPlayers;
++        if (count > JKPLAYER_NUM_INFOS) count = JKPLAYER_NUM_INFOS;
++        for (unsigned i = 0; i < count; ++i) {
++            const SithPlayer *player = &jkPlayer_playerInfos[i];
++            char name[33], line[128];
++            if (!player->playerNetId || (!i ? !(player->flags & 2) : sithAdmin_JoinedSlot(player->playerNetId) != (int)i)) continue;
++            sithAdmin_Name(player, name);
++            snprintf(line, sizeof(line), "#%u %s%s", i, name,
++                     !i ? " [host]" : player->playerNetId == actor ? " [you]" : "");
++            if (!sithAdmin_Reply(actor, line)) {
++                strcpy(summary, "The player list could not be completely sent.");
++                return 6;
++            }
++        }
++        strcpy(summary, "Player list sent. Use an exact name or #slot to kick.");
++    } else if (operation == SITH_ADMIN_KICK) {
++        int target;
++        if (sithMulti_quitGameState || sithMain_bEndLevel) {
++            strcpy(summary, "A level or session transition is already pending.");
++            return 5;
++        }
++        target = sithAdmin_KickSlot(actor, argument, summary);
++        if (target < 0) return 3;
++        *kickedPeer = jkPlayer_playerInfos[target].playerNetId;
++        sithMulti_QuitPlayer((int)*kickedPeer);
++        snprintf(summary, 128, "Kicked player in slot #%d.", target);
++    } else return sithAdmin_NextLevel(summary);
++    return 0;
++}
+diff --git a/src/Dss/sithAdmin.h b/src/Dss/sithAdmin.h
+new file mode 100644
+index 00000000..89a72603
+--- /dev/null
++++ b/src/Dss/sithAdmin.h
+@@ -0,0 +1,32 @@
++#ifndef _SITH_ADMIN_H
++#define _SITH_ADMIN_H
++
++#include "types.h"
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++#define SITH_ADMIN_TEXT_MAX 127
++
++enum sithAdminOperation {
++    SITH_ADMIN_MESSAGE = 1,
++    SITH_ADMIN_PLAYERS = 2,
++    SITH_ADMIN_KICK = 3,
++    SITH_ADMIN_NEXT_LEVEL = 4
++};
++
++/* These are typed operations from the authenticated local manager. No game
++ * packet, player name, console string or COG grants administrative authority. */
++int sithAdmin_DecodeChat(const SithMessage *message,
++                         char text[SITH_ADMIN_TEXT_MAX + 1], int32_t *speaker);
++int sithAdmin_IsCommand(const char *text);
++int sithAdmin_Printable(const char *text, size_t length);
++int sithAdmin_JoinedSlot(uint32_t peer);
++int sithAdmin_Execute(uint32_t actor, uint32_t operation, const char *argument,
++                      uint32_t *kickedPeer, char summary[SITH_ADMIN_TEXT_MAX + 1]);
++
++#ifdef __cplusplus
++}
++#endif
++#endif
 diff --git a/src/Dss/sithDSSThing.c b/src/Dss/sithDSSThing.c
-index b05fe1a..8f33ea7 100644
+index b05fe1a8..8f33ea70 100644
 --- a/src/Dss/sithDSSThing.c
 +++ b/src/Dss/sithDSSThing.c
 @@ -155,7 +155,8 @@ void sithDSSThing_UpdateState(SithThing *pThing, int toID, int outstream)
@@ -139,11 +520,252 @@ index b05fe1a..8f33ea7 100644
              if ( !pSector )
                  return 0;
              rdVector3 pos = NETMSG_POPVEC3();
+diff --git a/src/Dss/sithMulti.c b/src/Dss/sithMulti.c
+index 92f60769..ae1e3ae7 100644
+--- a/src/Dss/sithMulti.c
++++ b/src/Dss/sithMulti.c
+@@ -13,6 +13,8 @@
+ #include "Dss/sithDSSThing.h"
+ #include "Dss/sithDSS.h"
+ #include "Dss/sithDSSCog.h"
++#include "Dss/sithAdmin.h"
++#include "Platform/Networking/GNS/stdComm_GNS.h"
+ #include "World/sithSoundClass.h"
+ #include "stdPlatform.h"
+ #include "World/sithSector.h"
+@@ -60,19 +62,22 @@ void sithMulti_SendChat(const char *pStr, int arg0, int arg1)
+ // MOTS altered
+ int sithMulti_ProcessChat(SithMessage *pMsg)
+ {
+-    // Added: 132 -> 256
+-    char v5[256];
+-
+-    NETMSG_IN_START(pMsg);
+-
+-    int arg0 = NETMSG_POPS32();
+-    int arg1 = NETMSG_POPS32();
+-    int arg2 = NETMSG_POPS32();
++    char v5[128];
++    int32_t arg1;
++    if (!sithAdmin_DecodeChat(pMsg, v5, &arg1)) return 0;
++
++#ifdef PLATFORM_GNS
++    if (Main_bDedicatedServer && sithAdmin_IsCommand(v5)) {
++        /* ProcessMessages already deduplicated this host-directed copy. The
++         * transport set netMsg.idx; the chat's name/index grants no authority.
++         * Consume before any console/formatting path, including invalid proofs
++         * during loading. The hook separately requires an active joined host. */
++        stdComm_GNS_AdminChat(pMsg->netMsg.idx, v5);
++        return 1;
++    }
++#endif
+ 
+-    if ( arg2 >= 0x80 )
+-        arg2 = 128;
+-    NETMSG_POPSTR(v5, arg2);
+-    v5[arg2 + 1] = 0;
++    if (arg1 >= (int32_t)jkPlayer_maxPlayers || arg1 >= JKPLAYER_NUM_INFOS) return 0;
+ 
+     if ( arg1 < 0 )
+         jk_snwprintf(sithMulti_chatWStrTmp, 256, u"%S", v5); // Added: char -> wchar
+@@ -208,6 +213,9 @@ int sithMulti_Startup()
+     SithThing **v5; // ebp
+     int v7; // ecx
+ 
++#ifdef PLATFORM_GNS
++    if (Main_bDedicatedServer && stdComm_bIsServer) stdComm_GNS_AdminReset();
++#endif
+     g_submodeFlags |= 1u;
+     sithMulti_quitGameState = 0;
+     sithMulti_bTimelimitMet = 0;
+@@ -1039,13 +1047,30 @@ void sithMulti_InitTick(uint32_t tickrate)
+     sithNet_dword_8C4BA8 = 0;
+ }
+ 
++/* The map's player records also contain spawn positions. Keep that complete
++ * count for respawn masks and SyncPlayers, but admit only the configured
++ * session capacity. idx_13b4_related already includes a dedicated host slot.
++ * Every transport reaches this common game-layer allocation gate. */
++static int sithMulti_FindJoinSlot(void)
++{
++    if (idx_13b4_related <= 0) return -1;
++    uint32_t limit = (uint32_t)idx_13b4_related;
++    if (limit > jkPlayer_maxPlayers) limit = jkPlayer_maxPlayers;
++    if (limit > JKPLAYER_NUM_INFOS) limit = JKPLAYER_NUM_INFOS;
++    for (uint32_t slot = 0; slot < limit; slot++)
++    {
++        SithPlayer *player = &jkPlayer_playerInfos[slot];
++        if ((player->flags & 2) != 0 && !player->playerNetId) return (int)slot;
++    }
++    return -1;
++}
++
+ int sithMulti_ProcessJoinRequest(SithMessage *pMsg)
+ {
+     int v1; // esi
+     uint32_t v3; // eax
+     SithPlayer* v4; // ecx
+-    uint32_t v5; // ecx
+-    SithPlayer* v6; // eax
++    int v5; // ecx
+     uint32_t v7; // eax
+     int *v8; // ecx
+     uint32_t v9; // eax
+@@ -1122,13 +1147,8 @@ int sithMulti_ProcessJoinRequest(SithMessage *pMsg)
+                 return 1;
+             }
+         }
+-        for (v5 = 0; v5 < jkPlayer_maxPlayers; v5++)
+-        {
+-            v6 = &jkPlayer_playerInfos[v5];
+-            if ( (v6->flags & 2) != 0 && !v6->playerNetId )
+-                break;
+-        }
+-        if ( v5 == jkPlayer_maxPlayers )
++        v5 = sithMulti_FindJoinSlot();
++        if (v5 < 0)
+         {
+             sithMulti_verbosePrintf("Too many players\n");
+             NETMSG_START;
+@@ -1596,4 +1616,4 @@ void sithMulti_FinishJoining(int code, int param2, int playerId)
+     NETMSG_END(0x24);
+ 
+     sithComm_SendMsgToPlayer(&sithComm_netMsgTmp, playerId, 1, 0);
+-}
+\ No newline at end of file
++}
+diff --git a/src/Engine/rdPuppet.c b/src/Engine/rdPuppet.c
+index 4cf7214d..4bdbeef9 100644
+--- a/src/Engine/rdPuppet.c
++++ b/src/Engine/rdPuppet.c
+@@ -1,4 +1,5 @@
+ #include "rdPuppet.h"
++#include "Main/jkObserver.h"
+ 
+ #include <math.h>
+ 
+@@ -182,6 +183,7 @@ void rdPuppet_BuildJointMatrices(rdThing *prdThing, rdMatrix34 *pPlacement)
+             // Added: this spot keeps crashing, add bounds checks
+             if (v8->nodeNum < 0 || v8->nodeNum >= RDPUPPET_MAX_NODES)
+             {
++                if (jkObserver_IsRenderPass()) continue;
+                 v8->nodeNum = 0;
+             }
+ 
+diff --git a/src/Engine/sithRender.c b/src/Engine/sithRender.c
+index d9657881..e1ea88e3 100644
+--- a/src/Engine/sithRender.c
++++ b/src/Engine/sithRender.c
+@@ -5,6 +5,7 @@
+ 
+ #include "Cog/sithCog.h"
+ #include "Main/sithMain.h"
++#include "Main/jkObserver.h"
+ #include "World/sithMaterial.h"
+ #include "World/sithModel.h"
+ #include "Engine/sithKeyFrame.h"
+@@ -361,7 +362,8 @@ void sithRender_Draw()
+     if (!sithCamera_g_pCurCamera || !sithCamera_g_pCurCamera->sector)
+         return;
+ 
+-    sithPlayer_SetScreenTint(sithCamera_g_pCurCamera->sector->tint.x, sithCamera_g_pCurCamera->sector->tint.y, sithCamera_g_pCurCamera->sector->tint.z);
++    if (!jkObserver_IsRenderPass())
++        sithPlayer_SetScreenTint(sithCamera_g_pCurCamera->sector->tint.x, sithCamera_g_pCurCamera->sector->tint.y, sithCamera_g_pCurCamera->sector->tint.z);
+ 
+     // TODO: Verify this is expensive
+ #ifndef TARGET_TWL
+@@ -524,7 +526,7 @@ void sithRender_Draw()
+ 
+ #ifdef JKM_LIGHTING
+     // MOTS added
+-    if (sithRender_008d4094 != 0) {
++    if (!jkObserver_IsRenderPass() && sithRender_008d4094 != 0) {
+         int local_8, iVar6, iVar5;
+ 
+         if (0.0 <= sithRender_008d4098) {
+@@ -668,7 +670,7 @@ void sithRender_BuildVisibleSectorList(SithSector *pSector, rdClipFrustum *pFrus
+         }
+ 
+         sithRender_aVisibleSectors[sithRender_g_numVisibleSectors++] = pSector;
+-        if (!(pSector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
++        if (!jkObserver_IsRenderPass() && !(pSector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
+         {
+             pSector->flags |= SITH_SECTOR_SEEN;
+             if ( (pSector->flags & SITH_SECTOR_COGLINKED) != 0 )
+@@ -1015,7 +1017,7 @@ void sithRender_NoClip(SithSector *sector, rdClipFrustum *frustumArg, flex_t pre
+         }
+ 
+         sithRender_aVisibleSectors[sithRender_g_numVisibleSectors++] = sector;
+-        if (!(sector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
++        if (!jkObserver_IsRenderPass() && !(sector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
+         {
+             sector->flags |= SITH_SECTOR_SEEN;
+             if ( (sector->flags & SITH_SECTOR_COGLINKED) != 0 )
+@@ -1251,7 +1253,7 @@ void sithRender_KindaClipAssignFrustum(SithSector *sector, rdClipFrustum *frustu
+     }
+ 
+     sithRender_aVisibleSectors[sithRender_g_numVisibleSectors++] = sector;
+-    if (!(sector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
++    if (!jkObserver_IsRenderPass() && !(sector->flags & SITH_SECTOR_SEEN) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip, otherwise the whole map reveals
+     {
+         sector->flags |= SITH_SECTOR_SEEN;
+         if ( (sector->flags & SITH_SECTOR_COGLINKED) != 0 )
+@@ -3006,11 +3008,13 @@ void sithRender_RenderThings()
+ int sithRender_RenderThing(SithThing *pThing)
+ {
+     int ret;
++    const int observerPass = jkObserver_IsRenderPass();
++    const rdVector3 savedScale = pThing->orient.scale;
+ 
+     // Added: Ensure the clipping frustum doesn't get mutated
+     //rdClipFrustum* pFullCameraFrustum = rdCamera_g_pCurCamera->pClipFrustum;
+ 
+-    if (!(pThing->flags & SITH_TF_INCAMFOV) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip
++    if (!observerPass && !(pThing->flags & SITH_TF_INCAMFOV) && !(g_debugmodeFlags & DEBUGFLAG_NOCLIP)) // Added: don't send sighted stuff in noclip
+     {
+         if (pThing->flags & SITH_TF_CAPTURED) {
+             sithCog_ThingSendMessage(pThing, 0, SITH_MESSAGE_SIGHTED);
+@@ -3023,7 +3027,7 @@ int sithRender_RenderThing(SithThing *pThing)
+         pThing->flags |= SITH_TF_INCAMFOV;
+     }
+ 
+-    pThing->renderFrame = jkPlayer_currentTickIdx;
++    if (!observerPass) pThing->renderFrame = jkPlayer_currentTickIdx;
+     pThing->orient.scale = pThing->position;
+ 
+ #ifdef TARGET_TWL
+@@ -3046,8 +3050,9 @@ int sithRender_RenderThing(SithThing *pThing)
+ #endif
+ 
+     ret = rdThing_Draw(&pThing->renderData, &pThing->orient);
+-    rdVector_Zero3(&pThing->orient.scale);
+-    if (sithRender_pExtraThingRenderFunc && (pThing->flags & SITH_TF_RENDERWEAPON)) {
++    if (observerPass) pThing->orient.scale = savedScale;
++    else rdVector_Zero3(&pThing->orient.scale);
++    if (!observerPass && sithRender_pExtraThingRenderFunc && (pThing->flags & SITH_TF_RENDERWEAPON)) {
+         sithRender_pExtraThingRenderFunc(pThing);
+     }
+ #ifdef TARGET_TWL
+@@ -3058,7 +3063,7 @@ int sithRender_RenderThing(SithThing *pThing)
+     }
+ #endif
+ 
+-    if (pThing->type == SITH_THING_EXPLOSION && (pThing->explosionParams.flags & SITHEXPLOSION_FLAG_FLASH_BLINDS_THINGS))
++    if (!observerPass && pThing->type == SITH_THING_EXPLOSION && (pThing->explosionParams.flags & SITHEXPLOSION_FLAG_FLASH_BLINDS_THINGS))
+     {
+         flex_t cameraDist = stdMath_Dist3D1(pThing->transformedPos.x, pThing->transformedPos.y, pThing->transformedPos.z);
+         uint32_t flashG = pThing->explosionParams.flashG;
 diff --git a/src/Main/Main.c b/src/Main/Main.c
-index fd2c8ac..aee025d 100644
+index fd2c8ace..6e4d1b06 100644
 --- a/src/Main/Main.c
 +++ b/src/Main/Main.c
-@@ -404,7 +404,16 @@ int Main_Startup(const char *cmdline)
+@@ -1,4 +1,5 @@
+ #include "Main.h"
++#include "Main/jkObserver.h"
+ 
+ #include "../jk.h"
+ #include "stdPlatform.h"
+@@ -404,7 +405,16 @@ int Main_Startup(const char *cmdline)
          }
      }
      stdStartup(&hs); // Added
@@ -161,9 +783,1072 @@ index fd2c8ac..aee025d 100644
  
      wuRegistry_Startup(HKEY_LOCAL_MACHINE, "Software\\LucasArts Entertainment Company\\JediKnight\\v1.0", (BYTE*)"0.1");
      //stdStartup(&hs); // Moved
+@@ -509,6 +519,7 @@ int Main_Startup(const char *cmdline)
+ 
+ void Main_Shutdown()
+ {
++    jkObserver_Shutdown();
+     stdPlatform_Printf("OpenJKDF2: %s\n", __func__);
+ 
+     std3D_Shutdown(); // Added
+diff --git a/src/Main/jkGame.c b/src/Main/jkGame.c
+index e80722b7..282cd467 100644
+--- a/src/Main/jkGame.c
++++ b/src/Main/jkGame.c
+@@ -1,5 +1,6 @@
+ #include "jkGame.h"
+ #include "Main/stdCapture.h"
++#include "Main/jkObserver.h"
+ 
+ #include "General/stdPalEffects.h"
+ #include "Main/sithMain.h"
+@@ -134,6 +135,7 @@ void jkGame_SetDefaultSettings()
+ 
+ int jkGame_Update()
+ {
++    if (Main_bHeadless && jkObserver_IsCapable()) return jkObserver_RenderFrame();
+     int64_t v0; // rcx
+     SithThing *v2; // esi
+     int v3; // eax
+diff --git a/src/Main/jkObserver.c b/src/Main/jkObserver.c
+new file mode 100644
+index 00000000..7bc0c61b
+--- /dev/null
++++ b/src/Main/jkObserver.c
+@@ -0,0 +1,653 @@
++/* A local dedicated-host camera. It owns no game identity or world thing.
++ * The only inputs are typed commands on the authenticated supervisor bridge.
++ * Frames use a separate inherited socket, never a client game transport. */
++#include "Main/jkObserver.h"
++#include "Main/jkObserverGeometry.h"
++#include "Main/Main.h"
++#include "Main/sithMain.h"
++#include "Engine/sithCamera.h"
++#include "Engine/sithRender.h"
++#include "Engine/rdroid.h"
++#include "Raster/rdCache.h"
++#include "World/sithWorld.h"
++#include "World/sithSector.h"
++#include "World/jkPlayer.h"
++#include "Primitives/rdMatrix.h"
++#include "Primitives/rdModel3.h"
++#include "General/stdPalEffects.h"
++#include "Platform/Networking/GNS/stdComm_GNS.h"
++#include "Platform/std3D.h"
++#include "Win95/Video.h"
++#include "Win95/stdDisplay.h"
++#include "stdPlatform.h"
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <math.h>
++#include <limits.h>
++
++#if defined(PLATFORM_POSIX) && defined(SDL2_RENDER) && !defined(RENDER_GL11) && !defined(ARCH_WASM) && !defined(TARGET_ANDROID)
++#define JK_OBSERVER_SUPPORTED 1
++#include <sys/socket.h>
++#include <sys/un.h>
++#include <unistd.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <strings.h>
++#endif
++
++#define OBS_WIDTH 640u
++#define OBS_HEIGHT 360u
++#define OBS_PIXELS (OBS_WIDTH * OBS_HEIGHT * 4u)
++#define OBS_HEADER 36u
++#define OBS_REPLY 92u
++#define OBS_RECORD 76u
++#define OBS_PI 3.14159265358979323846
++#define OBS_SNAPSHOT_LIMIT (32u * 1024u * 1024u)
++#define OBS_RANGE_LIMIT 16384u
++
++typedef struct ObserverRange { void *address; size_t size, offset; } ObserverRange;
++static struct {
++    int capable, context, renderPass, worldReady, renderError, targetLost;
++    int fd;
++    uint32_t worldEpoch, controlEpoch, mode, targetPeer, targetGeneration;
++    uint32_t sequence, lastInputMs, lastPollMs, lastAttemptMs, frameSequence;
++    uint32_t sentWorld, sentControl, sentSequence, sentMs, pendingCapturedMs, reason;
++    float forward, right, up;
++    rdVector3 position, angles; /* Engine angles are degrees; wire angles are radians. */
++    SithCamera camera;
++    rdCanvas canvas;
++    uint8_t *pending;
++    size_t pendingBytes, pendingOffset;
++    ObserverRange *ranges;
++    uint8_t *snapshot;
++    size_t rangeCount, rangeCapacity, snapshotBytes, snapshotCapacity;
++} observer = {.fd = -1, .worldEpoch = 1, .controlEpoch = 1, .reason = 7};
++
++static uint32_t Observer_Next(uint32_t value) { return value == UINT32_MAX ? 1u : value + 1u; }
++static uint32_t Observer_Now(void) { return (uint32_t)stdPlatform_GetTimeMsec(); }
++static uint32_t Observer_Read32(const uint8_t *p)
++{ return (uint32_t)p[0] | (uint32_t)p[1]<<8 | (uint32_t)p[2]<<16 | (uint32_t)p[3]<<24; }
++static void Observer_Write32(uint8_t *p, uint32_t value)
++{ p[0]=value; p[1]=value>>8; p[2]=value>>16; p[3]=value>>24; }
++static float Observer_ReadFloat(const uint8_t *p)
++{ uint32_t bits=Observer_Read32(p); float value; memcpy(&value,&bits,4); return value; }
++static void Observer_WriteFloat(uint8_t *p, float value)
++{ uint32_t bits; memcpy(&bits,&value,4); Observer_Write32(p,bits); }
++
++/* Independent bounded JKSG stream. No geometry failure mutates image state. */
++#define GEOM_VERTICES 65536u
++#define GEOM_INDICES 196608u
++#define GEOM_PAYLOAD 2097152u
++enum { GEOM_VALID, GEOM_SIZE_LIMIT, GEOM_MISSING_DATA, GEOM_NONFINITE_PROJECTION, GEOM_INVALID_INDEX, GEOM_REASONS };
++static struct {
++    int fd, enabled, capturing, invalid;
++    uint32_t leaseMs, capturedMs, vertices, indices;
++    uint32_t diagnosticMs[GEOM_REASONS], diagnosticMask;
++    uint8_t *pending, *indexData;
++    size_t pendingBytes, pendingOffset;
++} geometry = {.fd=-1};
++
++/* At most one line per reason per five seconds (four fixed reasons). Keep
++ * this state across captures/lease changes so capture cadence cannot flood logs. */
++static void ObserverGeometry_LogRejection(uint32_t now)
++{
++    static const char *const reasons[GEOM_REASONS]={
++        "", "size-limit", "missing-data", "nonfinite-projection", "invalid-index"
++    };
++    unsigned reason=(unsigned)geometry.invalid;
++    if (!reason || reason>=GEOM_REASONS) return;
++    uint32_t bit=1u<<reason;
++    if ((geometry.diagnosticMask&bit) && now-geometry.diagnosticMs[reason]<5000u) return;
++    geometry.diagnosticMask|=bit;geometry.diagnosticMs[reason]=now;
++    fprintf(stderr,"[spectator geometry] rejected capture: %s\n",reasons[reason]);
++}
++
++static void ObserverGeometry_Stop(void)
++{
++    geometry.enabled=geometry.capturing=0;
++    if (!geometry.pendingOffset) geometry.pendingBytes=0;
++}
++static void ObserverGeometry_Close(void)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    if (geometry.fd>=0) close(geometry.fd);
++#endif
++    geometry.fd=-1; geometry.pendingBytes=geometry.pendingOffset=0;
++    ObserverGeometry_Stop();
++}
++static void ObserverGeometry_Shutdown(void)
++{
++    ObserverGeometry_Close();
++    free(geometry.pending); free(geometry.indexData);
++    geometry.pending=geometry.indexData=NULL;
++}
++static void ObserverGeometry_Startup(int imageFd)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    const char *value=getenv("OPENJKDF2_SPECTATOR_GEOMETRY_FD");
++    if (!value || !*value) return;
++    char *end=NULL; errno=0; long fd=strtol(value,&end,10);
++    if (errno || !end || *end || fd<3 || fd>INT_MAX || fd==imageFd) return;
++    int type=0; socklen_t length=sizeof(type);
++    struct sockaddr_un local, peer; socklen_t localLength=sizeof(local), peerLength=sizeof(peer);
++    if (getsockopt(fd,SOL_SOCKET,SO_TYPE,&type,&length) || type!=SOCK_STREAM ||
++        getsockname(fd,(struct sockaddr *)&local,&localLength) || local.sun_family!=AF_UNIX ||
++        getpeername(fd,(struct sockaddr *)&peer,&peerLength) || peer.sun_family!=AF_UNIX) return;
++    int flags=fcntl(fd,F_GETFL), descriptorFlags=fcntl(fd,F_GETFD);
++    if (flags<0 || descriptorFlags<0 || fcntl(fd,F_SETFL,flags|O_NONBLOCK)<0 ||
++        fcntl(fd,F_SETFD,descriptorFlags|FD_CLOEXEC)<0) return;
++    geometry.pending=malloc(64u+GEOM_PAYLOAD);
++    geometry.indexData=malloc(4u*GEOM_INDICES);
++    if (!geometry.pending || !geometry.indexData) {
++        free(geometry.pending);free(geometry.indexData);geometry.pending=geometry.indexData=NULL;return;
++    }
++    geometry.fd=(int)fd;
++#else
++    (void)imageFd;
++#endif
++}
++static void ObserverGeometry_Flush(uint32_t now)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    if (geometry.pendingBytes && !geometry.pendingOffset)
++        Observer_Write32(geometry.pending+36,now-geometry.capturedMs);
++    for (int attempt=0;geometry.fd>=0 && geometry.pendingOffset<geometry.pendingBytes && attempt<8;attempt++) {
++        ssize_t sent=send(geometry.fd,geometry.pending+geometry.pendingOffset,
++            geometry.pendingBytes-geometry.pendingOffset,MSG_DONTWAIT|MSG_NOSIGNAL);
++        if (sent>0) geometry.pendingOffset+=(size_t)sent;
++        else if (sent<0 && errno==EINTR) continue;
++        else if (sent<0 && (errno==EAGAIN || errno==EWOULDBLOCK)) return;
++        else { ObserverGeometry_Close();return; }
++    }
++    if (geometry.pendingOffset==geometry.pendingBytes) geometry.pendingOffset=geometry.pendingBytes=0;
++#else
++    (void)now;
++#endif
++}
++static void ObserverGeometry_Begin(uint32_t now)
++{
++    geometry.capturing=0;
++    if (!geometry.enabled || geometry.fd<0 || geometry.pendingBytes) return;
++    if (now-geometry.leaseMs>=5000) { ObserverGeometry_Stop();return; }
++    geometry.vertices=geometry.indices=0;geometry.invalid=0;geometry.capturedMs=now;geometry.capturing=1;
++}
++#ifndef RDCACHE_RENDER_NGONS
++void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
++    const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    if (!observer.renderPass || !geometry.capturing || geometry.invalid) return;
++    int rejection=GEOM_SIZE_LIMIT;
++    if (vertexCount>GEOM_VERTICES-geometry.vertices || solidCount>GEOM_INDICES/3 || normalCount>GEOM_INDICES/3 ||
++        solidCount+normalCount>(GEOM_INDICES-geometry.indices)/3) goto invalid;
++    if ((vertexCount && !vertices) || (solidCount && !solid) || (normalCount && !normal)) {
++        rejection=GEOM_MISSING_DATA;goto invalid;
++    }
++    uint32_t addedIndices=3*(solidCount+normalCount);
++    if (20u*(geometry.vertices+vertexCount)+4u*(geometry.indices+addedIndices)>GEOM_PAYLOAD) goto invalid;
++    /* Line-only batches have no triangles in this fixed profile. */
++    if (!addedIndices) return;
++    rejection=GEOM_NONFINITE_PROJECTION;
++    for (uint32_t i=0;i<vertexCount;i++) {
++        float z=(float)vertices[i].z, w=1.0f/(1.0f-z);
++        float clip[4]={((2.0f*(float)vertices[i].x/OBS_WIDTH)-1.0f)*w,
++            (1.0f-2.0f*(float)vertices[i].y/OBS_HEIGHT)*w,(z-1.0f)*w,w};
++        uint8_t *out=geometry.pending+64+20u*(geometry.vertices+i);
++        for (int c=0;c<4;c++) { if (!isfinite(clip[c])) goto invalid;Observer_WriteFloat(out+4*c,clip[c]); }
++        uint32_t colour=vertices[i].color;
++        out[16]=colour>>16;out[17]=colour>>8;out[18]=colour;out[19]=255;
++    }
++    rejection=GEOM_INVALID_INDEX;
++    uint32_t offset=geometry.indices;
++    for (int batch=0;batch<2;batch++) {
++        const rdTri *triangles=batch?normal:solid;uint32_t count=batch?normalCount:solidCount;
++        for (uint32_t i=0;i<count;i++) {
++            int32_t indices[3]={triangles[i].v1,triangles[i].v2,triangles[i].v3};
++            for (int j=0;j<3;j++) {
++                if (indices[j]<0 || (uint32_t)indices[j]>=vertexCount) goto invalid;
++                Observer_Write32(geometry.indexData+4u*offset++,geometry.vertices+(uint32_t)indices[j]);
++            }
++        }
++    }
++    geometry.vertices+=vertexCount;geometry.indices+=addedIndices;return;
++invalid:
++    geometry.invalid=rejection;
++#else
++    (void)vertices;(void)vertexCount;(void)solid;(void)solidCount;(void)normal;(void)normalCount;
++#endif
++}
++#endif
++static void ObserverGeometry_End(uint32_t now,uint32_t world,uint32_t control,uint32_t sequence,int ok)
++{
++    if (!geometry.capturing) return;
++    geometry.capturing=0;
++    if (geometry.invalid) { ObserverGeometry_LogRejection(now);return; }
++    if (!ok || !world || !control || !sequence) return;
++    uint32_t bytes=20u*geometry.vertices+4u*geometry.indices;
++    memset(geometry.pending,0,64);memcpy(geometry.pending,"JKSG",4);
++    uint32_t header[11]={1,OBS_WIDTH,OBS_HEIGHT,world,control,sequence,bytes,0,now-geometry.capturedMs,geometry.vertices,geometry.indices};
++    for (int i=0;i<11;i++) Observer_Write32(geometry.pending+4+4*i,header[i]);
++    memcpy(geometry.pending+64+20u*geometry.vertices,geometry.indexData,4u*geometry.indices);
++    geometry.pendingBytes=64u+bytes;geometry.pendingOffset=0;
++}
++
++static void Observer_ClearInput(void)
++{ observer.forward=observer.right=observer.up=0.0f; observer.sequence=0; observer.lastInputMs=0; }
++static void Observer_ControlChanged(void)
++{ observer.controlEpoch=Observer_Next(observer.controlEpoch); Observer_ClearInput(); ObserverGeometry_Stop(); }
++
++int jkObserver_IsCapable(void) { return observer.capable; }
++int jkObserver_HasContext(void) { return observer.context; }
++int jkObserver_IsRenderPass(void) { return observer.renderPass; }
++void jkObserver_SetContextAvailable(int available) { observer.context=observer.capable && available; }
++
++void jkObserver_Startup(int argc, char **argv)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    int dedicated=0, headless=0;
++    for (int i=1;i<argc;i++) {
++        dedicated |= !strcasecmp(argv[i],"-dedicatedServer") || !strcasecmp(argv[i],"/dedicatedServer");
++        headless |= !strcasecmp(argv[i],"-headless") || !strcasecmp(argv[i],"/headless");
++    }
++    const char *value=getenv("OPENJKDF2_SPECTATOR_FD");
++    if (!dedicated || !headless || !value || !*value) return;
++    char *end=NULL; errno=0;
++    long fd=strtol(value,&end,10);
++    if (errno || !end || *end || fd<3 || fd>INT_MAX) return;
++    int type=0; socklen_t typeLength=sizeof(type);
++    struct sockaddr_un address; socklen_t addressLength=sizeof(address);
++    if (getsockopt((int)fd,SOL_SOCKET,SO_TYPE,&type,&typeLength) || type!=SOCK_STREAM ||
++        getsockname((int)fd,(struct sockaddr *)&address,&addressLength) || address.sun_family!=AF_UNIX ||
++        getpeername((int)fd,(struct sockaddr *)&address,&addressLength) || address.sun_family!=AF_UNIX) return;
++    int flags=fcntl((int)fd,F_GETFL);
++    if (flags<0 || fcntl((int)fd,F_SETFL,flags|O_NONBLOCK)<0 || fcntl((int)fd,F_SETFD,FD_CLOEXEC)<0) return;
++    observer.pending=(uint8_t *)malloc(OBS_HEADER+OBS_PIXELS);
++    if (!observer.pending) return;
++    observer.fd=(int)fd;
++    observer.capable=1;
++    ObserverGeometry_Startup(observer.fd);
++#else
++    (void)argc; (void)argv;
++#endif
++}
++
++void jkObserver_Disconnect(void)
++{
++    observer.mode=0; observer.targetPeer=observer.targetGeneration=0;
++    observer.reason=7; observer.targetLost=0; Observer_ControlChanged();
++    /* A partly sent frame must finish to preserve stream framing. Its old
++     * control epoch makes it unusable after this transition. */
++    if (!observer.pendingOffset) observer.pendingBytes=0;
++}
++
++void jkObserver_SetRenderError(void)
++{ observer.renderError=1; jkObserver_Disconnect(); observer.reason=6; }
++
++static void Observer_CloseChannel(void)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    if (observer.fd>=0) close(observer.fd);
++#endif
++    observer.fd=-1; observer.pendingBytes=observer.pendingOffset=0;
++    jkObserver_Disconnect(); observer.reason=5;
++}
++
++static void Observer_Flush(uint32_t now)
++{
++#ifdef JK_OBSERVER_SUPPORTED
++    for (int attempts=0;observer.fd>=0 && observer.pendingOffset<observer.pendingBytes && attempts<8;attempts++) {
++        ssize_t result=send(observer.fd,observer.pending+observer.pendingOffset,
++                            observer.pendingBytes-observer.pendingOffset,MSG_DONTWAIT|MSG_NOSIGNAL);
++        if (result>0) observer.pendingOffset+=(size_t)result;
++        else if (result<0 && errno==EINTR) continue;
++        else if (result<0 && (errno==EAGAIN || errno==EWOULDBLOCK)) return;
++        else { Observer_CloseChannel(); return; }
++    }
++    if (observer.pendingBytes && observer.pendingOffset==observer.pendingBytes) {
++        observer.sentWorld=Observer_Read32(observer.pending+16);
++        observer.sentControl=Observer_Read32(observer.pending+20);
++        observer.sentSequence=Observer_Read32(observer.pending+24);
++        /* Congestion changes delivery time, never the age of these pixels. */
++        observer.sentMs=observer.pendingCapturedMs;
++        observer.pendingBytes=observer.pendingOffset=0;
++    }
++#else
++    (void)now;
++#endif
++}
++
++static uint32_t Observer_Generation(uint32_t peer)
++{
++#ifdef PLATFORM_GNS
++    return stdComm_GNS_ObserverPeerGeneration(peer);
++#else
++    (void)peer; return 0;
++#endif
++}
++
++static SithPlayer *Observer_Player(uint32_t peer, uint32_t generation)
++{
++    if (!observer.worldReady || !sithWorld_g_pCurrentWorld || peer<=1 || !generation || Observer_Generation(peer)!=generation) return NULL;
++    for (int i=1;i<jkPlayer_maxPlayers && i<JKPLAYER_NUM_INFOS;i++) {
++        SithPlayer *player=&jkPlayer_playerInfos[i];
++        if ((player->flags&1) && player->playerNetId==peer) return player;
++    }
++    return NULL;
++}
++
++static void Observer_ReadPose(const SithThing *thing)
++{
++    if (!thing) return;
++    rdMatrix34 matrix=thing->orient;
++    matrix.scale=thing->position;
++    if (thing->type==SITH_THING_PLAYER || thing->type==SITH_THING_ACTOR) {
++        rdMatrix_PreRotate34(&matrix,&thing->actorParams.headPYR);
++        rdMatrix_PreTranslate34(&matrix,&thing->actorParams.eyeOffset);
++    }
++    observer.position=matrix.scale;
++    rdMatrix_ExtractAngles34(&matrix,&observer.angles);
++}
++
++void jkObserver_WorldClosing(void)
++{
++    jkObserver_EndReadOnlyRender();
++    jkObserver_Disconnect();
++    observer.worldReady=0; observer.worldEpoch=Observer_Next(observer.worldEpoch);
++    observer.reason=2;
++    if (observer.camera.rdCamera.pClipFrustum) rdCamera_FreeEntry(&observer.camera.rdCamera);
++    memset(&observer.camera,0,sizeof(observer.camera));
++    memset(&observer.canvas,0,sizeof(observer.canvas));
++}
++
++void jkObserver_WorldOpened(void)
++{
++    if (!observer.capable) return;
++    observer.worldEpoch=Observer_Next(observer.worldEpoch); Observer_ControlChanged();
++    observer.worldReady=sithWorld_g_pCurrentWorld!=NULL;
++    observer.mode=0; observer.reason=7; observer.targetLost=observer.renderError=0;
++    memset(&observer.position,0,sizeof(observer.position));
++    memset(&observer.angles,0,sizeof(observer.angles));
++    if (observer.worldReady) Observer_ReadPose(sithWorld_g_pCurrentWorld->pLocalPlayer);
++    observer.lastPollMs=Observer_Now();
++}
++
++void jkObserver_Shutdown(void)
++{
++    jkObserver_WorldClosing(); Observer_CloseChannel(); ObserverGeometry_Shutdown();
++    free(observer.pending); observer.pending=NULL;
++    free(observer.ranges); observer.ranges=NULL;
++    free(observer.snapshot); observer.snapshot=NULL;
++    observer.rangeCapacity=observer.snapshotCapacity=0;
++    observer.capable=observer.context=0;
++}
++
++void jkObserver_Poll(void)
++{
++    if (!observer.capable) return;
++    const uint32_t now=Observer_Now();
++    Observer_Flush(now);
++    if (geometry.enabled && now-geometry.leaseMs>=5000) ObserverGeometry_Stop();
++    ObserverGeometry_Flush(now);
++    uint32_t elapsed=now-observer.lastPollMs; observer.lastPollMs=now;
++    if (elapsed>100) elapsed=100;
++    if (!observer.worldReady || !sithWorld_g_pCurrentWorld) return;
++    if (observer.mode==2) {
++        SithPlayer *player=Observer_Player(observer.targetPeer,observer.targetGeneration);
++        if (!player) {
++            observer.mode=1; observer.targetPeer=observer.targetGeneration=0;
++            observer.targetLost=1; observer.reason=3; Observer_ControlChanged();
++        } else if (player->pLocalPlayer) Observer_ReadPose(player->pLocalPlayer);
++    }
++    if (observer.mode==1 && observer.sequence) {
++        if (now-observer.lastInputMs>250) observer.forward=observer.right=observer.up=0.0f;
++        rdMatrix34 matrix; rdMatrix_Build34(&matrix,&observer.angles,&observer.position);
++        const flex_t distance=(flex_t)elapsed*0.003f;
++        observer.position.x+=distance*(observer.forward*matrix.lvec.x+observer.right*matrix.rvec.x);
++        observer.position.y+=distance*(observer.forward*matrix.lvec.y+observer.right*matrix.rvec.y);
++        observer.position.z+=distance*(observer.forward*matrix.lvec.z+observer.right*matrix.rvec.z+observer.up);
++    }
++}
++
++static uint32_t Observer_Roster(uint8_t *output, size_t capacity)
++{
++    uint32_t count=0;
++    if (!observer.worldReady || !sithWorld_g_pCurrentWorld) return 0;
++    for (int i=1;i<jkPlayer_maxPlayers && i<JKPLAYER_NUM_INFOS && count<31;i++) {
++        SithPlayer *player=&jkPlayer_playerInfos[i];
++        uint32_t generation=Observer_Generation(player->playerNetId);
++        if (!(player->flags&1) || player->playerNetId<=1 || !generation) continue;
++        if ((size_t)(count+1)*OBS_RECORD>capacity) break;
++        uint8_t *record=output+count*OBS_RECORD; memset(record,0,OBS_RECORD);
++        Observer_Write32(record,player->playerNetId); Observer_Write32(record+4,generation); Observer_Write32(record+8,(uint32_t)i);
++        for (int n=0;n<31 && player->player_name[n];n++) {
++            uint16_t value=(uint16_t)player->player_name[n]; record[12+n*2]=value; record[13+n*2]=value>>8;
++        }
++        ++count;
++    }
++    return count;
++}
++
++size_t jkObserver_Request(const uint8_t *request, size_t length, uint8_t *reply, size_t capacity)
++{
++    if (!reply || capacity<OBS_REPLY) return 0;
++    jkObserver_Poll();
++    uint32_t operation=length>=8 && request?Observer_Read32(request+4):UINT32_MAX;
++    uint32_t result=0;
++    if (!request || length<8 || Observer_Read32(request)!=1 || operation>3 ||
++        length!=(operation==0?8u:operation==1?28u:operation==2?40u:20u)) result=1;
++    else if (operation) {
++        if (Observer_Read32(request+8)!=observer.worldEpoch || Observer_Read32(request+12)!=observer.controlEpoch) result=2;
++        else if (operation==1) {
++            uint32_t mode=Observer_Read32(request+16), peer=Observer_Read32(request+20), generation=Observer_Read32(request+24);
++            if (mode>2 || (mode!=2 && (peer || generation))) result=1;
++            else if (mode && (!observer.capable || !observer.context || observer.fd<0 || !observer.worldReady || observer.renderError)) result=4;
++            else if (mode==2 && !Observer_Player(peer,generation)) result=3;
++            else {
++                Observer_ControlChanged(); observer.mode=mode; observer.targetPeer=peer; observer.targetGeneration=generation;
++                observer.targetLost=0; observer.reason=mode?0:7;
++                if (mode==2) Observer_ReadPose(Observer_Player(peer,generation)->pLocalPlayer);
++            }
++        } else if (operation==3) {
++            uint32_t enabled=Observer_Read32(request+16);
++            if (enabled>1) result=1;
++            else if (enabled && (geometry.fd<0 || !observer.mode || !observer.capable || !observer.context ||
++                observer.fd<0 || !observer.worldReady || observer.renderError)) result=4;
++            else if (enabled) { geometry.enabled=1;geometry.leaseMs=Observer_Now(); }
++            else ObserverGeometry_Stop();
++        } else {
++            const uint32_t sequence=Observer_Read32(request+16);
++            float values[5]; for (int i=0;i<5;i++) values[i]=Observer_ReadFloat(request+20+i*4);
++            if (observer.mode!=1) result=5;
++            else if (!sequence || sequence<=observer.sequence) result=1;
++            else {
++                for (int i=0;i<5;i++) if (!isfinite(values[i]) || fabsf(values[i])>(i<3?1.0f:(float)OBS_PI)) result=1;
++                if (!result) {
++                    observer.sequence=sequence; observer.lastInputMs=Observer_Now();
++                    observer.forward=values[0]; observer.right=values[1]; observer.up=values[2];
++                    observer.angles.y=(flex_t)remainder((double)observer.angles.y+values[3]*(180.0/OBS_PI),360.0);
++                    observer.angles.x=(flex_t)fmax(-89.0,fmin(89.0,(double)observer.angles.x+values[4]*(180.0/OBS_PI)));
++                }
++            }
++        }
++    }
++    memset(reply,0,OBS_REPLY);
++    SithSector *sector=observer.worldReady && sithWorld_g_pCurrentWorld?sithSector_FindSectorAtPos(sithWorld_g_pCurrentWorld,&observer.position):NULL;
++    int sectorIndex=sector && sithWorld_g_pCurrentWorld?(int)(sector-sithWorld_g_pCurrentWorld->aSectors):-1;
++    uint32_t ready=observer.sentSequence && observer.sentWorld==observer.worldEpoch && observer.sentControl==observer.controlEpoch;
++    uint32_t capabilities=(observer.context?1u:0u)|(observer.fd>=0?2u:0u)|(observer.capable?12u:0u)|(geometry.fd>=0?16u:0u);
++    uint32_t flags=(observer.worldReady?1u:0u)|(ready?2u:0u)|(observer.pendingBytes?4u:0u)|
++        (observer.worldReady && !sector?8u:0u)|(observer.targetLost?16u:0u)|(observer.mode?32u:0u)|(observer.renderError?64u:0u);
++    uint32_t reason=observer.reason;
++    if (!observer.capable) reason=1;
++    else if (observer.fd<0) reason=5;
++    else if (observer.renderError) reason=6;
++    else if (!observer.worldReady) reason=2;
++    else if (!observer.mode) reason=7;
++    else if (observer.targetLost) reason=3;
++    else if (!sector) reason=4;
++    uint32_t count=operation==0?Observer_Roster(reply+OBS_REPLY,capacity-OBS_REPLY):0;
++    uint32_t words[16]={1,result,operation,capabilities,observer.mode,flags,observer.worldEpoch,observer.controlEpoch,
++        observer.targetPeer,observer.targetGeneration,OBS_WIDTH,OBS_HEIGHT,ready?Observer_Now()-observer.sentMs:UINT32_MAX,
++        reason,count,observer.frameSequence};
++    for (int i=0;i<16;i++) Observer_Write32(reply+i*4,words[i]);
++    Observer_WriteFloat(reply+64,observer.position.x); Observer_WriteFloat(reply+68,observer.position.y); Observer_WriteFloat(reply+72,observer.position.z);
++    Observer_WriteFloat(reply+76,(float)(observer.angles.y*(OBS_PI/180.0))); Observer_WriteFloat(reply+80,(float)(observer.angles.x*(OBS_PI/180.0)));
++    Observer_WriteFloat(reply+84,(float)(observer.angles.z*(OBS_PI/180.0))); Observer_Write32(reply+88,(uint32_t)sectorIndex);
++    return OBS_REPLY+count*OBS_RECORD;
++}
++
++/* Renderer caches share allocations with saber collision and COG visibility.
++ * Preserve their bytes, including nested joint/puppet arrays. Snapshot failure
++ * happens before any drawing, and disables only observation. */
++static int Observer_Save(void *address, size_t count, size_t size)
++{
++    if (!address || !count || !size) return 1;
++    if (count>OBS_SNAPSHOT_LIMIT/size) return 0;
++    size_t bytes=count*size;
++    for (size_t i=0;i<observer.rangeCount;i++) if (observer.ranges[i].address==address) return observer.ranges[i].size==bytes;
++    if (observer.rangeCount>=OBS_RANGE_LIMIT || bytes>OBS_SNAPSHOT_LIMIT-observer.snapshotBytes) return 0;
++    if (observer.rangeCount==observer.rangeCapacity) {
++        size_t capacity=observer.rangeCapacity?observer.rangeCapacity*2:64;
++        ObserverRange *ranges=(ObserverRange *)realloc(observer.ranges,capacity*sizeof(*ranges));
++        if (!ranges) return 0;
++        observer.ranges=ranges; observer.rangeCapacity=capacity;
++    }
++    if (observer.snapshotBytes+bytes>observer.snapshotCapacity) {
++        size_t capacity=observer.snapshotCapacity?observer.snapshotCapacity:65536;
++        while (capacity<observer.snapshotBytes+bytes) capacity*=2;
++        if (capacity>OBS_SNAPSHOT_LIMIT) capacity=OBS_SNAPSHOT_LIMIT;
++        uint8_t *snapshot=(uint8_t *)realloc(observer.snapshot,capacity);
++        if (!snapshot) return 0;
++        observer.snapshot=snapshot; observer.snapshotCapacity=capacity;
++    }
++    ObserverRange *range=&observer.ranges[observer.rangeCount++];
++    range->address=address; range->size=bytes; range->offset=observer.snapshotBytes;
++    memcpy(observer.snapshot+observer.snapshotBytes,address,bytes); observer.snapshotBytes+=bytes;
++    return 1;
++}
++
++static int Observer_SaveModel(rdModel3 *model)
++{
++    if (!model) return 1;
++    if (model->numGeos>4 || model->numHNodes>4096 || !Observer_Save(model,1,sizeof(*model))) return 0;
++    for (unsigned int g=0;g<model->numGeos;g++) {
++        rdGeoset *geo=&model->aGeos[g];
++        if (geo->numMeshes>4096 || !Observer_Save(geo->aMeshes,geo->numMeshes,sizeof(rdMesh))) return 0;
++        for (unsigned int m=0;geo->aMeshes && m<geo->numMeshes;m++) {
++            rdMesh *mesh=&geo->aMeshes[m];
++            if (!Observer_Save(mesh->faces,mesh->numFaces,sizeof(rdFace)) ||
++                !Observer_Save(mesh->vertices_unk,mesh->numVertices,sizeof(flex_t))) return 0;
++        }
++    }
++    return 1;
++}
++
++int jkObserver_BeginReadOnlyRender(void)
++{
++    SithWorld *world=sithWorld_g_pCurrentWorld;
++    if (observer.renderPass || !world || world->numThings<0 || world->numThings>65535 ||
++        world->numSectors<0 || world->numSurfaces<0 || world->numVertices<0 || world->numAdjoins<0) return 0;
++    observer.rangeCount=observer.snapshotBytes=0;
++#define SAVE(value) do { if (!Observer_Save(&(value),1,sizeof(value))) goto failed; } while (0)
++#define ARRAY(address,count) do { if (!Observer_Save((address),(size_t)(count),sizeof(*(address)))) goto failed; } while (0)
++    SAVE(*world); ARRAY(world->aThings,world->numThings+1); ARRAY(world->aSectors,world->numSectors);
++    ARRAY(world->surfaces,world->numSurfaces); ARRAY(world->adjoins,world->numAdjoins);
++    ARRAY(world->aTransformedVertices,world->numVertices); ARRAY(world->alloc_unk98,world->numVertices);
++    ARRAY(world->alloc_unk9c,world->numVertices); ARRAY(world->aVertDynamicLights,world->numVertices);
++    for (int i=0;world->aThings && i<=world->numThings;i++) {
++        rdThing *thing=&world->aThings[i].renderData;
++        if (thing->type==RD_THING_MODEL3 && thing->model3) {
++            if (!Observer_SaveModel(thing->model3)) goto failed;
++            ARRAY(thing->paJointMatrices,thing->model3->numHNodes);
++            ARRAY(thing->hierarchyNodes2,thing->model3->numHNodes);
++            ARRAY(thing->paJointAmputationFlags,thing->model3->numHNodes);
++            if (thing->puppet) SAVE(*thing->puppet);
++        } else if (thing->type==RD_THING_SPRITE3 && thing->sprite3) SAVE(*thing->sprite3);
++        else if (thing->type==RD_THING_PARTICLE && thing->particlecloud) SAVE(*thing->particlecloud);
++        else if (thing->type==RD_THING_POLYLINE && thing->polyline) SAVE(*thing->polyline);
++    }
++    SAVE(rdroid_frameTrue); SAVE(sithRender_lastRenderTick); SAVE(sithPlayer_bNoClippingRend);
++    SAVE(sithCamera_g_pCurCamera); SAVE(rdCamera_g_pCurCamera); SAVE(rdCamera_g_camMatrix);
++    SAVE(rdroid_curColorEffects); SAVE(sithMain_lastAspect);
++    SAVE(rdroid_g_curRenderOptions); SAVE(rdroid_g_curGeometryMode); SAVE(rdroid_g_curLightingMode);
++    SAVE(rdroid_curTextureMode); SAVE(rdroid_curAcceleration); SAVE(rdroid_curCullFlags);
++    SAVE(rdroid_curSortingMethod); SAVE(rdroid_curOcclusionMethod); SAVE(rdroid_curZBufferMethod);
++    SAVE(rdroid_curProcFaceUserData); SAVE(rdroid_curVertexColorMode); SAVE(sithRender_renderflags);
++    SAVE(sithRender_bResetCameraAspect);
++#undef ARRAY
++#undef SAVE
++    observer.renderPass=1; return 1;
++failed:
++    observer.rangeCount=observer.snapshotBytes=0; return 0;
++}
++
++void jkObserver_EndReadOnlyRender(void)
++{
++    if (!observer.renderPass) return;
++    while (observer.rangeCount) {
++        ObserverRange *range=&observer.ranges[--observer.rangeCount];
++        memcpy(range->address,observer.snapshot+range->offset,range->size);
++    }
++    observer.snapshotBytes=0; observer.renderPass=0;
++}
++
++int jkObserver_RenderFrame(void)
++{
++    /* jkGame_Update also advances this stamp while observation is off. Saber
++     * collision lazily refreshes joint matrices against it; the 5 fps observer
++     * must never become the simulation's animation clock. */
++    rdroid_frameTrue=rdroid_frameTrue==INT_MAX?1:rdroid_frameTrue+1;
++    jkObserver_Poll();
++#ifdef JK_OBSERVER_SUPPORTED
++    const uint32_t now=Observer_Now();
++    if (!observer.mode || !observer.worldReady || !observer.context || observer.fd<0 || observer.renderError ||
++        observer.pendingBytes || now-observer.lastAttemptMs<200 || !Video_pCanvas || !Video_pMenuBuffer) return 1;
++    observer.lastAttemptMs=now;
++    if (!observer.camera.rdCamera.pClipFrustum) {
++        if (!rdCamera_NewEntry(&observer.camera.rdCamera,90.0f,0,SITHCAMERA_ZNEAR,SITHCAMERA_ZFAR,0.5625f)) {
++            jkObserver_SetRenderError(); return 1;
++        }
++        observer.camera.type=0; observer.camera.fov=90.0f; observer.camera.aspectRatio=0.5625f;
++        rdCamera_SetAttenuation(&observer.camera.rdCamera,SITHCAMERA_ATTENUATION_MIN,SITHCAMERA_ATTENUATION_MAX);
++    }
++    observer.canvas=*Video_pCanvas;
++    observer.canvas.xStart=observer.canvas.yStart=0;
++    observer.canvas.widthMinusOne=OBS_WIDTH-1; observer.canvas.heightMinusOne=OBS_HEIGHT-1;
++    observer.canvas.half_screen_width=OBS_WIDTH/2; observer.canvas.half_screen_height=OBS_HEIGHT/2;
++    rdCamera_SetCanvas(&observer.camera.rdCamera,&observer.canvas);
++    rdMatrix_Build34(&observer.camera.orient,&observer.angles,&observer.position);
++    observer.camera.sector=sithSector_FindSectorAtPos(sithWorld_g_pCurrentWorld,&observer.position);
++    observer.camera.lookPos=observer.position;
++    observer.camera.lookPYR=observer.angles;
++    if (!jkObserver_BeginReadOnlyRender()) { jkObserver_SetRenderError(); return 1; }
++    ObserverGeometry_Begin(now);
++    sithCamera_g_pCurCamera=&observer.camera;
++    rdCamera_SetCurrent(&observer.camera.rdCamera);
++    rdroid_curAcceleration=1; sithMain_lastAspect=0.5625f;
++    stdPalEffect neutral; stdPalEffects_ResetEffect(&neutral); rdSetColorEffects(&neutral);
++    stdDisplay_VBufferFill(Video_pMenuBuffer,Video_fillColor,0);
++    rdAdvanceFrame();
++    int ok=!observer.renderError;
++    if (ok) {
++        sithAdvanceRenderTick();
++        sithCamera_RenderScene();
++        rdCache_Flush();
++        std3D_DrawMenu();
++        rdFinishFrame();
++        ok=std3D_ObserverReadback(observer.pending+OBS_HEADER,OBS_WIDTH,OBS_HEIGHT);
++    }
++    ObserverGeometry_End(now,observer.worldEpoch,observer.controlEpoch,Observer_Next(observer.frameSequence),ok);
++    jkObserver_EndReadOnlyRender();
++    if (!ok) { jkObserver_SetRenderError(); return 1; }
++    observer.frameSequence=Observer_Next(observer.frameSequence);
++    memcpy(observer.pending,"JKSV",4);
++    uint32_t header[8]={1,OBS_WIDTH,OBS_HEIGHT,observer.worldEpoch,observer.controlEpoch,observer.frameSequence,OBS_PIXELS,0};
++    for (int i=0;i<8;i++) Observer_Write32(observer.pending+4+i*4,header[i]);
++    observer.pendingCapturedMs=now;
++    observer.pendingBytes=OBS_HEADER+OBS_PIXELS; observer.pendingOffset=0;
++    Observer_Flush(now);
++    ObserverGeometry_Flush(Observer_Now());
++#endif
++    return 1;
++}
+diff --git a/src/Main/jkObserver.h b/src/Main/jkObserver.h
+new file mode 100644
+index 00000000..8c0f9653
+--- /dev/null
++++ b/src/Main/jkObserver.h
+@@ -0,0 +1,26 @@
++#ifndef _JK_OBSERVER_H
++#define _JK_OBSERVER_H
++#include <stddef.h>
++#include <stdint.h>
++#ifdef __cplusplus
++extern "C" {
++#endif
++void jkObserver_Startup(int argc, char **argv);
++void jkObserver_Shutdown(void);
++int jkObserver_IsCapable(void);
++int jkObserver_HasContext(void);
++int jkObserver_IsRenderPass(void);
++void jkObserver_SetContextAvailable(int available);
++void jkObserver_WorldOpened(void);
++void jkObserver_WorldClosing(void);
++void jkObserver_Disconnect(void);
++void jkObserver_Poll(void);
++int jkObserver_RenderFrame(void);
++void jkObserver_SetRenderError(void);
++size_t jkObserver_Request(const uint8_t *request, size_t length, uint8_t *reply, size_t capacity);
++int jkObserver_BeginReadOnlyRender(void);
++void jkObserver_EndReadOnlyRender(void);
++#ifdef __cplusplus
++}
++#endif
++#endif
+diff --git a/src/Main/sithMain.c b/src/Main/sithMain.c
+index b10ad70f..5e0e1a16 100644
+--- a/src/Main/sithMain.c
++++ b/src/Main/sithMain.c
+@@ -1,5 +1,6 @@
+ #include "sithMain.h"
+ #include "Main/stdCapture.h"
++#include "Main/jkObserver.h"
+ 
+ #include "Main/jkGame.h"
+ #include "Main/Main.h"
+@@ -206,6 +207,7 @@ void sithClose()
+ {
+     if ( sith_bOpen )
+     {
++        jkObserver_WorldClosing();
+         sithSoundMixer_StopSong();
+         sithRender_Close();
+         sithAIAwareness_Close();
+@@ -556,4 +558,5 @@ void sithOpenPostProcess()
+ #endif
+         sithTime_Startup();
+     }
++    jkObserver_WorldOpened();
+ }
+diff --git a/src/Platform/GL/std3D.c b/src/Platform/GL/std3D.c
+index 13c9d22a..89042fa2 100644
+--- a/src/Platform/GL/std3D.c
++++ b/src/Platform/GL/std3D.c
+@@ -9,6 +9,7 @@
+ #include "Engine/rdColormap.h"
+ #include "Engine/rdroid.h"
+ #include "Main/jkGame.h"
++#include "Main/jkObserver.h"
+ #include "World/jkPlayer.h"
+ #include "General/stdBitmap.h"
+ #include "stdPlatform.h"
+@@ -18,6 +19,7 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <math.h>
+ #include "Platform/GL/shader_utils.h"
+ #include "Platform/GL/jkgm.h"
+ 
+@@ -608,8 +610,14 @@ int init_resources()
+ 
+     for (int i = 0; i < 4*4; i++)
+     {
+-        tiledrand_data[i].x = (_frand() * 2.0) - 1.0;
+-        tiledrand_data[i].y = (_frand() * 2.0) - 1.0;
++        if (jkObserver_IsRenderPass()) {
++            /* Resource initialization must not consume simulation randomness. */
++            tiledrand_data[i].x = cosf((float)(i+1)*2.39996323f);
++            tiledrand_data[i].y = sinf((float)(i+1)*2.39996323f);
++        } else {
++            tiledrand_data[i].x = (_frand() * 2.0) - 1.0;
++            tiledrand_data[i].y = (_frand() * 2.0) - 1.0;
++        }
+         tiledrand_data[i].z = 0.0;
+         rdVector_Normalize3Acc(&tiledrand_data[i]);
+     }
+@@ -736,7 +744,7 @@ void std3D_FreeResources()
+ 
+ int std3D_StartScene()
+ {
+-    if (Main_bHeadless) return 1;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
+ 
+     ++std3D_frameCount;
+ 
+@@ -744,6 +752,7 @@ int std3D_StartScene()
+     if (!has_initted)
+     {
+         if (!init_resources()) {
++            if (jkObserver_IsRenderPass()) { jkObserver_SetRenderError(); return 0; }
+             stdPlatform_Printf("std3D: Failed to init resources, exiting...");
+             if (Window_bRenderProbe) fprintf(stderr,"RENDERPROBE_FAILED OpenGL resource initialization\n");
+             else SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Failed to init resources, exiting...", NULL);
+@@ -824,8 +833,14 @@ int std3D_StartScene()
+     glBindTexture(GL_TEXTURE_2D, tiledrand_texture);
+     for (int i = 0; i < 4*4; i++)
+     {
+-        tiledrand_data[i].x = (_frand() * 2.0) - 1.0;
+-        tiledrand_data[i].y = (_frand() * 2.0) - 1.0;
++        if (jkObserver_IsRenderPass()) {
++            /* Resource initialization must not consume simulation randomness. */
++            tiledrand_data[i].x = cosf((float)(i+1)*2.39996323f);
++            tiledrand_data[i].y = sinf((float)(i+1)*2.39996323f);
++        } else {
++            tiledrand_data[i].x = (_frand() * 2.0) - 1.0;
++            tiledrand_data[i].y = (_frand() * 2.0) - 1.0;
++        }
+         tiledrand_data[i].z = 0.0;
+         rdVector_Normalize3Acc(&tiledrand_data[i]);
+         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 4, 4, GL_RGB, GL_FLOAT, tiledrand_data);
+@@ -881,7 +896,7 @@ int std3D_StartScene()
+ 
+ int std3D_EndScene()
+ {
+-    if (Main_bHeadless) {
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) {
+         last_tex = NULL;
+         last_flags = 0;
+         std3D_ResetRenderList();
+@@ -1198,10 +1213,12 @@ static void std3D_PresentSWWorld(void)
+ 
+ void std3D_DrawMenu()
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     //printf("Draw menu\n");
+     std3D_DrawSceneFbo();
++    /* The live observer deliberately excludes host HUD, automap and console. */
++    if (jkObserver_IsRenderPass()) { last_flags=0; return; }
+     //glFlush();
+ 
+     // When the software renderer presented the world this frame, its buffer already contains the HUD
+@@ -1566,7 +1583,7 @@ void std3D_DrawMenu()
+ 
+ void std3D_DrawMapOverlay()
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     //glFlush();
+ 
+@@ -1964,7 +1981,7 @@ void std3D_DrawUIClearedRectRGBA(uint8_t color_r, uint8_t color_g, uint8_t color
+ 
+ void std3D_DrawUIRenderList()
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+     if (!GL_tmpUITrisAmt) return;
+ 
+     //glFlush();
+@@ -2541,7 +2558,7 @@ void std3D_DoTex(rdDDrawSurface* tex, rdTri* tri, int tris_left)
+ 
+ void std3D_DrawRenderList()
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     //printf("Draw render list\n");
+     glBindFramebuffer(GL_FRAMEBUFFER, std3D_pFb->fbo);
+@@ -2560,6 +2577,13 @@ void std3D_DrawRenderList()
+     float internalWidth = Video_menuBuffer.format.width;
+     float internalHeight = Video_menuBuffer.format.height;
+ 
++    /* Observer projection uses its private 640x360 canvas. The untouched
++     * host menu buffer remains 640x480 and must not scale the live camera. */
++    if (jkObserver_IsRenderPass()) {
++        internalWidth = Window_xSize;
++        internalHeight = Window_ySize;
++    }
++
+     if (jkGuiBuildMulti_bRendering) {
+         internalWidth = 640.0;
+         internalHeight = 480.0;
+@@ -2916,7 +2940,7 @@ int std3D_DrawOverlay()
+ void std3D_UnloadAllTextures()
+ {
+ #ifndef SDL2_RENDER
+-    if (!Main_bHeadless) {
++    if (!Main_bHeadless || jkObserver_HasContext()) {
+         glDeleteTextures(std3D_loadedTexturesAmt, std3D_aLoadedTextures);
+     }
+     std3D_loadedTexturesAmt = 0;
+@@ -2927,7 +2951,7 @@ void std3D_UnloadAllTextures()
+ 
+ void std3D_AddRenderListTris(rdTri *tris, unsigned int num_tris)
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     if (GL_tmpTrisAmt + num_tris > STD3D_MAX_TRIS)
+     {
+@@ -2941,7 +2965,7 @@ void std3D_AddRenderListTris(rdTri *tris, unsigned int num_tris)
+ 
+ void std3D_AddRenderListLines(rdLine* lines, uint32_t num_lines)
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     if (GL_tmpLinesAmt + num_lines > STD3D_MAX_VERTICES)
+     {
+@@ -2954,7 +2978,7 @@ void std3D_AddRenderListLines(rdLine* lines, uint32_t num_lines)
+ 
+ int std3D_AddRenderListVertices(D3DVERTEX *aVertices, int count)
+ {
+-    if (Main_bHeadless) return 1;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
+ 
+     if (GL_tmpVerticesAmt + count >= STD3D_MAX_VERTICES)
+     {
+@@ -2970,7 +2994,7 @@ int std3D_AddRenderListVertices(D3DVERTEX *aVertices, int count)
+ 
+ void std3D_AddRenderListUITris(rdUITri *tris, unsigned int num_tris)
+ {
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return;
+ 
+     if (GL_tmpUITrisAmt + num_tris > STD3D_MAX_TRIS)
+     {
+@@ -2984,8 +3008,9 @@ void std3D_AddRenderListUITris(rdUITri *tris, unsigned int num_tris)
+ 
+ int std3D_ClearZBuffer()
+ {
+-    // Headless startup does not initialize a framebuffer or retain a GL context.
+-    if (Main_bHeadless) return 1;
++    // Observer resources are lazy; the first rdAdvanceFrame clears before StartScene.
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
++    if (jkObserver_IsRenderPass() && (!has_initted || !std3D_pFb)) return 1;
+ 
+ #ifdef RDRASTER_SW_ZBUFFER
+     // Added: the software rasterizer keeps its own depth buffer; clear it on the same hook JK uses
+@@ -3000,7 +3025,7 @@ int std3D_ClearZBuffer()
+ 
+ int std3D_AddToTextureCache(tVBuffer *vbuf, rdDDrawSurface *texture, int is_alpha_tex, int no_alpha)
+ {
+-    if (Main_bHeadless) return 1;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
+     if (!vbuf || !texture) return 1;
+     if (texture->texture_loaded) return 1;
+ 
+@@ -3201,7 +3226,7 @@ int std3D_GetBitmapCacheIdx()
+ 
+ int std3D_AddBitmapToTextureCache(stdBitmap *texture, int mipIdx, int is_alpha_tex, int no_alpha)
+ {
+-    if (Main_bHeadless) return 1;
++    if (Main_bHeadless && !jkObserver_IsRenderPass()) return 1;
+     if (!has_initted) return 0;
+     if (!texture) return 1;
+     if (mipIdx >= texture->numMips) return 1;
+@@ -3886,7 +3911,7 @@ int std3D_PurgeTextureCache(size_t size)
+ 
+ void std3D_PurgeEntireTextureCache()
+ {
+-    if (Main_bHeadless) {
++    if (Main_bHeadless && !jkObserver_HasContext()) {
+         std3D_loadedTexturesAmt = 0;
+         return;
+     }
+@@ -3978,3 +4003,37 @@ int std3D_IsReady()
+ {
+     return has_initted;
+ }
++
++/* Live observation uses its own authorization/lifecycle, never stdCapture. */
++int std3D_ObserverReadback(uint8_t *pixels, int width, int height)
++{
++    if (!jkObserver_IsRenderPass() || !jkObserver_HasContext() || !pixels ||
++        width<1 || height<1 || width>640 || height>360 || Window_xSize!=width || Window_ySize!=height) return 0;
++    GLint readFbo,readBuffer,pack,row,skipRows,skipPixels,pbo;
++    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,&readFbo);
++    glGetIntegerv(GL_READ_BUFFER,&readBuffer);
++    glGetIntegerv(GL_PACK_ALIGNMENT,&pack);
++    glGetIntegerv(GL_PACK_ROW_LENGTH,&row);
++    glGetIntegerv(GL_PACK_SKIP_ROWS,&skipRows);
++    glGetIntegerv(GL_PACK_SKIP_PIXELS,&skipPixels);
++    glGetIntegerv(GL_PIXEL_PACK_BUFFER_BINDING,&pbo);
++    for (int i=0;i<16 && glGetError()!=GL_NO_ERROR;i++) {}
++    glBindFramebuffer(GL_READ_FRAMEBUFFER,std3D_windowFbo);
++    glReadBuffer(std3D_windowFbo ? GL_COLOR_ATTACHMENT0 : GL_BACK);
++    glBindBuffer(GL_PIXEL_PACK_BUFFER,0);
++    glPixelStorei(GL_PACK_ALIGNMENT,1); glPixelStorei(GL_PACK_ROW_LENGTH,0);
++    glPixelStorei(GL_PACK_SKIP_ROWS,0); glPixelStorei(GL_PACK_SKIP_PIXELS,0);
++    glReadPixels(0,0,width,height,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
++    GLenum error=glGetError();
++    glBindFramebuffer(GL_READ_FRAMEBUFFER,readFbo); glReadBuffer(readBuffer);
++    glBindBuffer(GL_PIXEL_PACK_BUFFER,pbo); glPixelStorei(GL_PACK_ALIGNMENT,pack);
++    glPixelStorei(GL_PACK_ROW_LENGTH,row); glPixelStorei(GL_PACK_SKIP_ROWS,skipRows);
++    glPixelStorei(GL_PACK_SKIP_PIXELS,skipPixels);
++    if (error!=GL_NO_ERROR) return 0;
++    uint8_t line[640*4]; size_t stride=(size_t)width*4;
++    for (int y=0;y<height/2;y++) {
++        uint8_t *top=pixels+(size_t)y*stride, *bottom=pixels+(size_t)(height-y-1)*stride;
++        memcpy(line,top,stride); memcpy(top,bottom,stride); memcpy(bottom,line,stride);
++    }
++    return 1;
++}
+diff --git a/src/Platform/Networking/GNS/AdminConnections.h b/src/Platform/Networking/GNS/AdminConnections.h
+new file mode 100644
+index 00000000..fcecd704
+--- /dev/null
++++ b/src/Platform/Networking/GNS/AdminConnections.h
+@@ -0,0 +1,57 @@
++#ifndef JK_GNS_ADMIN_CONNECTIONS_H
++#define JK_GNS_ADMIN_CONNECTIONS_H
++
++#include <cstdint>
++#include <deque>
++#include <limits>
++#include <map>
++#include <utility>
++
++namespace jk_gateway {
++
++/* Engine-owned incarnations: a transport reconnect, map transition or IPC
++ * disconnect invalidates every old actor binding. No name or chat field can
++ * choose a generation. Exhaustion fails closed instead of reusing a value. */
++class AdminConnections {
++    struct Connection {
++        uint32_t generation = 0;
++        std::deque<uint32_t> recentRequests;
++    };
++    uint32_t serial_ = 0;
++    std::map<uint32_t, Connection> connections_;
++    uint32_t next() {
++        return serial_ == std::numeric_limits<uint32_t>::max() ? 0 : ++serial_;
++    }
++public:
++    void add(uint32_t peer) {
++        if (peer <= 1 || (!connections_.count(peer) && connections_.size() >= 31)) return;
++        Connection connection;
++        connection.generation = next();
++        connections_[peer] = std::move(connection);
++    }
++    void remove(uint32_t peer) { connections_.erase(peer); }
++    void clear() { connections_.clear(); }
++    void renew() {
++        for (auto &entry : connections_) {
++            entry.second.generation = next();
++            entry.second.recentRequests.clear();
++        }
++    }
++    uint32_t generation(uint32_t peer) const {
++        const auto found = connections_.find(peer);
++        return found == connections_.end() ? 0 : found->second.generation;
++    }
++    bool matches(uint32_t peer, uint32_t generation) const {
++        return generation && this->generation(peer) == generation;
++    }
++    bool consume(uint32_t peer, uint32_t generation, uint32_t request) {
++        if (!request || !matches(peer, generation)) return false;
++        auto &recent = connections_.find(peer)->second.recentRequests;
++        for (uint32_t previous : recent) if (previous == request) return false;
++        if (recent.size() >= 64) recent.pop_front();
++        recent.push_back(request);
++        return true;
++    }
++};
++}
++#endif
 diff --git a/src/Platform/Networking/GNS/GatewayBridge.h b/src/Platform/Networking/GNS/GatewayBridge.h
 new file mode 100644
-index 0000000..3e04f24
+index 00000000..3e04f24e
 --- /dev/null
 +++ b/src/Platform/Networking/GNS/GatewayBridge.h
 @@ -0,0 +1,172 @@
@@ -339,20 +2024,231 @@ index 0000000..3e04f24
 +};
 +}
 +#endif
+diff --git a/src/Platform/Networking/GNS/TransportIdentities.h b/src/Platform/Networking/GNS/TransportIdentities.h
+new file mode 100644
+index 00000000..780eb549
+--- /dev/null
++++ b/src/Platform/Networking/GNS/TransportIdentities.h
+@@ -0,0 +1,193 @@
++#ifndef OPENJKDF2_TRANSPORT_IDENTITIES_H
++#define OPENJKDF2_TRANSPORT_IDENTITIES_H
++// Server transport identities are session incarnations, not reusable seats.
++// Ordinary clients retain reliable (sender, sequence) pairs after a departure.
++#include <algorithm>
++#include <cstddef>
++#include <cstdint>
++#include <map>
++#include <set>
++#include <vector>
++
++namespace jk_gateway {
++
++struct RetiredNativeIdentity {
++    uint32_t peer = 0;
++    bool notifyPool = false;
++    bool processPlayerLost = true;
++};
++
++class TransportIdentities {
++public:
++    static constexpr std::size_t maxIssued = 65536;
++    enum class Replacement { Rejected, Applied, Replayed };
++
++    TransportIdentities() { reset(); }
++
++    // Only a new server transport session may forget previous identities.
++    void reset() {
++        issued_.clear(); pool_.clear(); replacements_.clear();
++        issued_.emplace(1, State::Active);
++        nextNative_ = 2; nextExternal_ = 65536;
++    }
++
++    static bool validPoolId(uint32_t peer) { return peer >= 65 && peer < 0xFFFFFFFEu; }
++    bool hasPool() const { return !pool_.empty(); }
++    std::size_t poolSize() const { return pool_.size(); }
++    std::size_t issuedCount() const { return issued_.size(); }
++    bool isPoolId(uint32_t peer) const {
++        return std::find(pool_.begin(), pool_.end(), peer) != pool_.end();
++    }
++    bool wasIssued(uint32_t peer) const { return issued_.count(peer) != 0; }
++    bool isActive(uint32_t peer) const {
++        return hasState(peer, State::Active) || hasState(peer, State::NativeReservation);
++    }
++    bool isPristineNative(uint32_t peer) const { return hasState(peer, State::NativeReservation); }
++    bool isRetired(uint32_t peer) const { return hasState(peer, State::Retired); }
++
++    bool setPool(const std::vector<uint32_t>& ids) {
++        // Repeating the same setup never resets a retired/active entry. A new
++        // pool after setup must use the explicit replacement operation.
++        if (!pool_.empty()) return pool_ == ids;
++        if (ids.empty() || ids.size() > 15 || ids.size() > maxIssued - issued_.size()) return false;
++        std::set<uint32_t> unique;
++        for (uint32_t peer : ids)
++            if (!validPoolId(peer) || wasIssued(peer) || !unique.insert(peer).second) return false;
++        pool_ = ids;
++        for (uint32_t peer : pool_) issued_.emplace(peer, State::Reserved);
++        return true;
++    }
++
++    uint32_t freePoolId() const {
++        for (uint32_t peer : pool_) if (hasState(peer, State::Reserved)) return peer;
++        return 0;
++    }
++
++    uint32_t acquireNative() {
++        if (hasPool()) {
++            const uint32_t peer = freePoolId();
++            // GetServerInfo uses a real GNS connection, reads only the initial
++            // transport descriptor, and closes. Until any game traffic, this
++            // is a reservation of an unused DP surrogate, not a game identity.
++            if (peer) issued_.find(peer)->second = State::NativeReservation;
++            return peer;
++        }
++        return fresh(nextNative_);
++    }
++
++    // Call before any received payload is validated/delivered/forwarded and
++    // before any ordinary Sith packet is sent to this native connection.
++    bool commitNativeTraffic(uint32_t peer) {
++        auto found = issued_.find(peer);
++        if (found == issued_.end()) return false;
++        if (found->second == State::NativeReservation) found->second = State::Active;
++        return found->second == State::Active;
++    }
++
++    uint32_t acquireExternal(uint32_t desired, bool requirePool) {
++        if (desired) return validPoolId(desired) && claim(desired) ? desired : 0;
++        if (hasPool() || requirePool) {
++            const uint32_t peer = freePoolId();
++            return claim(peer) ? peer : 0;
++        }
++        return fresh(nextExternal_);
++    }
++
++    // True exactly once for a claimed incarnation. Retiring a reserved seat,
++    // the host, an unknown ID, or an already retired ID changes nothing.
++    bool retire(uint32_t peer) {
++        auto found = issued_.find(peer);
++        if (peer <= 1 || found == issued_.end() || found->second != State::Active) return false;
++        found->second = State::Retired;
++        return true;
++    }
++
++    RetiredNativeIdentity finishNative(uint32_t peer) {
++        RetiredNativeIdentity result;
++        result.peer = peer;
++        if (peer <= 1 || peer >= 0xFFFFFFFEu) {
++            result.processPlayerLost = false;
++            return result;
++        }
++        auto found = issued_.find(peer);
++        if (found != issued_.end() && found->second == State::NativeReservation && isPoolId(peer)) {
++            found->second = State::Reserved;
++            result.processPlayerLost = false;
++            return result;
++        }
++        // Every used or uncertain assigned record is quarantined. A pristine
++        // reservation is the sole exception; callback phase/roster/WELCOME
++        // state are not evidence that a game identity was unused.
++        if (found != issued_.end()) {
++            result.notifyPool = found->second != State::Retired && isPoolId(peer);
++            found->second = State::Retired;
++        } else if (issued_.size() < maxIssued) {
++            issued_.emplace(peer, State::Retired);
++        }
++        return result;
++    }
++
++    Replacement replace(uint32_t oldPeer, uint32_t newPeer) {
++        const auto completed = replacements_.find(oldPeer);
++        if (completed != replacements_.end())
++            return completed->second == newPeer ? Replacement::Replayed : Replacement::Rejected;
++        auto slot = std::find(pool_.begin(), pool_.end(), oldPeer);
++        if (slot == pool_.end() || !isRetired(oldPeer) || !validPoolId(newPeer) ||
++            wasIssued(newPeer) || issued_.size() >= maxIssued) return Replacement::Rejected;
++        issued_.emplace(newPeer, State::Reserved);
++        replacements_.emplace(oldPeer, newPeer);
++        *slot = newPeer;
++        return Replacement::Applied;
++    }
++
++private:
++    enum class State { Reserved, NativeReservation, Active, Retired };
++    std::map<uint32_t, State> issued_;
++    std::vector<uint32_t> pool_;
++    std::map<uint32_t, uint32_t> replacements_;
++    uint32_t nextNative_ = 2, nextExternal_ = 65536;
++
++    bool hasState(uint32_t peer, State state) const {
++        const auto found = issued_.find(peer);
++        return found != issued_.end() && found->second == state;
++    }
++    bool claim(uint32_t peer) {
++        if (peer <= 1 || peer >= 0xFFFFFFFEu) return false;
++        auto found = issued_.find(peer);
++        if (found != issued_.end()) {
++            if (found->second != State::Reserved) return false;
++            found->second = State::Active;
++            return true;
++        }
++        if (issued_.size() >= maxIssued) return false;
++        issued_.emplace(peer, State::Active);
++        return true;
++    }
++    uint32_t fresh(uint32_t& next) {
++        if (issued_.size() >= maxIssued) return 0;
++        while (next < 0xFFFFFFFEu) {
++            const uint32_t peer = next++;
++            if (!wasIssued(peer)) return claim(peer) ? peer : 0;
++        }
++        return 0;
++    }
++};
++
++// A connection receives its record during the Connecting callback. Once that
++// record exists, a terminal callback must finish it regardless of its previous
++// transport state. Only a pristine native pool reservation skips player loss.
++template <class ClientMap>
++bool retireNativeIdentity(ClientMap& clients, typename ClientMap::key_type connection,
++                          uint64_t& occupiedSlots, TransportIdentities& identities,
++                          RetiredNativeIdentity& retired) {
++    auto found = clients.find(connection);
++    if (found == clients.end()) return false;
++    retired = identities.finishNative(found->second.m_id);
++    const unsigned slot = found->second.m_slot;
++    if (slot < 64) occupiedSlots &= ~(uint64_t(1) << slot);
++    clients.erase(found);
++    return true;
++}
++
++}
++#endif
 diff --git a/src/Platform/Networking/GNS/stdComm_GNS.cpp b/src/Platform/Networking/GNS/stdComm_GNS.cpp
-index c0c10f6..38855e3 100644
+index c0c10f6f..03ae9a51 100644
 --- a/src/Platform/Networking/GNS/stdComm_GNS.cpp
 +++ b/src/Platform/Networking/GNS/stdComm_GNS.cpp
-@@ -21,6 +21,8 @@
+@@ -1,7 +1,9 @@
+ #include "stdComm_GNS.h"
++#include "Main/jkObserver.h"
+ 
+ #include "Win95/stdComm.h"
+ #include "Dss/sithMulti.h"
++#include "Dss/sithAdmin.h"
+ #include "General/stdString.h"
+ #include "stdPlatform.h"
+ #include "jk.h"
+@@ -21,6 +23,10 @@
  #include <queue>
  #include <map>
  #include <cctype>
 +#include <set>
 +#include "GatewayBridge.h"
++#include "AdminConnections.h"
++#include "TransportIdentities.h"
  
  #include <steam/steamnetworkingsockets.h>
  #include <steam/isteamnetworkingmessages.h>
-@@ -74,6 +76,7 @@ extern char16_t jkGuiMultiplayer_ipText[256];
+@@ -74,6 +80,7 @@ extern char16_t jkGuiMultiplayer_ipText[256];
  char jkGuiMultiplayer_ipText_conv[256];
  static int sithDplayGNS_numEnumd = 0;
  extern int Main_bVerboseNetworking;
@@ -360,14 +2256,15 @@ index c0c10f6..38855e3 100644
  
  typedef bool (*GameNetworkingSockets_Init_t)( const SteamNetworkingIdentity *pIdentity, SteamNetworkingErrMsg &errMsg );
  typedef ISteamNetworkingUtils* (*SteamNetworkingUtils_t)(void);
-@@ -319,10 +322,34 @@ public:
+@@ -319,10 +326,37 @@ public:
          // the next host's join handshake, which aborts the new client's sync (matching
          // sithMulti_sendto_id) and removes them -> they time out and never appear.
          std::queue<int>().swap(m_DisconnectedPeers);
 +        m_externalPeers.clear();
-+        m_idPool.clear();
++        m_adminConnections.clear();
++        std::queue<jk_gateway::Frame>().swap(m_adminIncoming);
++        m_identities.reset();
 +        m_requireIdPool = getenv("OPENJKDF2_REQUIRE_DP_POOL") && strcmp(getenv("OPENJKDF2_REQUIRE_DP_POOL"), "1") == 0;
-+        m_nextGatewayId = 65536;
 +        std::queue<jk_gateway::Frame>().swap(m_gatewayIncoming);
 +        m_gatewayIncomingBytes = 0;
 +        const char* gatewayPort = getenv("OPENJKDF2_GATEWAY_PORT");
@@ -378,7 +2275,7 @@ index c0c10f6..38855e3 100644
 +            if (!Main_bDedicatedServer || !tail || *tail || port < 1 || port > 65535 || !token ||
 +                !m_gateway.start(uint16_t(port), token,
 +                    [this](const jk_gateway::Frame& f) { HandleGateway(f); },
-+                    [this]() { DropGatewayPeers(); })) {
++                    [this]() { jkObserver_Disconnect(); DropGatewayPeers(); })) {
 +                fprintf(stderr, "GATEWAY_FAILED invalid configuration or loopback bind\n");
 +                exit(78);
 +            }
@@ -388,14 +2285,22 @@ index c0c10f6..38855e3 100644
  
      void Shutdown()
      {
++        ResetAdmin();
 +        m_gateway.stop();
 +        m_externalPeers.clear();
++        m_adminConnections.clear();
 +        std::queue<jk_gateway::Frame>().swap(m_gatewayIncoming);
 +        m_gatewayIncomingBytes = 0;
          // Close all the connections
          Printf( "Closing connections...\n" );
          for ( auto it: m_mapClients )
-@@ -350,6 +377,7 @@ public:
+@@ -347,9 +381,13 @@ public:
+ 
+     void RunStep()
+     {
++        // Typed host actions send ordinary game messages. Do not reenter the
++        // connection callbacks or gateway while their actor/target is in use.
++        if (m_adminExecuting) return;
          //printf("Server runstep\n");
          //PollIncomingMessages();
          PollConnectionStateChanges();
@@ -403,7 +2308,16 @@ index c0c10f6..38855e3 100644
          //TickBroadcastOut();
      }
  
-@@ -380,6 +408,19 @@ public:
+@@ -375,11 +413,28 @@ public:
+             int dis_id = m_DisconnectedPeers.front();
+             m_DisconnectedPeers.pop();
+ 
++            // ProcessPlayerLost will clear this roster slot; let the ordinary
++            // next update publish the change without waiting for score polling.
++            if (sithNet_isServer) sithNet_bSyncScores = 1;
++
+             *pIdOut = dis_id;
+ 
              return 2;
          }
  
@@ -423,7 +2337,7 @@ index c0c10f6..38855e3 100644
          ISteamNetworkingMessage *pIncomingMsg = nullptr;
          int numMsgs = m_pInterface->ReceiveMessagesOnPollGroup( m_hPollGroup, &pIncomingMsg, 1 );
          if ( numMsgs == 0 )
-@@ -390,16 +431,20 @@ public:
+@@ -390,16 +445,27 @@ public:
          }
          assert( numMsgs == 1 && pIncomingMsg );
          auto itClient = m_mapClients.find( pIncomingMsg->m_conn );
@@ -433,6 +2347,13 @@ index c0c10f6..38855e3 100644
 +        }
  
 -        if (pIncomingMsg->m_cbSize < 8) {
++        // Discovery reads only GNSInfoPacket and closes. Any payload from an
++        // assigned native handle commits its identity before even malformed
++        // input can be inspected, delivered locally, or forwarded to a peer.
++        if (!m_identities.commitNativeTraffic(itClient->second.m_id)) {
++            pIncomingMsg->Release(); return -1;
++        }
++
 +        if (pIncomingMsg->m_cbSize < 12 || pIncomingMsg->m_cbSize > 2060) {
              sithDplayGNS_infoPrintf("Bad packet size %x\n", pIncomingMsg->m_cbSize);
              pIncomingMsg->Release();
@@ -447,7 +2368,7 @@ index c0c10f6..38855e3 100644
          int idTo = *(uint32_t*)&dataBuf[4];
          *pIdOut = idFrom;
  
-@@ -430,25 +475,154 @@ public:
+@@ -430,25 +496,314 @@ public:
  
      int Send(uint32_t idFrom, uint32_t idTo, void *lpData, uint32_t dwDataSize)
      {
@@ -479,6 +2400,9 @@ index c0c10f6..38855e3 100644
          for ( auto &c: m_mapClients )
          {
              if ( c.first != except && c.second.m_id == idTo ) {
++                // A legitimate early ordinary packet ends discovery-only
++                // status even before the native has sent its own join traffic.
++                if (!m_identities.commitNativeTraffic(c.second.m_id)) return 0;
                  sithDplayGNS_verbosePrintf("Sent %x bytes to %x (%s, %x)\n", dwDataSize+8, idTo, sithDSS_IdToStr(*(uint32_t*)lpData & 0xFF), *(uint32_t*)lpData);
 -                SendBytesToClient( c.first, sendBuffer, dwDataSize+8 );
 +                // Unmodified GNS clients enumerate a synthetic 1..32 player
@@ -515,46 +2439,171 @@ index c0c10f6..38855e3 100644
 +
 +    void DropGatewayPeers()
 +    {
-+        for (uint32_t peer : m_externalPeers) m_DisconnectedPeers.push(int(peer));
-+        m_externalPeers.clear();
++        while (!m_externalPeers.empty()) RetireExternalPeer(*m_externalPeers.begin());
 +        std::queue<jk_gateway::Frame>().swap(m_gatewayIncoming);
 +        m_gatewayIncomingBytes = 0;
++        ResetAdmin();
++    }
++
++    bool RetireExternalPeer(uint32_t peer)
++    {
++        if (!m_externalPeers.count(peer)) return false;
++        // Quarantine before releasing membership. Old queued loss events and
++        // reliable-message caches must never name a later incarnation.
++        const bool notify = m_identities.retire(peer) && m_identities.isPoolId(peer);
++        m_externalPeers.erase(peer);
++        m_adminConnections.remove(peer);
++        PurgeGatewayPeer(peer);
++        m_DisconnectedPeers.push(int(peer));
++        if (notify) m_gateway.sendFrame(113, peer, 0);
++        return true;
++    }
++
++    bool RetireNativeConnection(HSteamNetConnection connection)
++    {
++        jk_gateway::RetiredNativeIdentity retired;
++        if (!jk_gateway::retireNativeIdentity(m_mapClients, connection, availableIds,
++                                               m_identities, retired)) return false;
++        m_adminConnections.remove(retired.peer);
++        // A used identity can end before reaching the fully joined roster;
++        // ProcessPlayerLost must cancel its unfinished stock join/sync. A
++        // pristine discovery reservation never entered that game lifecycle.
++        if (retired.processPlayerLost) m_DisconnectedPeers.push(int(retired.peer));
++        if (retired.notifyPool) m_gateway.sendFrame(113, retired.peer, 0);
++        return true;
++    }
++
++    void AdminReply(const jk_gateway::Frame &request, uint32_t generation,
++                    uint32_t status, const char *summary)
++    {
++        std::vector<uint8_t> payload;
++        jk_gateway::put32(payload, generation);
++        jk_gateway::put32(payload, status);
++        const size_t length = strlen(summary);
++        if (sithAdmin_Printable(summary, length))
++            payload.insert(payload.end(), summary, summary + length);
++        m_gateway.sendFrame(110, request.src, request.dst, payload.data(), payload.size());
++    }
++
++    void ResetAdmin()
++    {
++        if (m_adminResetting) return;
++        m_adminResetting = true;
++        while (!m_adminIncoming.empty()) {
++            const jk_gateway::Frame request = std::move(m_adminIncoming.front());
++            m_adminIncoming.pop();
++            AdminReply(request, jk_gateway::read32(request.data.data()), 2,
++                       "Map or connection changed. Authenticate again.");
++        }
++        m_adminConnections.renew();
++        m_gateway.sendFrame(111, 0, 0);
++        m_adminResetting = false;
++    }
++
++    void PurgeGatewayPeer(uint32_t peer)
++    {
++        // Do not deliver already queued data to a later occupant of a reused
++        // external ID after an administrative kick or adapter disconnect.
++        std::queue<jk_gateway::Frame> keep;
++        while (!m_gatewayIncoming.empty()) {
++            auto frame = std::move(m_gatewayIncoming.front());
++            m_gatewayIncoming.pop();
++            if (frame.src == peer) m_gatewayIncomingBytes -= frame.data.size();
++            else keep.push(std::move(frame));
++        }
++        m_gatewayIncoming.swap(keep);
++    }
++
++    void AdminChat(uint32_t actualPeer, const char *text)
++    {
++        const size_t length = strlen(text);
++        const uint32_t generation = m_adminConnections.generation(actualPeer);
++        if (!m_gateway.connected() || !generation || !PeerUsed(actualPeer) ||
++            sithAdmin_JoinedSlot(actualPeer) < 0 || !length ||
++            !sithAdmin_Printable(text, length) || !sithAdmin_IsCommand(text)) return;
++        m_gateway.sendFrame(109, actualPeer, generation, text, length);
++    }
++
++    void ProcessAdminRequests()
++    {
++        if (m_adminExecuting) return;
++        m_adminExecuting = true;
++        for (unsigned handled = 0; handled < 8 && !m_adminIncoming.empty(); ++handled) {
++            const jk_gateway::Frame request = std::move(m_adminIncoming.front());
++            m_adminIncoming.pop();
++            const uint32_t generation = jk_gateway::read32(request.data.data());
++            const uint32_t operation = jk_gateway::read32(request.data.data() + 4);
++            if (!m_gateway.connected() || !PeerUsed(request.src) ||
++                !m_adminConnections.matches(request.src, generation) ||
++                sithAdmin_JoinedSlot(request.src) < 0) {
++                AdminReply(request, generation, 2, "Your connection changed. Authenticate again after joining.");
++                continue;
++            }
++            if (!m_adminConnections.consume(request.src, generation, request.dst)) {
++                AdminReply(request, generation, 1, "Duplicate admin request.");
++                continue;
++            }
++            const std::string argument(request.data.begin() + 8, request.data.end());
++            char summary[128];
++            uint32_t kickedPeer = 0;
++            const int status = sithAdmin_Execute(request.src, operation, argument.c_str(), &kickedPeer, summary);
++            if (!status && kickedPeer) KickTransport(kickedPeer);
++            AdminReply(request, generation, uint32_t(status), summary);
++        }
++        m_adminExecuting = false;
++    }
++
++    void KickTransport(uint32_t peer)
++    {
++        // The ordinary DSS_QUIT was queued first. Retire membership immediately
++        // so an uncooperative client cannot keep sending after a successful kick.
++        if (RetireExternalPeer(peer)) {
++            m_gateway.sendFrame(104, peer, 0);
++        } else {
++            for (auto it = m_mapClients.begin(); it != m_mapClients.end(); ++it) {
++                if (it->second.m_id != peer) continue;
++                const HSteamNetConnection connection = it->first;
++                RetireNativeConnection(connection);
++                m_pInterface->CloseConnection(connection, 0, "Kicked by server administrator", true);
++                break;
++            }
++        }
++        EnumeratePlayers();
++    }
++
++    void PublishSessionInfo(uint32_t request = 0)
++    {
++        static_assert(sizeof(jkMultiEntry) == 240, "IPC session ABI");
++        std::vector<uint8_t> info;
++        jk_gateway::put32(info, Main_bMotsCompat ? 1 : 0);
++        jkMultiEntry entry = sithDplayGNS_storedEntry;
++        entry.numPlayers = RealConnectedPlayers();
++        entry.multiModeFlags = sithMulti_multiModeFlags;
++        const auto* p = reinterpret_cast<const uint8_t*>(&entry);
++        info.insert(info.end(), p, p + sizeof(entry));
++        m_gateway.sendFrame(102, 1, request, info.data(), info.size());
 +    }
 +
 +    void HandleGateway(const jk_gateway::Frame& frame)
 +    {
 +        if (frame.type == 2) {
-+            static_assert(sizeof(jkMultiEntry) == 240, "IPC session ABI");
-+            std::vector<uint8_t> info;
-+            jk_gateway::put32(info, Main_bMotsCompat ? 1 : 0);
-+            jkMultiEntry entry = sithDplayGNS_storedEntry;
-+            entry.numPlayers = RealConnectedPlayers();
-+            entry.multiModeFlags = sithMulti_multiModeFlags;
-+            const auto* p = reinterpret_cast<const uint8_t*>(&entry);
-+            info.insert(info.end(), p, p + sizeof(entry));
-+            m_gateway.sendFrame(102, 1, frame.dst, info.data(), info.size());
++            PublishSessionInfo(frame.dst);
 +        } else if (frame.type == 3) {
 +            if (m_externalPeers.size() + m_mapClients.size() >= 31) {
 +                m_gateway.error(3, 2, "transport peer capacity reached"); return;
 +            }
-+            uint32_t peer = frame.src;
++            const uint32_t peer = m_identities.acquireExternal(frame.src, m_requireIdPool);
 +            if (!peer) {
-+                if (!m_idPool.empty() || m_requireIdPool) peer = FreePoolId();
-+                else {
-+                    while (PeerUsed(m_nextGatewayId)) ++m_nextGatewayId;
-+                    peer = m_nextGatewayId++;
-+                }
-+            }
-+            if (peer < 65 || peer >= 0xFFFFFFFEu || PeerUsed(peer)) {
-+                m_gateway.error(3, 3, "invalid or duplicate peer ID"); return;
++                m_gateway.error(3, 3, "invalid, previously issued, or exhausted peer ID"); return;
 +            }
 +            m_externalPeers.insert(peer);
++            m_adminConnections.add(peer);
 +            EnumeratePlayers();
 +            const uint8_t status[4] = {0, 0, 0, 0};
 +            m_gateway.sendFrame(103, peer, frame.dst, status, sizeof(status));
 +            stdPlatform_Printf("GATEWAY_PEER_ADDED %u\n", peer);
 +        } else if (frame.type == 4) {
-+            if (m_externalPeers.erase(frame.src)) m_DisconnectedPeers.push(int(frame.src));
++            RetireExternalPeer(frame.src);
 +            m_gateway.sendFrame(104, frame.src, frame.dst);
 +        } else if (frame.type == 5) {
 +            if (!m_externalPeers.count(frame.src) || frame.data.size() < 4 || frame.data.size() > 2052) {
@@ -572,38 +2621,70 @@ index c0c10f6..38855e3 100644
 +                m_gateway.error(8, 7, "ID pool requires 1..15 IDs before clients join"); return;
 +            }
 +            std::vector<uint32_t> ids;
-+            std::set<uint32_t> seen;
 +            for (size_t offset = 0; offset < frame.data.size(); offset += 4) {
 +                uint32_t peer = jk_gateway::read32(frame.data.data() + offset);
-+                if (peer < 65 || peer >= 0xFFFFFFFEu || !seen.insert(peer).second) {
-+                    m_gateway.error(8, 8, "invalid or duplicate pool ID"); return;
-+                }
 +                ids.push_back(peer);
 +            }
-+            m_idPool = std::move(ids);
++            if (!m_identities.setPool(ids)) {
++                m_gateway.error(8, 8, "invalid, previously issued, or already configured ID pool"); return;
++            }
 +            std::vector<uint8_t> result;
-+            jk_gateway::put32(result, uint32_t(m_idPool.size()));
++            jk_gateway::put32(result, uint32_t(m_identities.poolSize()));
 +            m_gateway.sendFrame(108, 1, frame.dst, result.data(), result.size());
-+            stdPlatform_Printf("GATEWAY_ID_POOL_READY %u\n", unsigned(m_idPool.size()));
++            stdPlatform_Printf("GATEWAY_ID_POOL_READY %u\n", unsigned(m_identities.poolSize()));
++        } else if (frame.type == 10) {
++            if (!frame.dst || frame.data.size() != 4 || PeerUsed(frame.src)) {
++                m_gateway.error(10, 10, "invalid pool replacement envelope or active identity"); return;
++            }
++            const uint32_t replacement = jk_gateway::read32(frame.data.data());
++            const auto result = m_identities.replace(frame.src, replacement);
++            if (result == jk_gateway::TransportIdentities::Replacement::Rejected) {
++                m_gateway.error(10, 11, "replacement requires a retired pool ID and fresh identity"); return;
++            }
++            m_gateway.sendFrame(112, frame.src, frame.dst, frame.data.data(), frame.data.size());
++            if (result == jk_gateway::TransportIdentities::Replacement::Applied)
++                stdPlatform_Printf("GATEWAY_ID_REPLACED %u %u\n", frame.src, replacement);
++        } else if (frame.type == 11) {
++            if (frame.src || !frame.dst || frame.data.size() > 40) {
++                m_gateway.error(11, 12, "invalid observer request envelope"); return;
++            }
++            uint8_t reply[92 + 31 * 76];
++            size_t length=jkObserver_Request(frame.data.data(),frame.data.size(),reply,sizeof(reply));
++            if (length) m_gateway.sendFrame(114,0,frame.dst,reply,length);
++        } else if (frame.type == 9) {
++            if (frame.src <= 1 || !frame.dst || frame.data.size() < 8 || frame.data.size() > 135) {
++                m_gateway.error(9, 9, "invalid admin request envelope"); return;
++            }
++            const uint32_t generation = jk_gateway::read32(frame.data.data());
++            const uint32_t operation = jk_gateway::read32(frame.data.data() + 4);
++            const size_t length = frame.data.size() - 8;
++            if (!generation || operation < 1 || operation > 4 ||
++                !sithAdmin_Printable(reinterpret_cast<const char *>(frame.data.data() + 8), length) ||
++                ((operation == 1 || operation == 3) ? !length : length != 0)) {
++                AdminReply(frame, generation, 1, "Invalid typed admin operation."); return;
++            }
++            if (m_adminIncoming.size() >= 64) {
++                AdminReply(frame, generation, 1, "Admin request queue is full."); return;
++            }
++            m_adminIncoming.push(frame);
 +        } else if (frame.type == 7 && frame.data.size() <= 256) {
 +            m_gateway.sendFrame(107, frame.src, frame.dst, frame.data.data(), frame.data.size());
 +        } else m_gateway.error(frame.type, 6, "unknown request");
 +    }
 +
      uint32_t id;
++    uint32_t ObserverPeerGeneration(uint32_t peer) const {
++        return PeerUsed(peer) ? m_adminConnections.generation(peer) : 0;
++    }
 +    bool PeerUsed(uint32_t peer) const {
 +        if (m_externalPeers.count(peer)) return true;
 +        for (const auto& c : m_mapClients) if (c.second.m_id == peer) return true;
 +        return false;
 +    }
-+    uint32_t FreePoolId() const {
-+        for (uint32_t peer : m_idPool) if (!PeerUsed(peer)) return peer;
-+        return 0;
-+    }
  private:
  
      HSteamListenSocket m_hListenSock;
-@@ -463,11 +637,19 @@ private:
+@@ -463,11 +818,22 @@ private:
      struct Client_t
      {
          uint32_t m_id;
@@ -617,13 +2698,25 @@ index c0c10f6..38855e3 100644
 +    std::set<uint32_t> m_externalPeers;
 +    std::queue<jk_gateway::Frame> m_gatewayIncoming;
 +    size_t m_gatewayIncomingBytes = 0;
-+    uint32_t m_nextGatewayId = 65536;
-+    std::vector<uint32_t> m_idPool;
++    jk_gateway::TransportIdentities m_identities;
 +    bool m_requireIdPool = false;
++    jk_gateway::AdminConnections m_adminConnections;
++    std::queue<jk_gateway::Frame> m_adminIncoming;
++    bool m_adminExecuting = false;
++    bool m_adminResetting = false;
  
      void SendBytesToClient( HSteamNetConnection conn, void *pData, uint32_t len)
      {
-@@ -493,9 +675,10 @@ private:
+@@ -478,7 +844,7 @@ private:
+     {
+         for ( auto &c: m_mapClients )
+         {
+-            if ( c.first != except )
++            if ( c.first != except && m_identities.commitNativeTraffic(c.second.m_id) )
+                 SendBytesToClient( c.first, pData, len );
+         }
+     }
+@@ -493,9 +859,11 @@ private:
          m_pInterface->SetConnectionName( hConn, nick );
      }
  
@@ -632,23 +2725,92 @@ index c0c10f6..38855e3 100644
      {
          m_mapClients[hConn].m_id = id;
 +        m_mapClients[hConn].m_slot = slot;
++        m_adminConnections.add(uint32_t(id));
      }
  
  #if 0
-@@ -567,7 +750,7 @@ private:
-                         }
-                     }
+@@ -508,8 +876,6 @@ private:
  
+     void OnSteamNetConnectionStatusChanged( SteamNetConnectionStatusChangedCallback_t *pInfo )
+     {
+-        char temp[1024];
+-
+         // What's the state of the connection?
+         switch ( pInfo->m_info.m_eState )
+         {
+@@ -520,59 +886,15 @@ private:
+             case k_ESteamNetworkingConnectionState_ClosedByPeer:
+             case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+             {
+-                // Ignore if they were not previously connected.  (If they disconnected
+-                // before we accepted the connection.)
+-                if ( pInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connected )
+-                {
+-
+-                    // Locate the client.  Note that it should have been found, because this
+-                    // is the only codepath where we remove clients (except on shutdown),
+-                    // and connection change callbacks are dispatched in queue order.
+-                    auto itClient = m_mapClients.find( pInfo->m_hConn );
+-                    assert( itClient != m_mapClients.end() );
+-
+-                    // Select appropriate log messages
+-                    const char *pszDebugLogAction;
+-                    if ( pInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ProblemDetectedLocally )
+-                    {
+-                        pszDebugLogAction = "problem detected locally";
+-                        snprintf( temp, sizeof(temp), "Problem detected with client %x (%s)", itClient->second.m_id, pInfo->m_info.m_szEndDebug );
+-                    }
+-                    else
+-                    {
+-                        // Note that here we could check the reason code to see if
+-                        // it was a "usual" connection or an "unusual" one.
+-                        pszDebugLogAction = "closed by peer";
+-                        snprintf( temp, sizeof(temp), "Client id %x has left.", itClient->second.m_id );
+-                    }
+-
+-                    // Spew something to our own log.  Note that because we put their nick
+-                    // as the connection description, it will show up, along with their
+-                    // transport-specific data (e.g. their IP address)
+-                    Printf( "Connection %s %s, reason %d: %s\n",
++                // Assignment happens in Connecting. A terminal callback can
++                // therefore own a peer even if it never reached Connected.
++                // Already rejected/kicked connections have no record to retire.
++                if (RetireNativeConnection(pInfo->m_hConn)) {
++                    Printf("Connection %s %s, reason %d: %s\n",
+                         pInfo->m_info.m_szConnectionDescription,
+-                        pszDebugLogAction,
+-                        pInfo->m_info.m_eEndReason,
+-                        pInfo->m_info.m_szEndDebug
+-                    );
+-
+-                    // Only send disconnect messages to fully connected clients.
+-                    for (int i = 0; i < jkPlayer_maxPlayers; i++)
+-                    {
+-                        if (!i && jkGuiNetHost_bIsDedicated) continue;
+-
+-                        if ( (jkPlayer_playerInfos[i].flags & 2) != 0 && jkPlayer_playerInfos[i].playerNetId == itClient->second.m_id) {
+-                            m_DisconnectedPeers.push(itClient->second.m_id);
+-                            break;
+-                        }
+-                    }
+-
 -                    availableIds &= ~(1ULL << (itClient->second.m_id-1));
-+                    availableIds &= ~(1ULL << itClient->second.m_slot);
-                     m_mapClients.erase( itClient );
+-                    m_mapClients.erase( itClient );
+-                }
+-                else
+-                {
+-                    assert( pInfo->m_eOldState == k_ESteamNetworkingConnectionState_Connecting );
++                        pInfo->m_info.m_eState == k_ESteamNetworkingConnectionState_ProblemDetectedLocally ?
++                            "problem detected locally" : "closed by peer",
++                        pInfo->m_info.m_eEndReason, pInfo->m_info.m_szEndDebug);
                  }
-                 else
-@@ -591,9 +774,13 @@ private:
+ 
+                 // Clean up the connection.  This is important!
+@@ -591,9 +913,13 @@ private:
                  assert( m_mapClients.find( pInfo->m_hConn ) == m_mapClients.end() );
  
                  Printf( "Connection request from %s", pInfo->m_info.m_szConnectionDescription );
-+                if (m_requireIdPool && (!m_gateway.connected() || m_idPool.empty())) {
++                if (m_requireIdPool && (!m_gateway.connected() || !m_identities.hasPool())) {
 +                    m_pInterface->CloseConnection(pInfo->m_hConn, 0, "Retail gateway is starting", false);
 +                    break;
 +                }
@@ -659,45 +2821,60 @@ index c0c10f6..38855e3 100644
                      stdPlatform_Printf("Rejecting request too many players connected (%u)\n", ConnectedPlayers());
                      break;
                  }
-@@ -618,17 +805,27 @@ private:
+@@ -618,16 +944,25 @@ private:
                      break;
                  }
  
 -                int nextId = 0;
-+                uint32_t nextId = 0;
-+                unsigned slot = 0;
++                unsigned slot = 64;
                  for (int i = 0; i < 64; i++)
                  {
                      if (!(availableIds & (1ULL << i))) {
                          availableIds |= (1ULL << i);
-                         nextId = i+1;
+-                        nextId = i+1;
 +                        slot = i;
                          break;
                      }
                  }
- 
-                 sithDplayGNS_verbosePrintf("Assigning ID: %x\n", nextId);
-+                if (!m_idPool.empty()) {
-+                    nextId = FreePoolId();
-+                    if (!nextId) {
-+                        availableIds &= ~(1ULL << slot);
-+                        m_pInterface->CloseConnection(pInfo->m_hConn, 0, "Transport ID pool is full", false);
-+                        break;
-+                    }
+-
++                if (slot == 64) {
++                    m_pInterface->CloseConnection(pInfo->m_hConn, 0, "Transport slots are full", false);
++                    break;
 +                }
++                const uint32_t nextId = m_identities.acquireNative();
++                if (!nextId) {
++                    availableIds &= ~(1ULL << slot);
++                    m_pInterface->CloseConnection(pInfo->m_hConn, 0, "Transport identities are exhausted or awaiting replacement", false);
++                    break;
++                }
+                 sithDplayGNS_verbosePrintf("Assigning ID: %x\n", nextId);
  
                  sithDplayGNS_storedEntry.multiModeFlags = sithMulti_multiModeFlags;
+@@ -638,17 +973,20 @@ private:
+                 infoPkt.entry.numPlayers = RealConnectedPlayers();
+                 infoPkt.entry.maxPlayers = sithDplayGNS_storedEntry.maxPlayers;
  
-@@ -646,7 +843,7 @@ private:
+-                jkPlayer_maxPlayers = sithDplayGNS_storedEntry.maxPlayers; // Hack?
++                // PlacePlayers owns the map's player/spawn count. CTF needs
++                // starts 16..31 even in a smaller session. Admission is capped
++                // separately in ProcessJoinRequest; never truncate spawn sync.
+ 
+                 memcpy(sendBuffer2, &infoPkt, sizeof(infoPkt));
++                // Transport descriptor only: unchanged clients repeatedly
++                // request this for discovery without entering the Sith game.
+                 SendBytesToClient( pInfo->m_hConn, sendBuffer2, sizeof(infoPkt)); 
+ 
                  // Add them to the client list, using std::map wacky syntax
                  m_mapClients[ pInfo->m_hConn ];
                  SetClientNick( pInfo->m_hConn, "asdf" );
 -                SetClientId( pInfo->m_hConn, nextId);
 +                SetClientId( pInfo->m_hConn, nextId, slot);
  
-                 nextId++;
+-                nextId++;
                  break;
-@@ -704,11 +901,9 @@ private:
+             }
+ 
+@@ -704,11 +1042,9 @@ private:
              if (!i && jkGuiNetHost_bIsDedicated) continue;
  
  
@@ -712,8 +2889,32 @@ index c0c10f6..38855e3 100644
                  amt++;
              }
          }
-@@ -1062,6 +1257,11 @@ GNSServer server;
+@@ -1060,8 +1396,35 @@ char addrServerLast[256];
+ GNSClient client;
+ GNSServer server;
  
++void stdComm_GNS_AdminChat(uint32_t actualPeer, const char *text)
++{
++    if (!stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer)
++        server.AdminChat(actualPeer, text);
++}
++
++void stdComm_GNS_AdminReset(void)
++{
++    if (!stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer)
++        server.ResetAdmin();
++}
++
++int stdComm_GNS_AdminPeerConnected(uint32_t peer)
++{
++    return !stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer && server.PeerUsed(peer);
++}
++
++uint32_t stdComm_GNS_ObserverPeerGeneration(uint32_t peer)
++{
++    return !stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer ? server.ObserverPeerGeneration(peer) : 0;
++}
++
  void Hack_ResetClients()
  {
 +    if (stdComm_bIsServer) {
@@ -724,9 +2925,79 @@ index c0c10f6..38855e3 100644
      DirectPlay_numPlayers = 32;
      for (int i = 0; i < 32; i++)
      {
+@@ -1143,6 +1506,7 @@ int DirectPlay_Receive(int *pIdOut, int *pMsgIdOut, int *pLenOut)
+     if (stdComm_bIsServer)
+     {
+         server.RunStep();
++        server.ProcessAdminRequests();
+         return server.Receive(pIdOut, (void*)pMsgIdOut, pLenOut);
+     }
+     else 
+@@ -1239,6 +1603,9 @@ int DirectPlay_SendLobbyMessage(void* pPkt, uint32_t pktLen)
+ void DirectPlay_SetSessionDesc(const char* a1, DWORD maxPlayers)
+ {
+     _strncpy(sithDplayGNS_storedEntry.mapJklFname, jkMain_aLevelJklFname, 0x20);
++    sithDplayGNS_storedEntry.mapJklFname[0x1f] = 0;
++    if (!stdComm_GNS_bForceStubs && Main_bDedicatedServer && stdComm_bIsServer)
++        server.PublishSessionInfo();
+ }
+ 
+ BOOL DirectPlay_SetSessionFlagidk(int a1)
+diff --git a/src/Platform/Networking/GNS/stdComm_GNS.h b/src/Platform/Networking/GNS/stdComm_GNS.h
+index 9567814b..e384ec8f 100644
+--- a/src/Platform/Networking/GNS/stdComm_GNS.h
++++ b/src/Platform/Networking/GNS/stdComm_GNS.h
+@@ -1,6 +1,8 @@
+ #ifndef _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
+ #define _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
+ 
++#include <stdint.h>
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -10,10 +12,15 @@ extern "C" {
+ void stdComm_GNS_Startup();
+ void stdComm_GNS_Shutdown();
+ 
++void stdComm_GNS_AdminChat(uint32_t actualPeer, const char *text);
++void stdComm_GNS_AdminReset(void);
++int stdComm_GNS_AdminPeerConnected(uint32_t peer);
++uint32_t stdComm_GNS_ObserverPeerGeneration(uint32_t peer);
++
+ #endif // PLATFORM_GNS
+ 
+ #ifdef __cplusplus
+ }
+ #endif
+ 
+-#endif // _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
+\ No newline at end of file
++#endif // _PLATFORM_NETWORKING_GNS_STDCOMM_GNS_H
+diff --git a/src/Platform/std3D.h b/src/Platform/std3D.h
+index b46ea478..da18e1a0 100644
+--- a/src/Platform/std3D.h
++++ b/src/Platform/std3D.h
+@@ -2,12 +2,16 @@
+ #define _STD3D_H
+ 
+ #include "types.h"
++
+ #include "globals.h"
+ 
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+ 
++/* Bounded local observer readback; does not activate the isolated capture mode. */
++int std3D_ObserverReadback(uint8_t *pixels, int width, int height);
++
+ #define std3D_Startup_ADDR (0x00429310)
+ #define std3D_Shutdown_ADDR (0x00429390)
+ #define std3D_FindClosestDevice_ADDR (0x004293B0)
 diff --git a/src/Tests/gateway_bridge_test.cpp b/src/Tests/gateway_bridge_test.cpp
 new file mode 100644
-index 0000000..bb81266
+index 00000000..bb812666
 --- /dev/null
 +++ b/src/Tests/gateway_bridge_test.cpp
 @@ -0,0 +1,61 @@
@@ -791,11 +3062,313 @@ index 0000000..bb81266
 +    close(client); bridge.stop();
 +    std::cout << "PASS: fragmented authentication, 200 coalesced frames, replies, oversized rejection, bad token, disconnect callback\n";
 +}
+diff --git a/src/Tests/transport_identities_test.cpp b/src/Tests/transport_identities_test.cpp
+new file mode 100644
+index 00000000..c353e96e
+--- /dev/null
++++ b/src/Tests/transport_identities_test.cpp
+@@ -0,0 +1,270 @@
++#include "Platform/Networking/GNS/TransportIdentities.h"
++#include <cassert>
++#include <iostream>
++#include <map>
++#include <queue>
++
++using jk_gateway::TransportIdentities;
++using Replacement = TransportIdentities::Replacement;
++
++static void pool_setup_and_claims()
++{
++    TransportIdentities ids;
++    assert(ids.issuedCount() == 1 && ids.wasIssued(1));
++    assert(!ids.setPool({}));
++    assert(!ids.setPool({64}));
++    assert(!ids.setPool({100, 100}));
++    assert(!ids.setPool({0xFFFFFFFEu}));
++    assert(!ids.setPool(std::vector<uint32_t>(16, 100)));
++    assert(ids.issuedCount() == 1);
++    assert(ids.setPool({100, 101}));
++    assert(ids.poolSize() == 2 && ids.issuedCount() == 3);
++    assert(ids.acquireNative() == 100);
++    assert(ids.acquireExternal(0, true) == 101);
++    assert(!ids.acquireNative() && !ids.acquireExternal(100, true));
++    assert(!ids.acquireExternal(1, false) && !ids.acquireExternal(64, false));
++    assert(!ids.retire(1) && !ids.retire(999));
++    assert(ids.setPool({100, 101}));
++    assert(!ids.freePoolId()); // Duplicate setup cannot free live identities.
++    assert(!ids.setPool({102, 103}));
++}
++
++static void retired_pool_ids_and_pending_loss()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({15163125, 15163126}));
++    const uint32_t old = ids.acquireExternal(0, true);
++    assert(old == 15163125 && ids.retire(old));
++    std::queue<uint32_t> pendingLoss;
++    pendingLoss.push(old);
++    assert(!ids.retire(old)); // One retirement notification per incarnation.
++    assert(!ids.acquireExternal(old, true));
++    assert(ids.acquireNative() == 15163126);
++    assert(!ids.acquireNative()); // Quarantine lasts until a fresh DP ID arrives.
++    assert(ids.replace(old, 15163127) == Replacement::Applied);
++    const uint32_t next = ids.acquireNative();
++    assert(next == 15163127 && next != pendingLoss.front());
++    assert(ids.isRetired(old) && ids.wasIssued(old));
++    assert(ids.isActive(next));
++    assert(!ids.acquireExternal(old, true));
++}
++
++static void replacement_validation_and_replay()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({100, 101}));
++    assert(!ids.retire(101)); // An unused reserved seat is not an incarnation end.
++    assert(ids.replace(101, 102) == Replacement::Rejected);
++    assert(ids.acquireNative() == 100);
++    assert(ids.replace(100, 102) == Replacement::Rejected);
++    assert(ids.commitNativeTraffic(100));
++    assert(ids.retire(100));
++    assert(ids.acquireExternal(900, false) == 900 && ids.retire(900));
++    for (uint32_t invalid : {0u, 1u, 64u, 100u, 101u, 900u, 0xFFFFFFFEu, 0xFFFFFFFFu})
++        assert(ids.replace(100, invalid) == Replacement::Rejected);
++    assert(ids.replace(900, 102) == Replacement::Rejected); // Not a pool member.
++    assert(ids.replace(999, 102) == Replacement::Rejected);
++    assert(ids.replace(100, 102) == Replacement::Applied);
++    assert(ids.replace(100, 102) == Replacement::Replayed);
++    assert(ids.replace(100, 103) == Replacement::Rejected);
++    assert(ids.acquireExternal(102, true) == 102);
++    assert(ids.replace(100, 102) == Replacement::Replayed); // ACK cannot reset active state.
++    assert(ids.isActive(102));
++    assert(ids.retire(102));
++    assert(ids.replace(102, 103) == Replacement::Applied);
++    assert(ids.replace(100, 102) == Replacement::Replayed); // Even after the next rotation.
++    assert(ids.isRetired(102) && !ids.acquireExternal(102, true));
++    assert(ids.acquireNative() == 103);
++    assert(ids.acquireNative() == 101);
++    assert(!ids.acquireNative());
++}
++
++struct NativeRecord {
++    uint32_t m_id;
++    unsigned m_slot;
++    bool reachedConnected;
++};
++
++static void assigned_connecting_terminal_cleanup()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({100, 101}));
++    const uint32_t assignedWhileConnecting = ids.acquireNative();
++    const uint32_t other = ids.acquireNative();
++    assert(ids.commitNativeTraffic(assignedWhileConnecting));
++    assert(ids.commitNativeTraffic(other));
++    std::map<unsigned, NativeRecord> clients;
++    clients.emplace(10, NativeRecord{assignedWhileConnecting, 3, false});
++    clients.emplace(11, NativeRecord{other, 5, true});
++    uint64_t occupied = 1 | (uint64_t(1) << 3) | (uint64_t(1) << 5);
++    jk_gateway::RetiredNativeIdentity retired;
++    assert(!clients.at(10).reachedConnected);
++    // This is the actual helper called for both native terminal callback states
++    // and administrative kicks. Its decision is the assigned record, not the
++    // callback's previous Connecting/Connected phase.
++    assert(jk_gateway::retireNativeIdentity(clients, 10u, occupied, ids, retired));
++    assert(retired.peer == assignedWhileConnecting && retired.notifyPool && retired.processPlayerLost);
++    assert(ids.isRetired(assignedWhileConnecting));
++    assert(clients.count(10) == 0 && clients.count(11) == 1);
++    assert(occupied == (1 | (uint64_t(1) << 5)));
++    assert(!jk_gateway::retireNativeIdentity(clients, 10u, occupied, ids, retired));
++    assert(!jk_gateway::retireNativeIdentity(clients, 99u, occupied, ids, retired));
++    assert(ids.isActive(other));
++    assert(ids.replace(assignedWhileConnecting, 102) == Replacement::Applied);
++    assert(ids.acquireNative() == 102);
++    clients.emplace(12, NativeRecord{102, 3, false});
++    occupied |= uint64_t(1) << 3;
++    assert(!jk_gateway::retireNativeIdentity(clients, 10u, occupied, ids, retired));
++    assert(clients.at(12).m_id == 102 && ids.isActive(102));
++    assert(ids.commitNativeTraffic(102));
++    assert(jk_gateway::retireNativeIdentity(clients, 12u, occupied, ids, retired));
++    assert(retired.peer == 102 && retired.notifyPool && retired.processPlayerLost);
++}
++
++static void pristine_pool_discovery_reservations()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({300, 301}));
++    assert(ids.acquireExternal(301, true) == 301);
++    std::map<unsigned, NativeRecord> clients;
++    std::queue<uint32_t> pendingLoss;
++    uint64_t occupied = 1;
++    for (unsigned handle = 1000; handle < 1512; ++handle) {
++        const uint32_t probe = ids.acquireNative();
++        assert(probe == 300 && ids.isPristineNative(probe));
++        assert(!ids.acquireNative() && !ids.acquireExternal(probe, true));
++        assert(!ids.retire(probe));
++        assert(ids.replace(probe, 302) == Replacement::Rejected);
++        clients.emplace(handle, NativeRecord{probe, 1, false});
++        occupied |= uint64_t(1) << 1;
++        jk_gateway::RetiredNativeIdentity ended;
++        assert(jk_gateway::retireNativeIdentity(clients, handle, occupied, ids, ended));
++        if (ended.processPlayerLost) pendingLoss.push(ended.peer);
++        assert(!ended.notifyPool && !ended.processPlayerLost);
++        assert(pendingLoss.empty() && clients.empty() && occupied == 1);
++        assert(ids.freePoolId() == probe && ids.issuedCount() == 3);
++        assert(!ids.isPristineNative(probe) && !ids.isRetired(probe));
++    }
++    // The same connection becomes irrevocable as soon as ordinary traffic is
++    // sent or received, even before a WELCOME or fully joined roster flag.
++    const uint32_t joining = ids.acquireNative();
++    assert(ids.commitNativeTraffic(joining));
++    assert(ids.commitNativeTraffic(joining) && !ids.isPristineNative(joining));
++    clients.emplace(2000, NativeRecord{joining, 1, false});
++    occupied |= uint64_t(1) << 1;
++    jk_gateway::RetiredNativeIdentity ended;
++    assert(jk_gateway::retireNativeIdentity(clients, 2000u, occupied, ids, ended));
++    assert(ended.notifyPool && ended.processPlayerLost && ids.isRetired(joining));
++    assert(!ids.acquireNative());
++    assert(ids.replace(joining, 302) == Replacement::Applied);
++    assert(ids.acquireNative() == 302 && ids.isPristineNative(302));
++}
++
++static void stale_handles_and_uncertain_records()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({600}));
++    std::map<unsigned, NativeRecord> clients;
++    uint64_t occupied = 3;
++    clients.emplace(17, NativeRecord{ids.acquireNative(), 1, false});
++    jk_gateway::RetiredNativeIdentity ended;
++    assert(jk_gateway::retireNativeIdentity(clients, 17u, occupied, ids, ended));
++    assert(!ended.processPlayerLost && !ended.notifyPool);
++    clients.emplace(18, NativeRecord{ids.acquireNative(), 1, false});
++    occupied |= 2;
++    assert(clients.at(18).m_id == 600 && ids.isPristineNative(600));
++    assert(!jk_gateway::retireNativeIdentity(clients, 17u, occupied, ids, ended));
++    assert(ids.isPristineNative(600) && occupied == 3);
++    assert(ids.commitNativeTraffic(600));
++    assert(!jk_gateway::retireNativeIdentity(clients, 17u, occupied, ids, ended));
++    assert(ids.isActive(600) && !ids.isRetired(600));
++    assert(jk_gateway::retireNativeIdentity(clients, 18u, occupied, ids, ended));
++    assert(ended.processPlayerLost && ended.notifyPool);
++    assert(ids.replace(600, 601) == Replacement::Applied);
++    // A map record without the explicit pristine lease state is uncertain:
++    // quarantine it instead of treating absence of game flags as discovery.
++    clients.emplace(19, NativeRecord{601, 1, false});
++    occupied |= 2;
++    assert(jk_gateway::retireNativeIdentity(clients, 19u, occupied, ids, ended));
++    assert(ended.processPlayerLost && ended.notifyPool && ids.isRetired(601));
++    assert(!ids.acquireNative() && !ids.commitNativeTraffic(601));
++}
++
++static void external_claims_are_immediately_committed()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({700, 701}));
++    assert(ids.acquireExternal(0, true) == 700);
++    assert(ids.acquireExternal(701, true) == 701);
++    assert(ids.acquireExternal(900, false) == 900);
++    for (uint32_t peer : {700u, 701u, 900u}) {
++        assert(!ids.isPristineNative(peer) && ids.isActive(peer));
++        assert(ids.retire(peer));
++        assert(!ids.acquireExternal(peer, true));
++    }
++    assert(!ids.freePoolId());
++    TransportIdentities nativeOnly;
++    const uint32_t noPool = nativeOnly.acquireNative();
++    assert(noPool == 2 && !nativeOnly.isPristineNative(noPool));
++    const auto ended = nativeOnly.finishNative(noPool);
++    assert(ended.processPlayerLost && !ended.notifyPool);
++    assert(nativeOnly.isRetired(noPool) && nativeOnly.acquireNative() == 3);
++}
++
++static void no_pool_fresh_native_and_external()
++{
++    TransportIdentities ids;
++    assert(!ids.acquireExternal(0, true));
++    const uint32_t a = ids.acquireNative(), b = ids.acquireNative();
++    assert(a == 2 && b == 3 && ids.retire(a));
++    assert(ids.acquireNative() == 4); // Freeing a native slot does not recycle ID2.
++    assert(ids.acquireExternal(65536, false) == 65536);
++    assert(ids.retire(65536));
++    assert(ids.acquireExternal(0, false) == 65537);
++    assert(!ids.acquireExternal(65536, false));
++    assert(ids.acquireExternal(500, false) == 500 && ids.retire(500));
++    uint32_t native = 0;
++    while (native < 501) native = ids.acquireNative();
++    assert(native == 501 && ids.isRetired(500));
++    // Only explicit creation of a new transport session resets the ledger.
++    ids.reset();
++    assert(ids.issuedCount() == 1 && ids.acquireNative() == 2);
++}
++
++static void bounded_lifetime_history_fails_closed()
++{
++    TransportIdentities ids;
++    assert(ids.setPool({100}));
++    assert(ids.acquireNative() == 100 && ids.commitNativeTraffic(100) && ids.retire(100));
++    assert(ids.replace(100, 101) == Replacement::Applied);
++    for (uint32_t peer = 100000; ids.issuedCount() < TransportIdentities::maxIssued; ++peer) {
++        assert(ids.acquireExternal(peer, false) == peer);
++        assert(ids.retire(peer));
++    }
++    assert(ids.issuedCount() == 65536);
++    assert(!ids.acquireExternal(900000, false));
++    assert(ids.acquireNative() == 101); // Already issued but unused identity is safe.
++    assert(ids.commitNativeTraffic(101));
++    assert(ids.retire(101));
++    assert(!ids.acquireNative());
++    assert(ids.replace(101, 102) == Replacement::Rejected);
++    assert(ids.replace(100, 101) == Replacement::Replayed);
++    assert(ids.isRetired(100) && ids.isRetired(101));
++    assert(ids.issuedCount() == 65536);
++}
++
++int main()
++{
++    pool_setup_and_claims();
++    retired_pool_ids_and_pending_loss();
++    replacement_validation_and_replay();
++    assigned_connecting_terminal_cleanup();
++    pristine_pool_discovery_reservations();
++    stale_handles_and_uncertain_records();
++    external_claims_are_immediately_committed();
++    no_pool_fresh_native_and_external();
++    bounded_lifetime_history_fails_closed();
++    std::cout << "PASS: 9 groups: pool claims; retired/pending-loss isolation; replacement replay/validation; "
++                 "used Connecting cleanup; 512 pristine discoveries; stale handles/uncertain records; "
++                 "committed external/no-pool claims; fresh no-pool identities; bounded lifetime history\n";
++}
 diff --git a/src/Win95/Window.c b/src/Win95/Window.c
-index 012b5cb..1d0a9c3 100644
+index 012b5cb5..5c74ae9f 100644
 --- a/src/Win95/Window.c
 +++ b/src/Win95/Window.c
-@@ -661,16 +661,17 @@ int my_kbhit() {
+@@ -3,6 +3,7 @@
+ #include "Win95/stdGdi.h"
+ #include "Platform/std3D.h"
+ #include "Main/Main.h"
++#include "Main/jkObserver.h"
+ #include "Main/jkMain.h"
+ #include "Main/jkGame.h"
+ #include "Engine/rdroid.h"
+@@ -69,7 +70,7 @@ int Window_bRenderProbe = 0;
+ 
+ void Window_SetHiDpi(int val)
+ {
+-    if (Window_bRenderProbe) return;
++    if (Window_bRenderProbe || jkObserver_IsCapable()) return;
+     if (Window_isHiDpi != val)
+     {
+         Window_isHiDpi = val;
+@@ -82,7 +83,7 @@ void Window_SetHiDpi(int val)
+ 
+ void Window_SetFullscreen(int val)
+ {
+-    if (Window_bRenderProbe) return;
++    if (Window_bRenderProbe || jkObserver_IsCapable()) return;
+     if (Window_isFullscreen != val)
+     {
+         // Reset window when exiting fullscreen
+@@ -661,16 +662,17 @@ int my_kbhit() {
      if (! initialized) {
          // Use termios to turn off line buffering
          struct termios term;
@@ -819,7 +3392,15 @@ index 012b5cb..1d0a9c3 100644
      return bytesWaiting;
  }
  #endif
-@@ -689,7 +690,8 @@ void Window_UpdateHeadless()
+@@ -679,6 +681,7 @@ static char Window_headlessBuffer[256];
+ 
+ void Window_UpdateHeadless()
+ {
++    jkObserver_Poll();
+     char buffer[32];
+     size_t bytes_read = 0;
+ 
+@@ -689,7 +692,8 @@ void Window_UpdateHeadless()
          bytes_read = 1;
  #else
          int fd = STDIN_FILENO;
@@ -829,7 +3410,7 @@ index 012b5cb..1d0a9c3 100644
          buffer[bytes_read] = 0;
  #endif
  
-@@ -712,11 +714,16 @@ void Window_UpdateHeadless()
+@@ -712,11 +716,16 @@ void Window_UpdateHeadless()
              }
  
              char tmp[2] = {buffer[i], 0};
@@ -847,3 +3428,115 @@ index 012b5cb..1d0a9c3 100644
      //printf("> %x %x %s\n", buffer[0], my_kbhit(), Window_headlessBuffer);
      fflush(stdout);
  
+@@ -1353,13 +1362,14 @@ void Window_RecreateSDL2Window()
+     onlyOnce = 1;
+ #endif
+ 
+-    if (Main_bHeadless) return;
++    if (Main_bHeadless && (!jkObserver_IsCapable() || jkObserver_HasContext())) return;
+ 
+     stdPlatform_Printf("Recreating SDL2 Window!\n");
+     Window_needsRecreate = 0;
+ 
+     if (displayWindow) {
+         std3D_FreeResources();
++        jkObserver_SetContextAvailable(0);
+         SDL_GL_DestroyContext(glWindowContext);
+         SDL_DestroyWindow(displayWindow);
+     }
+@@ -1427,6 +1437,12 @@ void Window_RecreateSDL2Window()
+         Window_screenXSize = Window_probe.width;
+         Window_screenYSize = Window_probe.height;
+     }
++    if (jkObserver_IsCapable()) {
++        flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_NOT_FOCUSABLE;
++        Window_isFullscreen=Window_isHiDpi=0;
++        Window_xSize=Window_screenXSize=640;
++        Window_ySize=Window_screenYSize=360;
++    }
+ 
+     // SDL3 SDL_CreateWindow() dropped the x/y position params; position is set
+     // separately below via SDL_SetWindowPosition() on desktop.
+@@ -1446,6 +1462,7 @@ void Window_RecreateSDL2Window()
+         else {
+             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", errtmp, NULL);
+         }
++        if (jkObserver_IsCapable()) { jkObserver_SetContextAvailable(0); return; }
+         exit (-1);
+     }
+     //SDL_SetRenderDrawBlendMode(displayRenderer, SDL_BLENDMODE_BLEND);
+@@ -1492,10 +1509,16 @@ void Window_RecreateSDL2Window()
+         else {
+             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", errtmp, NULL);
+         }
++        if (jkObserver_IsCapable()) {
++            jkObserver_SetContextAvailable(0);
++            SDL_DestroyWindow(displayWindow); displayWindow=NULL;
++            return;
++        }
+         exit(-1);
+     }
+ 
+     SDL_GL_MakeCurrent(displayWindow, glWindowContext);
++    jkObserver_SetContextAvailable(glWindowContext != NULL);
+     SDL_GL_SetSwapInterval(jkPlayer_enableVsync); // Disable vsync
+ #ifndef TARGET_ANDROID
+     if (!Window_bHeadlessStartup && !Window_bRenderProbe) {
+@@ -1532,6 +1555,7 @@ int Window_Main_Linux(int argc, char** argv)
+     int result;
+ 
+     if (!stdCapture_Init(argc, argv)) { fprintf(stderr, "capture: invalid request or isolated session\n"); return 6; }
++    if (!stdCapture_IsActive()) jkObserver_Startup(argc,argv);
+     if (stdCapture_IsActive()) {
+ #if defined(RENDER_GL11) || defined(ARCH_WASM) || defined(TARGET_ANDROID)
+         fprintf(stderr, "capture: this backend is unsupported\n"); return 6;
+@@ -1649,7 +1673,7 @@ int Window_Main_Linux(int argc, char** argv)
+ 
+     Window_RecreateSDL2Window();
+ #if !defined(TARGET_ANDROID) && !defined(ARCH_WASM) && !defined(RENDER_GL11)
+-    glewInit();
++    if (glWindowContext) glewInit();
+ #endif
+     
+     //SDL_RenderClear(displayRenderer);
+@@ -1693,7 +1717,7 @@ int Window_Main_Linux(int argc, char** argv)
+         return result;
+     }
+ 
+-    if (Main_bHeadless && !stdCapture_IsActive())
++    if (Main_bHeadless && !stdCapture_IsActive() && !jkObserver_IsCapable())
+     {
+         if (displayWindow) {
+             std3D_FreeResources();
+diff --git a/src/Raster/rdCache.c b/src/Raster/rdCache.c
+index 94bdddf6..a825edde 100644
+--- a/src/Raster/rdCache.c
++++ b/src/Raster/rdCache.c
+@@ -1,3 +1,4 @@
++#include "Main/jkObserverGeometry.h"
+ #include "rdCache.h"
+ 
+ #include "Engine/rdroid.h"
+@@ -1415,6 +1416,8 @@ void rdCache_DrawRenderList()
+ #endif
+ 
+ #ifndef RDCACHE_RENDER_NGONS
++        jkObserver_CaptureGeometry(rdCache_aHWVertices, rdCache_totalVerts,
++            rdCache_aHWSolidTris, rdCache_totalSolidTris, rdCache_aHWNormalTris, rdCache_totalNormalTris);
+         if ( rdCache_totalSolidTris )
+             std3D_AddRenderListTris(rdCache_aHWSolidTris, rdCache_totalSolidTris);
+         if ( rdCache_totalNormalTris )
+diff --git a/src/Main/jkObserverGeometry.h b/src/Main/jkObserverGeometry.h
+new file mode 100644
+index 00000000..860810f0
+--- /dev/null
++++ b/src/Main/jkObserverGeometry.h
+@@ -0,0 +1,8 @@
++#ifndef _JK_OBSERVER_GEOMETRY_H
++#define _JK_OBSERVER_GEOMETRY_H
++#include "types.h"
++#ifndef RDCACHE_RENDER_NGONS
++void jkObserver_CaptureGeometry(const D3DVERTEX *vertices, uint32_t vertexCount,
++    const rdTri *solid, uint32_t solidCount, const rdTri *normal, uint32_t normalCount);
++#endif
++#endif

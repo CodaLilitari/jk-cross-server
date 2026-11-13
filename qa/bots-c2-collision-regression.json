@@ -1,0 +1,22 @@
+{
+  "kind": "actual_engine_collision_regression",
+  "observed_epoch": 1792906175.7028933,
+  "baseline": {
+    "exit_code": 1,
+    "message": "FAIL endpoint: hit=0.205065846 bound=0.205065832 engine_asserts=1"
+  },
+  "patched": {
+    "exit_code": 0,
+    "checks": [
+      "PASS one-ULP swept-sphere endpoint stays within requested travel without assertion",
+      "PASS ordinary interior hits, too-short sweeps, outward travel, and back faces retain behavior",
+      "PASS existing overlap and special radius-adjustment behavior is unchanged"
+    ]
+  },
+  "source_sha256": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+  "test_sha256": "5169007ec76144be733a08462126c2f123d0ec45ccfb6ca3da3a3b3fd7b43ae0",
+  "owned_live_fault": "bot-qa/ctf-c2-debug-fc16/gdb.log",
+  "observed_move_distance_bits": "0x3e51fcc7",
+  "observed_hit_distance_bits": "0x3e51fcc8",
+  "scope": "Actual collision helper linked with actual plane/dot math; live patched C2 rerun remains pending."
+}

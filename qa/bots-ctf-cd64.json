@@ -1,0 +1,305 @@
+{
+  "schema": 1,
+  "evidence": "owned_local_connected_JKDF2_CTF_clients_with_read_only_non_atomic_observation",
+  "bot_sha256": "cd64c7b9bac33e65b274fe82ca7cf5cfc5f32b06ac5dd66c632234b37c24412a",
+  "server_sha256": "0e900a630cbfc88823f265c2d107f2f92558609e22385acfff158b2e5439fe45",
+  "rank": 8,
+  "roster": [
+    "kyle_katarn"
+  ],
+  "requested_team": 1,
+  "rules": {
+    "sabers_only": false,
+    "fists_peace": true,
+    "force_enabled": true
+  },
+  "ordinary_gameplay": true,
+  "observer_process_memory_writes": false,
+  "human_clients_present": [],
+  "sampling_period_seconds": 0.5,
+  "timestamp_basis": "seconds since first valid observation in each map; samples are not atomic",
+  "stock_scoring": {
+    "enemy_flag_take_personal_and_team": 3,
+    "capture_personal_award": 12,
+    "capture_team_member_award_includes_carrier": 3,
+    "capture_team_score_delta": 15,
+    "solo_personal_capture_delta": 15,
+    "completed_take_and_capture_total": 18,
+    "source": "Owned stock CTF_MAIN.COG defaults and capture handler; proprietary COG content is not included."
+  },
+  "maps": [
+    {
+      "map": "c1.jkl",
+      "samples": 298,
+      "observation_errors": 0,
+      "observed_seconds": 149.86,
+      "actual_teams": [
+        0
+      ],
+      "distinct_observed_sectors": 5,
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "coverage": [
+        {
+          "map": "c1.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 237,
+          "nodes": 964,
+          "reachable_nodes": 47,
+          "items_total": 90,
+          "classified_items": 90,
+          "anchored_items": 76,
+          "reachable_items": 0,
+          "missing_nodes": 14,
+          "truncated": 0
+        }
+      ],
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "fixture_exit": 0,
+      "observation_sha256": "fed2e62512cf362793da4a5f0108bdeced6ff41277ddccad0943351ba40b7c77",
+      "client_log_sha256": "e59c4173d8aa283e926edcc8ed050e77eb4591045d1ebc05046f32adbddde5ac",
+      "source_fixture": "bot-qa/ctf-matrix-cd64/c1",
+      "status": "team_selection_failed",
+      "discovered_entry_count": 0,
+      "cause": "Fixed .42 portal approach lies on the .02 node clearance boundary at the lobby/corridor plane; floating-point plane distance rejects the anchor.",
+      "subsequent_source_fix": {
+        "included_in_observed_binary": false,
+        "change": "Bounded approach offsets .42, .24, .60 with unchanged support/clearance checks and graph reachability requirement.",
+        "controlled_regression": "native/tests/test_bot_c1_geometry.inc and test_c1_portal_route in native/tests/test_bot_navigation.inc",
+        "checks": [
+          "reject original boundary anchor with engine plane-distance arithmetic",
+          "accept .24 approach in the corridor",
+          "build a collision-checked lobby-to-entry graph route",
+          "Dijkstra reaches the entry",
+          "disconnecting the graph makes the objective unavailable"
+        ],
+        "integrated_strict_driver_groups_passed": 24
+      }
+    },
+    {
+      "map": "c2.jkl",
+      "samples": 297,
+      "observation_errors": 0,
+      "observed_seconds": 149.575,
+      "actual_teams": [
+        0,
+        1
+      ],
+      "distinct_observed_sectors": 39,
+      "final_personal_score": 54,
+      "final_team_scores": [
+        0,
+        54,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "coverage": [
+        {
+          "map": "c2.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 299,
+          "nodes": 1682,
+          "reachable_nodes": 57,
+          "items_total": 133,
+          "classified_items": 133,
+          "anchored_items": 124,
+          "reachable_items": 0,
+          "missing_nodes": 9,
+          "truncated": 0
+        },
+        {
+          "map": "c2.jkl",
+          "name": "Bot_Katarn",
+          "team": 1,
+          "origin_sector": 11,
+          "nodes": 1682,
+          "reachable_nodes": 1058,
+          "items_total": 133,
+          "classified_items": 133,
+          "anchored_items": 124,
+          "reachable_items": 104,
+          "missing_nodes": 9,
+          "truncated": 0
+        }
+      ],
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "fixture_exit": 0,
+      "observation_sha256": "fe6f54d0e0039331f34951a96541da573ef097aff9789c505519ddc085e9ed54",
+      "client_log_sha256": "d6d5ee2d87e33e43e4e09ffe2160a0d3de4830326f6b2e06f314c77ddea982f3",
+      "source_fixture": "bot-qa/ctf-matrix-cd64/c2",
+      "actual_red_assignment_seconds": 20.203,
+      "status": "three_uncontested_stock_captures_observed",
+      "events": [
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 35.313,
+          "score": 3,
+          "team_score": 3,
+          "delta": 3,
+          "sector": 217,
+          "distance_to_own_flag": 3.268716,
+          "enemy_flag_attached_to_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_home": false,
+          "local_bin82_activated": true
+        },
+        {
+          "event": "capture",
+          "seconds": 56.535,
+          "score": 18,
+          "team_score": 18,
+          "delta": 15,
+          "sector": 62,
+          "distance_to_own_flag": 0.072876,
+          "enemy_flag_attached_to_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_home": true,
+          "local_bin82_activated": false
+        },
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 77.257,
+          "score": 21,
+          "team_score": 21,
+          "delta": 3,
+          "sector": 217,
+          "distance_to_own_flag": 3.102909,
+          "enemy_flag_attached_to_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_home": false,
+          "local_bin82_activated": true
+        },
+        {
+          "event": "capture",
+          "seconds": 98.436,
+          "score": 36,
+          "team_score": 36,
+          "delta": 15,
+          "sector": 62,
+          "distance_to_own_flag": 0.061554,
+          "enemy_flag_attached_to_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_home": true,
+          "local_bin82_activated": false
+        },
+        {
+          "event": "enemy_flag_pickup",
+          "seconds": 119.671,
+          "score": 39,
+          "team_score": 39,
+          "delta": 3,
+          "sector": 217,
+          "distance_to_own_flag": 3.22802,
+          "enemy_flag_attached_to_self": true,
+          "enemy_flag_attachment_flags": 12,
+          "enemy_flag_at_home": false,
+          "local_bin82_activated": true
+        },
+        {
+          "event": "capture",
+          "seconds": 140.963,
+          "score": 54,
+          "team_score": 54,
+          "delta": 15,
+          "sector": 62,
+          "distance_to_own_flag": 0.10466,
+          "enemy_flag_attached_to_self": false,
+          "enemy_flag_attachment_flags": 0,
+          "enemy_flag_at_home": true,
+          "local_bin82_activated": false
+        }
+      ],
+      "captures": 3
+    },
+    {
+      "map": "c3.jkl",
+      "samples": 297,
+      "observation_errors": 0,
+      "observed_seconds": 149.579,
+      "actual_teams": [
+        0,
+        1
+      ],
+      "distinct_observed_sectors": 27,
+      "final_personal_score": 0,
+      "final_team_scores": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kills": 0,
+      "deaths": 0,
+      "coverage": [
+        {
+          "map": "c3.jkl",
+          "name": "Bot_Katarn",
+          "team": 0,
+          "origin_sector": 648,
+          "nodes": 2596,
+          "reachable_nodes": 57,
+          "items_total": 161,
+          "classified_items": 161,
+          "anchored_items": 145,
+          "reachable_items": 0,
+          "missing_nodes": 16,
+          "truncated": 0
+        },
+        {
+          "map": "c3.jkl",
+          "name": "Bot_Katarn",
+          "team": 1,
+          "origin_sector": 459,
+          "nodes": 2596,
+          "reachable_nodes": 1263,
+          "items_total": 161,
+          "classified_items": 161,
+          "anchored_items": 145,
+          "reachable_items": 91,
+          "missing_nodes": 16,
+          "truncated": 0
+        }
+      ],
+      "cleanup": {
+        "state": "stopped",
+        "processes": {}
+      },
+      "fixture_exit": 0,
+      "observation_sha256": "ccda4f76972753f3f545b35d18d377b79510a42c934aa6c400d5ea1d4ff99017",
+      "client_log_sha256": "97f40df72f81201240998706cd20991554c12a747ab578d345fdb457433d63c6",
+      "source_fixture": "bot-qa/ctf-matrix-cd64/c3",
+      "actual_red_assignment_seconds": 12.1,
+      "status": "red_team_join_and_arena_movement_observed_no_flag_possession_or_capture",
+      "captures": 0,
+      "limitation": "CAPTURE intentions fell back to exploration near the red base; an enemy-flag route remains unqualified."
+    }
+  ],
+  "not_established": [
+    "contested CTF against human opponents",
+    "gold-team traversal",
+    "C1 capture with this binary",
+    "C3 capture",
+    "dropped own-flag recovery, carrier interception, escort or multi-player defense in live gameplay",
+    "complete navigation coverage or all stock routes"
+  ]
+}

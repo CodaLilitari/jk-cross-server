@@ -133,6 +133,27 @@ class GatewayIntegration(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await self.ipc.set_id_pool([1001, 1002]), 2)
         self.assertEqual(await self.ipc.add_peer(), 1001)
 
+    async def test_host_kick_drains_packet_and_expires_browser_rejoin_seat(self):
+        ws, player, key = await self.join()
+        self.gateway.peers[player].host_removed = True
+        await ws.send_str(f"rejoin 1 {player} {key}")
+        self.assertEqual(await self.text(ws, "error"), "error no-seat")
+        self.gateway.peers[player].host_removed = False
+        payload = struct.pack("<HHI", 42, 1, player)
+        await self.gateway.on_engine_data(1, player, payload)
+        self.gateway.on_engine_removed(player)
+        packet = await ws.receive(timeout=2)
+        self.assertEqual(packet.data, struct.pack("<II", 1, player) + payload)
+        self.assertEqual(await self.text(ws, "host-left"), "host-left")
+        for _ in range(20):
+            if player not in self.gateway.peers:
+                break
+            await asyncio.sleep(.01)
+        self.assertNotIn(player, self.gateway.peers)
+        await ws.send_str(f"rejoin 1 {player} {key}")
+        self.assertEqual(await self.text(ws, "error"), "error no-seat")
+        await ws.close()
+
     async def test_browser_join_gate_transport_roster(self):
         header = struct.pack("<HH", 41, 123)
         payload = header + b"\x03" + struct.pack("<III", 1, 1001, 65536)

@@ -1,0 +1,208 @@
+TAP version 13
+# Subtest: current native descriptor supplies all-route player count and map without subtracting the host twice
+ok 1 - current native descriptor supplies all-route player count and map without subtracting the host twice
+  ---
+  duration_ms: 3.218363
+  type: 'test'
+  ...
+# Subtest: an older manager without session_ready remains supported when its native descriptor is current
+ok 2 - an older manager without session_ready remains supported when its native descriptor is current
+  ---
+  duration_ms: 0.242667
+  type: 'test'
+  ...
+# Subtest: disconnect, stale descriptor, startup and stopped/failed states retire session-derived presentation
+ok 3 - disconnect, stale descriptor, startup and stopped/failed states retire session-derived presentation
+  ---
+  duration_ms: 0.288466
+  type: 'test'
+  ...
+# Subtest: missing or malformed native metadata never falls back to browser-only metadata
+ok 4 - missing or malformed native metadata never falls back to browser-only metadata
+  ---
+  duration_ms: 0.242707
+  type: 'test'
+  ...
+# Subtest: transport listener status remains distinct from game-session readiness
+ok 5 - transport listener status remains distinct from game-session readiness
+  ---
+  duration_ms: 0.151379
+  type: 'test'
+  ...
+# Subtest: static panel preserves unique required controls, legacy settings and script bindings
+ok 6 - static panel preserves unique required controls, legacy settings and script bindings
+  ---
+  duration_ms: 11.760112
+  type: 'test'
+  ...
+# Subtest: spectator and live bot controls stay outside the disabled settings fieldset
+ok 7 - spectator and live bot controls stay outside the disabled settings fieldset
+  ---
+  duration_ms: 3.585038
+  type: 'test'
+  ...
+# Subtest: JKSG literal preserves four clip coordinates, opaque colour and index order
+ok 8 - JKSG literal preserves four clip coordinates, opaque colour and index order
+  ---
+  duration_ms: 0.631584
+  type: 'test'
+  ...
+# Subtest: JKSG rejects malformed envelope size and hostile count products before allocating
+ok 9 - JKSG rejects malformed envelope size and hostile count products before allocating
+  ---
+  duration_ms: 0.981513
+  type: 'test'
+  ...
+# Subtest: JKSG rejects nonfinite coordinates, nonopaque colours and out-of-range indices
+ok 10 - JKSG rejects nonfinite coordinates, nonopaque colours and out-of-range indices
+  ---
+  duration_ms: 4.755797
+  type: 'test'
+  ...
+# Subtest: JKSG checks current epochs, sequence and inclusive capture plus transfer age
+ok 11 - JKSG checks current epochs, sequence and inclusive capture plus transfer age
+  ---
+  duration_ms: 0.420746
+  type: 'test'
+  ...
+# Subtest: JKSG accepts empty geometry as an explicitly cleared current frame
+ok 12 - JKSG accepts empty geometry as an explicitly cleared current frame
+  ---
+  duration_ms: 0.177038
+  type: 'test'
+  ...
+# Subtest: mounted image default never activates geometry; explicit selection polls geometry and retains read-only ownership
+ok 13 - mounted image default never activates geometry; explicit selection polls geometry and retains read-only ownership
+  ---
+  duration_ms: 28.676075
+  type: 'test'
+  ...
+# Subtest: backend selection releases held movement and geometry canvas uses existing explicit camera ownership
+ok 14 - backend selection releases held movement and geometry canvas uses existing explicit camera ownership
+  ---
+  duration_ms: 102.550095
+  type: 'test'
+  ...
+# Subtest: late geometry replies after switching away and back cannot draw in the newly selected view
+ok 15 - late geometry replies after switching away and back cannot draw in the newly selected view
+  ---
+  duration_ms: 5.41962
+  type: 'test'
+  ...
+# Subtest: late geometry replies after epoch change or engine restart never draw
+ok 16 - late geometry replies after epoch change or engine restart never draw
+  ---
+  duration_ms: 10.505766
+  type: 'test'
+  ...
+# Subtest: unavailable or lost WebGL falls back to usable image and stops geometry polling without claiming controls
+ok 17 - unavailable or lost WebGL falls back to usable image and stops geometry polling without claiming controls
+  ---
+  duration_ms: 8.062579
+  type: 'test'
+  ...
+# Subtest: fresh geometry reaches indexed opaque WebGL draw; hidden page stops polling
+ok 18 - fresh geometry reaches indexed opaque WebGL draw; hidden page stops polling
+  ---
+  duration_ms: 1.089317
+  type: 'test'
+  ...
+# Subtest: geometry channel failure returns to image and cannot disable the observer
+ok 19 - geometry channel failure returns to image and cannot disable the observer
+  ---
+  duration_ms: 0.552766
+  type: 'test'
+  ...
+# Subtest: falling back while a geometry body is delayed immediately permits image polling
+ok 20 - falling back while a geometry body is delayed immediately permits image polling
+  ---
+  duration_ms: 2.599439
+  type: 'test'
+  ...
+# Subtest: a native sequence superseding an in-flight envelope prevents older geometry from being drawn
+ok 21 - a native sequence superseding an in-flight envelope prevents older geometry from being drawn
+  ---
+  duration_ms: 0.590392
+  type: 'test'
+  ...
+# Subtest: original visual fixture decodes the full independent clip-space shape and index set
+ok 22 - original visual fixture decodes the full independent clip-space shape and index set
+  ---
+  duration_ms: 7.07442
+  type: 'test'
+  ...
+# Subtest: JKSG rejects invalid replay cursors rather than bypassing sequence comparison
+ok 23 - JKSG rejects invalid replay cursors rather than bypassing sequence comparison
+  ---
+  duration_ms: 0.222887
+  type: 'test'
+  ...
+# Subtest: a session readiness interruption revokes input ownership even if PID and epochs are reused
+ok 24 - a session readiness interruption revokes input ownership even if PID and epochs are reused
+  ---
+  duration_ms: 101.700355
+  type: 'test'
+  ...
+# Subtest: camera motion cancels opposing keys and releases both movement and accumulated look
+ok 25 - camera motion cancels opposing keys and releases both movement and accumulated look
+  ---
+  duration_ms: 0.466926
+  type: 'test'
+  ...
+# Subtest: sequence advances within an epoch and only a new world/control epoch resets replay protection
+ok 26 - sequence advances within an epoch and only a new world/control epoch resets replay protection
+  ---
+  duration_ms: 0.326814
+  type: 'test'
+  ...
+# Subtest: look deltas stay finite and bounded, are consumed once, and arrows follow native yaw convention
+ok 27 - look deltas stay finite and bounded, are consumed once, and arrows follow native yaw convention
+  ---
+  duration_ms: 0.136196
+  type: 'test'
+  ...
+# Subtest: a follow choice carries canonical peer plus connection generation, never just a slot or name
+ok 28 - a follow choice carries canonical peer plus connection generation, never just a slot or name
+  ---
+  duration_ms: 0.314546
+  type: 'test'
+  ...
+# Subtest: older snapshots cannot undo newer epochs and a reloaded/read-only tab does not own active controls
+ok 29 - older snapshots cannot undo newer epochs and a reloaded/read-only tab does not own active controls
+  ---
+  duration_ms: 0.172931
+  type: 'test'
+  ...
+# Subtest: current RGBA frame retains dimensions, sequence and exact pixel order
+ok 30 - current RGBA frame retains dimensions, sequence and exact pixel order
+  ---
+  duration_ms: 61.504687
+  type: 'test'
+  ...
+# Subtest: malformed, oversized, mismatched and replayed frames are rejected before drawing
+ok 31 - malformed, oversized, mismatched and replayed frames are rejected before drawing
+  ---
+  duration_ms: 2.120935
+  type: 'test'
+  ...
+# Subtest: a mounted reload waits for explicit control, then starts a fresh sequence and rightward drag turns right
+ok 32 - a mounted reload waits for explicit control, then starts a fresh sequence and rightward drag turns right
+  ---
+  duration_ms: 9.069135
+  type: 'test'
+  ...
+# Subtest: an external epoch revokes mounted control and stale status cannot re-enable input
+ok 33 - an external epoch revokes mounted control and stale status cannot re-enable input
+  ---
+  duration_ms: 0.572245
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 420.681529

@@ -1,0 +1,82 @@
+--- a/manager/spectator.py
++++ b/manager/spectator.py
+@@ -359,9 +359,11 @@
+                     raise SpectatorError(self._geometry_control_error) from None
+                 self._apply(reply)
+                 if reply["result"]:
++                    self._geometry.latest = None
++                    if reply["result"] == 2:
++                        raise SpectatorError("The observer world or control epoch changed.", 409)
+                     self._geometry_control_error = "Geometry activation was rejected."
+-                    self._geometry.latest = None
+-                    raise SpectatorError(self._geometry_control_error, 409 if reply["result"] == 2 else 503)
++                    raise SpectatorError(self._geometry_control_error)
+                 self._epochs({"world_epoch": world_epoch, "control_epoch": control_epoch})
+             self._viewer_deadline = time.monotonic() + VIEWER_LEASE
+             value = self._geometry_frame()
+--- a/tests/test_runtime_display.py
++++ b/tests/test_runtime_display.py
+@@ -55,6 +55,7 @@
+ 
+ async def observer_request(writer, source, destination, payload):
+     global observer_mode, control_epoch, observer_target, observer_generation, frame_sequence, geometry_enabled
++    global observer_behavior
+     if observer_behavior == "silent":
+         return
+     if observer_behavior == "unsupported":
+@@ -69,6 +70,12 @@
+         result = 1
+     elif operation:
+         expected_world, expected_control = struct.unpack_from("<II", payload, 8)
++        if operation == 3 and observer_behavior == "geometry-epoch-transition":
++            # A follow target leaves after the manager's epoch check.
++            control_epoch += 1
++            observer_mode, observer_target, observer_generation = 1, 0, 0
++            frame_sequence, geometry_enabled = 0, False
++            observer_behavior = "normal"
+         if (expected_world, expected_control) != (world_epoch, control_epoch):
+             result = 2
+         elif operation == 1:
+--- a/tests/test_spectator_geometry.py
++++ b/tests/test_spectator_geometry.py
+@@ -230,6 +230,40 @@
+         self.assertFalse(status["geometry"]["available"])
+         self.assertIn("rejected", status["geometry"]["reason"].lower())
+         self.assertTrue(status["available"])
++        calls = sum(row["operation"] == 3 for row in self.operations())
++        refreshed = await self.api()
++        self.assertEqual(refreshed["geometry"]["reason"], status["geometry"]["reason"])
++        self.assertEqual((await self.geometry(refreshed))[0], 503)
++        self.assertEqual(sum(row["operation"] == 3 for row in self.operations()), calls)
++        await self.command("observer-frame")
++        await self.wait_frame(1)
++        self.assertTrue(self.manager.ipc.connected)
++
++    async def test_stale_activation_epoch_can_retry_after_follow_target_departure(self):
++        await self.start_observer()
++        current = await self.configure("follow", {"peer_id": 101, "generation": 17})
++        self.assertEqual((await self.geometry(current))[0], 204)
++        await self.command("geometry-normal")
++        await self.wait_geometry(current)
++        await self.command("observer-geometry-epoch-transition")
++        self.manager.spectator._geometry_renewed_at = 0
++        self.assertEqual((await self.geometry(current))[0], 409)
++        updated = await self.api()
++        self.assertEqual(updated["control_epoch"], current["control_epoch"] + 1)
++        self.assertEqual(updated["world_epoch"], current["world_epoch"])
++        self.assertEqual(updated["mode"], "free")
++        self.assertFalse(updated["geometry"]["frame_available"])
++        calls_before_retry = sum(row["operation"] == 3 for row in self.operations())
++        self.assertEqual((await self.geometry(updated))[0], 204)
++        self.assertEqual(sum(row["operation"] == 3 for row in self.operations()), calls_before_retry + 1)
++        self.assertTrue((await self.api())["geometry"]["available"])
++        await self.command("geometry-normal")
++        data = (await self.wait_geometry(updated))[2]
++        self.assertEqual(struct.unpack_from("<II", data, 16),
++                         (updated["world_epoch"], updated["control_epoch"]))
++        await self.command("observer-frame")
++        await self.wait_frame(2)
++        self.assertTrue(self.manager.ipc.connected)
+ 
+ 
+ class GeometrySharedFixtureTests(unittest.TestCase):

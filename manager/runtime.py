@@ -9,6 +9,7 @@ import os
 import secrets
 import shutil
 import signal
+import sys
 import time
 from pathlib import Path
 from aiohttp import web
@@ -18,6 +19,11 @@ from web_gateway.assets import build_asset_provider
 from . import config as conf
 from .content import child_casefold, preflight
 from .broker import AdapterBroker
+from .authority import AuthorityStore
+from .chat_admin import ChatAdminController, redact_admin_proof
+from .display import configure_engine, configure_retail
+from .spectator import SpectatorController, SpectatorError, inactive_status
+from bots.settings import BEHAVIOR_FIELDS, behavior_values, engine_path, write_behavior
 
 def stage_file(source, destination):
     # Resolve symlinked test/install inputs; create an independent directory
@@ -33,6 +39,9 @@ def stage_tree(source: Path, target: Path):
     for child in source.iterdir():
         name = child.name.casefold()
         if name == "video":
+            continue
+        if name == "authority" or (name.startswith("jk-admin-key-") and name.endswith(".cog")):
+            # Exported credentials belong to the offline helper, not game data.
             continue
         output = target / name
         if output.exists():
@@ -59,15 +68,23 @@ class ServerManager:
         self.run_dir = None
         self.started = None
         self.session = None
+        self._session_revision = 0
+        self.engine_display_backend = None
         self.preflight_result = None
         self.lock = asyncio.Lock()
         self.intentional_stop = False
         self.generation = 0
         self.restart_attempts = 0
+        self.bots_error = None
+        # Credential issuance belongs to the persistent control-panel process,
+        # never to a game startup, a per-run config snapshot or child env.
+        self.authority_store = AuthorityStore(self.state_dir.resolve() / "authority")
+        self.chat_admin = None
+        self.spectator = None
 
     def log(self, message, source="manager"):
         timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
-        row = {"time": timestamp, "source": source, "text": str(message)[:4000]}
+        row = {"time": timestamp, "source": source, "text": redact_admin_proof(message)[:4000]}
         self.logs.append(row)
         if self.run_dir:
             path = self.run_dir / "session.jsonl"
@@ -87,13 +104,70 @@ class ServerManager:
                 "uptime_seconds": round(time.monotonic() - self.started) if self.started else 0,
                 "processes": {name: {"pid": proc.pid, "returncode": proc.returncode} for name, proc in self.processes.items()},
                 "native_connected": bool(self.ipc and self.ipc.connected),
+                "session_ready": bool(self.state == "running" and self.ipc and self.ipc.connected and self.session),
+                "engine_display_backend": self.engine_display_backend,
                 "retail_ready": bool(self.broker and self.broker.pool_ready.is_set()),
                 "browser": self.gateway.status() if self.gateway else None,
                 "browser_assets": self.assets.summary() if self.assets else None,
                 "browser_transfer": dict(self.gateway.metrics) if self.gateway else None,
                 "session": self.session, "preflight": self.preflight_result,
+                "bots": self.bot_status(),
+                "chat_admin": self.chat_admin.status() if self.chat_admin else {"connected": False},
+                "spectator": self.spectator.status() if self.spectator else inactive_status(self.config["spectator_rendering"]),
                 "run_directory": str(self.run_dir) if self.run_dir else None,
                 "logs": list(self.logs)}
+
+    async def spectator_status(self):
+        if self.spectator is None:
+            return inactive_status(self.config["spectator_rendering"])
+        return await self.spectator.refresh()
+
+    def active_spectator(self):
+        if self.state != "running" or self.spectator is None:
+            raise SpectatorError("Start a ready server session before using the host view.")
+        return self.spectator
+
+    async def configure_spectator(self, value):
+        return await self.active_spectator().configure(value)
+
+    async def spectator_input(self, value):
+        return await self.active_spectator().input(value)
+
+    async def spectator_geometry(self, **kwargs):
+        return await self.active_spectator().geometry(**kwargs)
+
+    def spectator_frame(self, **kwargs):
+        return self.active_spectator().frame(**kwargs)
+
+    def bot_status(self):
+        enabled = self.config["bots_enabled"]
+        result = {"enabled": enabled, "state": "disabled" if not enabled else "stopped",
+                  "configured_count": len(self.config["bots_profiles"]) if enabled else 0,
+                  "joined_count": 0, "players": [], "behavior": behavior_values(self.config),
+                  "error": self.bots_error}
+        if enabled and self.state in ("starting", "running"):
+            result["state"] = "failed" if self.bots_error else "starting"
+            path = self.run_dir / "bots-status.json" if self.run_dir else None
+            try:
+                if path and path.is_file() and path.stat().st_size <= 256 * 1024:
+                    receipt = json.loads(path.read_text(encoding="utf-8"))
+                    if not isinstance(receipt, dict):
+                        return result
+                    players = receipt.get("bots", [])
+                    if isinstance(players, list) and len(players) <= 4 and all(isinstance(p, dict) for p in players):
+                        result["players"] = [{key: p[key] for key in
+                            ("id", "name", "joined", "slot", "network_id", "requested_team", "force_side", "error") if key in p}
+                            for p in players]
+                        result["joined_count"] = sum(p.get("joined") is True for p in players)
+                    if not self.bots_error:
+                        if receipt.get("result") == "failed":
+                            result["state"] = "failed"
+                            result["error"] = "; ".join(str(e) for e in receipt.get("errors", []))[:1000]
+                        elif result["joined_count"] == result["configured_count"]:
+                            result["state"] = "running"
+            except (OSError, ValueError, TypeError):
+                pass
+        return result
 
     async def update_config(self, value):
         async with self.lock:
@@ -101,6 +175,62 @@ class ServerManager:
                 raise conf.ConfigError("Stop the session before changing its settings.")
             self.config = conf.save(self.config_path, value)
             return self.config
+
+    async def update_bot_behavior(self, value):
+        """Only behavior switches can change while a session is active."""
+        if not isinstance(value, dict) or set(value) != set(BEHAVIOR_FIELDS):
+            raise conf.ConfigError("Supply all three bot behavior switches and no other settings.")
+        async with self.lock:
+            if self.state not in ("stopped", "failed", "running"):
+                raise conf.ConfigError("Wait for session startup or shutdown before changing bot behavior.")
+            checked = conf.validate({**self.config, **value})
+            previous = self.config
+            if self.state == "running" and self.config["bots_enabled"]:
+                path = self.run_dir / "bots-behavior.cfg"
+                write_behavior(path, checked)
+                try:
+                    self.config = conf.save(self.config_path, checked)
+                except BaseException:
+                    write_behavior(path, previous)
+                    raise
+                self.log("Bot behavior updated; running clients reload the rules at their next settings check.")
+            else:
+                self.config = conf.save(self.config_path, checked)
+            return {key: self.config[key] for key in BEHAVIOR_FIELDS}
+
+    async def start_bots(self):
+        if not self.config["bots_enabled"]:
+            return
+        root = Path(__file__).resolve().parents[1]
+        run_dir = self.run_dir.resolve()
+        behavior = run_dir / "bots-behavior.cfg"
+        write_behavior(behavior, self.config)
+        argv = [sys.executable, "-m", "bots.run", "--server-config", str(run_dir / "config.snapshot.json"),
+                "--profiles", ",".join(self.config["bots_profiles"]), "--engine", str(engine_path(self.config)),
+                "--connect", f"127.0.0.1:{self.config['native_port']}", "--runtime", str(run_dir / "bots"),
+                "--behavior-file", str(behavior), "--status-file", str(run_dir / "bots-status.json"), "--managed"]
+        env = os.environ.copy()
+        env.pop("OPENJKDF2_SPECTATOR_FD", None)
+        env.pop("OPENJKDF2_SPECTATOR_GEOMETRY_FD", None)
+        env["PYTHONPATH"] = str(root) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+        await self.spawn("bots", argv, env)
+
+    async def stop_bots(self):
+        proc = self.processes.get("bots")
+        if proc is None:
+            return
+        # All managed bot children share this runner's owned process group.
+        # Signal it even after its leader exits, so a crashed supervisor never
+        # leaves client processes running against a later session.
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(proc.pid, signal.SIGTERM)
+        try:
+            await asyncio.wait_for(proc.wait(), 6)
+        except asyncio.TimeoutError:
+            pass
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(proc.pid, signal.SIGKILL)
+        await proc.wait()
 
     def prepare(self):
         data = Path(self.config["game_data"])
@@ -111,7 +241,7 @@ class ServerManager:
             source = child_casefold(data, dirname)
             target = self.run_dir / dirname
             stage_tree(source, target)
-        # These are original empty disc marker files, never a client patch.
+        # These are original disc marker files, never a client patch.
         # Preserve existing marker names; the engine needs its data-discovery
         # marker before it initializes the dedicated session.
         (self.run_dir / "player").mkdir()
@@ -121,11 +251,13 @@ class ServerManager:
         (self.run_dir / "config.snapshot.json").write_text(json.dumps(self.config, indent=2), encoding="utf-8")
         (self.run_dir / "preflight.json").write_text(json.dumps(self.preflight_result, indent=2), encoding="utf-8")
 
-    async def spawn(self, name, argv, env):
+    async def spawn(self, name, argv, env, *, pass_fds=()):
         kwargs = {"cwd": str(self.run_dir), "env": env, "stdin": asyncio.subprocess.PIPE,
                   "stdout": asyncio.subprocess.PIPE, "stderr": asyncio.subprocess.STDOUT}
         if os.name != "nt":
             kwargs["start_new_session"] = True
+            if pass_fds:
+                kwargs["pass_fds"] = tuple(pass_fds)
         proc = await asyncio.create_subprocess_exec(*argv, **kwargs)
         self.processes[name] = proc
         self.log(f"Started {name} (PID {proc.pid})")
@@ -156,6 +288,14 @@ class ServerManager:
         if generation != self.generation or self.intentional_stop or self.state != "running":
             return
         reason = f"{name} exited with code {code}"
+        if name == "bots":
+            async with self.lock:
+                if generation != self.generation or self.intentional_stop or self.state != "running":
+                    return
+                self.bots_error = reason
+                await self.stop_bots()
+                self.log("Bot roster stopped; the game session remains available to human players.")
+            return
         await self.stop(failure=reason)
         if self.config["auto_restart"] and self.restart_attempts < 3:
             self.restart_attempts += 1
@@ -167,11 +307,22 @@ class ServerManager:
                     self.log(f"Automatic restart failed: {exc}")
 
     async def on_info(self, mode, entry):
+        if self.intentional_stop or self.state not in ("starting", "running"):
+            return
+        self._session_revision += 1
         try:
-            self.session = session_details(entry)
-            self.session["game"] = "mots" if mode else "jk"
+            if mode != (1 if self.config["game"] == "mots" else 0):
+                raise ValueError("Engine descriptor has the wrong game mode.")
+            session = session_details(entry)
+            if (not session["episode"].strip() or not session["map"].strip() or
+                    not 2 <= session["transport_slots"] <= 32 or
+                    not 0 <= session["players"] <= session["max"] or
+                    not 10 <= session["tick_ms"] <= 1000):
+                raise ValueError("Engine descriptor is not a ready dedicated session.")
+            session["game"] = "mots" if mode else "jk"
+            self.session = session
         except (ValueError, TypeError):
-            self.session = {"game": "mots" if mode else "jk", "descriptor_bytes": len(entry)}
+            self.session = None
 
     async def start(self, restarting=False):
         async with self.lock:
@@ -185,6 +336,10 @@ class ServerManager:
             if self.updater:
                 self.updater.acquire_session_lease()
             self.state, self.error = "starting", None
+            self.session = None
+            self._session_revision += 1
+            self.engine_display_backend = None
+            self.bots_error = None
             self.intentional_stop = False
             self.generation += 1
             if not restarting:
@@ -210,9 +365,12 @@ class ServerManager:
                     self.log("Browser content prepared; transfer policy and hashes are available in session status.")
                 token = secrets.token_urlsafe(32)
                 env = os.environ.copy()
-                runtime_dir = self.run_dir / "xdg"
-                runtime_dir.mkdir(mode=0o700)
-                env["XDG_RUNTIME_DIR"] = str(runtime_dir)
+                env.pop("OPENJKDF2_SPECTATOR_FD", None)
+                env.pop("OPENJKDF2_SPECTATOR_GEOMETRY_FD", None)
+                if not env.get("XDG_RUNTIME_DIR"):
+                    runtime_dir = self.run_dir / "xdg"
+                    runtime_dir.mkdir(mode=0o700)
+                    env["XDG_RUNTIME_DIR"] = str(runtime_dir)
                 env.update(OPENJKDF2_GATEWAY_TOKEN=token, OPENJKDF2_GATEWAY_PORT=str(self.config["ipc_port"]),
                            OPENJKDF2_REQUIRE_DP_POOL="1" if self.config["retail_enabled"] else "0",
                            ALSOFT_DRIVERS="null", SDL_AUDIODRIVER="dummy", LIBGL_ALWAYS_SOFTWARE="1")
@@ -223,32 +381,50 @@ class ServerManager:
                     argv.append("-motsCompat")
                 if self.config["mod_dir"]:
                     argv += ["-path", "mod"]
-                if os.name != "nt" and not env.get("DISPLAY"):
-                    xvfb = shutil.which("xvfb-run")
-                    if not xvfb:
-                        raise conf.ConfigError("The engine needs an X display at bootstrap. Install Xvfb or set DISPLAY.")
-                    argv = [xvfb, "-a", "-s", "-screen 0 640x480x24", *argv]
-                self.ipc = NativeIPC(port=self.config["ipc_port"], token=token)
-                self.ipc.subscribe_info(self.on_info)
-                await self.spawn("engine", argv, env)
-                await self.ipc.start()
-                await self.ipc.wait_ready(timeout=40)
-                mode, entry = await self.ipc.info()
-                if mode != (1 if self.config["game"] == "mots" else 0):
-                    raise RuntimeError("Engine started in the wrong game mode.")
-                await self.on_info(mode, entry)
-                self.broker = AdapterBroker(self.ipc, token, self.config["broker_port"], self.log)
-                await self.broker.start()
+                base_env = env.copy()
+                argv, env, self.engine_display_backend = configure_engine(self.config["engine_display"], argv, env)
+                bridge = bridge_env = None
                 if self.config["retail_enabled"]:
-                    bridge_env = env.copy()
+                    bridge_env = base_env.copy()
                     bridge_env.update(JK_GATEWAY_TOKEN=token, JK_GATEWAY_PORT=str(self.config["broker_port"]))
                     if self.config["wine_prefix"]:
                         bridge_env["WINEPREFIX"] = self.config["wine_prefix"]
                     bridge = [self.config["directplay_bridge"], "--pool", str(min(self.config["max_players"], 15))]
                     if os.name != "nt":
                         bridge.insert(0, self.config["wine"])
-                        if not env.get("DISPLAY"):
-                            bridge = [xvfb, "-a", "-s", "-screen 0 640x480x24", *bridge]
+                    # Resolve Wine's independent display before starting core.
+                    bridge, bridge_env = configure_retail(bridge, bridge_env)
+                self.ipc = NativeIPC(port=self.config["ipc_port"], token=token)
+                ipc, generation = self.ipc, self.generation
+                async def receive_info(mode, entry):
+                    if self.ipc is ipc and self.generation == generation:
+                        await self.on_info(mode, entry)
+                def connection_state(connected):
+                    if not connected and self.ipc is ipc and self.generation == generation:
+                        self._session_revision += 1
+                        self.session = None
+                self.ipc.subscribe_info(receive_info)
+                self.ipc.subscribe_state(connection_state)
+                self.spectator = SpectatorController(self.ipc, self.config["spectator_rendering"],
+                    lambda: bool(self.state == "running" and self.ipc and self.ipc.connected and self.session))
+                observer_fds = self.spectator.prepare_launch(env)
+                self.chat_admin = ChatAdminController(self.authority_store, self.ipc, self.log)
+                await self.chat_admin.start()
+                try:
+                    await self.spawn("engine", argv, env, pass_fds=observer_fds)
+                finally:
+                    self.spectator.spawned()
+                await self.ipc.start()
+                await self.ipc.wait_ready(timeout=40)
+                mode, entry = await self.ipc.info()
+                if mode != (1 if self.config["game"] == "mots" else 0):
+                    raise RuntimeError("Engine started in the wrong game mode.")
+                await self.on_info(mode, entry)
+                if self.session is None:
+                    raise RuntimeError("Engine did not provide a valid ready session descriptor.")
+                self.broker = AdapterBroker(self.ipc, token, self.config["broker_port"], self.log)
+                await self.broker.start()
+                if self.config["retail_enabled"]:
                     await self.spawn("directplay", bridge, bridge_env)
                     await asyncio.wait_for(self.broker.pool_ready.wait(), 35)
                 if self.config["web_enabled"]:
@@ -258,9 +434,11 @@ class ServerManager:
                     self.web_runner = web.AppRunner(self.gateway.create_app(), access_log=None)
                     await self.web_runner.setup()
                     await web.TCPSite(self.web_runner, self.config["web_bind"], self.config["web_port"]).start()
+                await self.start_bots()
                 if any(p.returncode is not None for p in self.processes.values()):
                     raise RuntimeError("A server component exited during startup.")
                 self.state, self.started = "running", time.monotonic()
+                self.spectator.start()
                 self.track(self.refresh_status(self.generation), "session-status")
                 self.log("Session running; compatibility qualification is recorded separately in qa/.")
             except BaseException as exc:
@@ -274,14 +452,30 @@ class ServerManager:
     async def refresh_status(self, generation):
         while self.generation == generation and self.state == "running":
             await asyncio.sleep(2)
+            if self.generation != generation or self.state != "running":
+                break
+            ipc, revision = self.ipc, self._session_revision
             try:
-                if self.ipc:
-                    await self.ipc.info(refresh=True)
+                if ipc:
+                    await ipc.info(refresh=True)
             except (ConnectionError, RuntimeError, asyncio.TimeoutError):
-                pass
+                # A late timeout must not clear newer INFO or a restarted run.
+                if self.ipc is ipc and self.generation == generation and self._session_revision == revision:
+                    self.session = None
 
     async def _cleanup(self):
         self.intentional_stop = True
+        self.session = None
+        self._session_revision += 1
+        self.engine_display_backend = None
+        if self.spectator:
+            await self.spectator.close()
+            self.spectator = None
+        if self.chat_admin:
+            await self.chat_admin.close()
+            self.chat_admin = None
+        await self.stop_bots()
+        self.processes.pop("bots", None)
         if self.gateway:
             await self.gateway.close()
             self.gateway = None

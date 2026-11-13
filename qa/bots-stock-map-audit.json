@@ -1,0 +1,332 @@
+{
+  "schema": 1,
+  "scope": "original JKDF2 stock multiplayer maps",
+  "evidence": "read_only_archive_structure_and_pickup_classification",
+  "not_established": [
+    "collision-route reachability",
+    "complete traversal",
+    "CTF captures",
+    "live multiplayer compatibility"
+  ],
+  "classifier_sha256": "ef6d9af90f5f4d016f9e40607e3ac84ac453ac70cd867090990e014660de88e7",
+  "episodes": [
+    {
+      "episode": "jk1mp",
+      "archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+      "missing_maps": [],
+      "maps": [
+        {
+          "map": "m10.jkl",
+          "sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+          "bytes": 250823,
+          "world": {
+            "vertices": 535,
+            "surfaces": 644,
+            "sectors": 69,
+            "things": 266
+          },
+          "authored_things": 66,
+          "player_starts": 16,
+          "path_movers": 0,
+          "item_count": 42,
+          "classified_items": 42,
+          "item_categories": {
+            "ammo": 14,
+            "bacta": 5,
+            "dark": 1,
+            "health": 3,
+            "light": 1,
+            "mana": 5,
+            "shield": 5,
+            "weapon": 8
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": null,
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        },
+        {
+          "map": "m2.jkl",
+          "sha256": "938f8a892bcdc90a7f54f25aed4fd58baba750293c5d01ac2dec68ef170eef9a",
+          "bytes": 419023,
+          "world": {
+            "vertices": 1120,
+            "surfaces": 1217,
+            "sectors": 116,
+            "things": 339
+          },
+          "authored_things": 139,
+          "player_starts": 16,
+          "path_movers": 7,
+          "item_count": 46,
+          "classified_items": 46,
+          "item_categories": {
+            "ammo": 27,
+            "bacta": 1,
+            "damage": 1,
+            "dark": 1,
+            "light": 1,
+            "mana": 2,
+            "shield": 6,
+            "tool": 1,
+            "weapon": 6
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": null,
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        },
+        {
+          "map": "m4.jkl",
+          "sha256": "150eda1c2e6c7f316c8b76a0f2f060ce5d49dcc9ae24bb43e4fb42a5df20d89c",
+          "bytes": 669414,
+          "world": {
+            "vertices": 1980,
+            "surfaces": 1974,
+            "sectors": 164,
+            "things": 349
+          },
+          "authored_things": 149,
+          "player_starts": 17,
+          "path_movers": 20,
+          "item_count": 70,
+          "classified_items": 70,
+          "item_categories": {
+            "ammo": 32,
+            "bacta": 14,
+            "damage": 1,
+            "dark": 1,
+            "health": 5,
+            "light": 2,
+            "shield": 8,
+            "supershield": 1,
+            "weapon": 6
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": null,
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        },
+        {
+          "map": "m5.jkl",
+          "sha256": "61713ac79aa60bba1b558f8457a1351f720b076c242469110975ac26b2dcff38",
+          "bytes": 1411983,
+          "world": {
+            "vertices": 4539,
+            "surfaces": 4361,
+            "sectors": 379,
+            "things": 385
+          },
+          "authored_things": 185,
+          "player_starts": 16,
+          "path_movers": 8,
+          "item_count": 129,
+          "classified_items": 129,
+          "item_categories": {
+            "ammo": 72,
+            "bacta": 2,
+            "damage": 1,
+            "dark": 1,
+            "health": 15,
+            "light": 2,
+            "mana": 2,
+            "revive": 1,
+            "shield": 13,
+            "weapon": 20
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": null,
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        },
+        {
+          "map": "m_boss15.jkl",
+          "sha256": "1f8502deba0220a3f39a2a3fb2f638ecf71b214f127b74d47ac482194e907458",
+          "bytes": 323132,
+          "world": {
+            "vertices": 638,
+            "surfaces": 782,
+            "sectors": 68,
+            "things": 313
+          },
+          "authored_things": 113,
+          "player_starts": 16,
+          "path_movers": 3,
+          "item_count": 16,
+          "classified_items": 16,
+          "item_categories": {
+            "bacta": 3,
+            "dark": 1,
+            "light": 1,
+            "mana": 5,
+            "revive": 2,
+            "shield": 3,
+            "supershield": 1
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": null,
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        },
+        {
+          "map": "m_boss17.jkl",
+          "sha256": "5c0795709ff3f2da525d0ad9ce4a3e41b13445febc1b5f88f727c864b606349f",
+          "bytes": 231156,
+          "world": {
+            "vertices": 477,
+            "surfaces": 594,
+            "sectors": 62,
+            "things": 241
+          },
+          "authored_things": 41,
+          "player_starts": 16,
+          "path_movers": 0,
+          "item_count": 13,
+          "classified_items": 13,
+          "item_categories": {
+            "bacta": 2,
+            "dark": 1,
+            "health": 5,
+            "light": 1,
+            "mana": 4
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": null,
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "episode": "jk1ctf",
+      "archive_sha256": "da98fe3fc769168f1bb562cc1f6532560b12d8e920fd6c34586d69b424b5b1fc",
+      "missing_maps": [],
+      "maps": [
+        {
+          "map": "c1.jkl",
+          "sha256": "349fb5beffba7c84fd573fe1184f3fbb569d4fcdad07d2d9b26fcb8afdb849e0",
+          "bytes": 931612,
+          "world": {
+            "vertices": 2829,
+            "surfaces": 3081,
+            "sectors": 289,
+            "things": 359
+          },
+          "authored_things": 159,
+          "player_starts": 32,
+          "path_movers": 1,
+          "item_count": 90,
+          "classified_items": 90,
+          "item_categories": {
+            "ammo": 56,
+            "bacta": 2,
+            "damage": 1,
+            "dark": 1,
+            "flag": 2,
+            "health": 8,
+            "light": 1,
+            "shield": 8,
+            "supershield": 2,
+            "weapon": 9
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": {
+            "validated": true,
+            "flags": 2,
+            "bases": 2,
+            "selection_sectors": 2,
+            "team_selection": "walk_into_mark_sector",
+            "capture": "touch_own_flag_at_home_while_carrying_enemy_flag"
+          },
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        },
+        {
+          "map": "c2.jkl",
+          "sha256": "bc9975eb3c93ee45e83928307d27dfd5d8f94ad4eea3216fa3fecf784e593ade",
+          "bytes": 1552892,
+          "world": {
+            "vertices": 5106,
+            "surfaces": 4778,
+            "sectors": 359,
+            "things": 455
+          },
+          "authored_things": 255,
+          "player_starts": 32,
+          "path_movers": 7,
+          "item_count": 133,
+          "classified_items": 133,
+          "item_categories": {
+            "ammo": 74,
+            "bacta": 4,
+            "damage": 2,
+            "dark": 1,
+            "flag": 2,
+            "health": 16,
+            "light": 1,
+            "mana": 5,
+            "revive": 1,
+            "shield": 16,
+            "supershield": 2,
+            "weapon": 9
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": {
+            "validated": true,
+            "flags": 2,
+            "bases": 2,
+            "selection_sectors": 2,
+            "team_selection": "walk_into_mark_sector",
+            "capture": "touch_own_flag_at_home_while_carrying_enemy_flag"
+          },
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        },
+        {
+          "map": "c3.jkl",
+          "sha256": "b4d804591cebebbd59f05ad42a8e059178dc468e24172bd6bc5b7d6ba1c2f0a7",
+          "bytes": 3313579,
+          "world": {
+            "vertices": 9871,
+            "surfaces": 9548,
+            "sectors": 794,
+            "things": 545
+          },
+          "authored_things": 345,
+          "player_starts": 32,
+          "path_movers": 39,
+          "item_count": 161,
+          "classified_items": 161,
+          "item_categories": {
+            "ammo": 63,
+            "bacta": 13,
+            "damage": 1,
+            "dark": 2,
+            "flag": 2,
+            "health": 30,
+            "key": 2,
+            "light": 1,
+            "mana": 3,
+            "shield": 14,
+            "supershield": 1,
+            "weapon": 29
+          },
+          "unclassified_templates": {},
+          "ctf_bindings": {
+            "validated": true,
+            "flags": 2,
+            "bases": 2,
+            "selection_sectors": 2,
+            "team_selection": "walk_into_mark_sector",
+            "capture": "touch_own_flag_at_home_while_carrying_enemy_flag"
+          },
+          "errors": [],
+          "status": "structure_and_pickup_catalog_pass"
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "status": "pass"
+}

@@ -1,0 +1,499 @@
+{
+  "version": 1,
+  "kind": "reconstruction-native-smoke",
+  "scope": "Two reconstructed ordinary-client bots against local existing dedicated server; JK1MP/m2.jkl rank0 FFA. Logs and one bounded read-only bot-state probe. No observations imported from lost earlier prototype runs.",
+  "bot_binary_sha256": "4c7f4a314683f849338a3d490eed744ee087c9adb5e847ba6636c799cd5a5dad",
+  "engine_base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "started_at": "2026-10-25T03:30:28+00:00",
+  "finished_at": "2026-10-25T03:33:08+00:00",
+  "termination": "Owned launcher stopped on SIGINT; its two child process groups received SIGTERM (-15).",
+  "bots": [
+    {
+      "id": "boba_fett",
+      "name": "Bot_BobaFett",
+      "requested_model": "kyh4.3do",
+      "requested_sound": "kybobafett.snd",
+      "slot": 2,
+      "network_id": 3,
+      "joined_at": "2026-10-25T03:30:39+00:00",
+      "nodes": 571,
+      "directed_edges": 5301,
+      "status_samples": 14,
+      "sampled_sectors": [
+        61
+      ],
+      "maximum_sampled_displacement": 1.9741,
+      "health_range": [
+        82.9,
+        100.0
+      ],
+      "target_slots_observed": [],
+      "chat_lines": [
+        "BOT_CHAT event=spawn text=Checking the exits before the next pursuit."
+      ],
+      "evidence_sha256": "29eff61d7cbb7622660d1ce60d2dd85b943d1375f3d9fc04acfc8998707da25c",
+      "status_evidence": [
+        {
+          "time": 10.0,
+          "sector": 61,
+          "position": [
+            -0.308,
+            -0.135,
+            0.12
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 20.0,
+          "sector": 61,
+          "position": [
+            -0.308,
+            -0.135,
+            0.195
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 30.0,
+          "sector": 61,
+          "position": [
+            -0.308,
+            -0.135,
+            0.12
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 40.1,
+          "sector": 61,
+          "position": [
+            -0.308,
+            -0.135,
+            0.119
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 50.1,
+          "sector": 61,
+          "position": [
+            -0.898,
+            -0.051,
+            0.12
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 60.1,
+          "sector": 61,
+          "position": [
+            -0.357,
+            -1.935,
+            0.12
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 70.1,
+          "sector": 61,
+          "position": [
+            -0.357,
+            -1.935,
+            0.354
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 80.2,
+          "sector": 61,
+          "position": [
+            -0.357,
+            -1.935,
+            0.12
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 90.2,
+          "sector": 61,
+          "position": [
+            -0.357,
+            -1.935,
+            0.299
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 100.2,
+          "sector": 61,
+          "position": [
+            -0.49,
+            -1.84,
+            0.12
+          ],
+          "health": 97.6,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 110.3,
+          "sector": 61,
+          "position": [
+            -0.49,
+            -1.84,
+            0.125
+          ],
+          "health": 82.9,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 120.3,
+          "sector": 61,
+          "position": [
+            -0.49,
+            -1.84,
+            0.12
+          ],
+          "health": 82.9,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 130.3,
+          "sector": 61,
+          "position": [
+            -0.49,
+            -1.84,
+            0.12
+          ],
+          "health": 82.9,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 140.3,
+          "sector": 61,
+          "position": [
+            -0.49,
+            -1.84,
+            0.242
+          ],
+          "health": 82.9,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        }
+      ]
+    },
+    {
+      "id": "jan_ors",
+      "name": "Bot_JanOrs",
+      "requested_model": "kya10.3do",
+      "requested_sound": "kyfemale.snd",
+      "slot": 1,
+      "network_id": 2,
+      "joined_at": "2026-10-25T03:30:33+00:00",
+      "nodes": 571,
+      "directed_edges": 5301,
+      "status_samples": 15,
+      "sampled_sectors": [
+        10,
+        11,
+        44,
+        49,
+        52,
+        56,
+        58
+      ],
+      "maximum_sampled_displacement": 7.5336,
+      "health_range": [
+        98.1,
+        100.0
+      ],
+      "target_slots_observed": [
+        2
+      ],
+      "chat_lines": [
+        "BOT_CHAT event=spawn text=Equipment check complete. Moving out."
+      ],
+      "evidence_sha256": "8fc398217b55f8847af4e41db0b374c6399267ecad5fd2f9de077a1e32b36f62",
+      "status_evidence": [
+        {
+          "time": 10.0,
+          "sector": 52,
+          "position": [
+            -5.307,
+            -1.767,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 20.1,
+          "sector": 49,
+          "position": [
+            -5.815,
+            -1.105,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 30.1,
+          "sector": 44,
+          "position": [
+            -7.578,
+            -0.955,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 40.1,
+          "sector": 44,
+          "position": [
+            -7.927,
+            -1.865,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 50.1,
+          "sector": 49,
+          "position": [
+            -5.791,
+            -1.072,
+            1.418
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 60.1,
+          "sector": 52,
+          "position": [
+            -5.308,
+            -1.648,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 70.2,
+          "sector": 56,
+          "position": [
+            -3.968,
+            -1.108,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 80.2,
+          "sector": 56,
+          "position": [
+            -2.752,
+            -1.8,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 90.2,
+          "sector": 58,
+          "position": [
+            -1.067,
+            -1.248,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": -1,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 100.3,
+          "sector": 11,
+          "position": [
+            -0.857,
+            0.737,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": 2,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 110.3,
+          "sector": 11,
+          "position": [
+            -1.002,
+            -0.265,
+            1.42
+          ],
+          "health": 100.0,
+          "weapon": 2,
+          "target": 2,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 120.3,
+          "sector": 10,
+          "position": [
+            -0.657,
+            -0.21,
+            0.52
+          ],
+          "health": 98.1,
+          "weapon": 2,
+          "target": 2,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 130.3,
+          "sector": 10,
+          "position": [
+            -0.657,
+            -0.21,
+            0.686
+          ],
+          "health": 98.1,
+          "weapon": 2,
+          "target": 2,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 140.3,
+          "sector": 10,
+          "position": [
+            -0.657,
+            -0.21,
+            0.574
+          ],
+          "health": 98.1,
+          "weapon": 2,
+          "target": 2,
+          "kills": 0,
+          "deaths": 0
+        },
+        {
+          "time": 150.4,
+          "sector": 10,
+          "position": [
+            -0.657,
+            -0.21,
+            0.52
+          ],
+          "health": 98.1,
+          "weapon": 2,
+          "target": 2,
+          "kills": 0,
+          "deaths": 0
+        }
+      ]
+    }
+  ],
+  "claims": {
+    "ordinary_bot_joins": true,
+    "autonomous_navigation": true,
+    "automatic_navigation_graph": true,
+    "persona_chat_emitted": true,
+    "opponent_acquisition": true,
+    "local_health_loss_observed": true,
+    "kills_observed": false,
+    "respawns_observed": false,
+    "retail_human_compatibility_qualified": false,
+    "browser_human_compatibility_qualified": false,
+    "all_navigation_solved": false
+  },
+  "limitations": [
+    "Status samples are ten seconds apart; sampled displacement is not full path distance.",
+    "Local health loss coincided with opponent acquisition; these logs do not identify projectile source or independently distinguish all combat from fall damage.",
+    "Boba showed prolonged stalls masked by vertical recovery jumps; fixes were made after this build and require a new live run.",
+    "This is evidence for SHA256 4c7f4a314683f849338a3d490eed744ee087c9adb5e847ba6636c799cd5a5dad only."
+  ]
+}

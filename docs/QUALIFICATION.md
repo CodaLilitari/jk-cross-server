@@ -2,14 +2,124 @@
 
 This report accompanies a development build of JK Cross Server. It distinguishes actual game-client behavior from transport fixtures and records the particular clients used. A compatibility result for one pinned build does not automatically qualify every release or mod.
 
+## Host spectator refresh — 2026-10-28
+
+This section records fresh verification of the recovered development checkout.
+The dedicated core was built from source in a new build directory, including
+all 206 application translation units and enabled pinned bundled dependencies.
+No application or bundled dependency objects were reused from the lost
+environment. The current core SHA-256 is
+`af0d99d232da3d77a3bbd87dde917bd824775815df9ec420411452701f29e572`.
+The [native build receipt](../qa/native-observer-build.json) records the source,
+dependency, patch and artifact identities. The
+[manager recovery receipt](../qa/host-spectator-manager-recovery.json)
+distinguishes the exact recovered observer controller from reconstructed
+manager and test sources; the results below were rerun against this checkout.
+
+### Fresh automated and packaging checks
+
+| Check | Observed result and scope | Evidence |
+| --- | --- | --- |
+| Manager and feature Python discovery | 159 passed, including current-descriptor readiness, separate core/Wine display handling, observer authentication, bounded frames, lifecycle cleanup and the lost-enable-reply lease regression. | [Manager and transport test receipt](../qa/host-spectator-tests.json) |
+| Web gateway discovery | 27 passed with both unchanged published-JavaScript transport and asset-reconstruction oracles enabled; no skips. These oracles exercise client functions without starting the full game. | [Manager and transport test receipt](../qa/host-spectator-tests.json) |
+| Panel and spectator JavaScript | 16 named cases passed. The recorded command uses `--test-isolation=none` so the result includes each named case. | [Manager and transport test receipt](../qa/host-spectator-tests.json) |
+| Existing DirectPlay C programs | All 3 programs passed: protocol layouts, departure policy and surrogate-pool lifecycle. | [Manager and transport test receipt](../qa/host-spectator-tests.json) |
+| Native server, bot and observer fixtures | All 8 existing native runners and 12 observer behavior groups passed. These use actual patched translation units, controlled fixtures and isolated local socketpairs. | [Native regressions](../qa/native-observer-regressions.json) |
+| Native packaging | 2 focused packager tests passed; all 218 archived object/library inputs were verified. Supplied-object relinking reproduced the packaged core byte for byte. | [Packaging verification](../qa/native-observer-packaging.json) |
+
+The final recorded suites have no failures, errors or skips. Automated fixtures
+and packaging checks are distinct from the live game observations below.
+The [final verification receipt](../qa/host-spectator-final-verification.json)
+records the later complete rerun, its 14 commands and 69 source/test hashes;
+the recorded inputs remained unchanged during that run.
+
+The [real display startup receipt](../qa/host-spectator-display-live.json)
+records two additional isolated starts of the final packaged core on stock JK:
+`auto` selected offscreen with ambient display variables absent, and explicit
+`xvfb` started its own Xvfb process. Each started with the view closed, reported
+a ready zero-player session, and produced a nonconstant 640 × 360 RGBA frame
+after opening the free camera. Closing each manager cleared its session,
+connection and tasks, with no owned process left running. The Xvfb wrapper's
+exited engine/Xvfb remained as zombie entries awaiting PID 1's reaper; this
+environment-specific cleanup observation is retained in the receipt. These
+checks used no game clients, bots, retail bridge or browser HTTP server.
+
+### Actual JK session and host camera
+
+The fresh local session used stock `JK1MP/m2.jkl`, the unchanged native client,
+the unchanged published JKWeb client, and two actual packaged player bots in
+the same running match while the host observer was active. The native client
+joined through its normal menus, displayed the world/HUD, moved while followed,
+and departed through the ordinary in-game Abort/Yes flow. Its original-source
+identity is recorded in the [native client provenance](../qa/native-client-observer-provenance.json),
+and its live observations are in the
+[native client receipt](../qa/host-spectator-native-client.json).
+
+The published browser client also entered the rendered world through its
+normal menus, moved and turned, and completed a normal death/respawn while the
+observer continued following the same peer and connection generation. It then
+departed through Escape → Abort → Yes. The
+[browser client receipt](../qa/host-spectator-browser-client.json) records the
+unchanged published JavaScript/WASM hashes and the observed camera poses.
+For both clients, departure returned the observer to free-camera mode and an
+attempt to follow the departed identity returned HTTP 409. The same core
+process, PID 22478, remained running as the joined-player count changed from
+4 to 3 to 2, leaving the two bots in the match. These observations do not add a
+fresh original-retail participant to the session.
+The [shared-cohort receipt](../qa/host-spectator-shared-cohort.json) records the
+four joined identities and the active observer in that same match.
+
+The [live panel receipt](../qa/host-spectator-live-panel.json) separately records
+authenticated view opening/closing, a full-height 640 × 360 frame, free-camera
+travel through the floor, released input stopping movement, following a current
+player, control reacquisition after reload, and correct horizontal look
+direction. The engine process and player count remained unchanged by camera
+controls. Layout checks passed at 1440, 390 and 320 pixels with no page errors.
+
+The [live lease receipt](../qa/host-spectator-lease-live.json) records 5,764
+authenticated frame responses over 1,243.36 seconds. After frame requests
+stopped, the observer was off at the 6.5-second check, while the same core and
+two bots remained in the match. Subsequent server shutdown cleared the session,
+connection and process status and released the owned core, bot, panel and
+browser processes. This is a bounded local observation, not a long-duration
+soak result.
+
+The initial host view uses the packaged Linux server and a Unix inherited frame
+channel, with 640 × 360 RGBA frames capped at 5 fps. The observer is a separate
+camera with no game actor, joined identity or additional player slot. Its frame
+stream and typed controls remain on the private supervisor boundary; the game
+continues when the view closes. The game-facing browser gateway, published
+client assets, packaged bot components, and DirectPlay adapter code/binary
+remain unchanged as recorded in the
+[component preservation receipt](../qa/host-spectator-component-preservation.json).
+
+### Retail attempt and qualification limits
+
+The fresh original-retail attempt was blocked before either the game or the
+DirectPlay bridge launched. Wine 9 i386 child execution was unavailable on the
+host kernel, and the QEMU-assisted prefix bootstrap failed to load
+`kernel32.dll` with status `c0000135`. The original Windows files were rechecked
+unchanged. The [retail attempt receipt](../qa/host-spectator-retail-attempt.json)
+records the failed setup stage, bounded diagnostics and cleanup. The preserved
+adapter and passing C regressions do not establish a fresh retail gameplay pass.
+
+No fresh acceptance is claimed here for original-retail gameplay, MotS, CTF,
+NAT traversal, public Internet conditions or a long-duration soak. The JK
+movement, respawn and observer cases do not establish exhaustive weapon,
+force-power, damage or mod parity. Historical receipts below retain their
+original dates, binaries, scope and limitations; they are not new tests of this
+checkout.
+
 ## Original JK adapter corrections — 2026-10-25
 
-The current packaged DirectPlay gateway has SHA-256
+The historical main-branch adapter checkpoint used DirectPlay gateway SHA-256
 `73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95`.
-This integration imports only the adapter's JK score-layout correction,
-verified-departure policy, binary, tests and supporting documentation. It does
-not change the native engine, browser transport, updater, dependencies or
-version, and does not include the separate bot prototype.
+That checkpoint imported the adapter's JK score-layout correction,
+verified-departure policy, binary, tests and supporting documentation without
+the bot prototype. This feature branch retains those corrections and its
+later bot/admin, reconnect and DirectPlay surrogate lifecycle behavior.
+The current artifact identities are recorded in `SHA256SUMS`; the hashes below
+identify historical test binaries, not a new qualification of this checkout.
 
 | Check | Observed result and limit | Evidence |
 | --- | --- | --- |
@@ -22,11 +132,11 @@ These three receipts were produced in the separate prototype worktree at
 commit [`e7e1ed64128e95d0a091d169673b34194e80ea03`](https://gitlab.com/codalilitari/jk-cross-server/-/commit/e7e1ed64128e95d0a091d169673b34194e80ea03).
 Their test sessions used four bot clients as external fixture participants;
 the recorded bot names, binary hashes and process IDs are retained as test
-provenance, not as components of this main-branch integration. Adjacent
-provenance fields locate the excluded baseline bot receipt at that immutable
+provenance. This feature branch includes the bot implementation. Adjacent
+provenance fields locate the baseline bot receipt at that immutable
 source commit. Raw evidence inventories retain filenames and digests, rather
 than packaging the original screenshots, observations and runtime logs.
-Importing these receipts does not represent a fresh live test of main.
+Importing these receipts does not represent a fresh live test of the merged feature checkout.
 
 The original failure's root cause was not established. The final natural
 departure test verifies continuity, and the compiled policy tests verify its
@@ -187,7 +297,7 @@ preceding three-family gameplay receipts concern the stock sessions.
 
 ## Limits of this build
 
-Mixed sessions have up to 15 configured human seats; stock maps can impose lower practical limits. Native/browser sessions with the retail adapter disabled can configure up to 31. The dedicated host uses an additional engine slot. Real DirectPlay surrogate objects can inflate the count shown by the original retail session browser. The administration count uses the simulation's fully joined human count.
+Mixed sessions support up to 15 configured slots; native/browser sessions with the retail adapter disabled can configure up to 31. These totals include the dedicated host, leaving at most 14 or 30 playing clients respectively, shared by humans and bots. Stock maps can impose lower practical spawn limits. Real DirectPlay surrogate objects can inflate the count shown by the original retail session browser. The administration count uses the simulation's fully joined players.
 
 The default MotS native wire profile targets the pinned native client's 16-bit absolute-CreateThing sector reader. A corrected 32-bit native reader requires the documented server environment option. Both profiles cannot be inferred automatically from the client's connection.
 

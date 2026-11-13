@@ -1,0 +1,282 @@
+{
+  "schema": 1,
+  "title": "Final Python discovery after surrogate identity lifecycle integration",
+  "status": "Passed after the focused nine-case updater rerun following disk cleanup. All 149 distinct tests now have a passing result; 158 test executions include the nine retained initial disk-space failures.",
+  "recorded_utc": "2026-10-25T08:35:04.130306+00:00",
+  "started_utc": "2026-10-25T08:31:36.619864+00:00",
+  "finished_utc": "2026-10-25T08:31:50.071594+00:00",
+  "working_directory": "jk-cross-server repository root",
+  "python": "Python 3.12.14",
+  "node": "v24.22.1",
+  "execution": {
+    "full_discovery_runs_per_collection": 1,
+    "separate_collections_reason": "tests/ is the main test directory; web_gateway/ is a separate Python package whose tests use relative imports and require discovery with -t .",
+    "permission_scope": "Authorized escalation for owned temporary loopback servers, owned process-group fixtures, and actual filesystem permission checks. No live game input or external service calls were requested.",
+    "environment": {
+      "JKDF2WEB_CLIENT_DIR": "../bot-qa/browser-client (existing unchanged cloudflare-38 build)"
+    },
+    "published_js_sha256": "4ae0de474cc2ae817c6162fe21a6ac4b73c573d311884253cf002aedc6a46bb0",
+    "test_ids_unique": true,
+    "production_edited": false,
+    "source_hashes_unchanged_during_run": true,
+    "full_discovery_retried": false
+  },
+  "totals_initial": {
+    "tests_run": 149,
+    "passed": 140,
+    "failed": 7,
+    "errors": 2,
+    "skipped": 0
+  },
+  "collections": [
+    {
+      "collection": "tests",
+      "command": [
+        "../bot-deps/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "started_utc": "2026-10-25T08:31:36.674833+00:00",
+      "elapsed_seconds": 10.975,
+      "exit_code": 1,
+      "tests_run": 122,
+      "passed": 113,
+      "failed": 7,
+      "errors": 2,
+      "skipped": 0,
+      "test_modules": {
+        "test_authority": 28,
+        "test_bot_manager": 9,
+        "test_bot_maps": 4,
+        "test_bots": 16,
+        "test_chat_admin": 10,
+        "test_content_ctf": 1,
+        "test_launcher": 1,
+        "test_manager": 9,
+        "test_release_packaging": 6,
+        "test_surrogate_pool": 11,
+        "test_updater": 17,
+        "test_updates": 10
+      },
+      "failure_test_ids": [
+        "test_updater.UpdaterTests.test_another_session_blocks_install_and_old_panel_cannot_start_after_update",
+        "test_updater.UpdaterTests.test_install_preserves_local_data_modes_and_removes_obsolete_managed_file",
+        "test_updater.CrashRecoveryTests.test_actual_process_death_recovers_before_server_start",
+        "test_updater.UpdaterTests.test_bad_archive_metadata_and_python_are_rejected_before_install",
+        "test_updater.UpdaterTests.test_configured_local_directory_and_symlink_are_protected",
+        "test_updater.UpdaterTests.test_dependency_changes_require_manual_install",
+        "test_updater.UpdaterTests.test_forged_inner_file_and_unlisted_file_are_rejected",
+        "test_updater.UpdaterTests.test_mid_install_failure_restores_entire_old_release",
+        "test_updater.UpdaterTests.test_modified_managed_file_and_untracked_collision_are_preserved"
+      ],
+      "private_log_basename": "final-python-tests.log",
+      "private_log_sha256": "ed66e266c5d16663b0b614ba4d785d5a19d03c0d17ba7eca76090ae35e8a8bcf"
+    },
+    {
+      "collection": "web_gateway",
+      "command": [
+        "../bot-deps/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "web_gateway",
+        "-t",
+        ".",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "started_utc": "2026-10-25T08:31:47.649853+00:00",
+      "elapsed_seconds": 2.419,
+      "exit_code": 0,
+      "tests_run": 27,
+      "passed": 27,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "test_modules": {
+        "web_gateway.test_admin": 4,
+        "web_gateway.test_assets": 11,
+        "web_gateway.test_gateway": 11,
+        "web_gateway.test_published_client": 1
+      },
+      "failure_test_ids": [],
+      "private_log_basename": "final-python-web_gateway.log",
+      "private_log_sha256": "c700173493df79e2075b5f4a870936aa42bba8d53e3d2fbd370e9d23d7bc9cbe"
+    }
+  ],
+  "initial_failures": [
+    {
+      "test_id": "test_updater.UpdaterTests.test_another_session_blocks_install_and_old_panel_cannot_start_after_update",
+      "outcome": "error",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    },
+    {
+      "test_id": "test_updater.UpdaterTests.test_install_preserves_local_data_modes_and_removes_obsolete_managed_file",
+      "outcome": "error",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    },
+    {
+      "test_id": "test_updater.CrashRecoveryTests.test_actual_process_death_recovers_before_server_start",
+      "outcome": "fail",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    },
+    {
+      "test_id": "test_updater.UpdaterTests.test_bad_archive_metadata_and_python_are_rejected_before_install",
+      "outcome": "fail",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    },
+    {
+      "test_id": "test_updater.UpdaterTests.test_configured_local_directory_and_symlink_are_protected",
+      "outcome": "fail",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    },
+    {
+      "test_id": "test_updater.UpdaterTests.test_dependency_changes_require_manual_install",
+      "outcome": "fail",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    },
+    {
+      "test_id": "test_updater.UpdaterTests.test_forged_inner_file_and_unlisted_file_are_rejected",
+      "outcome": "fail",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    },
+    {
+      "test_id": "test_updater.UpdaterTests.test_mid_install_failure_restores_entire_old_release",
+      "outcome": "fail",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    },
+    {
+      "test_id": "test_updater.UpdaterTests.test_modified_managed_file_and_untracked_collision_are_preserved",
+      "outcome": "fail",
+      "cause": "The real updater disk-space guard raised UpdateError: Not enough free disk space to stage the update and retain a backup. The intended later assertion or crash-recovery point was not reached."
+    }
+  ],
+  "disk_observation": {
+    "observed_utc": "2026-10-25T08:32:29.830751+00:00",
+    "repository_filesystem": {
+      "total": 33770192896,
+      "used": 33466314752,
+      "free": 0
+    },
+    "tmp_filesystem": {
+      "total": 33770192896,
+      "used": 33466314752,
+      "free": 0
+    },
+    "source_guard": "manager/updater.py: before transaction creation, available space must be at least current managed-file sizes plus 16 MiB. Current available space is zero.",
+    "interpretation": "All nine initial failures reached this guard while the filesystem reported zero available bytes. The focused rerun after disk cleanup passed all nine unchanged cases; see targeted_followup for the restored available-space reading."
+  },
+  "regression_summary": "All 149 distinct tests passed across the original two disjoint full discoveries and the focused rerun of nine disk-blocked updater cases. The original main discovery had 113 passes and nine disk-space failures; the gateway discovery had 27 passes. After restoring real available disk space, all nine updater cases passed, including the actual child-process crash-recovery fixture. No production or test source changed between either discovery and the rerun. The eleven new surrogate lifecycle tests passed during the original discovery.",
+  "source_sha256": {
+    "bots/__init__.py": "bcb2d17ad45888a115146a9491ee107f968593ede7cc98a1163b15b69a653893",
+    "bots/map_audit.py": "32804e1c6df6a9ef2dfe12eedfd36d1b69c20d4ec5bc870977c47e6a6e4f11bf",
+    "bots/run.py": "c02f41dee9eeab5330c3e0a564839f2baf09a8093f907affc4fca019f2d2fe23",
+    "bots/settings.py": "59a955450e634c17cb274fb024dde94947746cc03f3fca904ac8aab7b83906c6",
+    "manager/__init__.py": "0473c521e59b406646bd31bd5caae352fd3a450fb68b374dce1c6f58a8fd1618",
+    "manager/admin.py": "5c05aee0bc2fa7ce38bd6c6ac5b98f0019778ac1f45ed6772a32d3763cd19065",
+    "manager/authority.py": "952b4e6013db9857d6a94b3b9881cccf0e15050cd93261f63b901acbe65727ee",
+    "manager/broker.py": "fb1c3df88bff3d5ce18cae659ac4ec6cce60fc99796eb6c12b5327c0c3b0edd6",
+    "manager/chat_admin.py": "1760705d4dc80a645bee9fa681d10369ba7b8827b70f8cc9e309e388ede8bdcb",
+    "manager/config.py": "d8c79e499388be3d6bacf88425dfc3c8319840898d75392e1967c9bc3147a528",
+    "manager/content.py": "d4dae8db1b658f0b545d476b2e324b39c79cee622fd7ac77d8ccc955ca7f7812",
+    "manager/runtime.py": "afc4b863ed8a5b7685ae123ef8c09a3a23d47a6e041b7a030e1676782f28c36a",
+    "manager/updater.py": "5071f083a60437332e52c7c94367964e4c7d1ef90b2c0b44e338646780ef176e",
+    "manager/updates.py": "f9a127c11f6270d799523a8693702d4d1d513276d31e9a5b0a794ed7d8d6ebba",
+    "tests/test_authority.py": "8a0ddf90dee209d2f9a0bed26b7e0c015170e721e7131a6037e21694eccc9f04",
+    "tests/test_bot_manager.py": "efcd71ef809b48096afdfc13db47b5bdb70571525e194ba82bb9e96aac377893",
+    "tests/test_bot_maps.py": "abe799197fdad07b93e69ddb4c2260befcbc26f81a9a6864f5174cc140c5300e",
+    "tests/test_bots.py": "f96801765ff24a8ff6930edd8a01cb8db337eb82dde2fd3fbf2aee295ce75531",
+    "tests/test_chat_admin.py": "d540f59227de6902d2cd27fdd75067a0e50f11cc25f10f016bbb364a4c649e4d",
+    "tests/test_content_ctf.py": "3ec1d14f0c005d42ba6d4be5d61d22ae3e9b12543b6fadc0eab84638981d21f4",
+    "tests/test_launcher.py": "1dbac99731b7ae7934e1ef0ae5e061820fee301e1e0b1a27e2465d4e2eed39d1",
+    "tests/test_manager.py": "57cddaf0b67eff37f942a015917cc067a595dba544c4e742d6e7c4dbb8f728dc",
+    "tests/test_release_packaging.py": "af9e3e4f17478a927bc63f18e47bc2befb0d127a04c118f76fffd752fee3c456",
+    "tests/test_surrogate_pool.py": "0b998b8191277729413da6ace06cdb7022cfdaad02a55780312586bc18e2984e",
+    "tests/test_updater.py": "584b5ca4d382637b30be50fdddd028138a13253a5f877abdd9d837c5e7bfe1ca",
+    "tests/test_updates.py": "47df11f2e9b572918abbdf04116bb52f1fa3d38dc4f895f2a1269e5f3e04faaa",
+    "tools/admin_key.py": "73e8f97cd451290fb2b74312b767bc4f6974ac9c2fee77c39a4a24137f41feb0",
+    "web_gateway/__init__.py": "bd35ba197b4a0279ebefdec96da7756aa2ed41a3e26345e157d5818e8f1021cc",
+    "web_gateway/assets.py": "ac459d0e6f21da8d25f89bbcba58a648e88546e60d778bdf7eb52b3c52f428b8",
+    "web_gateway/fetch_client.py": "189529324455094947b6883fac751fc3702b276eb2c067f23ea4592b082889ca",
+    "web_gateway/gateway.py": "9dba4b358bc2b5090cd3ef90b2feb98170b8d3c45be3908cc9a762c37fadb155",
+    "web_gateway/ipc.py": "d0ea30f81e0f5d35a21f5c47cdf580de160a3fdc390884ca29fabeef1392d6e2",
+    "web_gateway/test_admin.py": "40dc1c240ff7205a1642ef72189619c9419e45dc702aec917fdcf9bebe8942ae",
+    "web_gateway/test_assets.py": "35f8df0937d150f47e240cbcdc0de2f6cdc3ced051b397e3d258d0ea5258cef8",
+    "web_gateway/test_gateway.py": "fb98f5812bfcd84a707b10648e294e190714e6904e2121257ae43cb80e4d1bd4",
+    "web_gateway/test_published_client.py": "838c2575f94418f1abbc6128871b65140a3ec32e4049618b3f4a46f7180ad158"
+  },
+  "limitations": [
+    "This Python suite does not replace native engine, DirectPlay adapter, or actual mixed-client qualification receipts.",
+    "The initial seven updater failures and two updater errors are retained in totals_initial and initial_failures. They were resolved by restoring actual disk space and passing all nine same test cases without source modifications.",
+    "Each full discovery ran exactly once. Only the nine initial updater failures were rerun, for 149 distinct tests and 158 total executions."
+  ],
+  "targeted_followup": {
+    "reason": "The parent removed only verified temporary duplicate archives from ended QA runs. Available disk space was restored; the nine initial updater failures were rerun without source changes.",
+    "started_utc": "2026-10-25T08:34:51.909506+00:00",
+    "finished_utc": "2026-10-25T08:34:52.430851+00:00",
+    "command": [
+      "../bot-deps/bin/python",
+      "-m",
+      "unittest",
+      "tests.test_updater.UpdaterTests.test_another_session_blocks_install_and_old_panel_cannot_start_after_update",
+      "tests.test_updater.UpdaterTests.test_install_preserves_local_data_modes_and_removes_obsolete_managed_file",
+      "tests.test_updater.CrashRecoveryTests.test_actual_process_death_recovers_before_server_start",
+      "tests.test_updater.UpdaterTests.test_bad_archive_metadata_and_python_are_rejected_before_install",
+      "tests.test_updater.UpdaterTests.test_configured_local_directory_and_symlink_are_protected",
+      "tests.test_updater.UpdaterTests.test_dependency_changes_require_manual_install",
+      "tests.test_updater.UpdaterTests.test_forged_inner_file_and_unlisted_file_are_rejected",
+      "tests.test_updater.UpdaterTests.test_mid_install_failure_restores_entire_old_release",
+      "tests.test_updater.UpdaterTests.test_modified_managed_file_and_untracked_collision_are_preserved",
+      "-v"
+    ],
+    "elapsed_seconds": 0.521,
+    "exit_code": 0,
+    "tests_run": 9,
+    "passed": 9,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "test_ids": [
+      "tests.test_updater.UpdaterTests.test_another_session_blocks_install_and_old_panel_cannot_start_after_update",
+      "tests.test_updater.UpdaterTests.test_install_preserves_local_data_modes_and_removes_obsolete_managed_file",
+      "tests.test_updater.CrashRecoveryTests.test_actual_process_death_recovers_before_server_start",
+      "tests.test_updater.UpdaterTests.test_bad_archive_metadata_and_python_are_rejected_before_install",
+      "tests.test_updater.UpdaterTests.test_configured_local_directory_and_symlink_are_protected",
+      "tests.test_updater.UpdaterTests.test_dependency_changes_require_manual_install",
+      "tests.test_updater.UpdaterTests.test_forged_inner_file_and_unlisted_file_are_rejected",
+      "tests.test_updater.UpdaterTests.test_mid_install_failure_restores_entire_old_release",
+      "tests.test_updater.UpdaterTests.test_modified_managed_file_and_untracked_collision_are_preserved"
+    ],
+    "disk_before": {
+      "total": 33770192896,
+      "used": 23984545792,
+      "free": 8050884608
+    },
+    "private_log_basename": "final-python-updater-focused.log",
+    "private_log_sha256": "a2ceb848c8e5ebf6c0cff90c74402401c178981aeddffdfd0d5e79c4433d1b61",
+    "source_hashes_unchanged_from_initial_discovery": true,
+    "full_discovery_repeated": false,
+    "summary_lines": [
+      "Ran 9 tests in 0.386s",
+      "OK"
+    ]
+  },
+  "totals_final": {
+    "distinct_tests": 149,
+    "distinct_tests_with_a_passing_result": 149,
+    "outstanding_failures": 0,
+    "outstanding_errors": 0,
+    "skipped": 0,
+    "total_test_executions": 158,
+    "successful_test_executions": 149,
+    "initial_failed_or_error_executions_retained": 9
+  }
+}

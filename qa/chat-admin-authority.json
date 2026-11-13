@@ -1,0 +1,96 @@
+{
+  "recorded_at": "2026-10-25T06:23:00+00:00",
+  "status": "pass",
+  "scope": "Persistent authority store, proof policy, guarded local API, offline helpers, and rendered control panel; no connected game administration is claimed.",
+  "tests": {
+    "command": "python -m unittest tests.test_authority -v",
+    "count": 28,
+    "seconds": 0.4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "private_log_sha256": "c4279aa7a62874b378095fbbd41472b6a4d3f8154ccc719a223e2f014da623d3"
+  },
+  "rendered_ui": {
+    "scope": "Rendered panel with real AuthorityStore and file:// offline helper; temporary private QA keys only; no game started",
+    "checks": [
+      "Opening rendered panel creates no authority identity or database",
+      "Explicit issue downloads a private inert key; metadata renders without secret in DOM or browser storage",
+      "Rotate downloads new material, revokes old row, and preserves persistent server identity",
+      "Downloaded file:// helper loads external script under CSP and actual Web Crypto proof matches independent HMAC with zero network requests",
+      "Offline helper rejects another server, clears prior proof on input changes, and clears selected key",
+      "Rendered Revoke action persists revoked status and removes active-key actions",
+      "Panel and offline helper have no horizontal overflow at390px; desktop/mobile screenshots captured",
+      "No JavaScript or console errors"
+    ],
+    "javascript_errors": [],
+    "console_errors": [],
+    "status": "pass",
+    "browser": "140.0.7339.16",
+    "offline_request_schemes": [
+      "file"
+    ]
+  },
+  "rendered_revision_note": "Screenshots precede only the final explanatory hint about rejecting challenges forwarded by another player; tested scripts and layout styles are unchanged.",
+  "temporary_qa_cleanup": {
+    "owned_fixture_closed": true,
+    "game_started": false,
+    "private_credentials_and_database_removed": true,
+    "native_human_fixture_touched": false
+  },
+  "protocol_limit": "The offline helper cannot authenticate the chat sender or independently verify a pasted nonce belongs to the operator current client; substituted-challenge phishing/relay resistance is not claimed.",
+  "source_sha256": {
+    "manager/authority.py": "952b4e6013db9857d6a94b3b9881cccf0e15050cd93261f63b901acbe65727ee",
+    "manager/admin.py": "5c05aee0bc2fa7ce38bd6c6ac5b98f0019778ac1f45ed6772a32d3763cd19065",
+    "manager/ui/index.html": "e1db52efe4f18aee4b636c619d7b5b07f3911337e8db553a2e4000dd88ce573c",
+    "manager/ui/app.js": "b208d3133d8555096b5a1229060b72899eed0cb903a5c43f7751fc2826b23012",
+    "manager/ui/style.css": "5b117213bcaf62c4718cd28ed567bcef556542f6ff5f198b9351d2902de394fd",
+    "tools/admin_key.py": "73e8f97cd451290fb2b74312b767bc4f6974ac9c2fee77c39a4a24137f41feb0",
+    "tools/admin-helper.html": "43e484175008fa23f49967cac6df16c7a13baef1741e0ab495d94a11f9e2109d",
+    "tools/admin-helper.js": "baa8c8a2e80d3d9555b712c52499b8fc5cc96052b946c4d6522b7add14171a96",
+    "tools/admin-helper.css": "8dc8e255a458102f6ea3e274f69c183426fe43ca6f900affaa9c73f8d90b935f",
+    "tests/test_authority.py": "8a0ddf90dee209d2f9a0bed26b7e0c015170e721e7131a6037e21694eccc9f04",
+    "docs/CHAT_ADMIN.md": "aaf6fe7a2ae97ed2942d6b682bcf3a4bc5e9a0fadfb0a9d0eee85d5ad9fa7762"
+  },
+  "private_evidence": {
+    "root": "bot-qa/authority-ui",
+    "files": [
+      {
+        "path": "authority-tests.log",
+        "sha256": "c4279aa7a62874b378095fbbd41472b6a4d3f8154ccc719a223e2f014da623d3"
+      },
+      {
+        "path": "check.js",
+        "sha256": "5ad9092d9114696e235315fe18c64b6ada0d2351200fbf15cc3e1c722131c257"
+      },
+      {
+        "path": "cleanup.json",
+        "sha256": "be2ce78deaab784ad3586fc8ff44e8ecdbcdbff70afd51a53e4344b02b05bc79"
+      },
+      {
+        "path": "fixture.py",
+        "sha256": "56aa6cc1d682e829fdd0457c4f4f30e7ac4f91bf691d0fae6b0d04f54bb85a29"
+      },
+      {
+        "path": "helper-desktop.png",
+        "sha256": "536c971aff9ac7acbd5bad2afbf15ad03e1a8ad5844d750e1faee4f640210d80"
+      },
+      {
+        "path": "helper-mobile.png",
+        "sha256": "750dddf6a6cb349a40a5b27895f440dbd3d71dfd85983678506e64156b5e5b1d"
+      },
+      {
+        "path": "panel-desktop.png",
+        "sha256": "5d67add348ddab66101ee63fe5cfb3788eebf747d3b0cb7745596ed36aa85085"
+      },
+      {
+        "path": "panel-mobile.png",
+        "sha256": "3fdfd6ffbfd391b23b12b4f528160ed6137d82db3b79f1aad235825f6ec1fb46"
+      },
+      {
+        "path": "result.json",
+        "sha256": "f17c30c0bd2d8e94c01285fc8f0b470ceb163a278b6dd1e95e953c58ff01e038"
+      }
+    ]
+  }
+}

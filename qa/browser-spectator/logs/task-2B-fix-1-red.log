@@ -1,0 +1,20 @@
+test_stale_activation_epoch_can_retry_after_follow_target_departure (tests.test_spectator_geometry.SpectatorGeometryTests.test_stale_activation_epoch_can_retry_after_follow_target_departure) ... FAIL
+
+======================================================================
+FAIL: test_stale_activation_epoch_can_retry_after_follow_target_departure (tests.test_spectator_geometry.SpectatorGeometryTests.test_stale_activation_epoch_can_retry_after_follow_target_departure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/workspace/scratch/55e850edc256/jk-browser-spectator/tests/test_spectator_geometry.py", line 249, in test_stale_activation_epoch_can_retry_after_follow_target_departure
+    self.assertEqual((await self.geometry(updated))[0], 204)
+AssertionError: 503 != 204
+
+----------------------------------------------------------------------
+Ran 1 test in 1.130s
+
+FAILED (failures=1)

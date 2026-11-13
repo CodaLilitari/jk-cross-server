@@ -47,7 +47,7 @@ python3 directplay/setup_wine.py \
 
 Wine must support 32-bit Windows programs and a win32 prefix. On a host without
 a display, run this setup command through `xvfb-run -a`. The supervisor supplies
-virtual displays for the engine and Wine bridge during subsequent headless
+a separate display environment for the Wine bridge during subsequent headless
 starts. Use `--check-only` to verify the original files and print the setup plan
 without creating a prefix.
 
@@ -156,18 +156,7 @@ not by itself establish successful game synchronization or cross-client play.
 See the project QA receipts for the completed, version-specific gameplay tests
 and any remaining limitations.
 
-The three JK adapter receipts described below originate in the separate
-prototype checkpoint
-[`e7e1ed64128e95d0a091d169673b34194e80ea03`](https://gitlab.com/codalilitari/jk-cross-server/-/commit/e7e1ed64128e95d0a091d169673b34194e80ea03).
-Their sessions used four external bot clients. Those fixture identities and
-historical outcomes remain in the receipts, but this main-branch integration
-contains no bot implementation or bot binary. Adjacent provenance fields
-locate excluded baseline receipts at the immutable source commit. Raw evidence
-inventories retain filenames and hashes; the original screenshots, observations
-and runtime logs are not packaged here. Importing these receipts does not
-represent a fresh live test of main.
-
-The earlier recorded three-client cohorts used stock `JK1MP/m2.jkl` in JK mode and
+The recorded three-client cohorts used stock `JK1MP/m2.jkl` in JK mode and
 `JKM_MP/mdm02_freezer.jkl` in MotS personality mode at rank 7. Each included an
 original retail executable, the unchanged pinned OpenJKDF2 client, and the
 published JKDF2Web JS/WASM. MotS evidence includes actual pistol projectiles
@@ -195,13 +184,6 @@ executable. Earlier gameplay receipts remain historical records and do not
 qualify the new correction. See `qa/retail-jk-score-layout-audit.json` for the
 original-executable evidence and `qa/retail-jk-scoreboard-regression.json` for
 the corrected gateway's build, regression and live scoreboard checks.
-
-The scoreboard run used gateway
-`4ee4d6ab19b0f47ee61f7b6d7bcfdff5f552f06b1851b06df39c17c6106efd07`;
-the later departure run used the packaged gateway
-`73158f1dda3782ab9ab80b175fcf9d08ba576c36db24687bfbb9fbfb29af3c95`.
-The final gateway retains the same corrected `protocol.c`, but the departure
-round did not repeat the live native/retail scoreboard comparison.
 
 Run `make -C directplay test` to exercise independent score-layout fixtures,
 both conversion directions, roster bounds, signed values and the existing

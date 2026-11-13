@@ -3,16 +3,20 @@ from __future__ import annotations
 
 import asyncio
 import hmac
+import io
 import ipaddress
 from pathlib import Path
 import secrets
 from urllib.parse import urlsplit
+import zipfile
 
 from aiohttp import web
 from . import config as conf
 from .content import catalog, preflight
+from .spectator import SpectatorError
 
 UI = Path(__file__).with_name("ui")
+OFFLINE_TOOLS = Path(__file__).resolve().parents[1] / "tools"
 
 
 def create_admin_app(manager, *, port: int | None = 8765, token: str | None = None, updates=None) -> web.Application:
@@ -43,6 +47,8 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
             response = await handler(request)
         except (conf.ConfigError, ValueError, OSError) as exc:
             response = web.json_response({"error": str(exc)}, status=400)
+        except SpectatorError as exc:
+            response = web.json_response({"error": str(exc)}, status=exc.status)
         except (RuntimeError, ConnectionError, TimeoutError) as exc:
             response = web.json_response({"error": str(exc) or type(exc).__name__}, status=500)
         response.headers["Cache-Control"] = "no-store"
@@ -58,7 +64,7 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
 
     async def asset(request):
         name = request.match_info["name"]
-        if name not in ("app.js", "style.css"):
+        if name not in ("app.js", "style.css", "spectator.js", "spectator-geometry.js"):
             raise web.HTTPNotFound()
         return web.FileResponse(UI / name)
 
@@ -68,11 +74,113 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
     async def put_config(request):
         return web.json_response(await manager.update_config(await request.json()))
 
+    async def put_bot_behavior(request):
+        return web.json_response(await manager.update_bot_behavior(await request.json()))
+
+    async def get_bot_profiles(request):
+        from bots.run import load_profiles
+        return web.json_response([{"id": ident, "name": row["name"], "model": row["model"]}
+                                  for ident, row in load_profiles().items()])
+
     async def get_status(request):
         result = manager.status()
         if updates:
             result["updates"] = updates.status()
         return web.json_response(result)
+
+    async def get_spectator(request):
+        return web.json_response(await manager.spectator_status())
+
+    async def put_spectator(request):
+        return web.json_response(await manager.configure_spectator(await request.json()))
+
+    async def put_spectator_input(request):
+        return web.json_response(await manager.spectator_input(await request.json()))
+
+    async def get_spectator_frame(request):
+        if (set(request.query) - {"after", "world_epoch", "control_epoch"} or
+                len(request.query) != len(set(request.query))):
+            raise ValueError("Frame fetch accepts after and optional world/control epochs only.")
+        query = {}
+        for key, text in request.query.items():
+            if not text.isascii() or not text.isdecimal() or len(text) > 10:
+                raise ValueError("Frame counters must be uint32 integers.")
+            query[key] = int(text)
+        frame = manager.spectator_frame(**query)
+        if frame is None:
+            return web.Response(status=204)
+        return web.Response(body=frame["pixels"], content_type="application/octet-stream", headers={
+            "X-JK-Frame-Width": str(frame["width"]), "X-JK-Frame-Height": str(frame["height"]),
+            "X-JK-Frame-Sequence": str(frame["sequence"]),
+            "X-JK-World-Epoch": str(frame["world_epoch"]),
+            "X-JK-Control-Epoch": str(frame["control_epoch"]), "X-JK-Pixel-Format": "RGBA8"})
+
+    async def get_spectator_geometry(request):
+        if (set(request.query) - {"after", "world_epoch", "control_epoch"} or
+                len(request.query) != len(set(request.query)) or
+                not {"world_epoch", "control_epoch"} <= set(request.query)):
+            raise ValueError("Geometry fetch accepts after and requires unique world/control epochs only.")
+        query = {}
+        for key, text in request.query.items():
+            if not text.isascii() or not text.isdecimal() or len(text) > 10:
+                raise ValueError("Geometry counters must be uint32 integers.")
+            query[key] = int(text)
+        envelope = await manager.spectator_geometry(**query)
+        if envelope is None:
+            return web.Response(status=204)
+        return web.Response(body=envelope, content_type="application/octet-stream")
+
+    def authority_store():
+        store = getattr(manager, "authority_store", None)
+        if store is None:
+            raise RuntimeError("Persistent admin authority is unavailable.")
+        return store
+
+    async def get_admin_keys(request):
+        return web.json_response(authority_store().metadata())
+
+    def credential_download(issued):
+        # The body is delivered once as a download; it never enters status,
+        # game configuration, a run directory, a URL or a panel log message.
+        return web.Response(body=issued["credential"].encode("ascii"),
+                            content_type="application/octet-stream", headers={
+                                "Content-Disposition": f'attachment; filename="{issued["filename"]}"',
+                                "Pragma": "no-cache",
+                            })
+
+    async def issue_admin_key(request):
+        body = await request.json()
+        if not isinstance(body, dict) or set(body) != {"label", "capabilities"}:
+            raise ValueError("Issuance accepts only label and capabilities.")
+        issued = authority_store().issue(body["label"], body["capabilities"])
+        return credential_download(issued)
+
+    async def empty_key_action(request):
+        if await request.read():
+            raise ValueError("This key action does not accept a request body.")
+
+    async def revoke_admin_key(request):
+        await empty_key_action(request)
+        return web.json_response(authority_store().revoke(request.match_info["key_id"]))
+
+    async def rotate_admin_key(request):
+        await empty_key_action(request)
+        return credential_download(authority_store().rotate(request.match_info["key_id"]))
+
+    async def offline_admin_helper(request):
+        output = io.BytesIO()
+        with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+            for name in ("admin-helper.html", "admin-helper.js", "admin-helper.css"):
+                bundle.writestr(name, (OFFLINE_TOOLS / name).read_bytes())
+        return web.Response(body=output.getvalue(), content_type="application/zip", headers={
+            "Content-Disposition": 'attachment; filename="jk-admin-offline-helper.zip"',
+        })
+
+    async def offline_admin_cli(request):
+        return web.Response(body=(OFFLINE_TOOLS / "admin_key.py").read_bytes(),
+                            content_type="application/octet-stream", headers={
+                                "Content-Disposition": 'attachment; filename="admin_key.py"',
+                            })
 
     async def supplied_config(request):
         body = await request.json() if request.can_read_body else {}
@@ -114,9 +222,22 @@ def create_admin_app(manager, *, port: int | None = 8765, token: str | None = No
     app = web.Application(middlewares=[guard], client_max_size=128 * 1024)
     app.router.add_get("/", index)
     app.router.add_get("/ui/{name}", asset)
+    app.router.add_get("/admin-helper.zip", offline_admin_helper)
+    app.router.add_get("/admin-helper.py", offline_admin_cli)
     app.router.add_get("/api/config", get_config)
     app.router.add_put("/api/config", put_config)
+    app.router.add_put("/api/bots/behavior", put_bot_behavior)
+    app.router.add_get("/api/bots/profiles", get_bot_profiles)
     app.router.add_get("/api/status", get_status)
+    app.router.add_get("/api/spectator", get_spectator)
+    app.router.add_put("/api/spectator", put_spectator)
+    app.router.add_put("/api/spectator/input", put_spectator_input)
+    app.router.add_get("/api/spectator/frame", get_spectator_frame)
+    app.router.add_get("/api/spectator/geometry", get_spectator_geometry)
+    app.router.add_get("/api/admin-keys", get_admin_keys)
+    app.router.add_post("/api/admin-keys", issue_admin_key)
+    app.router.add_post("/api/admin-keys/{key_id}/revoke", revoke_admin_key)
+    app.router.add_post("/api/admin-keys/{key_id}/rotate", rotate_admin_key)
     app.router.add_post("/api/catalog", get_catalog)
     app.router.add_post("/api/preflight", run_preflight)
     app.router.add_post("/api/start", start)

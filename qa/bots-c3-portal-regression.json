@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "evidence": "controlled_actual_engine_collision_and_navigation_regression_not_live_traversal",
+  "preceding_bot_sha256": "acf75700a6eddaf57f4049172718e56bf1c9a8532e6cf66e5d0907a331cc498c",
+  "map": "c3.jkl",
+  "observed_issue": {
+    "local_graph_component": 1306,
+    "enemy_flag_approach_component": 304,
+    "actual_team": 1,
+    "enemy_flag_pickups_observed": 0
+  },
+  "confirmed_boundary": {
+    "source_sector": 606,
+    "destination_sector": 513,
+    "floor_height_change": 0,
+    "cause": "The .14 portal normal offset leaves the narrow angled corridor. Existing floor nodes cut the wall corner or lack body clearance. The safe reverse direction alone did not establish a bidirectional route."
+  },
+  "correction": "Only if the ordinary .14 portal anchor fails, try .04 with unchanged support and node checks; graph edges retain ordinary collision checks. No per-map names or positions in runtime code.",
+  "verification": {
+    "private_full_map_probe": "Real engine Bot_Walkable, sithCollision and sithIntersect reproduce rejection at the original graph boundary and accept both segments through the .04 point. Owned asset geometry is not included in the repository.",
+    "redistributable_regression": "Two synthetic convex sectors preserve the relevant portal dimensions and use actual engine collision, graph building, and Dijkstra routines.",
+    "checks": [
+      "original .14 anchor rejected",
+      "direct corner-cut rejected",
+      "both .04 supported bend segments accepted",
+      "Dijkstra crosses the bend through the new anchor",
+      "removing the connection makes the destination unreachable",
+      "closed and AI-only portals rejected",
+      "missing support rejected",
+      "query stack balanced"
+    ],
+    "standalone_groups_passed": 3,
+    "combined_strict_driver_groups_passed": 26,
+    "map_audit_tests_passed": 4
+  },
+  "subsequent_live_qualification": "pending",
+  "files": {
+    "native/tests/test_bot_portal_collision.c": "3720fd5881a752033d36bc8cf306018b463d21db36a01701acd01b854e8f524f",
+    "native/tests/run_bot_portal_tests.py": "83dd444ada9e7f868a0aea826015139de50fd952c9780d9e7767d934aeb3093b"
+  }
+}

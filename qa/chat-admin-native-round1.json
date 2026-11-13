@@ -1,0 +1,325 @@
+{
+  "schema": 1,
+  "recorded_epoch": 1792913617.2280953,
+  "scope": "Unchanged native client, first shared admin compatibility run; scoped successes and observed transport limitations",
+  "method": "Normal X11 menus and T-chat input, with O_RDONLY process observation; no client patches, memory writes, injected packets or synthetic player state",
+  "native": {
+    "pid": 109076,
+    "source_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "binary_sha256": "a6a7caec365bbcdd0795541d7c7b32d04f643b1c7fffbe34756f084c98877d33"
+  },
+  "server": {
+    "engine_pid": 154451,
+    "engine_binary_sha256": "6c4c25dd47e698b6a8a7e30876175d140aba8ba7f6fc6e0dbcbf8ef204d4cbee",
+    "adapter_pid": 154476,
+    "bot_supervisor_pid": 154634,
+    "session": "Admin Compatibility QA",
+    "episode": "JK1MP",
+    "rank": 8,
+    "bots": [
+      "Bot_BobaFett",
+      "Bot_JanOrs"
+    ]
+  },
+  "initial_join": {
+    "peer": 15163124,
+    "slot": 3,
+    "generation_observed_at_subsequent_login": 166,
+    "fists": {
+      "inventory_before": 1,
+      "inventory_after": 1,
+      "mesh_before": "fistg.3do",
+      "mesh_after": "fistg.3do"
+    },
+    "bounded_movement": {
+      "before": [
+        1.3018029928207397,
+        -3.5523595809936523,
+        1.4201040267944336
+      ],
+      "after": [
+        0.59297114610672,
+        -3.4574122428894043,
+        1.4201045036315918
+      ],
+      "distance": 0.7151626276094951,
+      "health_before": 99.9927978515625,
+      "health_after": 99.9927978515625,
+      "shields_before": 49.4000358581543,
+      "shields_after": 49.4000358581543
+    }
+  },
+  "unauthorized_command": {
+    "command": "admin next level",
+    "private_native_reply": "Admin permission required for this command. Type admin login.",
+    "map_before": "m2.jkl",
+    "map_after_native": "m2.jkl",
+    "map_after_server": "m2.jkl",
+    "server_running": true,
+    "grants": [],
+    "pass": true
+  },
+  "credential_and_login": {
+    "issued_by": "Root through guarded real panel API, after startup and denial",
+    "key_id": "c18bc0bcad5841f9",
+    "secret_or_proof_published": false,
+    "challenge_received_and_actor_matched": true,
+    "grant": [
+      {
+        "peer": 15163124,
+        "generation": 166,
+        "key_id": "c18bc0bcad5841f9"
+      }
+    ],
+    "private_replies": {
+      "proof": "Admin authenticated for 15 minutes on this connection.",
+      "status": "Admin verified for this connection.",
+      "players": "Player list sent. Use an exact name or #slot to kick."
+    },
+    "pass": true
+  },
+  "simultaneous_roster": {
+    "native": {
+      "peer": 15163124,
+      "slot": 3
+    },
+    "retail": {
+      "peer": 15163131,
+      "slot": 4
+    },
+    "browser": {
+      "peer": 15163125,
+      "slot": 5
+    },
+    "bots": [
+      {
+        "name": "Bot_JanOrs",
+        "peer": 15163123,
+        "slot": 1
+      },
+      {
+        "name": "Bot_BobaFett",
+        "peer": 15163122,
+        "slot": 2
+      }
+    ],
+    "map": "m2.jkl",
+    "scope": "All five appeared together before the later browser reconnect failure. Browser was absent during the targeted kick and map transition."
+  },
+  "targeted_kick": {
+    "actor": {
+      "peer": 15163124,
+      "generation": 166,
+      "slot": 3
+    },
+    "target": {
+      "name": "RetailHuman",
+      "peer": 15163131,
+      "slot": 4
+    },
+    "command": "admin kick #4",
+    "ordinary_enter_epoch": 1792912569.726874,
+    "private_reply": "Kicked player in slot #4.",
+    "reply_observed_epoch": 1792912570.6894133,
+    "target_absent_immediately_after": true,
+    "browser_present_at_kick": false,
+    "browser_limit": "Browser was absent before this kick; no browser survival claim is made.",
+    "map_before": "m2.jkl",
+    "map_after": "m2.jkl",
+    "continuation": {
+      "samples": 33,
+      "seconds": 7.879065990447998,
+      "game_ms_advance": 7896,
+      "native_movement_since_post_kick": 0.14086610080829284,
+      "actors": {
+        "Bot_JanOrs": {
+          "samples": 33,
+          "first": [
+            -8.35391902923584,
+            -1.4244340658187866,
+            1.4201045036315918
+          ],
+          "last": [
+            -8.35391902923584,
+            -1.4244340658187866,
+            1.4201045036315918
+          ],
+          "max_distance_from_first": 0.0
+        },
+        "Bot_BobaFett": {
+          "samples": 33,
+          "first": [
+            0.09721504896879196,
+            -2.0325167179107666,
+            0.1195102259516716
+          ],
+          "last": [
+            -0.6168320178985596,
+            0.00031680776737630367,
+            0.1195102259516716
+          ],
+          "max_distance_from_first": 2.167183181360871
+        },
+        "NativeHuman": {
+          "samples": 33,
+          "first": [
+            0.7354000806808472,
+            -3.452782392501831,
+            1.4201045036315918
+          ],
+          "last": [
+            0.7354000806808472,
+            -3.452782392501831,
+            1.4201045036315918
+          ],
+          "max_distance_from_first": 0.0
+        }
+      },
+      "multiplayer_active_throughout": true,
+      "map_m2_throughout": true,
+      "fists_throughout": true,
+      "remaining_roster_preserved_throughout": true,
+      "bot_translation_limit": "Boba moved2.167 units in the bounded sample. Jan remained present with live actor type10 but its position did not change; movement by both bots is not claimed."
+    },
+    "targeted_kick_pass": true
+  },
+  "authored_map_transition": {
+    "actor_before": {
+      "peer": 15163124,
+      "generation": 166,
+      "slot": 3
+    },
+    "actor_after": {
+      "peer": 15163124,
+      "generation": 175,
+      "slot": 1
+    },
+    "command_count": 1,
+    "ordinary_enter_epoch": 1792913195.9902284,
+    "private_acceptance": "Next level scheduled: m4.jkl (normal 10-second transition).",
+    "acceptance_epoch": 1792913196.9513972,
+    "map_before": "m2.jkl",
+    "map_after": "m4.jkl",
+    "native_first_observed_in_m4_epoch": 1792913237.6868515,
+    "same_engine_and_adapter": true,
+    "normal_score_screen_ok": true,
+    "post_map_denial": "Admin permission required. Type admin login.",
+    "post_map_denial_epoch": 1792913266.5372016,
+    "post_map_grants_before_reauth": [],
+    "same_persistent_key_id": "c18bc0bcad5841f9",
+    "post_map_authentication": "Admin authenticated for 15 minutes on this connection.",
+    "post_map_status": "Admin verified for this connection.",
+    "post_map_grant": [
+      {
+        "peer": 15163124,
+        "generation": 175,
+        "key_id": "c18bc0bcad5841f9"
+      }
+    ],
+    "latest_m4_roster": [
+      {
+        "slot": 1,
+        "peer": 15163124,
+        "name": "NativeHuman",
+        "flags": 7
+      },
+      {
+        "slot": 2,
+        "peer": 15163123,
+        "name": "Bot_JanOrs",
+        "flags": 7
+      },
+      {
+        "slot": 3,
+        "peer": 15163122,
+        "name": "Bot_BobaFett",
+        "flags": 7
+      }
+    ],
+    "browser_scope": "Absent during this transition; no browser transition claim.",
+    "retail_scope": "Root observed the original retail client on the normal score tally until focus+Return at07:28:09; it then returned to MAIN MENU, active0/worldnull, instead of m4. Retail map continuation is not qualified. This is an observed limitation, not a native or bot success claim.",
+    "retail_after_transition": {
+      "observation_owner": "root",
+      "ordinary_tally_acknowledged": "07:28:09 UTC",
+      "result": "MAIN MENU",
+      "multiplayer_active": 0,
+      "world_loaded": false,
+      "reached_m4": false
+    },
+    "pass_native_progression_and_reauth": true
+  },
+  "retail_transition_readonly_followup": {
+    "observed_tally": "Only OK is visible; no Quit button or transition countdown.",
+    "source_implication": "Original GameplayLeave shuts multiplayer before a tally when returning to MAIN; this tally therefore does not establish a pending map load.",
+    "post_event_fixed_address_read": {
+      "epoch": 1792913537.6246002,
+      "pid": 113021,
+      "binary_sha256": "fc6d3e798da1ca940232afef217cd701d280b0f2f55907b398071e7807db548c",
+      "multi_mode_flags": 0,
+      "multiplayer_active": 0,
+      "world": 0,
+      "gui_current": 3,
+      "gui_next": 3
+    },
+    "wire_review": "DSS_ENDLEVEL carries an S32 episode level and a 10-second stock transition. The adapter does not change type56 or the type32 mode word. Server session flags were0.",
+    "limit": "Post-event flags do not reconstruct all earlier client state. Exact retail disconnect cause remains unqualified; no production change was made from this inspection.",
+    "logged_sequence_utc": [
+      {
+        "time": "2026-10-25T07:26:36Z",
+        "event": "Verified native next-level action accepted"
+      },
+      {
+        "time": "2026-10-25T07:26:46Z",
+        "event": "Dedicated engine begins loading m4.jkl"
+      },
+      {
+        "time": "2026-10-25T07:26:47Z",
+        "event": "Adapter session_descriptor_updated"
+      },
+      {
+        "time": "2026-10-25T07:26:53Z",
+        "event": "Adapter retail_transport_leave peer15163132"
+      },
+      {
+        "time": "2026-10-25T07:26:55Z",
+        "event": "Adapter reports retail_clients0"
+      },
+      {
+        "time": "2026-10-25T07:27:08Z",
+        "event": "NativeHuman rejoins m4"
+      },
+      {
+        "time": "2026-10-25T07:27:21Z",
+        "event": "Bot_JanOrs rejoins m4"
+      },
+      {
+        "time": "2026-10-25T07:27:27Z",
+        "event": "Bot_BobaFett rejoins m4"
+      }
+    ],
+    "departure_source_review": "At the exact round1 adapter source hash, JK-mode remove_remote is reached from DPSYS_DESTROYPLAYERORGROUP, or from send-error reconciliation that always logs send_departure_check. No send_departure_check or adapter error exists in this window. The observed leave therefore identifies a DirectPlay player-destruction notification, but not its initiating client/game cause.",
+    "round1_adapter_source_sha256": "d22e2ac1cff4a9d3864fbad1d56b0def3966276b3eb87ebce360305e3dd19059"
+  },
+  "private_evidence_sha256": {
+    "denial-report.json": "1e6d131d0d19d004776632d5d7706da8dd566e5b2c79d19dbca1c2ae1eced041",
+    "auth-report.json": "2e89970315ed62d821f82544f7aba449808854d5fb8ef8414ee2d685103d1743",
+    "refresh-report.json": "fd1cce8c642f38bab137051d703576b42625b9a63c4cb11729f53b5f69435e88",
+    "retail-kick-report.json": "d3c7fd8255879b55b175d0e0950a9eb77c9bfd85385209d7e4d06dab9c8a3330",
+    "next-level-report.json": "8918833a731550b6e681d75087063f77f0323172b82b0b47c90f7d17ef1cfbb7",
+    "full-mixed-roster.json": "b3a64c6832a764c78189a716f638e24e0b51f80e2404cb82296e450c9e565eb1",
+    "unauthorized-next-level.png": "5596b1f908280dd5523b87dbc04b6be2af345b0b3b9fd5c904bc461bf9b1cc5a",
+    "retail-kick-reply.png": "d12280370987ba3c4d7c7278db03e93720dfd439a78ee092b963446a87093c82",
+    "next-level-transition.png": "bdf0a8817bc7d2f9faefe12f7a397656cb70f8570bbbc14eae1ffbc00b52d00a",
+    "m4-reauth-required.png": "2c10d2aff59e8b0d9b7625774513925a1444c189a2ff18a84e4d140967cf68d6",
+    "transition-manager-log-redacted.json": "47eeba4b797611b3daae254d9e7d6a3e65362b2b228d8987ad6c4c342d17fe00"
+  },
+  "private_helper_sha256": "0eb76c65844e08d85dc8c7b671f43d85289efc4ba258476c7b56c643ef721724",
+  "privacy": "Credential remains in the private fixture outside loaded game assets. Structured evidence redacts challenges/proofs. Unchanged client stdout may briefly buffer ordinary proof chat; owned log is sanitized after actions and again after eventual client exit. No raw chat log or credential is part of this receipt.",
+  "pending": [
+    "Same-key authentication after a new panel process",
+    "Same-key authentication after game-only restart",
+    "Live revocation denial",
+    "Browser fresh-identity reconnect and cross-transport actions",
+    "Retail map-continuation qualification"
+  ]
+}

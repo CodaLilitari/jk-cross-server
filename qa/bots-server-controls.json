@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-25T05:56:49+00:00",
+  "status": "pass",
+  "scope": "Server configuration, authenticated control-panel API, managed bot lifecycle, and rendered UI with helper processes. This is not in-game behavior or multiplayer compatibility qualification.",
+  "test_results": {
+    "launcher": {
+      "tests": 16,
+      "result": "pass",
+      "equivalent_command": "python3 -m unittest tests.test_bots -v",
+      "verified_in": "full_tests_directory_suite"
+    },
+    "manager_and_existing_lifecycle": {
+      "tests": 27,
+      "result": "pass",
+      "equivalent_command": "python3 -m unittest tests.test_bot_manager tests.test_manager tests.test_updates -v",
+      "verified_in": "full_tests_directory_suite"
+    },
+    "relative_runtime_regression": {
+      "tests": 9,
+      "result": "pass",
+      "equivalent_command": "python3 -m unittest tests.test_bot_manager -q",
+      "verified_in": "full_tests_directory_suite"
+    },
+    "full_tests_directory_suite": {
+      "command": "/workspace/scratch/3cdb8ff42680/bot-deps/bin/python -m unittest discover -s tests -v",
+      "scope": "All tests discovered under tests/; web_gateway/ and native C suites have separate receipts.",
+      "tests": 71,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 9.115,
+      "result": "pass",
+      "per_module": {
+        "test_bot_manager": 9,
+        "test_bot_maps": 4,
+        "test_bots": 16,
+        "test_content_ctf": 1,
+        "test_launcher": 1,
+        "test_manager": 8,
+        "test_release_packaging": 6,
+        "test_updater": 16,
+        "test_updates": 10
+      },
+      "evidence": {
+        "path": "bot-qa/features-python-tests-capacity-final.log",
+        "sha256": "2ab18e86bb24433d5f03b2661fb64f66db4cff789faca97adaeeb28a8845fe7e",
+        "recorded_at": "2026-10-25T05:56:39.555032+00:00"
+      },
+      "execution": "Completed with normal process visibility; all helper processes are isolated test fixtures. No game client input."
+    }
+  },
+  "rendered_ui": {
+    "status": "pass",
+    "scope": "Rendered control panel with real manager/launcher and helper clients, not gameplay",
+    "checks": [
+      "eight stock profile choices",
+      "two default selected",
+      "saved roster and saber-only rule",
+      "managed roster joins",
+      "roster locked during play",
+      "live rules remain editable",
+      "saved live peace/Force changes",
+      "390px viewport has no horizontal overflow",
+      "stop session completes",
+      "no browser JavaScript errors"
+    ],
+    "browser": "140.0.7339.16",
+    "recorded_at": "2026-10-25T05:08:04+00:00",
+    "source_revision_note": "Before later slot-label and host-inclusive capacity hint clarifications; app.js and style.css are unchanged.",
+    "index_html_sha256_at_run": "8dd8217cce333a9f709996c2e8aed69a4c8c13c2376f0b4a6502188a2d73c6c4"
+  },
+  "lifecycle_evidence": [
+    "Managed client helper processes inherit the owned runner process group.",
+    "Live checkbox revisions reach already running helper clients without changing the runner PID.",
+    "Stopping the session terminates owned bot children and preserves an unrelated process.",
+    "Killing the runner triggers child cleanup while the server manager retains running state for humans.",
+    "Invalid rule payloads and configuration-write failure preserve the previous rules.",
+    "Bot APIs use the existing local same-origin bearer guard."
+  ],
+  "source_sha256": {
+    "bots/map_audit.py": "32804e1c6df6a9ef2dfe12eedfd36d1b69c20d4ec5bc870977c47e6a6e4f11bf",
+    "bots/profiles.json": "6e439a854243678158e9956ea169ab785fe84f5a550fcd8592797c328880fd82",
+    "bots/run.py": "f8c368a664808fe6c0d9bea0632af53cc440e9f34662d6b0a2e7d2a55593576d",
+    "bots/settings.py": "59a955450e634c17cb274fb024dde94947746cc03f3fca904ac8aab7b83906c6",
+    "manager/admin.py": "c977c925374484374bc91375ec052353c27ee6bff8be13861d6e5279ad68a6b3",
+    "manager/config.py": "dd00454fdf663f612d47142a2dc9d16c3fa5cad70733aad71acb8cd5c891b0c2",
+    "manager/content.py": "d4dae8db1b658f0b545d476b2e324b39c79cee622fd7ac77d8ccc955ca7f7812",
+    "manager/runtime.py": "9cef2230ee9ba726f107e3398041cc6095f25eafbb22bd9677fa344069a0ff0d",
+    "manager/ui/app.js": "812cd3c4410378cb2ddec8368495d8edfe9f81e935fd26bd030b406e1d915cde",
+    "manager/ui/index.html": "c31644f224ed246b63e14925c9aa2ed586ff3265ba2c8d8cdca430702a037792",
+    "manager/ui/style.css": "101eb22b914fe790a8795b1b1f1fca48243152f895f964d04721f8baf1b4cc70",
+    "tests/test_bot_manager.py": "efcd71ef809b48096afdfc13db47b5bdb70571525e194ba82bb9e96aac377893",
+    "tests/test_bot_maps.py": "abe799197fdad07b93e69ddb4c2260befcbc26f81a9a6864f5174cc140c5300e",
+    "tests/test_bots.py": "f96801765ff24a8ff6930edd8a01cb8db337eb82dde2fd3fbf2aee295ce75531",
+    "tests/test_content_ctf.py": "3ec1d14f0c005d42ba6d4be5d61d22ae3e9b12543b6fadc0eab84638981d21f4",
+    "tests/test_launcher.py": "186d226bcc00b6e1e9a51ec8c17d10fee0bf9b249ddb896807057be7e0a07171",
+    "tests/test_manager.py": "909e6257bc473ae6cd585334839069789ff8d4e15b8a7dbec5c318b0bdc37b9c",
+    "tests/test_release_packaging.py": "161bc8a3d5132931e9bf28ad6f4d94f519723de5d12f4100ad4be0988d97769e",
+    "tests/test_updater.py": "c47a30f792570a5830a9e7439f4c694c0e8e351674a255dd9a90b44f89379f96",
+    "tests/test_updates.py": "47df11f2e9b572918abbdf04116bb52f1fa3d38dc4f895f2a1269e5f3e04faaa"
+  },
+  "initial_ui_and_controls_recorded_at": "2026-10-25T05:08:04+00:00",
+  "metadata_contract": {
+    "field": "requested_team",
+    "meaning": "Requested team passed to the ordinary bot client; not an observation of stock CTF assignment.",
+    "retired_field": "team",
+    "launcher_and_api_regressions": [
+      "tests.test_bots.BotRunnerTests.test_team_force_metadata_and_external_behavior_file_are_passed_without_mutation",
+      "tests.test_bot_manager.BotManagerTests.test_managed_roster_live_rules_and_stop_leave_unrelated_process_alive"
+    ],
+    "regression_receipt": "server-ctf-spawn-regression.json"
+  },
+  "source_snapshot_checked_at": "2026-10-25T05:56:49+00:00",
+  "source_review": {
+    "changes_since_initial_receipt": [
+      "requested_team replaces the ambiguous team receipt/API field, with absence-of-team assertions.",
+      "Enabled bot capacity reserves the dedicated host plus one human; disabled bots leave manual capacity unchanged.",
+      "Control-panel labels/hints, the retail-limit error, and bot guides describe configured capacity including the dedicated host; numeric manual configuration limits are unchanged."
+    ],
+    "ui_retest": "Original rendered-UI evidence is retained. Only explanatory slot labels/hints changed afterward; no new rendered run is claimed."
+  },
+  "previous_full_tests_directory_suite": {
+    "equivalent_command": "python3 -m unittest discover -s tests -v",
+    "scope": "All tests discovered under tests/; web_gateway/ and native C suites have separate receipts.",
+    "tests": 68,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 11.56,
+    "result": "pass",
+    "per_module": {
+      "test_bot_manager": 7,
+      "test_bot_maps": 4,
+      "test_bots": 15,
+      "test_content_ctf": 1,
+      "test_launcher": 1,
+      "test_manager": 8,
+      "test_release_packaging": 6,
+      "test_updater": 16,
+      "test_updates": 10
+    },
+    "evidence": {
+      "path": "bot-qa/features-python-tests-final.log",
+      "sha256": "ea2e13b7570f410784fd455b791815664bbc5d805c2b527d9d767e6d5b576a95",
+      "recorded_at": "2026-10-25T05:44:31.653151+00:00"
+    },
+    "review": "Existing completed root-run output independently reviewed; every discovered case ends ok and the runner reports OK. No additional test processes started for this receipt update."
+  },
+  "capacity_contract": {
+    "max_players_includes_dedicated_host": true,
+    "minimum_total_slots": "bot_count + 2",
+    "human_allowance": 1,
+    "enabled_bot_boundaries": [
+      {
+        "bots": 1,
+        "max_players": 2,
+        "accepted": false
+      },
+      {
+        "bots": 1,
+        "max_players": 3,
+        "accepted": true
+      },
+      {
+        "bots": 4,
+        "max_players": 5,
+        "accepted": false
+      },
+      {
+        "bots": 4,
+        "max_players": 6,
+        "accepted": true
+      }
+    ],
+    "disabled_bot_manual_limits_unchanged": [
+      1,
+      2,
+      5
+    ],
+    "launcher_regression": "Invalid boundaries fail before staging or any subprocess call; accepted boundaries launch and join the actual isolated helper roster and clean up every child.",
+    "live_reservation": false
+  }
+}

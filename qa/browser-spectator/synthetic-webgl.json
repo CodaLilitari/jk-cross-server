@@ -1,0 +1,169 @@
+{
+  "utc": "2026-10-28T23:01:28.308Z",
+  "browser": "156.0.8078.73",
+  "fixture": {
+    "passed": true,
+    "error": 0,
+    "checks": [
+      {
+        "label": "near surface survives later far draw",
+        "x": 320,
+        "y": 180,
+        "rgba": [
+          255,
+          128,
+          0,
+          255
+        ],
+        "actual": [
+          255,
+          128,
+          0,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "label": "far surface remains around near surface",
+        "x": 240,
+        "y": 120,
+        "rgba": [
+          32,
+          80,
+          255,
+          255
+        ],
+        "actual": [
+          32,
+          80,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "label": "green clockwise triangle",
+        "x": 90,
+        "y": 60,
+        "rgba": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "actual": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "label": "green counterclockwise triangle",
+        "x": 50,
+        "y": 80,
+        "rgba": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "actual": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "label": "magenta bottom-left marker",
+        "x": 70,
+        "y": 290,
+        "rgba": [
+          255,
+          0,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          0,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "label": "yellow top-right marker (w=4)",
+        "x": 570,
+        "y": 70,
+        "rgba": [
+          255,
+          255,
+          0,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          0,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "label": "cyan bottom-right triangle",
+        "x": 570,
+        "y": 280,
+        "rgba": [
+          0,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          0,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "label": "clear background",
+        "x": 320,
+        "y": 40,
+        "rgba": [
+          6,
+          10,
+          7,
+          255
+        ],
+        "actual": [
+          6,
+          10,
+          7,
+          255
+        ],
+        "passed": true
+      }
+    ],
+    "width": 640,
+    "height": 360,
+    "sequence": 9,
+    "vertices": 23,
+    "indices": 33
+  },
+  "webgl": {
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "context_loss_observed": true,
+  "page_errors": [],
+  "console_errors": [
+    "Failed to load resource: the server responded with a status of 404 (File not found)"
+  ],
+  "passed": true
+}

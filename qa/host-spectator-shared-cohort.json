@@ -1,0 +1,77 @@
+{
+  "result": "passed",
+  "session": {
+    "name": "JK Cross Server",
+    "episode": "JK1MP",
+    "map": "m2.jkl",
+    "locked": false,
+    "max": 7,
+    "transport_slots": 8,
+    "players": 4,
+    "mod": "",
+    "flags": 0,
+    "tick_ms": 100,
+    "game": "jk"
+  },
+  "core_pid": 22478,
+  "spectator": {
+    "rendering_configured": true,
+    "available": true,
+    "enabled": true,
+    "mode": "follow",
+    "state": "active",
+    "reason": "",
+    "restart_required": false,
+    "world_epoch": 2,
+    "control_epoch": 8,
+    "target": {
+      "peer_id": 139,
+      "generation": 138
+    },
+    "players": [
+      {
+        "peer_id": 4,
+        "generation": 3,
+        "slot": 1,
+        "name": "Bot_BobaFett"
+      },
+      {
+        "peer_id": 5,
+        "generation": 4,
+        "slot": 2,
+        "name": "Bot_JanOrs"
+      },
+      {
+        "peer_id": 139,
+        "generation": 138,
+        "slot": 3,
+        "name": "NativeObserverQ"
+      },
+      {
+        "peer_id": 65536,
+        "generation": 139,
+        "slot": 4,
+        "name": "WebObserverQA"
+      }
+    ],
+    "frame": {
+      "available": true,
+      "sequence": 3791,
+      "width": 640,
+      "height": 360,
+      "age_ms": 131
+    },
+    "pose": {
+      "position": [
+        -8.034664154052734,
+        0.20625236630439758,
+        1.457101583480835
+      ],
+      "yaw": -1.9269336462020874,
+      "pitch": 0.018175940960645676,
+      "roll": 0.018175940960645676,
+      "sector": 27
+    }
+  },
+  "scope": "Actual simultaneous unchanged native and published browser clients plus two packaged bots. Observation is not a player."
+}

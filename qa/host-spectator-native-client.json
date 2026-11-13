@@ -1,0 +1,323 @@
+{
+  "result": "passed",
+  "scope": "Fresh unchanged native graphical-menu join, actual world/HUD, ordinary movement while followed by the host observer, simultaneous native/browser/two-bot cohort, and ordinary in-game departure from stock JK1MP/m2.",
+  "recorded_utc": "2026-10-28T08:09:16.043999+00:00",
+  "client_binary": "/tmp/jk-native-client-recovery-build/openjkdf2",
+  "client_sha256": "0d706478fd8275819e8ea441c62f8987524852005300c9edd82a803f79d28105",
+  "gns_library_sha256": "45797fcd310f0812af9f55354ff22663859ca68c2d8bb0005efb88a748c471e7",
+  "server_endpoint": "127.0.0.1:43501",
+  "episode": "JK1MP",
+  "map": "m2.jkl",
+  "initial_advertised_players": 2,
+  "advertised_max_players": 7,
+  "requested_profile": "NativeObserverQA",
+  "actual_profile": "NativeObserverQ",
+  "profile_note": "The normal profile field accepted 15 characters; its visible stored name is NativeObserverQ.",
+  "character_rank": 0,
+  "character_model": "Katarn",
+  "join_action_utc": "2026-10-28T07:57:46.158460+00:00",
+  "actual_world_observed_utc": "2026-10-28T07:57:54.037179+00:00",
+  "follow_identity": {
+    "peer_id": 139,
+    "generation": 138,
+    "control_epoch": 8,
+    "source": "parent authenticated observer"
+  },
+  "ordinary_movement": {
+    "utc": "2026-10-28T07:59:22.672317+00:00",
+    "action": "hold",
+    "arguments": [
+      "1.05",
+      "w",
+      "Right"
+    ],
+    "display": ":0",
+    "client_pid": 23149,
+    "released_utc": "2026-10-28T07:59:23.785885+00:00",
+    "screenshot": "/tmp/jk-spectator-qa/native-client/19-after-follow-movement.png"
+  },
+  "all_movement_keys_released": true,
+  "normal_departure_action_utc": "2026-10-28T08:08:20.488358+00:00",
+  "departure_path": [
+    "Escape",
+    "Abort",
+    "Yes",
+    "Results OK"
+  ],
+  "results_screen_names": [
+    "Bot_BobaFett",
+    "Bot_JanOrs",
+    "NativeObserverQ",
+    "WebObserverQA"
+  ],
+  "shared_cohort_receipt": {
+    "path": "/tmp/jk-spectator-qa/shared-client-cohort.json",
+    "sha256": "c3415262bd2b8dfc55a990bee2f1f9ee8c794daf122e81f359f926d3a0a8c6d3"
+  },
+  "returned_to_main_menu": true,
+  "main_menu_action_utc": "2026-10-28T08:09:15.156495+00:00",
+  "checksum_rejection_displayed": false,
+  "checksum_rejection_log_lines": [],
+  "client_executable_unchanged_after_test": true,
+  "process_memory_writes": false,
+  "synthetic_game_packets": false,
+  "root_server_configuration_modified": false,
+  "retail_qualification": false,
+  "observer_evidence_source": "Parent maintained authenticated frame/pose keeper and selected canonical peer139/generation138 before movement; parent records follow-pose, departure fallback and stale-target checks separately.",
+  "screenshots": {
+    "09-session-discovered": {
+      "path": "/tmp/jk-spectator-qa/native-client/09-session-discovered.png",
+      "sha256": "bbad31e33b82d59ff5acbb2f9bd64fbf2ad8ebfcd418b844c08c3b157546c423"
+    },
+    "16-character-saved": {
+      "path": "/tmp/jk-spectator-qa/native-client/16-character-saved.png",
+      "sha256": "ea8049e1ec4be0253dc47a7bb3288e5c92860434e22d031dbc33a7fcd90cd342"
+    },
+    "18-world-joined": {
+      "path": "qa/evidence/native-world.png",
+      "sha256": "f9f25c95644a0e55cc32c6399257c9a1410904d94dc2c99c1d2ab6ad7d5d8c23"
+    },
+    "19-after-follow-movement": {
+      "path": "/tmp/jk-spectator-qa/native-client/19-after-follow-movement.png",
+      "sha256": "3c1375a9a6a709042fbcda4079659bcf12110a917a8d0303fbe9732a0cdd3162"
+    },
+    "20-shared-cohort-before-departure": {
+      "path": "/tmp/jk-spectator-qa/native-client/20-shared-cohort-before-departure.png",
+      "sha256": "586c5f0f28b20adb529e948a21e4ac4eb577b24e2e3f51f6b5509d798a17b3e7"
+    },
+    "21-departure-menu": {
+      "path": "/tmp/jk-spectator-qa/native-client/21-departure-menu.png",
+      "sha256": "3b13f26a38b71969c589f60b054cdd0fa8116bc69bbe8db99073542488dac833"
+    },
+    "22-abort-confirmation": {
+      "path": "/tmp/jk-spectator-qa/native-client/22-abort-confirmation.png",
+      "sha256": "604b0c17db3889ed24a855ef2e0aade76e39f40362288c8a3d387f1905f3db6b"
+    },
+    "23-normal-departure-results": {
+      "path": "qa/evidence/native-results.png",
+      "sha256": "d0e5d7f810297f16ec58066d2eba525b69198ba7bbb15a6530eeeeb58c96fd22"
+    },
+    "24-returned-to-main-menu": {
+      "path": "/tmp/jk-spectator-qa/native-client/24-returned-to-main-menu.png",
+      "sha256": "4e6e137f06be1b1b6b6939b532a294586a06fb4da5df6393ef2eb31297564053"
+    }
+  },
+  "log_snapshot": {
+    "path": "/tmp/jk-spectator-qa/native-client/departure-log.snapshot",
+    "sha256": "2bcf51c6237d2bdb73daf9a7ee06215651e002d8deb35584f1849a1bd3792a85",
+    "bytes": 21421
+  },
+  "owned_processes": {
+    "client_pid": 23149,
+    "xvfb_pid": 23146,
+    "display": ":0",
+    "cleanup_pending": false,
+    "client_running": false,
+    "client_exit_method": "Main menu Quit then Yes",
+    "client_proc_exit_code_raw": 256,
+    "xvfb_running": false,
+    "xvfb_exit_method": "SIGTERM after native client exited normally",
+    "cleanup_utc": "2026-10-28T08:10:12.501954+00:00",
+    "client_exit_code": 1,
+    "client_exit_signal": 0,
+    "exit_note": "Exited after the ordinary Quit/Yes UI action; no termination signal was sent to the native client. The observed Unix exit status was 1."
+  },
+  "complete_client_log": {
+    "path": "/tmp/jk-spectator-qa/native-client/client.log",
+    "sha256": "22bf073c0c856f331dea2850dfd59b2e51000ed9e1b812f463e9f4bd5221b054",
+    "bytes": 24709
+  },
+  "actions_log": {
+    "path": "/tmp/jk-spectator-qa/native-client/actions.jsonl",
+    "sha256": "a94c8c705a22155a0a9e5b32fd3ccb7e8614cd6bb792f08293d6bb3fb0f4f498"
+  },
+  "host_observer": {
+    "result": "passed",
+    "recorded_utc": "2026-10-28T08:12:52Z",
+    "follow_before": {
+      "elapsed": 241.4,
+      "mode": "follow",
+      "target": {
+        "peer_id": 139,
+        "generation": 138
+      },
+      "players": [
+        {
+          "peer_id": 4,
+          "generation": 3,
+          "slot": 1,
+          "name": "Bot_BobaFett"
+        },
+        {
+          "peer_id": 5,
+          "generation": 4,
+          "slot": 2,
+          "name": "Bot_JanOrs"
+        },
+        {
+          "peer_id": 139,
+          "generation": 138,
+          "slot": 3,
+          "name": "NativeObserverQ"
+        }
+      ],
+      "session": {
+        "name": "JK Cross Server",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 3,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "pose": {
+        "position": [
+          -7.999949932098389,
+          0.25,
+          1.4571139812469482
+        ],
+        "yaw": 3.1415927410125732,
+        "pitch": 0.0,
+        "roll": 0.0,
+        "sector": 27
+      },
+      "world_epoch": 2,
+      "control_epoch": 8
+    },
+    "follow_after": {
+      "elapsed": 811.23,
+      "mode": "follow",
+      "target": {
+        "peer_id": 139,
+        "generation": 138
+      },
+      "players": [
+        {
+          "peer_id": 4,
+          "generation": 3,
+          "slot": 1,
+          "name": "Bot_BobaFett"
+        },
+        {
+          "peer_id": 5,
+          "generation": 4,
+          "slot": 2,
+          "name": "Bot_JanOrs"
+        },
+        {
+          "peer_id": 139,
+          "generation": 138,
+          "slot": 3,
+          "name": "NativeObserverQ"
+        },
+        {
+          "peer_id": 65536,
+          "generation": 139,
+          "slot": 4,
+          "name": "WebObserverQA"
+        }
+      ],
+      "session": {
+        "name": "JK Cross Server",
+        "episode": "JK1MP",
+        "map": "m2.jkl",
+        "locked": false,
+        "max": 7,
+        "transport_slots": 8,
+        "players": 4,
+        "mod": "",
+        "flags": 0,
+        "tick_ms": 100,
+        "game": "jk"
+      },
+      "pose": {
+        "position": [
+          -8.034664154052734,
+          0.20625236630439758,
+          1.457101583480835
+        ],
+        "yaw": -1.9269336462020874,
+        "pitch": 0.018175940960645676,
+        "roll": 0.018175940960645676,
+        "sector": 27
+      },
+      "world_epoch": 2,
+      "control_epoch": 8
+    },
+    "after_normal_departure": {
+      "rendering_configured": true,
+      "available": true,
+      "enabled": true,
+      "mode": "free",
+      "state": "active",
+      "reason": "The followed player left.",
+      "restart_required": false,
+      "world_epoch": 2,
+      "control_epoch": 9,
+      "target": null,
+      "players": [
+        {
+          "peer_id": 4,
+          "generation": 3,
+          "slot": 1,
+          "name": "Bot_BobaFett"
+        },
+        {
+          "peer_id": 5,
+          "generation": 4,
+          "slot": 2,
+          "name": "Bot_JanOrs"
+        },
+        {
+          "peer_id": 65536,
+          "generation": 139,
+          "slot": 4,
+          "name": "WebObserverQA"
+        }
+      ],
+      "frame": {
+        "available": true,
+        "sequence": 5442,
+        "width": 640,
+        "height": 360,
+        "age_ms": 74
+      },
+      "pose": {
+        "position": [
+          -8.034664154052734,
+          0.20625236630439758,
+          1.457101583480835
+        ],
+        "yaw": -1.9269336462020874,
+        "pitch": 0.018175940960645676,
+        "roll": 0.018175940960645676,
+        "sector": 27
+      }
+    },
+    "same_core_pid": 22478,
+    "remaining_session": {
+      "name": "JK Cross Server",
+      "episode": "JK1MP",
+      "map": "m2.jkl",
+      "locked": false,
+      "max": 7,
+      "transport_slots": 8,
+      "players": 3,
+      "mod": "",
+      "flags": 0,
+      "tick_ms": 100,
+      "game": "jk"
+    },
+    "departed_target_rejected": {
+      "http_status": 409,
+      "body": {
+        "error": "The selected player is no longer available."
+      }
+    }
+  },
+  "evidence_note": "Selected actual game screenshots are included under qa/evidence; other original capture paths identify transient test records and are retained with their hashes."
+}

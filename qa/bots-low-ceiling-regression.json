@@ -1,0 +1,32 @@
+{
+  "previous_binary_sha256": "f545c0b36084386bc9b9ad3aac645f4f1e9ef26cfec23ebc00563c6c5880879c",
+  "previous_ai_source_sha256": "c4fe19b94513404664ed71a734426aaea44ab5ae09823d3a969df763b31e6182",
+  "new_ai_source_sha256": "0e5e57365a462f7244009d619dda154991e680798180148195ae2153eea6d0cb",
+  "regression_geometry": {
+    "map": "JK1MP/m2.jkl",
+    "sector": 110,
+    "floor": -0.25,
+    "ceiling": -0.05,
+    "height": 0.2,
+    "spawn_center": [
+      -2,
+      -1.85005,
+      -0.129886
+    ],
+    "normal_player_radius": 0.065
+  },
+  "baseline_expected_failure": {
+    "exit": -6,
+    "stderr": "test: /workspace/scratch/3cdb8ff42680/jk-cross-server/native/tests/test_bot_driver.c:135: main: Assertion `Bot_Walkable(&tunnelA,&tunnelB,&drop)==1 && drop==0' failed."
+  },
+  "new_test_exit": 0,
+  "new_test_stdout": "PASS remote-zero-health respawn eligibility and inactive/dead/team rejection\nPASS unreached nearest-node goal retained until actually reached\nPASS normal yaw/pitch axes and single-consumption press edge\nPASS vertical jumping alone does not conceal a navigation stall\nPASS sector110 low-ceiling graph/steering and actual obstruction rejection\n",
+  "live_validation": {
+    "status": "pass",
+    "bot_binary_sha256": "8af6a4e7b1feedc23cff230e8894c73edc1b52acc019d85bc1c6a35493b44b4e",
+    "ai_source_sha256": "0e5e57365a462f7244009d619dda154991e680798180148195ae2153eea6d0cb",
+    "receipt": "qa/bots-final-live-gameplay.json",
+    "receipt_field": "low_ceiling_live_validation",
+    "capture_sha256": "a5cfe9cdca9cca3298b1f04230caab172eaa8360d996f0f7a9be95afe6da0c8d"
+  }
+}

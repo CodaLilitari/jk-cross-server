@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "producer": "/root/runtime_refresh",
+  "created_utc": "2026-10-28T07:53:32.436417+00:00",
+  "repository": "/tmp/jk-cross-server-recovery",
+  "fresh_recovered_tree_verification": true,
+  "all_passed": true,
+  "suites": [
+    {
+      "suite": "manager",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test*.py",
+        "-v"
+      ],
+      "cwd": "/tmp/jk-cross-server-recovery",
+      "environment_overrides": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "started_utc": "2026-10-28T07:46:16.771994+00:00",
+      "elapsed_seconds": 67.933,
+      "exit_code": 0,
+      "counts": {
+        "tests": 159,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 159
+      },
+      "log": "/tmp/jk-spectator-recovery-manager/qa-logs/manager-fresh.log",
+      "log_sha256": "26c1a3f17f449f1970ba6165ea0c053f700d6426dd147227110ba622597955be",
+      "scope": "Complete manager/feature Python discovery, including 20 display/readiness and 17 spectator cases.",
+      "count_unit": "test cases"
+    },
+    {
+      "suite": "web-gateway",
+      "command": [
+        "/tmp/jk-env/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "web_gateway",
+        "-t",
+        ".",
+        "-p",
+        "test*.py",
+        "-v"
+      ],
+      "cwd": "/tmp/jk-cross-server-recovery",
+      "environment_overrides": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "JKDF2WEB_CLIENT_DIR": "/tmp/jk-cross-server-recovery/runtime/browser-client"
+      },
+      "started_utc": "2026-10-28T07:44:01.572183+00:00",
+      "elapsed_seconds": 1.573,
+      "exit_code": 0,
+      "counts": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 27
+      },
+      "log": "/tmp/jk-spectator-recovery-manager/qa-logs/web-gateway-fresh.log",
+      "log_sha256": "3b51acfe7fda30c3a663605d713241ab950fd0f853457dd7488a507db799c002",
+      "scope": "Complete web-gateway discovery with both unchanged published-JavaScript transport/asset oracles enabled.",
+      "count_unit": "test cases"
+    },
+    {
+      "suite": "node-ui",
+      "command": [
+        "node",
+        "--test",
+        "--test-isolation=none",
+        "--test-reporter=tap",
+        "tests/test_panel_ui.js",
+        "tests/test_spectator_ui.js"
+      ],
+      "cwd": "/tmp/jk-cross-server-recovery",
+      "environment_overrides": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "started_utc": "2026-10-28T07:52:01.148412+00:00",
+      "elapsed_seconds": 0.115,
+      "exit_code": 0,
+      "counts": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 16
+      },
+      "log": "/tmp/jk-spectator-recovery-manager/qa-logs/node-ui-fresh.log",
+      "log_sha256": "b7036f127a774f338e748590188a8d0a3739ec913ed38194440d352fc8a728ce",
+      "input_sha256": {
+        "manager/ui/app.js": "e735ba12c868854fe01754b61bed4fbd697d1143c5ecfda28d7244e82a0a0c7f",
+        "manager/ui/spectator.js": "b99c684acc9410609e5ec26637c2ce3ca31557a41acb4a9715cc8b78d41c15bc",
+        "manager/ui/index.html": "bbc78d5272fade5de0c4cac075fff54cfbe92b43369b7d8462b7fd53f3d8116a",
+        "manager/ui/style.css": "6ba755bf17cd7ee271ccc722c3fb9092f0c6f0f28c066a3798e8c1ef61bc0135",
+        "tests/test_panel_ui.js": "5a76084d429cf5f280980d54cde05d4e6d0b9df8baf072e72c6161d85963be25",
+        "tests/test_spectator_ui.js": "3b70f4f604d5bcb1381a73fbc71049006b781d3b5e7ae4cb70a4d892516ec566"
+      },
+      "inputs_changed_during_run": [],
+      "scope": "Named panel and spectator JavaScript cases, using explicit no-isolation mode to report every named case.",
+      "count_unit": "test cases"
+    },
+    {
+      "suite": "directplay-c",
+      "command": [
+        "make",
+        "-C",
+        "directplay",
+        "test"
+      ],
+      "cwd": "/tmp/jk-cross-server-recovery",
+      "environment_overrides": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "started_utc": "2026-10-28T07:48:03.825358+00:00",
+      "elapsed_seconds": 0.416,
+      "exit_code": 0,
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 3
+      },
+      "log": "/tmp/jk-spectator-recovery-manager/qa-logs/directplay-c-fresh.log",
+      "log_sha256": "6e8db0b3a354ed13ea57b464d9a5277ef4ec2a45aaea8bc3f76e6bf8e5ff45b8",
+      "count_unit": "compiled C programs",
+      "scope": "Existing protocol-layout, departure-policy and surrogate-pool C test programs."
+    }
+  ],
+  "totals": {
+    "python_tests": 186,
+    "node_tests": 16,
+    "directplay_test_programs": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "source_recovery_receipt": "qa/host-spectator-manager-recovery.json",
+  "scope_limits": [
+    "No native suites rerun by this agent; native build and renderer tests are recorded separately.",
+    "Authored process/transport fixtures and published-JS oracles do not simulate a full game.",
+    "The first recovered manager run had two Xvfb fixture setup errors; they were corrected before the clean full rerun.",
+    "The default isolated Node runner reported only outer file tests; final command uses --test-isolation=none and reports 16 named cases."
+  ]
+}
