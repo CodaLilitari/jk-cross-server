@@ -1,0 +1,371 @@
+{
+  "bundle_sha256": "2b815d3eec6cbb6d71b6147e1707c47994c2f928ddfdef71300514d79734a484",
+  "cleanup": {
+    "owned_native_processes_remaining": 0,
+    "staged_input_directories_remaining": 0
+  },
+  "runs": [
+    {
+      "number": 1,
+      "receipt_sha256": "244435e073f436d2cd2353a8e3cca10c838227e330af6702d1c5f15408c3c50f",
+      "trace_sha256": "6e443d0cf48d37759f48c18b5242500cd6412e745830035ca0cb48568c71eec1",
+      "status": {
+        "dark": {
+          "log_sha256": "9353b23567b57ab01b170924eaaaca637ba8197c5a5d4b1ffb0b5cc2d21a6f6d",
+          "status_samples": [
+            {
+              "t": 10.0,
+              "health": 100.0,
+              "sector": 76,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 20.1,
+              "health": 100.0,
+              "sector": 112,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 30.1,
+              "health": 100.0,
+              "sector": 66,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 40.1,
+              "health": 100.0,
+              "sector": 74,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 50.2,
+              "health": 100.0,
+              "sector": 112,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 60.2,
+              "health": 100.0,
+              "sector": 113,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 70.2,
+              "health": 100.0,
+              "sector": 74,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 80.2,
+              "health": 100.0,
+              "sector": 63,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 90.3,
+              "health": 100.0,
+              "sector": 34,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 100.3,
+              "health": 100.0,
+              "sector": 30,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 110.3,
+              "health": 100.0,
+              "sector": 30,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            }
+          ]
+        },
+        "light": {
+          "log_sha256": "facda1c4b7e399398954e4d0336ab0db0a7994c5fdeb989bf22318b2a8665027",
+          "status_samples": [
+            {
+              "t": 10.0,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 20.1,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 30.1,
+              "health": 100.0,
+              "sector": 5,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 40.1,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 50.2,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 60.2,
+              "health": 100.0,
+              "sector": 8,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 70.2,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 80.2,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 90.3,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 100.3,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 3,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            }
+          ]
+        }
+      },
+      "trace_file": "qa/competitive-force/trace-m2.jsonl",
+      "trace_rows": 431
+    },
+    {
+      "number": 2,
+      "receipt_sha256": "37247f3cf394e04b69c2b0578b9999889860749173b02e4a9bfad705b1122876",
+      "trace_sha256": "7e9f24a8837a8f041de99d78d81663b3c69ee6fe097d007b2176fcbc2095e29b",
+      "status": {
+        "dark": {
+          "log_sha256": "832341a2a2e011379b6d5496085a45c562d7012cba3c25179c14f0804430770b",
+          "status_samples": [
+            {
+              "t": 10.0,
+              "health": 100.0,
+              "sector": 6,
+              "weapon": 2,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 20.1,
+              "health": 100.0,
+              "sector": 61,
+              "weapon": 2,
+              "target": 2,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 30.1,
+              "health": 100.0,
+              "sector": 6,
+              "weapon": 2,
+              "target": 2,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 40.1,
+              "health": 90.0,
+              "sector": 31,
+              "weapon": 2,
+              "target": 2,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 50.1,
+              "health": 90.0,
+              "sector": 29,
+              "weapon": 10,
+              "target": 2,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 60.2,
+              "health": 90.0,
+              "sector": 29,
+              "weapon": 10,
+              "target": 2,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 70.2,
+              "health": 90.0,
+              "sector": 29,
+              "weapon": 10,
+              "target": 2,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 80.2,
+              "health": 90.0,
+              "sector": 29,
+              "weapon": 10,
+              "target": 2,
+              "kills": 0,
+              "deaths": 0
+            }
+          ]
+        },
+        "light": {
+          "log_sha256": "2fdb2609e635f63a9cd7bc4c99f64ab591df123cbf49d05afabf4b5fb1397652",
+          "status_samples": [
+            {
+              "t": 10.0,
+              "health": 100.0,
+              "sector": 28,
+              "weapon": 2,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 20.0,
+              "health": 100.0,
+              "sector": 28,
+              "weapon": 2,
+              "target": 1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 30.1,
+              "health": 100.0,
+              "sector": 28,
+              "weapon": 2,
+              "target": -1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 40.1,
+              "health": 100.0,
+              "sector": 28,
+              "weapon": 10,
+              "target": 1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 50.1,
+              "health": 100.0,
+              "sector": 28,
+              "weapon": 10,
+              "target": 1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 60.2,
+              "health": 50.0,
+              "sector": 28,
+              "weapon": 10,
+              "target": 1,
+              "kills": 0,
+              "deaths": 0
+            },
+            {
+              "t": 70.2,
+              "health": 50.0,
+              "sector": 28,
+              "weapon": 10,
+              "target": 1,
+              "kills": 0,
+              "deaths": 0
+            }
+          ]
+        }
+      },
+      "trace_file": "qa/competitive-force/trace-m_boss17.jsonl",
+      "trace_rows": 330
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JKWeb bot</title>
+<style>
+:root { color-scheme:dark; font:14px system-ui,sans-serif; background:#121318; color:#eee }
+body { margin:0 auto; max-width:1280px; height:100dvh; display:grid; grid-template-rows:auto minmax(0,1fr) auto }
+header { display:flex; gap:1rem; align-items:center; flex-wrap:wrap; padding:.65rem 1rem }
+h1 { font-size:1rem; margin:0 }
+button,input { font:inherit }
+.game-view { container-type:size; display:grid; place-items:center; min-width:0; min-height:0 }
+/* SDL measures the CSS size with a temporary 1x1 bitmap at startup. */
+canvas { display:block; width:min(100cqw,177.777778cqh); height:min(100cqh,56.25cqw); background:black }
+#state { margin-left:auto }
+#error { color:#ffb6b6; white-space:pre-wrap; overflow:auto; max-height:20vh; margin:0; padding:0 1rem }
+</style>
+<header><h1 id="title">JKWeb bot</h1><label id="login">Open engine credential <input type="file" id="credential" accept=".json"></label><button id="record" hidden>Record 120 seconds</button><span id="state">Waiting for engine credential</span></header>
+<main class="game-view"><canvas id="canvas" width="960" height="540" tabindex="0"></canvas></main>
+<p id="error" role="alert"></p>
+<script src="/client.js"></script>
+</html>

@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "date": "2026-11-21",
+  "game": "JKDF2",
+  "evidence": "read_only_original_scripts_and_firsthand_historical_guides",
+  "original_scripts": [
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_absorb.cog",
+      "sha256": "6336236a9f13c39c334652d1a5305042d80dc9d6d94b773e09cce24c12a4b6a9"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_blinding.cog",
+      "sha256": "83acc0064f688148e68cfa04cd267d64e0c8521981eda937a79cfe90e484e82a"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_deadlysight.cog",
+      "sha256": "43c5486ad0d20df05a0ba18ea8d5aa26574df6cec5b3a679689d675a0c3ad680"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_destruction.cog",
+      "sha256": "dfc09d68c31b85333b42d3703a5cab58e708219eb7d72a7e3cabd0514a4a6693"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_grip.cog",
+      "sha256": "fa9f5402a42ba3cc1f120c65bf4287e4ed3fab5382eeab56c5b07d4c36c4bf93"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_heal.cog",
+      "sha256": "ad43aeee9a12a2d876502b196534e334179f2cf8918a2f1e05be4a721c00cb31"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_jump.cog",
+      "sha256": "36c2b8176c38bfdea43b1c6431892a9022d5e7a98435af79164d9105a484c882"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_lightning.cog",
+      "sha256": "0fe34a58ce604196573b33e889b14087b586ef6ca36a83fd550680b7d993796c"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_persuasion.cog",
+      "sha256": "008ff0e04fd4cb452bc8f9bfbdd7b0035d024326fafa17f25cefb3e6b927b019"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_protection.cog",
+      "sha256": "4ba55d8f175c8b10d0c5d2a08c5e92d95fcae96b6cb1d1214ea4370e9685a638"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_pull.cog",
+      "sha256": "9ab4429c7334bcf1baa286e7027bc4e7ea4e4bcc9907342254d27b2659605141"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_seeing.cog",
+      "sha256": "47fcffb1a371cf61ec386d3eded9615f0f9ae2945997738c4861091c28fe6ac4"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_speed.cog",
+      "sha256": "0f50c82e245269b7620834cb38c82f8ed45ca5518031b0d43a335f50602f1b6b"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_throw.cog",
+      "sha256": "32fadc471701ea76641c1de599d5c198bd9384208664f554904685e6ef1aebc3"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/force_well.cog",
+      "sha256": "b0e37ff94088dc8c017960fb07e9c8bc54942314d1340618639a710ea683e9e9"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "cog/kyle.cog",
+      "sha256": "cf68cc4754acd78d2d84297eb6d05df80d0e8e265fa5d5a902b7101f8e523955"
+    },
+    {
+      "archive": "Res2.gob",
+      "name": "misc/items.dat",
+      "sha256": "9f668a33ceb17d6c39b727c61682dddd109042fa80883041e74c36a7dc5380e7"
+    }
+  ],
+  "primary_guides": [
+    {
+      "author": "Jeb Springfield",
+      "url": "https://www.jkdf2.net/articles/jebs-bgj-ff-tips-mostly-1-on-1-tactics/",
+      "scope": "BGJ full Force duels; historical recommended dark rank-eight allocation and tactics"
+    },
+    {
+      "author": "AcidRain",
+      "url": "https://www.jkdf2.net/articles/ffo-guide-dark-side/",
+      "scope": "Canyon Oasis full Force guns; historical movement, item denial and attack strategy"
+    }
+  ],
+  "script_observations": {
+    "seeing": {
+      "minimum_mana": 30,
+      "duration_seconds": "5 + 5 * stars",
+      "prevents_new_blind": true,
+      "cures_existing_blind": false,
+      "map_marker_stars": {
+        "players_actors": 1,
+        "items": 3,
+        "projectiles": 4
+      }
+    },
+    "absorb": {
+      "minimum_mana": 200,
+      "duration_seconds": "5 * stars",
+      "magic_damage_conversion": "stars / 4",
+      "any_active_rank_blocks_weapon_pull": true,
+      "removes_grip_movement_constraint": false
+    },
+    "grip": {
+      "minimum_mana": 50,
+      "acquisition_pulse_seconds": 0.33,
+      "acquisition_range_engine_units": 1.0,
+      "activates_on": "ordinary key release after local marker acquisition",
+      "other_force_selection": "cancels ongoing effect",
+      "cooldown": "obey actual inventory binWait; original COG reads its prior local rank before updating it"
+    },
+    "destruction": {
+      "minimum_mana": 200,
+      "own_bin_wait_seconds": 3.0
+    },
+    "protection": {
+      "nominal_mana_deduction": 300,
+      "minimum_mana_gate": false
+    },
+    "rank_eight_mana": {
+      "cap": 400,
+      "regeneration_per_second": 4
+    }
+  },
+  "allocation_status": {
+    "dark_six_four_star": "direct historical expert recommendation; prospective modern benchmark baseline",
+    "light_six_four_star": "legal engineering hypothesis based on stock mechanics, not claimed elite-player allocation"
+  },
+  "not_established_scope": "The source and original-script audit alone does not establish the items below. Separate live native observations are recorded in the linked receipts.",
+  "live_native_receipts": [
+    "qa/bots-competitive-force-native-m2.json",
+    "qa/bots-competitive-force-native-m_boss17.json"
+  ],
+  "not_established": [
+    "Current top-player win rate",
+    "Connected-client effects for this new build",
+    "Live item-pull and touch-respawn timings on each map",
+    "Full observer-limited Seeing map implementation"
+  ]
+}

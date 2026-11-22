@@ -635,6 +635,18 @@ class WebGateway:
             same_host = parsed.scheme in ("http", "https") and parsed.netloc == request.host
             if not same_host and origin not in self.allowed_origins:
                 raise web.HTTPForbidden(text="Origin is not allowed")
+        # Current upstream deliberately versions incompatible shared starts and
+        # level progression. Classic hit negotiation is a separate protocol.
+        versions = request.query.getall("net", [])
+        if versions:
+            if (len(versions) != 1 or not versions[0].isascii()
+                    or not versions[0].isdecimal() or len(versions[0]) > 9
+                    or (len(versions[0]) > 1 and versions[0].startswith("0"))):
+                return web.json_response({"error": "invalid-netcode"}, status=400)
+            if int(versions[0]) != 0:
+                return web.json_response({"error": "unsupported-netcode", "supported_netcode": 0,
+                    "message": "This legacy gateway serves the pinned cloudflare-38 browser build. "
+                               "Use the current JKWeb bot runtime for netcode 2 sessions."}, status=409)
         if len(self.connections) >= self.max_connections:
             raise web.HTTPServiceUnavailable(text="Connection limit reached")
         ws = web.WebSocketResponse(max_msg_size=MAX_MESSAGE, heartbeat=30, receive_timeout=120)
@@ -662,6 +674,7 @@ class WebGateway:
 
     async def health(self, request: web.Request) -> web.Response:
         return web.json_response({"ready": self.ready, "game": self.game if self.ready else None,
+                                  "browser_netcode": 0,
                                   "web_peers": len(self.peers), "webrtc": self.enable_webrtc,
                                   "metrics": self.metrics,
                                   "assets": self.current_assets.summary() if self.current_assets else None})

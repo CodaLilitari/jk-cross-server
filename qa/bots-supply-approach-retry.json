@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "title": "Retrying an underwater supply approach after an unsuccessful dive",
+  "trigger": "An autonomous elite guns bot observes its last supported bank and the first wet sector it enters. It records that directed pair on a no-contact return for air after at least four game seconds, with a verified submerged equipment plan at entry and at the return. Successful stock contact does not create a failure.",
+  "rule": "For 45 game seconds a bot at 40 HP or more with an owned, available concussion rifle and at least 32 power cells, or an owned, available rail detonator and at least four charges, defers optional wet pickups and underwater exploration via that failed direction. These reserves allow four primary shots. The dry-destination, pursuit and air planners retain the complete graph. A different viable bank can still reach the same underwater pickup.",
+  "guards": "Recheck the reserve, health, breathing, policy and expiry at decision time, including before a cached optional descent. Retain an observed crossing during underwater equipment rescans, so a wet rack cannot replace a dry destination or pursuit through that crossing. Failed pairs expire independently. Death/respawn or a new world clears the history. Different physical openings between the same directed pair of sectors share a retry.",
+  "stock_map_check": {
+    "map": "Canyon Oasis",
+    "graph_nodes": 558,
+    "reachable_from_tested_bank_before_and_after": 483,
+    "reachable_with_global_entry_block_rejected_before_packaging": 13,
+    "optional_wet_destination_search_reachable_during_retry": 13,
+    "result": "Three distinct racks shared the same first water crossing. Rejecting the entire crossing would leave only the starting bank accessible. The revised source retains full transit costs for dry destinations and opponents."
+  },
+  "controlled_driver_cases": [
+    "After an unsuccessful dive for A, a nearby submerged B shares that entry. The revised bot can pursue a reachable dry shield instead. A different bank leading to B remains eligible.",
+    "A dry shield, a dropped pack on dry ground and pursuit of a living peer can use the only water crossing. Underwater rescans preserve the reason for the crossing, including when an approach node also references a submerged rack.",
+    "A route cached while disarmed or at low health is rechecked before optional descent after recovery. Disarm, depleted ammunition, low health, a different pool, expiry and reset each retain their expected behavior.",
+    "During an active retry, a projectile sound that only turns the bot yields movement to the planner on dry ground or while traversing the known crossing. A committed swim retains its heading. The fixture includes four consecutive dry ticks and five underwater ticks at 0.20 seconds each."
+  ],
+  "host_compiled_suites": {
+    "native_source": {
+      "driver": 55,
+      "portal": 11,
+      "hearing": 8,
+      "collision": 3,
+      "companion": 1,
+      "legal_loadouts": 54,
+      "invalid_loadouts": "pass"
+    },
+    "jkweb_source": {
+      "driver": 55,
+      "portal": 11,
+      "hearing": 8,
+      "legal_loadouts": 54,
+      "invalid_loadouts": "pass",
+      "companion": "POSIX chat-frame assertion also fails with the preceding source. The browser fork gates the hook on ARCH_WASM and PLATFORM_WSRELAY.",
+      "collision": "One-ULP endpoint assertion also fails with the preceding source, observed 0.205065846 against bound 0.205065832."
+    }
+  },
+  "bank_regression": {
+    "cases_per_source": 27,
+    "source_configurations": 2,
+    "result": "Every recorded timing, heading and health value matches the third refinement bank tables, including the 79 ms case at 29.940 seconds and 60 HP.",
+    "manifest": "native/tests/stock_water_replay/bank_cases.tsv",
+    "previous_receipt": "qa/bots-bank-landing.json"
+  },
+  "inputs_sha256": {
+    "src/AI/jkBot.c": "46712f1ca48f42ee968f46cc1ea8fa1913c1f4727f7a132d7a6133f265e1b294",
+    "src/AI/jkBotHearing.inc": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+    "src/AI/jkBotNavigate.inc": "2d607385719fece9f8e12b454a1d778350f101da3486c23a1a144bca0d349b26",
+    "src/AI/jkBotNavigation.inc": "2f5d298517aa14ddea39d0eafe5aa8de4c596b8604465e1ee12a908503b41a40",
+    "native/tests/test_bot_equipment.inc": "2eb5f114ed2f4c122ce8273a76a4d5f3a2cc55437b893666d5932bbcefe7a310",
+    "native/tests/test_bot_portal_collision.c": "fe4770ef20bbca9ee1bb5306e5fff13d5881714e81118e4e60a5f8c30f03bba1"
+  },
+  "evidence_scope": "Host-compiled source fixtures establish routing decisions and requested inputs. The stock map check establishes connectivity from one recorded bank. A new build and a separate autonomous match are required to measure time in water, gear acquisition and combat outcomes.",
+  "independent_source_review": "Accepted for build and live qualification after independent reruns of both complete driver configurations."
+}

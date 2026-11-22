@@ -24,6 +24,7 @@ from dataclasses import dataclass
 from typing import BinaryIO
 
 from manager import config as server_config
+from .companion import Hub
 from .settings import behavior_values, check_scope, write_behavior
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -56,7 +57,7 @@ def load_profiles(path: Path = PROFILE_FILE) -> dict[str, dict]:
             if (not isinstance(item, str) or len(item) > 31
                     or not re.fullmatch(r"[A-Za-z0-9_-]+\." + extension, item)):
                 raise ValueError(f"{ident}: {key} must be a plain ASCII .{extension} basename, at most 31 characters.")
-        if row.get("force_side", "light") not in ("light", "dark") or row.get("force_style", "balanced") not in ("balanced", "master"):
+        if row.get("force_side", "light") not in ("light", "dark") or row.get("force_style", "balanced") not in ("balanced", "master", "competitive"):
             raise ValueError(f"{ident}: invalid Force side or style.")
         taunts = row.get("taunts")
         if not isinstance(taunts, dict) or set(taunts) != set(EVENTS):
@@ -297,8 +298,13 @@ def utc_now() -> str:
 
 def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
            runtime: Path, seconds: float, taunts: bool, behavior_file: Path | None = None,
-           status_file: Path | None = None, managed: bool = False) -> tuple[int, Path]:
+           status_file: Path | None = None, managed: bool = False,
+           companion_port: int | None = None, companion_chat: bool = False) -> tuple[int, Path]:
     check_scope(config, len(profiles))
+    if companion_chat and companion_port is None:
+        raise ValueError("--companion-chat requires --companion-port.")
+    if companion_port is not None and (type(companion_port) is not int or not 0 <= companion_port <= 65535):
+        raise ValueError("--companion-port must be in 0..65535.")
     if sys.platform != "linux":
         raise ValueError("The packaged bot prototype currently supports Linux only.")
     if managed and os.getpgrp() != os.getpid():
@@ -344,7 +350,11 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
     previous_signals = {}
     errors = []
     exit_code = 1
+    hub = None
     try:
+        if companion_port is not None:
+            hub = Hub(run_directory, [p["id"] for p in profiles], companion_port, allow_chat=companion_chat)
+            print(f"Companion {hub.url} (private credentials in {hub.directory})", flush=True)
         for sig in (signal.SIGINT, signal.SIGTERM):
             previous_signals[sig] = signal.signal(sig, lambda signum, frame: stopped.append(signum))
         display = os.environ.get("DISPLAY", "")
@@ -363,15 +373,23 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
             log = (directory / "client.log").open("wb")
             command = [str(engine), "-headless", "-botConnect", connect,
                        "-botName", profile["name"], "-botSkin", profile["model"], "-botSound", profile["sound"]]
+            channel = None
             try:
+                env = bot_environment(engine, directory, run_directory, index, display, taunts,
+                                      behavior_file=behavior_file, team=team, force_side=force_side,
+                                      force_style=force_style)
+                if hub:
+                    channel = hub.take_socket(profile["id"])
+                    env["JK_BOT_COMPANION_FD"] = str(channel.fileno())
                 process = subprocess.Popen(command, cwd=directory, stdin=subprocess.DEVNULL,
                                            stdout=log, stderr=subprocess.STDOUT, start_new_session=not managed,
-                                           env=bot_environment(engine, directory, run_directory, index, display, taunts,
-                                                               behavior_file=behavior_file, team=team, force_side=force_side,
-                                                               force_style=force_style))
+                                           pass_fds=(channel.fileno(),) if channel else (), env=env)
             except BaseException:
                 log.close()
                 raise
+            finally:
+                if channel:
+                    channel.close()
             record["pid"] = process.pid
             children.append(Child(profile["name"], process, log, record, time.monotonic()))
             publish()
@@ -379,6 +397,8 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
         session["result"] = "running"
         publish()
         while not stopped:
+            if hub:
+                hub.pump()
             changed = False
             for child in children:
                 changed |= inspect_log(child)
@@ -405,6 +425,11 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
         errors.append(str(error))
         session["result"] = "failed"
     finally:
+        if hub:
+            try:
+                hub.close()
+            except OSError as error:
+                errors.append(f"Close companion: {error}")
         # Continue cleanup even when one child/descriptor fails. Never leave
         # another bot alive merely because a sibling was already gone.
         for child in reversed(children):
@@ -456,6 +481,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--connect", help="HOST:PORT, default 127.0.0.1:<native_port> from server config")
     parser.add_argument("--runtime", type=Path, default=ROOT / "runtime/bots")
     parser.add_argument("--seconds", type=float, default=0, help="Stop after this many seconds; 0 runs until interrupted")
+    parser.add_argument("--companion-port", type=int, help="Enable the private loopback companion API; 0 chooses a port.")
+    parser.add_argument("--companion-chat", action="store_true", help="Authorize companion SAY actions for this run.")
     parser.add_argument("--no-taunts", action="store_true")
     parser.add_argument("--behavior-file", type=Path, help="Read live behavior settings from this existing file")
     parser.add_argument("--status-file", type=Path, help=argparse.SUPPRESS)
@@ -475,7 +502,8 @@ def main(argv: list[str] | None = None) -> int:
                          connect=args.connect or f"127.0.0.1:{config['native_port']}",
                          runtime=args.runtime, seconds=args.seconds,
                          taunts=config["bots_taunts"] and not args.no_taunts,
-                         behavior_file=args.behavior_file, status_file=args.status_file, managed=args.managed)
+                         behavior_file=args.behavior_file, status_file=args.status_file, managed=args.managed,
+                         companion_port=args.companion_port, companion_chat=args.companion_chat)
         return code
     except (OSError, ValueError, RuntimeError) as error:
         print("Bot launcher: " + str(error), file=sys.stderr)

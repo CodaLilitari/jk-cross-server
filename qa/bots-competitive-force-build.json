@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "date": "2026-11-21",
+  "kind": "competitive-force-incremental-native-build",
+  "implementation_commit": "5ac2c1644bb7a227be173f3e2805e646c5dd26ed",
+  "engine_base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "sdl_commit": "f87239e71e42da91ca317a12eefb82cfbf3393eb",
+  "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+  "method": "Recompile bot driver and multiplayer GUI from pinned patched source, using verified published objects and static dependencies for remaining units.",
+  "input_archive_sha256": "d44966fb988c17cc896546898481de30456350677dc20b769d669a051e917792",
+  "compiled": [
+    {
+      "source": "src/AI/jkBot.c",
+      "object": "CMakeFiles/sith_engine.dir/src/AI/jkBot.c.o",
+      "object_sha256": "3a2b9713fe2b4381b0a4efdfbb9383b812c0b8eea972dbbbf6cb983ef1e07666"
+    },
+    {
+      "source": "src/Gui/jkGUIMultiplayer.c",
+      "object": "CMakeFiles/sith_engine.dir/src/Gui/jkGUIMultiplayer.c.o",
+      "object_sha256": "6cf727e4c394d6c2348277137529284c1f9c24d3741c7eb33240bc19a45a80bd"
+    }
+  ],
+  "compiled_sources": {
+    "src/AI/jkBot.c": "a05c2bea640c042271d24fea20b72f5b678e168ea89ae7fe6d60f052f6f18323",
+    "src/AI/jkBotForce.inc": "8b1436812dedc4ad9a1a97b19baa53b550f7404bbfd3fa298fa65561a297241b",
+    "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+    "src/Gui/jkGUIMultiplayer.c": "d5dca083a52c6f3a1b55980e63baedefd90e4e5d197a26105dc3db7bea605f62"
+  },
+  "files": {
+    "bin/bots-linux-x86_64/jk-bot-client": {
+      "sha256": "fc5331973d4c68d53ceba238ecaca50eb606f66d7a647c00ce0c5e6daaf1bd67",
+      "bytes": 8592728
+    },
+    "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
+      "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+      "bytes": 3644744
+    },
+    "native/bot-client.patch": {
+      "sha256": "d318b22a03a8fad496be56605b0189ac34b9b99a4150912ad555884d14d6f8e9",
+      "bytes": 150010
+    },
+    "native/bot-relink-linux-x86_64.tar.gz": {
+      "sha256": "a2998752735eaa70c07ab49089d8e110a25bf7859e9b4545b1a8a2c36d3ff73c",
+      "bytes": 5995214
+    }
+  },
+  "checks": {
+    "all_input_objects_and_static_libraries_matched_previous_manifest": true,
+    "changed_sources_consumed_by_rebuilt_units": true,
+    "ordinary_native_bot_connect_and_join_symbols_present": true,
+    "all_cloud_dynamic_dependencies_resolved": true,
+    "source_patch_reverse_check": true,
+    "package_source_and_binary_hashes_matched_build_receipt": true
+  },
+  "tests": {
+    "native_planner_combinations": 54,
+    "native_driver_result_groups": 32,
+    "python_suite": {
+      "command": "python3 -m unittest discover -s tests",
+      "tests": 204,
+      "skipped": 2,
+      "failures": 0,
+      "elapsed_seconds": 101.409,
+      "skip_reason": "PowerShell-dependent tests unavailable on Linux cloud runtime",
+      "diagnostic": "One asyncio debug slow-task notice of 0.109 seconds; suite completed successfully."
+    }
+  },
+  "qualification": {
+    "connected_candidate_session": {
+      "receipts": [
+        "qa/bots-competitive-force-native-m2.json",
+        "qa/bots-competitive-force-native-m_boss17.json"
+      ],
+      "native_join_and_live_loadouts": true,
+      "paired_combat_state_observed": true,
+      "isolated_effect_caster_attribution": false
+    },
+    "full_dependency_rebuild": false,
+    "elite_human_matches": false,
+    "game_assets_included": false,
+    "dedicated_server_changed": false
+  },
+  "stock_engine_boundary": "Disabling actor controls can force a held hotkey DEACTIVATED before next-skill cancellation. Controller Grip marker checks do not override this stock release path."
+}

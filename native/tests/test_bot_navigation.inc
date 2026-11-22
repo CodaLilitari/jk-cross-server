@@ -39,9 +39,32 @@ static void test_initial_anchor_jump(void)
     bot.nodes[0].pos.x=.40f; bot.nodes[0].pos.z=BOT_FOOT_HEIGHT+.22f;
     Bot_Navigate(&self);
     assert(!bot.keys[INPUT_FUNC_JUMP] && !nav.jumpUntil);
+    own.aItems[SITHBIN_F_JUMP].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own.aItems[SITHBIN_F_JUMP].amount=3; own.aItems[SITHBIN_FORCEMANA].amount=19;
+    Bot_Navigate(&self); assert(!nav.forceJumpPending);
+    own.aItems[SITHBIN_FORCEMANA].amount=20;
+    Bot_Navigate(&self);
+    int jumpKey=Bot_PowerKey(SITHBIN_F_JUMP);
+    assert(nav.forceJumpPending && bot.keys[jumpKey] && !bot.keys[INPUT_FUNC_JUMP]);
+    assert(Bot_Distance(self.position,original)==0 && own.aItems[SITHBIN_FORCEMANA].amount==20);
+    /* A shove before release ends the dry route and drops the normal key.
+       Inventory scripts own any release effects, mana, and reactivation. */
+    self.attach_flags=0; bot.now+=0.1f; memset(bot.keys,0,sizeof(bot.keys));
+    Bot_Navigate(&self); Bot_ForceTick(&self,NULL,180.0f);
+    assert(!nav.forceJumpPending && !nav.jumpUntil && bot.forceBin==-1 && !bot.keys[jumpKey]);
+    for (int rank=3;rank<=4;rank++) {
+        self.attach_flags=SITH_ATTACH_SURFACE; own.aItems[SITHBIN_F_JUMP].amount=rank;
+        bot.now+=3; flex_t hold=rank*.35f;
+        assert(Bot_RequestForce(&self,SITHBIN_F_JUMP,hold,-1));
+        assert(fabsf(bot.forceUntil-(bot.now+hold))<0.001f);
+        bot.now=bot.forceUntil-.01f; memset(bot.keys,0,sizeof(bot.keys));
+        Bot_ForceTick(&self,NULL,180.0f); assert(bot.keys[jumpKey]);
+        bot.now=bot.forceUntil+.01f; memset(bot.keys,0,sizeof(bot.keys));
+        Bot_ForceTick(&self,NULL,180.0f); assert(!bot.keys[jumpKey] && bot.forceBin==-1);
+    }
     assert(queryDepth==0);
     jkBot_Configure("Bot_Reset","ky.3do");
-    puts("PASS actual initial anchor segment uses bounded ordinary jump inputs; airborne continuation, range and height limits retained");
+    puts("PASS dry initial anchor prefers ordinary jump, checks Force availability, releases on lost support and holds full rank 3/4 charge");
 }
 
 static void test_static_bridge_route(void)
@@ -135,8 +158,89 @@ static void test_c1_portal_route(void)
     puts("PASS C1 boundary anchor fallback has a collision-checked lobby route and rejects disconnected entry");
 }
 
+static void test_bot_pickup_preferences(void)
+{
+    jkBot_Configure("Bot_Supply","ky.3do");
+    SithSector sector={0}; SithWorld world={0}; SithThing self={0}, racks[2]={{0}}; SithPlayer own={0};
+    self.type=SITH_THING_PLAYER; self.sector=&sector; self.actorParams.pPlayer=&own; self.actorParams.health=100;
+    world.aThings=racks; world.numThings=1; world.numThingsLoaded=2; bot.world=&world;
+    bot.now=20; bot.nNodes=3; bot.graphDone=1; bot.sabersOnly=0; bot.elite=0;
+    for (int i=0;i<2;i++) { racks[i].type=SITH_THING_ITEM; racks[i].sector=&sector; }
+    strcpy(racks[0].aName,"railgun"); strcpy(racks[1].aName,"concrifle");
+    assert(Bot_ItemValue(&self,0)==8 && Bot_ItemValue(&self,1)==8);
+    bot.elite=1;
+    assert(Bot_ItemValue(&self,0)==12 && Bot_ItemValue(&self,1)==18);
+    strcpy(racks[0].aName,"repeatergun"); assert(Bot_ItemValue(&self,0)==10);
+    strcpy(racks[0].aName,"strifle"); assert(Bot_ItemValue(&self,0)==8);
+    strcpy(racks[0].aName,"railgun");
+    bot.nodes[0]=(BotNode){.sector=&sector,.item=-1};
+    bot.nodes[1]=(BotNode){.pos={1,0,0},.sector=&sector,.item=0};
+    bot.nodes[2]=(BotNode){.pos={0,1,0},.sector=&sector,.item=1};
+    bot.nodes[0].edges[0]=(BotEdge){1,1,BOT_ROUTE_WALK};
+    bot.nodes[0].edges[1]=(BotEdge){2,5,BOT_ROUTE_WALK}; bot.nodes[0].nEdges=2;
+    unsigned char strategy[28]={0}; strategy[8]=CP_RESOURCE;
+    assert(Companion_SetPolicy(&self,strategy,100)==CP_OK); Bot_Plan(&self);
+    assert(bot.goal==1 && bot.routeCount==1 && bot.route[0]==1);
+    strategy[9]=SITHBIN_CONCUSSION_RIFLE;
+    assert(Companion_SetPolicy(&self,strategy,100)==CP_OK); Bot_Plan(&self);
+    assert(bot.goal==2 && bot.routeCount==1 && bot.route[0]==2 && !own.aItems[SITHBIN_CONCUSSION_RIFLE].amount);
+    bot.nodes[0].nEdges=1; bot.goal=-1; Bot_Plan(&self); assert(bot.goal==1);
+    self.actorParams.health=25; strcpy(racks[0].aName,"healthpack");
+    assert(Bot_ItemValue(&self,0)>Bot_ItemValue(&self,1)); self.actorParams.health=100;
+    bot.sabersOnly=1; assert(Bot_ItemValue(&self,1)==0); bot.sabersOnly=0;
+    own.aItems[SITHBIN_CONCUSSION_RIFLE].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own.aItems[SITHBIN_CONCUSSION_RIFLE].amount=1; own.aItems[SITHBIN_POWER].amount=500;
+    assert(Bot_ItemValue(&self,1)==0); own.aItems[SITHBIN_CONCUSSION_RIFLE].amount=0;
+    racks[1].flags=SITH_TF_DISABLED; racks[1].itemParams.secRespawnInterval=30;
+    assert(Bot_ItemValue(&self,1)==0); bot.now+=28;
+    assert(Bot_ItemValue(&self,1)>0 && Bot_ItemValue(&self,1)<2);
+    racks[1].flags=SITH_TF_DESTROYED; assert(Bot_ItemValue(&self,1)==0);
+    puts("PASS elite supply priorities and legal companion preference alter reachable routes; health, saber, ammo and absence guards");
+}
+
+static void test_dropped_pack_contents(void)
+{
+    jkBot_Configure("Bot_Pack","ky.3do");
+    SithSector sector={0}; SithPlayer own={0};
+    SithThing self={.type=SITH_THING_PLAYER,.sector=&sector};
+    self.actorParams.pPlayer=&own;
+    SithThing pack={.type=SITH_THING_ITEM,.guid=421,.signature=17,.sector=&sector};
+    strcpy(pack.aName,"+backpack"); pack.itemParams.flags=SITH_ITEM_BACKPACK;
+    SithWorld world={.aThings=&pack,.numThings=0,.numThingsLoaded=1};
+    bot.world=&world;
+    own.aItems[SITHBIN_CONCUSSION_RIFLE].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own.aItems[SITHBIN_RAIL_DETONATOR].state=SITHINVENTORY_ITEM_AVAILABLE;
+    int cap=(int)(sizeof(pack.itemParams.contents)/sizeof(pack.itemParams.contents[0]));
+    pack.itemParams.numBins=cap;
+    pack.itemParams.contents[0]=(SithBackpackItem){.binIdx=SITHBIN_CONCUSSION_RIFLE,.value=1};
+    pack.itemParams.contents[cap-1]=(SithBackpackItem){.binIdx=SITHBIN_POWER,.value=8};
+    assert(Bot_ItemValue(&self,0)==18 && own.aItems[SITHBIN_CONCUSSION_RIFLE].amount==0);
+    pack.itemParams.contents[cap-1].value=7; assert(!Bot_PackValue(&self,&pack));
+    own.aItems[SITHBIN_POWER].amount=1; assert(Bot_PackValue(&self,&pack)==18);
+    pack.itemParams.numBins=cap+1; assert(!Bot_PackValue(&self,&pack));
+    pack.itemParams.numBins=-1; assert(!Bot_PackValue(&self,&pack));
+    pack.itemParams.numBins=1;pack.itemParams.contents[0]=(SithBackpackItem){.binIdx=SITHBIN_RAILCHARGES,.value=1};
+    assert(!Bot_PackValue(&self,&pack)); own.aItems[SITHBIN_RAIL_DETONATOR].amount=1;
+    assert(Bot_PackValue(&self,&pack)==12); own.aItems[SITHBIN_RAILCHARGES].amount=30;
+    assert(!Bot_PackValue(&self,&pack)); own.aItems[SITHBIN_RAILCHARGES].amount=0;
+    pack.itemParams.contents[0].value=NAN; assert(!Bot_PackValue(&self,&pack));
+    pack.itemParams.contents[0].binIdx=SITHBIN_THERMAL_DETONATOR;
+    pack.itemParams.contents[0].value=4; assert(!Bot_PackValue(&self,&pack));
+    pack.itemParams.contents[0].binIdx=-1; assert(!Bot_PackValue(&self,&pack));
+    pack.itemParams.contents[0].binIdx=SITHBIN_RAILCHARGES;
+    BotNode contact={0}; pack.flags=SITH_TF_DESTROYED;
+    assert(!Bot_PackValue(&self,&pack) && !Bot_PackContact(&self,&pack,&contact)); pack.flags=SITH_TF_DISABLED;
+    assert(!Bot_PackValue(&self,&pack)); pack.flags=0;
+    nav.itemGuid[0]=pack.guid; pack.guid++; pack.signature++;
+    assert(!Bot_ItemValue(&self,0) && Bot_PackValue(&self,&pack)==12);
+    bot.sabersOnly=1; assert(!Bot_PackValue(&self,&pack));
+    puts("PASS dropped pack valuation uses bounded synced entries, ownership and combined ammo; expired, empty, reused and unusable contents");
+}
+
 static void test_bot_navigation(void)
 {
+    test_bot_pickup_preferences();
+    test_dropped_pack_contents();
     SithSector sectors[2]={{0}};
     SithWorld world={0}; SithThing self={0}, items[4]={{0}}, templates[4]={{0}};
     SithPlayer own={0}; rdModel3 model={0};

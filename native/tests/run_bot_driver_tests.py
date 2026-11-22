@@ -39,12 +39,17 @@ def main() -> int:
                     'lib/GameNetworkingSockets/include'):
         if (source / include).is_dir():
             command.append('-I' + str(source / include))
+    # Exercise the engine's item collision handler alongside the bot dispatcher.
+    item_compile = command + ['-ffunction-sections', '-fdata-sections', '-c',
+                              str(source / 'src/World/sithItem.c')]
     command += ['-Wall', '-Wextra', '-Werror', '-UNDEBUG', '-ffunction-sections',
                 '-fdata-sections', str(Path(__file__).with_name('test_bot_driver.c')),
                 '-Wl,--gc-sections', '-lm']
     with tempfile.TemporaryDirectory(prefix='jk-bot-regression-') as directory:
         output = Path(directory) / 'test_bot_driver'
-        subprocess.run(command + ['-o', str(output)], check=True)
+        item = Path(directory) / 'sithItem.o'
+        subprocess.run(item_compile + ['-o', str(item)], check=True)
+        subprocess.run(command + [str(item), '-o', str(output)], check=True)
         subprocess.run([str(output)], check=True)
     return 0
 

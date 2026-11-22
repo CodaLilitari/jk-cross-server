@@ -1,0 +1,700 @@
+{
+  "schema": 1,
+  "title": "Canyon Oasis recording follow-up: water, wall recovery and selective Force use",
+  "baseline_runtime": "42154174ec8421e642bfcb56308b2959c2db22e2",
+  "reviewed_video_sha256": "fd6c8f7fc25cea86019cebdc08a967caec35962600f095e763155f3415cbad3e",
+  "revised_wasm_sha256": "6a000aaf1770ecb8014284b27fa2ba4522a8ab2acd888848930c368c5674d5d7",
+  "review_method": "Rendered video samples across the full two minutes, synchronized own-state traces and retained engine console events, followed by source tracing and normal-tick regressions.",
+  "observed_stalls": [
+    {
+      "session_start_seconds": 68.778,
+      "duration_seconds": 15.196,
+      "observations": 53,
+      "samples_with_target": 53,
+      "samples_with_hearing": 42
+    },
+    {
+      "session_start_seconds": 103.294,
+      "duration_seconds": 15.677,
+      "observations": 55,
+      "samples_with_target": 0,
+      "samples_with_hearing": 49
+    }
+  ],
+  "stall_measure": "Fresh alive observations remaining within 0.13 map units horizontally of a fixed anchor. Full-session times include warmup; these are not video timestamps. Jumping in place does not count as horizontal progress. The two reported episodes also show wall contact in the recording.",
+  "force_pull": {
+    "stock_bryar_eligible": true,
+    "excluded_weapons": [
+      "fists",
+      "lightsaber"
+    ],
+    "active_absorb_blocks_player_disarm": true,
+    "stock_player_script_sha256": "cf68cc4754acd78d2d84297eb6d05df80d0e8e265fa5d5a902b7101f8e523955",
+    "stock_pull_script_sha256": "9ab4429c7334bcf1baa286e7027bc4e7ea4e4bcc9907342254d27b2659605141",
+    "observations": "Two retained request bursts (five requests around session seconds 83-86 and ten around 124-131) targeted Jan holding the Bryar while her own active-power trace showed Absorb. Her weapon remained unchanged. With Absorb down around seconds 98-99, a subsequent request was followed by fists. The observations identify a tactical failure, not a causal attribution of every individual input.",
+    "hud_name_means": "power selection, not successful disarm",
+    "changes": [
+      "Validate recognized synchronized weapon model at request and release.",
+      "At release require range and the actual stock COG marker to identify the intended player; cancel through ordinary deselection when invalid.",
+      "After a validated release, wait 2 seconds before repeating Pull on the same opponent and unchanged weapon; further unchanged releases use 4, 8, 16 and at most 20 seconds.",
+      "A known weapon change, death or changed peer identity resets retry history. Unknown weapon models do not clear it.",
+      "Other opponents, gunfire and other eligible powers remain available. The bot does not read private remote Absorb state."
+    ],
+    "stock_rules_modified": false
+  },
+  "movement_changes": [
+    "Advance underwater time on every living tick and treat the need for air as an urgent navigation objective.",
+    "After sustained lack of horizontal progress, route movement receives a bounded recovery interval during combat and hearing.",
+    "Attribute a failed route only after continuous ownership on the same node and goal; evaluate the expiry frame before returning control.",
+    "Preserve route heading and pitch for jump approach, committed flight and water exit while still checking physical aim for gunfire and servicing Force hold/cancellation.",
+    "Count vertical progress toward the commanded submerged waypoint, while retaining stall penalties for stationary or receding swimmers.",
+    "Use ordinary dive input to brake a fast ascent before the surface run-up, so the engine can capture the water-surface state before a legal jump.",
+    "Walk to the supported dry start of a water-entry edge when the graph anchor is still ahead; retry the actual entry every tick.",
+    "Seek air after eight seconds or stock endurance reaching 8000 ms, and sooner at low health. Ordinary upward-facing forward movement supplements the jump swim input through checked clearance.",
+    "Predict the live bank jump using actual control and physics cadence; accept a collision-checked dry landing followed by a short supported walk to the graph waypoint.",
+    "If crouched, use an ordinary vertical surface hop so stock dry controls release crouch before the bank jump.",
+    "Retain the checked shoreline route through a brief upward breach instead of selecting another submerged goal.",
+    "Require a full player-body sweep for submerged graph links; approach a safe wet anchor before retrying a blocked edge from the actual position.",
+    "When air is urgent and the route is blocked, use ordinary upward-facing swimming and jump input toward a full-body-clear water surface directly above.",
+    "Match stock center-then-radius floor-contact searches for dry bank rims, conservatively reject intervening standable things, and retain the short supported continuation limit."
+  ],
+  "normal_tick_tests": {
+    "source": "native/tests/test_bot_movement_tick.inc",
+    "sha256": "e10009c7ea7c28dedfcb54a96973581e25e1dd432963b20a5292a4fa15451d10",
+    "covers": [
+      "underwater visible opponent",
+      "underwater recurring sound",
+      "underwater control without distractions",
+      "dry wall with visible opponent",
+      "dry wall with recurring sound",
+      "actual horizontal progress clears stall attribution",
+      "brief ownership does not blame an unused route",
+      "failed full recovery interval penalizes the driven route",
+      "off-axis opponent cannot steal ordinary/Force jump approach or flight heading",
+      "aligned gunfire and ordinary Force Jump hold remain available",
+      "slow vertical ascent and descent toward the commanded submerged waypoint",
+      "stationary and wrong-direction swimming still trigger recovery"
+    ]
+  },
+  "private_stock_geometry_replay": {
+    "map": "JK1MP/m10.jkl",
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "method": "Build navigation graph and run jkBot_Tick with stock swim/airborne physics and swept collision. Do not seed a navigation goal or exit phase.",
+    "physics_hz": 20,
+    "matched_original_cases": 4,
+    "original_landings": 0,
+    "revised_landings_on_matched_cases": 4,
+    "additional_off_axis_opponent_cases": 2,
+    "additional_landings": 2,
+    "ordinary_jumps_per_success": 1,
+    "limits": "One shoreline, controlled starts facing the bank. Off-axis cases rotate the visible opponent 39.5 degrees from the required exit heading. This is not a live multiplayer qualification or coverage of every shoreline.",
+    "status": "Historical intermediate fixture, superseded for current JKWeb qualification",
+    "fidelity_gap": "Refreshed controls on every physics step and did not fully reproduce current JKWeb surface capture and sector-transition behavior. Retained to explain why live testing was still necessary."
+  },
+  "native_verification": {
+    "build_metadata_sha256": "3b1ab27d8ade0185729e6972cfab512c883d1df54eb1d7fbd017598ada851474",
+    "files": {
+      "bin/bots-linux-x86_64/jk-bot-client": {
+        "sha256": "a880776b445a5d2f1bd6a752ada15e6864493edc203ebeb4aeca8a4b93bb6bea",
+        "bytes": 8660816
+      },
+      "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
+        "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+        "bytes": 3644744
+      },
+      "native/bot-client.patch": {
+        "sha256": "a257d58244ae0596be82a853f1422277682a2b213c3b97c66560b58c0ecd6db4",
+        "bytes": 264168
+      },
+      "native/bot-relink-linux-x86_64.tar.gz": {
+        "sha256": "180fbb70431f7d4da3915a7968db51bf7813926e85764774c8f40a68a0766706",
+        "bytes": 6030595
+      }
+    },
+    "scanned_units": 205,
+    "rebuilt_units": [
+      "src/AI/jkBot.c"
+    ],
+    "verification": {
+      "prior_global_symbols_removed": 0,
+      "clean_pinned_source_accepts_patch": true,
+      "packaged_source_dependency_hashes_verified": 222,
+      "all_packaged_link_input_hashes_verified": 218,
+      "relinked_executable_sha256": "a880776b445a5d2f1bd6a752ada15e6864493edc203ebeb4aeca8a4b93bb6bea",
+      "headless_invalid_profile_exit": 6,
+      "patched_source_regressions": [
+        "hearing and elite pursuit",
+        "companion transport and strategies",
+        "bot driver, combat and arming",
+        "collision",
+        "portal geometry, water entry/exit and recessed pickup contact",
+        "loadout"
+      ],
+      "live_multiplayer_match": false,
+      "headless_invalid_profile_fixture": "Four-byte synthetic install-layout marker, loopback endpoint, stock skin/sound argument forms, and invalid name bad. Parser emitted the bot-profile requirements and exited before attempting to join.",
+      "headless_missing_install_marker_exit": 6
+    },
+    "pass_groups": {
+      "hearing": 7,
+      "companion": 1,
+      "driver": 38,
+      "portal": 9,
+      "collision": 3
+    },
+    "loadout": "Bot loadout: 54 legal rank/side/style combinations and invalid inputs passed.",
+    "six_suites_exit_zero": true,
+    "independent_geometry_regression": {
+      "run_log_sha256": "590ed36d567a7a2bb4acb1ef87cec4d38f27a8a9b0eaaa4ce46cbd393b38d145",
+      "force_doorway_full_player_radius_blocked": true,
+      "blocked_bank_matches_stock_findfloor": true
+    }
+  },
+  "live_comparison": {
+    "status": "combined browser trial completed; recorded pool exits observed alive; no full-charge cast occurred in this match",
+    "runtime_build": "61a4aed2db2e930f7ed1d3041d684111424c3e7a",
+    "wasm_sha256": "6a000aaf1770ecb8014284b27fa2ba4522a8ab2acd888848930c368c5674d5d7",
+    "js_sha256": "7b52a7616729167a8ccb2377d5dbfe8dc04acd447fc28d5a784a364762efbac7",
+    "trace_sha256": "ecbbd53a25de8c6ed261d6deaf055f1dffd035cd2f7d1d10768590637ae9efde",
+    "map": "Canyon Oasis",
+    "mode": "FF guns",
+    "four_hardware_browser_clients": true,
+    "seconds_after_join_qualification": 120,
+    "phase": "complete",
+    "own_state_samples": {
+      "lily": 519,
+      "boba": 489,
+      "jan": 459,
+      "yun": 474
+    },
+    "observed_seeing_activated_samples": {
+      "lily": 0,
+      "boba": 0,
+      "jan": 0,
+      "yun": 0
+    },
+    "force_jump_requests": {
+      "lily": [],
+      "boba": [
+        0.25
+      ],
+      "jan": [],
+      "yun": [
+        0.25
+      ]
+    },
+    "observed_force_jump_activated_samples": {
+      "lily": 0,
+      "boba": 2,
+      "jan": 0,
+      "yun": 0
+    },
+    "pool_exits": [
+      {
+        "bot": "Lily",
+        "life_epoch": 1,
+        "wet_sector_samples": [
+          42,
+          44
+        ],
+        "bank_sector": 10,
+        "bank_standing_samples_game_seconds": [
+          45.89,
+          46.093,
+          46.511,
+          46.765,
+          46.965,
+          47.217
+        ],
+        "standing_z": 0.1201,
+        "health": 74.30705261230469,
+        "health_preserved_during_recorded_escape": true
+      },
+      {
+        "bot": "Lily",
+        "life_epoch": 1,
+        "wet_sector_samples": [
+          42,
+          44
+        ],
+        "bank_sector": 10,
+        "bank_walking_samples_game_seconds": [
+          62.791,
+          63.013
+        ],
+        "standing_z": 0.1191,
+        "health": 27.5595703125,
+        "health_preserved_during_recorded_escape": true,
+        "subsequent_status_game_seconds": 70.1,
+        "subsequent_sector": 33
+      }
+    ],
+    "horizontal_motion_screen": {
+      "method": "First 120 seconds after all four seats publish fresh native observations. Alive samples within 0.13 horizontal map units of an anchor for at least 2 seconds are candidate stalls; gaps over 0.8 seconds reset the anchor. These samples do not distinguish all intentional pauses, Grip immobility, or bad routes. The two matches are unseeded and do not establish human competitive strength. Pull edges are sampled activation transitions, not a count of successful disarms.",
+      "longest_candidate_seconds": {
+        "lily": 3.196,
+        "boba": 4.0,
+        "jan": 3.483,
+        "yun": 7.223
+      }
+    },
+    "claim": "Four browser clients completed the private match. Lily climbed from the pool to bank-height dry positions twice in the same life, then walked away without losing health during the second escape. Seeing remained inactive in all fresh own-state samples. The complete retained console records two 0.25-second Jump requests, no full-charge request; charged escapes are supported by controlled stock-handler replay, not this live match. The match is unseeded and does not establish every shoreline, all ledges or elite-human performance."
+  },
+  "intermediate_live_failure": {
+    "build": "a00f2acc7e6616955c4c3d6bc5db39c8d0fb821b",
+    "wasm_sha256": "be8bb4b15124e3524518243d84e864c2ceda668a6a98c76b5f4bf2a34ece24d5",
+    "trace_sha256": "b7f1507dc68a9726ccd5acf3838c355268447bf14706a55b60554c8533afdda7",
+    "four_hardware_browser_clients": true,
+    "conclusion": "Did not qualify water robustness. The first fix still oscillated in the sector 54 shaft, producing a 45.132-second horizontal stall for Lily and a 30.334-second one for Boba. The earlier six aligned shoreline fixtures did not cover the deeper live approaches.",
+    "causes": [
+      "Horizontal-only recovery charged successful vertical swimming as a failed route.",
+      "Momentum from a deep ascent crossed into air before the water-surface run-up captured a legal jump state."
+    ]
+  },
+  "deep_water_pose_replay": {
+    "map": "JK1MP/m10.jkl",
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "method": "Normal bot tick with stock PlayerLook/FreeCam controls, stock water/air physics and real map sphere collision. Exact prior and revised source use identical initial poses and a dry-floor contact success condition.",
+    "initial_positions": [
+      [
+        2.9567,
+        -0.0994,
+        0.322
+      ],
+      [
+        2.9567,
+        -0.0994,
+        -0.326
+      ],
+      [
+        2.9819,
+        -0.1218,
+        -0.451
+      ],
+      [
+        2.9819,
+        -0.1218,
+        0.56
+      ]
+    ],
+    "yaw_pitch_degrees": [
+      [
+        0,
+        0
+      ],
+      [
+        130,
+        45
+      ],
+      [
+        -110,
+        -55
+      ]
+    ],
+    "physics_hz": [
+      15,
+      20,
+      30,
+      60
+    ],
+    "matched_cases": 48,
+    "intermediate_build_landings": 0,
+    "revised_build_landings": 48,
+    "controls": "Ordinary movement, swim, dive and jump; no position/velocity writes in the bot controller.",
+    "limits": "Controlled starts at the observed Canyon Oasis shaft; separate from unscripted multiplayer qualification.",
+    "status": "Historical intermediate fixture, superseded for current JKWeb qualification",
+    "fidelity_gap": "Refreshed controls on every physics step and did not fully reproduce current JKWeb surface capture and sector-transition behavior. Retained to explain why live testing was still necessary."
+  },
+  "force_seeing": {
+    "triggers": [
+      "Current local Blind, to prevent a subsequent Blind while Seeing is active.",
+      "An eligible hostile player has both the synchronized Persuasion twinkle flag and actor invisibility flag within the normal forward view, range and line of sight."
+    ],
+    "not_triggers": [
+      "Ordinary visible engagement",
+      "Unexplained damage",
+      "Generic Force threat",
+      "The 0.33-second Force Jump twinkle without actor invisibility"
+    ],
+    "existing_blind_is_not_cured": true,
+    "remote_inventory_read": false,
+    "stock_rules_modified": false,
+    "stock_seeing_script_sha256": "47fcffb1a371cf61ec386d3eded9615f0f9ae2945997738c4861091c28fe6ac4",
+    "tests_source": "native/tests/test_bot_behavior.inc",
+    "tests_sha256": "280d56f4d24721cc7ed0abbe91fad7107f667b91c96537b3280acb40355f0ee9",
+    "verification": "Both source-tree drivers passed 38 named groups and hearing passed seven groups, including Jump-only and true-Persuasion cases. Independent source review verified both flags are carried by the same normal multiplayer state update.",
+    "stock_jump_script_sha256": "36c2b8176c38bfdea43b1c6431892a9022d5e7a98435af79164d9105a484c882",
+    "shared_effect_flag_correction": "Stock Force Jump also sets the twinkle flag. Requiring the separate synchronized actor invisibility flag prevents false Seeing casts and keeps jumping opponents targetable."
+  },
+  "dry_water_entry_replay": {
+    "map": "JK1MP/m10.jkl",
+    "observed_sector": 41,
+    "observed_delay_seconds": 10.123,
+    "cause": "The first graph edge omitted the still-unreached dry anchor. The actual water opening remained outside the 0.55-unit entry limit; repeated rejection gave no movement.",
+    "stalled_poses": 5,
+    "headings": 3,
+    "control_hz": [
+      20,
+      60
+    ],
+    "matched_cases": 30,
+    "previous_reached_legal_entry_within_1_45_seconds": 0,
+    "revised_reached_legal_entry": 30,
+    "revised_entry_seconds_range": [
+      0.083,
+      0.55
+    ],
+    "ordinary_jumps": 0,
+    "already_valid_starts_preserved": 6,
+    "limits": "Endpoint is reaching a legal water-entry position, not completing the subsequent swim."
+  },
+  "second_intermediate_live_failure": {
+    "build": "af33c329d340440f8a0a2480897bb0c7868051dd",
+    "wasm_sha256": "02b30f01336cf169e688cb32fb1b6dfa5eff77612b9d42142a507b234db116e4",
+    "trace_sha256": "ca2f8e6b1ef0896c0647f1e8313ab4d099a6b4eeaf687fc4e3cd8a3f12bfe10d",
+    "four_hardware_browser_clients": true,
+    "conclusion": "Lily moved more consistently, but Boba still drowned after a late ascent, then reached breathing height without completing a bank exit in his second life. Not accepted as reliable water navigation.",
+    "causes": [
+      "Actual browser controls refresh once per rendered frame, while intervening stock underwater physics steps repeatedly scale stored thrust. The earlier fixture overestimated swim acceleration.",
+      "A retained crouch flag reduces the stock surface jump impulse by 30%.",
+      "The bank predictor demanded the waypoint center instead of a valid nearer supported landing."
+    ]
+  },
+  "authentic_stock_water_replay": {
+    "map": "JK1MP/m10.jkl",
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "method": "Independent harness uses engine sithThing_UpdateMove, MoveThing, FindFloor, sector enter/exit, surface capture, drowning, jump and player-control routines with actual stock physics substeps.",
+    "observed_starts": 3,
+    "headings": 3,
+    "control_hz": [
+      15,
+      20,
+      30,
+      60
+    ],
+    "physics_hz": 150,
+    "matched_cases": 36,
+    "revised_supported_dry_finishes": 36,
+    "consecutive_supported_physics_steps_required": 38,
+    "closest_matched_case": {
+      "prior_build": "af33c329d340440f8a0a2480897bb0c7868051dd",
+      "prior_drowned_after_seconds": 4.0,
+      "prior_death_z": 0.53,
+      "observed_live_death_z": 0.507,
+      "revised_breath_after_seconds": 3.393,
+      "revised_dry_after_seconds": 7.293,
+      "revised_health": 10,
+      "ordinary_jumps": 2
+    },
+    "second_life_case": {
+      "revised_dry_after_seconds": 3.1,
+      "revised_health": 60
+    },
+    "high_rate_turnaround": {
+      "control_hz": 60,
+      "revised_dry_after_seconds": 6.52,
+      "revised_health": 50
+    },
+    "limits": "Known Canyon Oasis shaft, controlled starts and no competing actors. Requires a separate actual browser multiplayer run. The fixture starts the bot underwater timer at 20 seconds to exercise escape; it does not qualify the fresh-dive air decision.",
+    "reusable_harness": "native/tests/stock_water_replay/README.md",
+    "harness_relocation_verified": {
+      "breath_seconds": 3.393,
+      "supported_dry_seconds": 7.293,
+      "health": 10,
+      "ordinary_jumps": 2,
+      "retail_data_included": false
+    }
+  },
+  "movement_live_trial": {
+    "build": "ce606bb790e97f97e7b9ee01e0eedf9459da413e",
+    "wasm_sha256": "6991967382b851003bc9e0a5090e9b38fb8bf22e8deff0767116150641bc6213",
+    "trace_sha256": "568375bbcc6e086562fc4ea614fb2566d3f581163b938df5496dfa66d1c781e7",
+    "four_hardware_browser_clients": true,
+    "mode": "FF guns",
+    "map": "Canyon Oasis",
+    "seconds_after_join_qualification": 120,
+    "observed_water_exit": "Boba reached standing bank height after two shaft dives at game times approximately 35.9 and 54.5 seconds. He retained 50 health through both dives, moved across dry sector 41 and returned to combat.",
+    "observed_timing": "Retained status samples measured control-frame intervals from 0.025 to 0.180 seconds in this run, validating the need to account for control versus physics cadence.",
+    "seeing_requests": {
+      "lily": 0,
+      "boba": 1,
+      "jan": 0,
+      "yun": 2
+    },
+    "seeing_result": "The three remaining requests exposed the Force Jump twinkle false positive and motivated the final two-flag correction.",
+    "limits": "Unseeded four-bot match. Horizontal stationarity includes legitimate vertical swimming and intentional combat pauses; it is not a score of navigation failure or human playing strength."
+  },
+  "outstanding_water_edge": {
+    "status": "observed failure corrected in matched replay and integrated browser pool traversal",
+    "sector": 42,
+    "observed_bot": "Boba",
+    "observed_position": [
+      -1.873,
+      1.848,
+      -0.349
+    ],
+    "observed_health": 70,
+    "observed_goal": 329,
+    "observed_next_node": 546,
+    "observed_route": "swim",
+    "observation": "In the earlier aae9a1f run an urgent air route remained active but emitted neither jump nor dive at repeated status samples, and Boba drowned at this edge.",
+    "resolution": "All three matched captured states reach supported dry ground on the corrected source. The integrated browser match shows Lily leaving this pool twice alive; see pool_water_replay and live_comparison. Other shoreline starts remain outside the coverage claim."
+  },
+  "pool_water_replay": {
+    "map": "JK1MP/m10.jkl",
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "baseline_runtime": "aae9a1f16c5eea5ef9b916cf3009cc1a1509e7cf",
+    "start_sector": 42,
+    "dry_landing_sector": 10,
+    "physics_hz": 150,
+    "consecutive_supported_physics_steps_required": 38,
+    "method": "Offline stock control/movement/world collision/endurance fixture at 150 Hz. Reconstructed horizontal velocity (zero) and yaw (water-exit edge). One chosen control interval held fixed per input. Other players, multiplayer transport, and rendering are outside fixture. Simulation requires 38 consecutive dry floor attachment steps.",
+    "source_sha256": {
+      "jkBotWaterExit.inc": "c7f9e9e8916a2f97d37a727a1844dab7aa07f7ee7459cfaa1b831e14cd739f30"
+    },
+    "private_receipt_sha256": "9d74be4bc7f66888b2fbe60eb77b17f56ddd36c0cf24ba1574f052f104804da2",
+    "matched_cases": [
+      {
+        "observed_game_seconds": 90,
+        "position": [
+          -1.946,
+          1.935,
+          -0.276
+        ],
+        "initial_health": 100,
+        "initial_endurance_ms": 15480,
+        "constant_control_dt_seconds": 0.04,
+        "previous_drowned_after_seconds": 22.52,
+        "previous_trace_sha256": "51af739b13ec3c32d832b3634c77a896ad8d20b43b98fcce6e8164143bed813a",
+        "revised_breath_after_seconds": 1.96,
+        "revised_supported_dry_after_seconds": 8.66,
+        "revised_health": 100.0,
+        "revised_trace_sha256": "fcb6c535975c5a64f228fd3da0a0b5be60d05275efa75ec8a70609004d33b6f7"
+      },
+      {
+        "observed_game_seconds": 100,
+        "position": [
+          -1.873,
+          1.848,
+          -0.349
+        ],
+        "initial_health": 70,
+        "initial_endurance_ms": 19473,
+        "constant_control_dt_seconds": 0.079,
+        "previous_drowned_after_seconds": 12.482,
+        "previous_trace_sha256": "800406567a262121887d5e5e872b0622019fac11d99288e02b4d5a98001821f8",
+        "revised_breath_after_seconds": 2.16,
+        "revised_supported_dry_after_seconds": 10.093,
+        "revised_health": 60.0,
+        "revised_trace_sha256": "3493dafc740dd0c90b7e2d68aff6cee391f0d6e5053ec51fe763197c1f5ff506"
+      },
+      {
+        "observed_game_seconds": 110,
+        "position": [
+          -1.798,
+          1.874,
+          -0.312
+        ],
+        "initial_health": 20,
+        "initial_endurance_ms": 19526,
+        "constant_control_dt_seconds": 0.026,
+        "previous_drowned_after_seconds": 2.47,
+        "previous_trace_sha256": "6b3ad8fcaba57956cb1796946cb1460cf80d3026adb09b4d18449cfb34ec03da",
+        "revised_breath_after_seconds": 1.313,
+        "revised_supported_dry_after_seconds": 5.9,
+        "revised_health": 10.0,
+        "revised_trace_sha256": "1a90bba7ae3caa34d0b88f6cf2a039a04dfcd1a2bf4a345b64f6461e8d84cdeb"
+      }
+    ],
+    "shaft_regression": {
+      "cases": 36,
+      "supported_dry_finishes": 36,
+      "control_hz": [
+        15,
+        20,
+        30,
+        60
+      ],
+      "observed_states": 3,
+      "headings": 3,
+      "supported_dry_seconds_range": [
+        1.78,
+        26.367
+      ]
+    },
+    "independent_floor_contact_review": {
+      "clear_rim_supported": true,
+      "center_and_radius_only_thing_obstructions_rejected": true,
+      "real_stock_find_floor_comparison_trace_sha256": "1fab6e6dcf6a9b86e141b8f37bca6b9bf4fee88e5e267bd166e8106c2fdb88f3"
+    },
+    "reusable_harness": "native/tests/stock_water_replay/README.md",
+    "retail_geometry_or_scripts_included": false,
+    "limits": "A fixed control interval reproduces each captured frame duration, not the entire variable live frame sequence. Horizontal velocity and heading are reconstructed. Known pool and shaft starts; no competing actors. Browser validation is recorded separately.",
+    "combined_source_verification": {
+      "receipt_sha256": "79ff85306534521c91dd39e5bb62aa7565ea70f6d83943676b6341d5c174ef36",
+      "source_sha256": {
+        "src/AI/jkBot.c": "3db4ff342ab8a006b438b06be444ade50ad0c8c94b35bc0c49a8962c55fe45e4",
+        "src/AI/jkBot.h": "d822c0f525b820307b9dde817677b81af8ccca5b3024d2a7859d0cb16314f70f",
+        "src/AI/jkBotBehavior.h": "c00a67f6f3db10f47200b111521818ac96e6435b48f38fa366d2f4cfebcf387b",
+        "src/AI/jkBotBehavior.inc": "b5f77326432392e708b6ef5f717d97644e4e99d66aa21f02889c40d388fac18f",
+        "src/AI/jkBotCombat.inc": "496a42a6ff47906b6040c58e141bbec44ab6252a066db66a18d6a3e4c6a07ce2",
+        "src/AI/jkBotCompanion.inc": "91e1e975bb34f46cf1553ba77bcfbd4f57db550c1e6d1981facc1d62c44eacdc",
+        "src/AI/jkBotForce.inc": "aee1eea7ff6bb0e1ea3f296500f6140ad548079b00a9f2cdd12c07693d027d5c",
+        "src/AI/jkBotHearing.inc": "30c08aeefde67acaab5bdc63cfd93be0941f5b4614e8eec1ea357841ba6aee8a",
+        "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+        "src/AI/jkBotNavigate.inc": "ec953ce418cf766a590d3fca0a68b758e5ce56e6bf87681d4a99d42db771e4b2",
+        "src/AI/jkBotNavigation.inc": "6cb8710a7b5397795bb30204dc3540cc8ffff00c415951ee32f3af0adfe4c68f",
+        "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+        "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+        "src/AI/jkBotWaterExit.inc": "c7f9e9e8916a2f97d37a727a1844dab7aa07f7ee7459cfaa1b831e14cd739f30",
+        "src/Cog/sithCog.c": "1b6e11427af188d95868b2d652b14478d9859b74f58f2148ff95537b34343c21",
+        "src/Devices/sithControl.c": "39002df35df8661cad1c2d17f7384c1161210fd565dfd3ebd4a1386945811c25",
+        "src/Devices/sithSoundMixer.c": "8f2d16952f4a8f77b7459ee84f182a88fba75644d27499aa30f7a096ce8aff25",
+        "src/Devices/sithSoundMixer.h": "932ae40638ffa450fe1d154118d7fc6e7813d6229a523abe3eac277958527ef9",
+        "src/Dss/jkDSS.c": "2a06406afe669368fa1f31e433947bd522fe4093966dd4028e89b6c05b4d1b09",
+        "src/Dss/sithMulti.c": "3e2129e114072fcbe4915ed66b54ad158de3a1ae0287776eff691cbd9bc6d678",
+        "src/Gui/jkGUIMultiplayer.c": "6936efe646118ec3854c42f22d269c7f415158508004eb2a6e2b4b26265daf6e",
+        "src/Gui/jkGUIMultiplayer.h": "504d0390e4d6f4fa31f42230ce273fa3125d24d42053feec9d85cc601a0d4287",
+        "src/Main/Main.c": "5bcfdaa2a985f542310b675929dda6f00b0b7bbe9c783bb0fada6ad2677ac4f7",
+        "src/Win95/stdSound.c": "8d9415e5e8e2bd25d39851183731deaa910af79c1e72e11d5e18fbc87305e321",
+        "src/World/sithSoundClass.c": "fd8d86375f1409a59837beddc34d1e67c4b6330f0e7dae3447e3ec6746607aa0",
+        "src/World/sithThing.c": "c349b7847ef6c8d640bbf280e3091ea300099f850d8eec1ef903b0b461b4cc49",
+        "src/World/sithWeapon.c": "df37aecc57fe81d3df45eaf45f032220e602f9b970a2442087cbd874c20ec63b"
+      },
+      "portable_cases": {
+        "shaft": {
+          "sha256": "3dbb84e45a1839157446eb702b9234b686b59f4205d9ee2da37466efbc26b5de",
+          "breath_s": 3.393,
+          "supported_dry_s": 7.293,
+          "dry_sector": 41,
+          "dry_health": 10.0,
+          "supported_steps": 38
+        },
+        "t100": {
+          "sha256": "fe2b7157cd2a53e67da4644cd24206a1d65588f85ccac420e1c1cf4a38a83a2f",
+          "breath_s": 2.16,
+          "supported_dry_s": 10.093,
+          "dry_sector": 10,
+          "dry_health": 60.0,
+          "supported_steps": 38
+        },
+        "t110": {
+          "sha256": "20c08d0dccc50ac7a2a1945772a4fc70e848bb4268adb63d609e35e296ae9010",
+          "breath_s": 1.313,
+          "supported_dry_s": 5.9,
+          "dry_sector": 10,
+          "dry_health": 10.0,
+          "supported_steps": 38
+        },
+        "t90": {
+          "sha256": "d759211040b7f4f24554a9a7e22e1cf31ec5d9db237a01f5d847e3c47710f9e3",
+          "breath_s": 1.96,
+          "supported_dry_s": 8.66,
+          "dry_sector": 10,
+          "dry_health": 100.0,
+          "supported_steps": 38
+        }
+      }
+    }
+  },
+  "charged_force_jump": {
+    "stock_cog_sha256": "36c2b8176c38bfdea43b1c6431892a9022d5e7a98435af79164d9105a484c882",
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "private_replay_receipt_sha256": "a85809b9ec7ce9f3af88790346e646957a9afe7510d372995455b69cd30a9bf7",
+    "method": "Private reconstruction of one grounded interval of the original Canyon Oasis session. The game trace supplies position, HP, own mana, selected weapon, absent goal and absent visual target. The recorded prior horizontal stall seeds the recovery deadline. Heading, exact current velocity and internal timer at this frame are unknown. Four initial yaw variants use zero horizontal velocity. Dynamic peers, audio, COG VM, rendering, network transport and damage are outside this fixture. The stock jump COG activated/deactivated handler bodies were locally translated verb-for-verb; actual engine inventory hotkey polling, bin timer functions, movement control, 150Hz physics, sector collision, and landing attachment ran in-process. Sound, twinkle and local-only visuals are stubs. No forced edge, charge, teleport-after-start or scripted key overrides in the captured-pose runs. Separate graph case seeds an existing route leg to test its executor.",
+    "changes": [
+      "Allow full learned-rank charge beyond the former 0.75-second planning choice and one-second input hold cap.",
+      "Check a Force Jump from the actual position to an unreached initial dry anchor.",
+      "At the existing two-second grounded stall deadline, consider at most four nearby higher footholds after attempted movement; require stock Force readiness, safe body clearance and a supported landing.",
+      "Predict new full-charge movement using actual air drag, thrust scaling, physics substeps and control cadence; preserve charge/flight heading and release the ordinary key on lost support."
+    ],
+    "stock_limits": {
+      "full_charge_seconds_by_stars": {
+        "3": 1.05,
+        "4": 1.4
+      },
+      "mana_cost": 20,
+      "bin_wait_seconds": 1.0,
+      "modified_physics_resources_or_cog": false
+    },
+    "captured_pose_recovery": {
+      "trace_wall_seconds": 116.649,
+      "trace_game_seconds": 113.96800231933594,
+      "position": [
+        -0.7662535309791565,
+        -2.662308931350708,
+        -0.8861685991287231
+      ],
+      "starting_sector": 1,
+      "landing_sector": 12,
+      "initial_health": 22.910245895385742,
+      "initial_mana": 156.0,
+      "rank": 4,
+      "baseline_runtime": "aae9a1f16c5eea5ef9b916cf3009cc1a1509e7cf",
+      "baseline_cases": 16,
+      "baseline_casts": 0,
+      "baseline_landings": 0,
+      "successful_control_hz": [
+        30,
+        60
+      ],
+      "initial_yaw_degrees": [
+        -90,
+        0,
+        90,
+        180
+      ],
+      "revised_landings": 8,
+      "revised_casts_per_success": 1,
+      "revised_mana_after_success": 136,
+      "minimum_supported_seconds": 0.253333,
+      "declined_control_hz": [
+        15,
+        20
+      ],
+      "declined_cases": 8,
+      "casts_in_declined_cases": 0,
+      "example_measured_key_hold_seconds": 1.433311,
+      "example_stock_capped_hold_seconds": 1.4,
+      "short_charge_counterfactual": "A private 0.75-second hold also lands on this same lip once the opportunity is selected; failure to select the escape was decisive at this pose."
+    },
+    "separate_taller_ledge": {
+      "from_sector": 8,
+      "to_sector": 0,
+      "control_hz": 60,
+      "short_hold_seconds": 0.75,
+      "short_hold_landed": false,
+      "rank_3_full_charge_landed": true,
+      "rank_4_full_charge_landed": true,
+      "mana_per_landing": 20,
+      "supported_seconds": 0.253333,
+      "existing_route_leg_seeded_for_executor_check": true
+    },
+    "focused_regression": "native/tests/test_bot_navigation.inc",
+    "limits": "Known Canyon Oasis geometry and reconstructed recorded pose, with no dynamic opponents or full COG VM. Actual engine inventory, control and physics functions run with verb-for-verb local jump handlers. The new full-charge check is cadence-sensitive and can decline a physically difficult jump. No claim of faster travel than every alternative route or coverage of all map ledges."
+  },
+  "seeing_live_trial": {
+    "status": "Seeing correction verified; sector 42 pool escape remains under investigation",
+    "runtime_build": "aae9a1f16c5eea5ef9b916cf3009cc1a1509e7cf",
+    "wasm_sha256": "7ff3f866ff8a6fa5624c61293afdef28148a08d4d6920d0ba9c711595528c702",
+    "trace_sha256": "ec02d11f84a2397239aa36d12063d6172c4542d8a7f4c90843b6dd2d965ee3c2",
+    "map": "Canyon Oasis",
+    "mode": "FF guns",
+    "four_hardware_browser_clients": true,
+    "seconds_after_join_qualification": 120,
+    "phase": "complete",
+    "own_state_samples": {
+      "lily": 523,
+      "boba": 464,
+      "jan": 479,
+      "yun": 495
+    },
+    "observed_seeing_activated_samples": {
+      "lily": 0,
+      "boba": 0,
+      "jan": 0,
+      "yun": 0
+    },
+    "retained_force_jump_requests": 8,
+    "claim": "The final two-flag Seeing correction produced no observed Seeing activations while Force Jump was used. The separate sector54 shaft escape is supported by the preceding movement run. This match exposed an unresolved sector42 water-edge escape and does not qualify general water reliability."
+  }
+}

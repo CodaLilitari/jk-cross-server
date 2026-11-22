@@ -41,6 +41,13 @@ link. A fresh full dependency rebuild is not claimed by its receipts. See
 [Bot behavior](../docs/BOTS_BEHAVIOR.md) for current qualification and limitations;
 [Bot prototype](../docs/BOTS_PROTOTYPE.md) preserves the earlier milestone.
 
+The competitive Force candidate recompiles both `jkBot.c` and
+`jkGUIMultiplayer.c`, including their changed Force policy and saved-loadout
+headers. Its remaining objects and static dependencies come from the verified
+prior bot relink archive. `qa/bots-competitive-force-build.json` records this
+incremental build, source pins, object hashes, and the matching package. This
+does not by itself establish connected effects or human-match performance.
+
 ## Server changes
 
 The patch adds an authenticated, bounded loopback TCP transport bridge. It accepts one supervisor and exposes session metadata, external peer creation/removal, canonical player IDs, and Sith packet delivery. It preserves the original GNS transport for native clients. Detailed framing, message types, ID-pool rules, and packet layouts are in `protocol.md` and the patched engine's `docs/crossplay-gateway.md`.

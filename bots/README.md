@@ -8,9 +8,14 @@ players use their existing clients; the bots consume ordinary player slots.
 
 This extension adds managed rosters, live combat rules, legal Force character
 builds, weapon and pickup decisions, and stock CTF objectives. It remains a
-prototype. **Live gameplay qualification of the newly integrated build is
-pending.** Configuration and input tests, and a complete stock pickup catalog,
-do not establish complete map traversal or successful CTF matches. Read the
+prototype. The qualification harness launched two ordinary native bot clients
+against the packaged dedicated server on each of two stock maps. Both clients joined
+and loaded their rank-eight competitive builds in each session. Both showed active Jump on
+[m2.jkl](../qa/bots-competitive-force-native-m2.json). On
+[m_boss17.jkl](../qa/bots-competitive-force-native-m_boss17.json), the traces
+showed active Seeing on both clients, Grip on the dark client, and Absorb and
+Healing on the light client. These runs leave complete map traversal, current
+JKWeb interoperability, CTF matches, and performance against humans unmeasured. Read the
 [current behavior and evidence report](../docs/BOTS_BEHAVIOR.md) for the exact
 build, checks, and outstanding limits. The earlier rank-zero reconstruction and
 its mixed-client results remain in the
@@ -149,13 +154,49 @@ from rank 1, and successive light/dark side powers available at ranks 4–7.
 The normal profile-loading and inventory lifecycle installs that character;
 Force use does not grant live mana, ammunition, health, or extra stars.
 
-Balanced profiles distribute legal stars among neutral and accessible powers
-on their chosen side. Jan and Sariss request a master build: **at rank 8 only**,
-they allocate four stars to each of their four side powers, leave eight stars
-unspent, and let the stock game derive Protection or Deadly Sight. They have no
-neutral powers in that rank-eight build. Below rank 8 they use the balanced
-allocation. These are project persona choices, not claims about a character's
-canonical abilities.
+The eight shipped profiles request `competitive` and require an executable built
+with the matching `native/bot-client.patch`. An older executable rejects the
+style when creating the saved character. At rank 8 the competitive builds put
+four stars in Jump, Speed, Seeing and Pull. Dark adds Grip and Destruction.
+Light adds Absorb and Healing. At lower ranks the planner adds one star per
+eligible power in that order, repeating until the budget is spent.
+
+Custom profiles can still select `balanced` (also the default when
+`force_style` is omitted) or `master`. Balanced distributes stars among
+neutral and accessible side powers. At rank 8 a master build puts four stars
+in each side power and leaves eight stars unspent, allowing the stock game to
+derive Protection or Deadly Sight. A master uses the balanced allocation at
+lower ranks.
+
+Force Jump considers the actual approach to the first route anchor and can use
+the full learned charge: 1.05 seconds at three stars or 1.40 at four. A sustained
+grounded stall can also trigger a bounded search for a nearby higher foothold.
+It checks at most four candidates, requires an attempted move and available
+Force, and predicts the new full-charge landing with the player's body size,
+stock air movement and current control cadence. Charging and flight keep their
+route heading. Stock scripts still own takeoff, the 20-mana cost and bin wait;
+losing support during charge releases the ordinary key.
+
+Seeing requires a specific countering opportunity: the bot is currently Blind,
+or an eligible hostile player's synchronized Persuasion effect is within the
+normal forward view, range and line of sight. Persuasion requires both its
+twinkle flag and actor invisibility flag; Force Jump's brief twinkle alone
+does not trigger Seeing or hide the opponent from ordinary target selection.
+Ordinary combat, damage and a
+generic Force threat do not trigger Seeing. Stock Seeing protects against a
+subsequent Blind; it does not clear an existing Blind timer. Competitive bots
+can still prepare Absorb during a visible engagement or on receiving a Force
+threat. They allow 0.15 seconds between power requests while honoring each
+power’s own cooldown. Before
+releasing Grip, the controller checks the local targeting script’s victim
+against the intended player’s identity. Weapon fire can continue during a
+valid active Grip.
+
+If the game disables the actor's controls during a held power, its inventory
+handler can force a release before a cancellation input is processed. Grip's
+stock script then controls that outcome. The target check above applies to a
+release initiated by the bot; it does not replace the game's forced-release
+handler.
 
 The controller uses ordinary power hotkeys and lets the stock COG scripts
 enforce costs and effects. Decisions check availability, mana, cooldowns,
@@ -188,14 +229,14 @@ in the [current evidence report](../docs/BOTS_BEHAVIOR.md).
 
 | Profile id | Visible player name | Stock model | Stock sound class | Force build |
 |---|---|---|---|---|
-| `boba_fett` | `Bot_BobaFett` | `kyh4.3do` | `kybobafett.snd` | Dark, balanced |
-| `jan_ors` | `Bot_JanOrs` | `kya10.3do` | `kyfemale.snd` | Light, master at rank 8 |
-| `kyle_katarn` | `Bot_Katarn` | `ky.3do` | `ky.snd` | Light, balanced |
-| `stormtrooper` | `Bot_Trooper` | `kym13.3do` | `kytrooper.snd` | Dark, balanced |
-| `bossk` | `Bot_Bossk` | `kyi14.3do` | `kybossk.snd` | Dark, balanced |
-| `greedo` | `Bot_Greedo` | `kya17.3do` | `kygreedo.snd` | Dark, balanced |
-| `sariss` | `Bot_Sariss` | `kya9.3do` | `kyfemale.snd` | Dark, master at rank 8 |
-| `yun` | `Bot_Yun` | `kya18.3do` | `kyyun.snd` | Dark, balanced |
+| `boba_fett` | `Bot_BobaFett` | `kyh4.3do` | `kybobafett.snd` | Dark, competitive |
+| `jan_ors` | `Bot_JanOrs` | `kya10.3do` | `kyfemale.snd` | Light, competitive |
+| `kyle_katarn` | `Bot_Katarn` | `ky.3do` | `ky.snd` | Light, competitive |
+| `stormtrooper` | `Bot_Trooper` | `kym13.3do` | `kytrooper.snd` | Dark, competitive |
+| `bossk` | `Bot_Bossk` | `kyi14.3do` | `kybossk.snd` | Dark, competitive |
+| `greedo` | `Bot_Greedo` | `kya17.3do` | `kygreedo.snd` | Dark, competitive |
+| `sariss` | `Bot_Sariss` | `kya9.3do` | `kyfemale.snd` | Dark, competitive |
+| `yun` | `Bot_Yun` | `kya18.3do` | `kyyun.snd` | Dark, competitive |
 
 The `Bot_` prefix identifies the players as bots. The roster contains 128
 original fan-written lines, divided into spawn, kill, death, and ambient
@@ -287,6 +328,14 @@ including `BOT_LOADOUT`, `BOT_BEHAVIOR`, `BOT_PROVOKED`, `BOT_FORCE_INPUT`, and
 status diagnostics when those events occur. `BOT_JOINED` establishes a joined
 client; `BOT_FORCE_INPUT` establishes a requested input. Neither alone proves
 successful damage, a Force effect, a route, a capture, or client compatibility.
+
+For a direct native diagnostic run, `JK_BOT_TRACE_FORCE=1` enables
+`BOT_FORCE_STATE` at most twice per bot-clock second. It samples only the bot's
+own health, shields, mana, actor flags, stars and active-power mask. The stars
+run from bin 21 through 34; active-mask bit zero is bin 21. An `immobile` sample
+reports the stock actor flag, not which player or power caused it. The managed
+launcher deliberately does not forward arbitrary ambient bot environment
+variables. A sampled trace can miss effects shorter than its interval.
 `xvfb.log` is present when the launcher created the display.
 
 Configuration, lifecycle, and catalog regression checks:
@@ -298,3 +347,17 @@ python3 -m unittest tests.test_bots tests.test_bot_manager tests.test_bot_maps -
 The process tests use small helper programs. Engine policy tests use controlled
 game-state and collision fixtures. Their scope and the separate live evidence
 are recorded in [the current behavior report](../docs/BOTS_BEHAVIOR.md).
+
+### Authored multiplayer starts
+
+Run `python -m bots.spawn_atlas --game-data PATH --output atlas.json` from the
+repository root with your installed JKDF2 game-data directory. The command reads
+`Episode/JK1MP.GOB` and `Episode/JK1CTF.GOB`, recording archive and map SHA-256
+hashes and the authored player starts from the nine expected maps. Keep generated
+map data private. Check the exit code and report status before using the output.
+Incomplete input or invalid records produce an error report and a nonzero exit.
+
+Each start retains the source thing index, zero-based order among all placed
+things, position, orientation (pitch, yaw, roll), sector and effective template
+properties. Authored order can differ from index order. Engine start ordinals,
+team/lobby eligibility and traversable routes require separate qualification.

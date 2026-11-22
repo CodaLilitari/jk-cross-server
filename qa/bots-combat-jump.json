@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "title": "Anticipatory moving Force Jump on a dry equipment route",
+  "decision": "An elite competitive FF-guns bot with a recoil-free gun can tap its ordinary Force Jump hotkey while moving toward a pickup if a visible eligible opponent faces it with a concussion rifle. The driver checks flight clearance and supported landing on the same flat floor, preserves the pickup, and leaves airborne gun aim available.",
+  "controlled_driver": {
+    "runner": "native/tests/run_bot_driver_tests.py",
+    "fixture": "native/tests/test_bot_combat_jump.inc",
+    "fixture_sha256": "11b25b15b803771300a166b5bf7fd2f7cb24de7411ad3d422e397c73c7ce2307",
+    "passed_source_trees": [
+      "native",
+      "jkweb"
+    ],
+    "cases": "Normal frame dispatch covers threat facing, legal press/hold/release, support, insufficient mana, slow cadence, overshooting the pickup, airborne aligned fire, turning with fire withheld and route resumption. Both recoil guns block initiation. After a Bryar launch, newly acquired heavy guns are deferred; an unexpected stock switch to either heavy emits no attack input.",
+    "named_pass_groups_each_tree": 50
+  },
+  "floor_shot_replay": {
+    "geometry": "One synthetic convex flat sector. The bot holds a Bryar pistol and begins at (0,0,0.120114) travelling at 0.68 units/s toward a railgun at y=1.8. A stationary opponent at y=4 exposes a replicated concussion-gun mesh. Each comparison uses a starting balance of 100 mana and rank-four Jump.",
+    "method": "Three seconds per run at 150 physics steps/s. Engine movement controls, collision, physics, floor attachment and inventory hotkey dispatch run with a C translation of the stock Force Jump activation/release COG. A fixed world-space enemy floor shot is swept at radius 0.005, speed 7 from (0,4,0.32) toward (0,0.34,0.005). At physics step 79 the stock sithExplosion_MakeBlast computes the raw radial damage (range 0.8, damage 80, force 200). The harness records damage before shields or armor.",
+    "matched_pairs": {
+      "columns": [
+        "control_hz",
+        "walk_splash",
+        "jump_splash",
+        "jump_center_apex_z",
+        "jump_first_supported_s",
+        "jump_airborne_fire_frames",
+        "walk_end_y",
+        "jump_end_y"
+      ],
+      "rows": [
+        [
+          13,
+          78.3448,
+          20.0,
+          0.8921,
+          1.4733,
+          16,
+          1.845,
+          1.1525
+        ],
+        [
+          15,
+          78.3448,
+          0.0,
+          1.5348,
+          1.8467,
+          15,
+          1.8182,
+          1.0831
+        ],
+        [
+          20,
+          78.3448,
+          0.0,
+          1.5354,
+          1.8133,
+          20,
+          1.8164,
+          1.1483
+        ],
+        [
+          30,
+          78.3448,
+          0.0,
+          1.5354,
+          1.8133,
+          31,
+          1.8166,
+          1.1725
+        ],
+        [
+          60,
+          78.3448,
+          0.0,
+          1.5359,
+          1.8,
+          64,
+          1.8051,
+          1.293
+        ]
+      ]
+    },
+    "input_and_landing": "Each jumping run generated one normal press, one release and one cast, spent 20 mana, retained the railgun destination during flight, regained the original supporting world surface, and resumed ordinary forward movement. At 13 Hz the 0.08-second request released after the stock 0.15-second tap threshold and produced the lower impulse.",
+    "low_ceiling_control": "At 30 Hz, lowering the ceiling from 4.0 to 0.8 yielded zero jump requests and casts, 100 mana, and 78.3448 splash.",
+    "interpretation": "The hop traded forward distance over three seconds for lower splash from this supplied floor shot. Airborne fire frames count physically aligned primary-input frames. This replay measures neither weapon hits nor the frequency of dodges against live opponents. It models no opponent weapon COG, network replication or live Canyon Oasis match."
+  },
+  "sha256": {
+    "stock_force_jump_cog": "36c2b8176c38bfdea43b1c6431892a9022d5e7a98435af79164d9105a484c882",
+    "compiled_jump_handler_translation": "795406b46c6004039946c6e73deb0cf573962b0c98752061d3b8cea45ca0e998",
+    "controlled_replay_setup_and_measurement": "2bb6cc53db1dc10b0cbce8a036774557305729f621b10fe04b0f91a5b0713bca",
+    "flat_sector_fixture": "3d80cd89e7e6dba205b2623bd088eb27c8a4c11ebfdc18f57263ee8671fa2dc2",
+    "low_ceiling_fixture": "04b587b480c5f7f53005dcf5ae6e455412b624d11cd358b112756528d0209833",
+    "exact_engine_blast_source": "042f208500055d7153148474fc90d91c71dfdefc99ce487be17e1b29fe1cf3c8",
+    "numeric_results": "d390f671bc12f4d394f4f9dd5eabfb191df876ddcd23f457e13d633d72972bea",
+    "numeric_results_encoding": "ASCII RESULT lines, LF-terminated, ascending control Hz, walking then jumping, followed by the 30 Hz low-ceiling enabled run.",
+    "jump_driver_units": {
+      "jkweb": {
+        "jkBot.c": "90217bac6dd10e7ac03efd519c8f53ed094f247f2a5e44e6ee7a0e311bfe0c8c",
+        "jkBotForce.inc": "96c81591a1a991949b31d763cac7d4f5ce67b3fb26b64b5d01c8862dd25cb8f9",
+        "jkBotNavigate.inc": "e74bc3075e07053c397d2860656422374234fdbfdb8f6161d5763aefef71c566",
+        "jkBotNavigation.inc": "76e7c1c8f236c57b89c5e894c15d3e61b970c7422da6edcebb9aa46887d54ffd",
+        "jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca"
+      },
+      "native": {
+        "jkBot.c": "90217bac6dd10e7ac03efd519c8f53ed094f247f2a5e44e6ee7a0e311bfe0c8c",
+        "jkBotForce.inc": "04a308628e73e61bec81b0665dcb7f2f259c1a377c21a95e547485a3ccecebb2",
+        "jkBotNavigate.inc": "e74bc3075e07053c397d2860656422374234fdbfdb8f6161d5763aefef71c566",
+        "jkBotNavigation.inc": "76e7c1c8f236c57b89c5e894c15d3e61b970c7422da6edcebb9aa46887d54ffd",
+        "jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca"
+      }
+    },
+    "stock_recoil_cogs": {
+      "weap_concrifle.cog": "2ef67f24561d93033062530c32ab25c22c50e2613ead4f2dac24be054b661a3c",
+      "weap_raildet.cog": "c42ea817b0d73eb31b9518c05c010857b601457e4d4653a24e7c9dd3337180ec"
+    }
+  },
+  "recoil_limit": "Stock concussion and rail shots push their shooter backward. The predicted coasting envelope excludes these guns: the tactical hop declines a launch with either mounted or being selected on that frame, and its committed window defers their selection and fire. The other route jumps retain their existing weapon controls."
+}

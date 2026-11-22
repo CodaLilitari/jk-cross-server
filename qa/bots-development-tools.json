@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "title": "Competitive bot development tools preservation and source completeness",
+  "date": "2026-11-22",
+  "gameplay_runtime_commit": "5ed040735bfd1ef57448a47aa063453d6b53ef18",
+  "gameplay_evidence_commit": "e9ab0f0f589dce1e9fe5170e168a4f1f6717a716",
+  "custom_runtime": {
+    "host_browser": "Ordinary installed Chrome or Chromium",
+    "engine": "Customized JKWeb/OpenJKDF2",
+    "browser_source_files": 28,
+    "native_source_changes": 32,
+    "complete_browser_diff_equals_packaged_patch": true,
+    "complete_native_diff_equals_packaged_patch": true,
+    "built_js_wasm_equal_packaged": true
+  },
+  "application_regressions": {
+    "tests_run": 59,
+    "passed": 58,
+    "skipped": 1,
+    "skip_reason": "Windows token SID and filesystem DACL check requires Windows",
+    "command": "python3 -m unittest tests.test_companion tests.test_web_bot_host tests.test_web_bot_chrome tests.test_bots tests.test_bot_manager tests.test_release_packaging -v"
+  },
+  "native_regressions": {
+    "named_groups": 79,
+    "hearing": 8,
+    "companion": 1,
+    "driver": 56,
+    "portal": 11,
+    "collision": 3,
+    "legal_loadouts": 54,
+    "invalid_loadouts_rejected": true,
+    "runtime_sha256": "862e566209dae8fab218243a47455b5a5616bf98fb8d1f09fa65969f9c8519aa"
+  },
+  "portable_sources": {
+    "python_files": 18,
+    "syntax_checks_passed": 18,
+    "cli_help_checks_passed": 17,
+    "non_cli_module": "scripts/bot_development/capture/launcher_adapter.py"
+  },
+  "analysis_preservation": {
+    "retained_refinement_reports_equal_as_json": 8,
+    "historical_analyzers_equal_as_json": 3,
+    "owned_map_numeric_export_byte_identical": true,
+    "raw_input_data_included": false
+  },
+  "capture_preservation": {
+    "launcher_adapter_accepts_current_source": true,
+    "launcher_adapter_rejects_unknown_source": true,
+    "packet_roundtrip_bytes": 1100007,
+    "packet_corruption_and_reordering_rejected": true,
+    "c4_to_c5_overlay_files_verified": 8,
+    "existing_mp4_full_decode": {
+      "frames": 7191,
+      "video_seconds": 239.7,
+      "audio_seconds": 240.02133333333333,
+      "mean_volume_dbfs": -17.4,
+      "sha256": "9da58ccb68eb4c7520c62714113f50e822a7b10577cda3f6496bb34743c02f44"
+    },
+    "new_live_capture_run": false,
+    "new_webm_to_mp4_transcode_run": false,
+    "portable_posix_live_capture_tested": false
+  },
+  "browser_verifier": {
+    "engine_base_commit": "7a6f95c9a3399e59acbf019dc6b25f9981d29dff",
+    "emscripten": "6.0.12",
+    "changed_source_hashes_verified": 28,
+    "clean_pinned_source_accepts_patch": true,
+    "full_independent_relink_executed": true,
+    "js_byte_identical": true,
+    "wasm_byte_identical": true,
+    "recompiled_libsmacker": false
+  },
+  "legacy_helpers": {
+    "native_pair_builder_executed": true,
+    "native_pair_output_byte_identical_to_package": true,
+    "embedded_wsl_programs_compile": true,
+    "literal_path_transport_checked": true,
+    "allowlisted_archive_and_digest_rejection_checked": true,
+    "malformed_and_oversized_responses_rejected": true,
+    "new_live_windows_wsl_match": false
+  },
+  "scope": "Preserves reusable source, build and measurement helpers. The existing packaged bot runtime is unchanged by this tools addition.",
+  "remaining_gameplay_limit": "Candidate 5 passed four-seat capture checks but failed sustained-movement qualification. Forward underwater supply transit, steering and breath-budget feasibility remain open."
+}

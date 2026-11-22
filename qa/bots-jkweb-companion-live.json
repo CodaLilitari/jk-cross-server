@@ -1,0 +1,261 @@
+{
+  "schema": 1,
+  "title": "Current JKWeb final build: private recording and companion integration",
+  "runtime_commit": "42154174ec8421e642bfcb56308b2959c2db22e2",
+  "recording_run": {
+    "schema": 1,
+    "title": "Current JKWeb final private four-player FF Guns recording",
+    "build_commit": "42154174ec8421e642bfcb56308b2959c2db22e2",
+    "engine_sha256": "ec1841b5070b2b67302bde5bc93c803566efe2c61e79e9baae69a49ad0eeac14",
+    "upstream_engine_commit": "7a6f95c9a3399e59acbf019dc6b25f9981d29dff",
+    "relay_commit": "642afa116f392e5734bad742bfd77c65119a0c52",
+    "map": "JK1MP/m10.jkl",
+    "mode": "ff-guns",
+    "platform": "Installed Chrome on Windows, hardware WebGL",
+    "qualified": true,
+    "phase": "complete",
+    "joined_players": 4,
+    "third_person_view_flags": 7,
+    "cosmetic_model": "dlil.3do",
+    "hardware_qualification_passed": true,
+    "capture": {
+      "seconds": 120.0155,
+      "audio_tracks": 1,
+      "source_dimensions": [
+        1100,
+        618
+      ],
+      "source_sha256": "65f79494d0a5a92d77a13cf4f7c7cd50ab864307a6aa1059eb21806faf8ddf82",
+      "mp4_dimensions": [
+        960,
+        540
+      ],
+      "mp4_encoding_fps": 30,
+      "mp4_bytes": 29129246,
+      "mp4_sha256": "fd6c8f7fc25cea86019cebdc08a967caec35962600f095e763155f3415cbad3e",
+      "transcode_exit": 0
+    },
+    "bots": {
+      "lily": {
+        "fresh_observations": 629,
+        "selected_weapon_bins_while_alive": [
+          1,
+          2,
+          3,
+          5,
+          6,
+          10
+        ],
+        "observed_force_masks": [
+          0,
+          1,
+          4,
+          5,
+          6,
+          12,
+          1028
+        ],
+        "hearing_categories": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_score": {
+          "kills": 3,
+          "deaths": 1
+        },
+        "final_game_time": 181.118,
+        "net_id": 1,
+        "slot": 0
+      },
+      "boba": {
+        "fresh_observations": 606,
+        "selected_weapon_bins_while_alive": [
+          0,
+          1,
+          2,
+          9,
+          10
+        ],
+        "observed_force_masks": [
+          0,
+          4,
+          12,
+          1028
+        ],
+        "hearing_categories": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_score": {
+          "kills": 4,
+          "deaths": 3
+        },
+        "final_game_time": 174.506,
+        "net_id": 3,
+        "slot": 1
+      },
+      "jan": {
+        "fresh_observations": 579,
+        "selected_weapon_bins_while_alive": [
+          0,
+          1,
+          2,
+          6,
+          9,
+          10
+        ],
+        "observed_force_masks": [
+          0,
+          4,
+          6,
+          12,
+          128,
+          132,
+          134,
+          140,
+          148
+        ],
+        "hearing_categories": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_score": {
+          "kills": 3,
+          "deaths": 4
+        },
+        "final_game_time": 166.355,
+        "net_id": 2,
+        "slot": 3
+      },
+      "yun": {
+        "fresh_observations": 593,
+        "selected_weapon_bins_while_alive": [
+          0,
+          2,
+          10
+        ],
+        "observed_force_masks": [
+          0,
+          4,
+          12,
+          132,
+          140
+        ],
+        "hearing_categories": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "final_score": {
+          "kills": 1,
+          "deaths": 3
+        },
+        "final_game_time": 170.472,
+        "net_id": 4,
+        "slot": 2
+      }
+    },
+    "latest_navigation_coverage": {
+      "lily": {
+        "origin_sector": 18,
+        "nodes": 559,
+        "reachable_nodes": 521,
+        "items_total": 42,
+        "anchored_items": 41,
+        "reachable_items": 39,
+        "missing_nodes": 1,
+        "truncated": 0
+      },
+      "boba": {
+        "origin_sector": 3,
+        "nodes": 560,
+        "reachable_nodes": 522,
+        "items_total": 42,
+        "anchored_items": 41,
+        "reachable_items": 39,
+        "missing_nodes": 1,
+        "truncated": 0
+      },
+      "jan": {
+        "origin_sector": 41,
+        "nodes": 561,
+        "reachable_nodes": 523,
+        "items_total": 42,
+        "anchored_items": 41,
+        "reachable_items": 39,
+        "missing_nodes": 1,
+        "truncated": 0
+      },
+      "yun": {
+        "origin_sector": 41,
+        "nodes": 561,
+        "reachable_nodes": 523,
+        "items_total": 42,
+        "anchored_items": 41,
+        "reachable_items": 39,
+        "missing_nodes": 1,
+        "truncated": 0
+      }
+    },
+    "private_qualification_sha256": "dbb35989869b0d48df85be561587aedf4cb7213da29e057a4f21b7df7fe0899a",
+    "private_own_state_trace_sha256": "22c604c4c5cc2886e7de6c0c99d1dabea30fa60d12e2da594b569b95a62b350f",
+    "interpretation": [
+      "Own-state observations span the entire session, including pre-capture warmup and post-capture hold. Selections and scores are not clipped to video time.",
+      "Selected weapon bins establish equipment, not the identity of every fired weapon.",
+      "Navigation coverage measures planned reachability, not verified traversal of every route.",
+      "The capture encoding frame rate does not measure game simulation or distinct rendered frames.",
+      "This is a four-bot integration run, not a benchmark against skilled humans.",
+      "Companion control was tested in a separate final-build run. No companion chat was injected in this recording."
+    ]
+  },
+  "companion_run": {
+    "build": "42154174ec8421e642bfcb56308b2959c2db22e2",
+    "mode": "ff-guns",
+    "map": "m10.jkl",
+    "game": "private four-seat JKWeb",
+    "shipped_js_sha256": "7617e26cd8e8008c5d1a47d59aa05731cd8ed3aff5f8984571e508ca92324ef8",
+    "shipped_wasm_sha256": "ec1841b5070b2b67302bde5bc93c803566efe2c61e79e9baae69a49ad0eeac14",
+    "chat_posts": 1,
+    "joined": [
+      "boba",
+      "jan",
+      "lily",
+      "yun"
+    ],
+    "health_at_attach": 100,
+    "world_epoch": 1,
+    "life_epoch": 1,
+    "attached": true,
+    "strategy": {
+      "kind": "strategy",
+      "status": "applied",
+      "reason": 0,
+      "world_epoch": 1,
+      "life_epoch": 1
+    },
+    "say": {
+      "kind": "say",
+      "status": "applied",
+      "reason": 0,
+      "world_epoch": 1,
+      "life_epoch": 1
+    },
+    "independent_matching_recipients": [
+      "boba",
+      "jan",
+      "yun"
+    ],
+    "verified": true
+  },
+  "notes": [
+    "The companion run is separate from the recording run.",
+    "Private game assets, model contents, credentials, room names and full raw logs are not included."
+  ]
+}

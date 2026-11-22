@@ -1,0 +1,558 @@
+{
+  "schema": 1,
+  "title": "Competitive Force Speed on supported ground",
+  "prior_canyon_oasis_observation": {
+    "mode": "Four bots, FF guns, headless JKWeb, 120 seconds after qualification. Full telemetry includes warm-up.",
+    "revision": "61a4aed2db2e930f7ed1d3041d684111424c3e7a",
+    "wasm_sha256": "6a000aaf1770ecb8014284b27fa2ba4522a8ab2acd888848930c368c5674d5d7",
+    "compressed_telemetry_sha256": "ecbbd53a25de8c6ed261d6deaf055f1dffd035cd2f7d1d10768590637ae9efde",
+    "lily_alive_polls": 490,
+    "lily_distinct_alive_game_times": 466,
+    "lily_speed_active_polls": 0,
+    "lily_speed_requests_in_retained_console": 0,
+    "measurement": "Own-state mask bit 1 (0x02), health above zero, native driver active and telemetry age at most one second. Polls may repeat a state. Missing activity between samples is possible. This describes one earlier session."
+  },
+  "stock_power": {
+    "bin": 22,
+    "owned_cog_sha256": "0f50c82e245269b7620834cb38c82f8ed45ca5518031b0d43a335f50602f1b6b",
+    "activation_mana": 20,
+    "normal_cost": 20,
+    "surge_bins": [
+      64,
+      65
+    ],
+    "surge_rule": "An amount of exactly 1 in either surge bin waives consumption. The minimum still applies.",
+    "extra_thrust": "0.5 + stars / 2",
+    "timer_seconds": "5 + stars * 2.5",
+    "stop_delay_seconds_after_timer": 0.75
+  },
+  "competitive_decision": {
+    "input": "Ordinary mapped Speed hotkey after movement, Force and recovery decisions. Existing weapon fire remains available.",
+    "runway_world_units": 0.6,
+    "failed_geometry_probe_interval_seconds": 0.4,
+    "mana_reserve_without_surge": 40,
+    "movement": "Use selected forward and strafe axes, including stock backward and lateral scaling. Check continuous ground support, then sweep the full body along the proposed path. Walking waypoints or pickup detours must have enough distance remaining.",
+    "deferrals": "An existing Force input or release, active Grip, blocked controls, weak movement input, airborne or wet movement, jumps, lifts, water exits and recovery take precedence.",
+    "precision_jumps": "Scale the ordinary analog axes with the current thrust bonus on each committed dry jump frame. The stock physics and inventory handlers apply the input."
+  },
+  "controlled_driver": {
+    "runner": "native/tests/run_bot_driver_tests.py",
+    "focused_fixture": "native/tests/test_bot_movement_tick.inc",
+    "fixture_sha256": "ac87d05bf31b653fef8087cfc77e0dab2c7fe3de586057035f472d3543e214e9",
+    "named_pass_groups": {
+      "native": 40,
+      "web": 40
+    },
+    "coverage": "Normal frame dispatch, simultaneous gunfire and Speed, ordinary press/hold/release, suppression while active, short walking route, thin wall clearance, 59/60 mana, surge minimum, water and Grip commitments, jump preparation and precision steering across expiry.",
+    "scope": "Both source trees compiled and ran through the controlled host-side driver with collision and inventory stubs."
+  },
+  "stock_geometry_replays": {
+    "canyon_oasis_map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "walking": "On a 1.0709-unit sector 39 route at 156 mana, the previous driver had zero activations in four seconds. The revised driver activated on the first tick, ending at 136 mana with +2.5 thrust and a 15-second timer. Ordinary engine skill hotkey handling drove a locally compiled translation of the stock activation handler. Audio and animation were stubbed.",
+    "charged_jumps": "All 15 replays landed. Three pose/cadence combinations covered Speed off, ranks one and four, and two midflight rank-four expiries. Across 189 airborne samples per run, XYZ and first contact matched the same-cadence unboosted reference to seven decimal places.",
+    "water_exits": "With +2.5 thrust already active, the pool sector 42 and shaft sector 54 replays reached supported dry ground in 8.433 and 5.433 seconds respectively.",
+    "raw_numeric_sha256": {
+      "stock_route_activation": "3c02d40fce83b4a317826220d1a5d1fbabb049aed33fc99e718a19abd255886e",
+      "stock_sustained_water_landings": "3ed16f34e9a89fa7e367a3295d7c5459a2532fe695d656a8dcea6d9e1c115745",
+      "before_charged_jumps": "fa4556a57da7edab448dc956b072cac9c38d6b4bbfb560e97d10d8d8e3fc793f",
+      "final_charged_jumps": "dd6542b33deeac2413eae79f17826d246eb96c88878bbdab67b3ec1eee990ad9"
+    }
+  },
+  "source_sha256": {
+    "jkweb": {
+      "jkBot.c": "9a9c7bb79adeda591d99b54d00a741f055ac1f487fddae7b9429a1d01fe79367",
+      "jkBotForce.inc": "a0f3e70292acf9d5f4f5524465c1009807412fb045924ed78465081b100d170a",
+      "jkBotNavigate.inc": "0e719c14845d55c308488df88b25fdc15efac51a861ad42046aa4d3732ff96e7"
+    },
+    "native": {
+      "jkBot.c": "9a9c7bb79adeda591d99b54d00a741f055ac1f487fddae7b9429a1d01fe79367",
+      "jkBotForce.inc": "bccc2d87db81bbd5e80061b45b5b0be8fce329f99f6fc3d5cf26eccd98f56074",
+      "jkBotNavigate.inc": "0e719c14845d55c308488df88b25fdc15efac51a861ad42046aa4d3732ff96e7"
+    }
+  },
+  "package_verification": {
+    "native": {
+      "review_receipt_sha256": "a42dda6562063bcb9cfcae91cc27b941103f7b63bbf944430c0dde73f6503eaf",
+      "runtime_sha256": {
+        "jk-bot-client": "dcd4143957ab90002c3335e83e0b427003681b5f2a29c9abdb9265a3d1828c17",
+        "libGameNetworkingSockets.so": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9"
+      },
+      "source_patch_sha256": "2d8a61f900aae8222dd9a66449b493453addda57abc17d2bb207c768bc412c1e",
+      "clean_pinned_source_accepts_patch": true,
+      "source_dependencies_verified": 222,
+      "archived_link_inputs_verified": 218,
+      "relinked_executable_matches_shipped_bytes": true,
+      "six_suites_exit_zero": true,
+      "named_pass_groups": 60,
+      "loadout_cases": "Bot loadout: 54 legal rank/side/style combinations and invalid inputs passed."
+    },
+    "jkweb": {
+      "review_receipt_sha256": "7278f65a62c90d813f3f258b434792987fff874067773cca13861ed20966df15",
+      "runtime_sha256": {
+        "openjkdf2.js": "cea0a334571f31eea397f4b5693f2f1c366723d19b1a69afad507ce8581e6db9",
+        "openjkdf2.wasm": "d0c5521497c7841d04e0a97184c362199c1e88ac46425aee0b3fdacb196ebae6"
+      },
+      "source_patch_sha256": "0a1c81b9663b0610e9b8b10b281e63e4b92496b4cf97ebd91993b49f7f61e7da",
+      "clean_patch_base_commit": "7a6f95c9a3399e59acbf019dc6b25f9981d29dff",
+      "changed_sources_verified_after_apply": 27,
+      "archived_objects_and_libraries_verified": 222,
+      "pre_js_inputs_verified": 8,
+      "direct_archived_object_relink_matches_shipped_js_and_wasm": true,
+      "optional_libsmacker_recompile": {
+        "js_sha256": "99a0eb9bb5a779bbc8dc39a582894b66bc96b2807a6027470ccf53882e7893a6",
+        "wasm_sha256": "ffeae72f3fad07ebed13c57e69f81230e51a95069c1e5d8fdcbff1112a7b82b2",
+        "result": "Recompiling the three libsmacker objects produces a byte-different JS/Wasm pair. The shipped pair and both relinks initialized in Node and loaded the synthetic mod."
+      }
+    }
+  },
+  "recorded_jkweb_match": {
+    "source_revision": "4fa43ce4c78947e69fed54e8d32be828b350fa56",
+    "setup": {
+      "map": "Canyon Oasis (m10.jkl)",
+      "mode": "ff-guns",
+      "players": 4,
+      "third_person_bot": "Darth_Lilitari",
+      "model": "dlil.3do",
+      "hardware_webgl_qualified_seats": 4,
+      "qualified": true,
+      "phase": "complete",
+      "warmup_seconds": 30
+    },
+    "capture": {
+      "requested_seconds": 120,
+      "recorded_wall_seconds": 120.0415,
+      "source_dimensions": [
+        1100,
+        618
+      ],
+      "source_bytes": 41519656,
+      "source_sha256": "55b9170890f457fa16643384749d0abdd340e9e2474f8b33856ea4408b7cef44",
+      "game_audio_tracks": 1,
+      "mp4_filename": "Darth_Lilitari_Canyon_Oasis_Speed_Followup.mp4",
+      "mp4_bytes": 28122821,
+      "mp4_sha256": "1ef0f2a9170d25c2e9db67bf1b1ac55e7af79c536089839dbe4a31ac2d0f60e0",
+      "mp4_container_seconds": 120.064333,
+      "mp4_dimensions": [
+        960,
+        540
+      ],
+      "encoding_fps": 30,
+      "encoded_video_frames": 3596,
+      "decoded_video_seconds": 119.86666666666666,
+      "decoded_audio_seconds": 120.02133333333333,
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "mean_volume_dbfs": -16.6,
+      "full_decode_exit": 0
+    },
+    "telemetry": {
+      "compressed_sha256": "0e072a0f8af8a8fc70a1046010cfba9191c90882337389242544d756ae91a46f",
+      "analysis_sha256": "7bede8bd8befeb377a3f07d60bb17327ecc669e52627fa568bb7ea20a4130ecb",
+      "method": "The poll window is the intersection of all possible capture windows in the recorder call bracket. Clip timestamps are poll times relative to its midpoint. Telemetry may precede the poll by up to one second. Fresh driver-active states are deduplicated by world, life and game time before clipping. Power intervals group consecutive living active states in one life with wall- and game-time gaps of at most one second. The summed spans omit unsampled endpoints and describe observations, not exact uptime. First-seen-active can follow a clip boundary, death, life change or gap. Neither episode nor transition counts establish a cast count. Console bin-22 counts are requests across the entire retained session, including warm-up. Scores use the first and last retained clip samples.",
+      "recorder_start_bracket_seconds": [
+        51.87343539998983,
+        51.985875699989265
+      ],
+      "included_poll_window_seconds": [
+        51.985875699989265,
+        171.91493539998982
+      ],
+      "seats": {
+        "lily": {
+          "distinct_fresh_states_in_clip": 410,
+          "distinct_fresh_alive_states_in_clip": 354,
+          "speed_hotkey_requests_in_whole_session_retained_console": 6,
+          "powers_in_clip": {
+            "speed": {
+              "alive_active_states": 123,
+              "sampled_off_to_on_transitions": 1,
+              "observed_active_intervals": 4,
+              "sum_first_to_last_active_sample_seconds": 33.565,
+              "per_life_intervals": [
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 1,
+                  "first_active_clip_second": 0.092,
+                  "active_states": 21,
+                  "entry": "first_seen_active",
+                  "last_active_clip_second": 5.947,
+                  "following_inactive_clip_second": 6.211
+                },
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 3,
+                  "first_active_clip_second": 10.491,
+                  "active_states": 43,
+                  "entry": "first_seen_active",
+                  "last_active_clip_second": 22.48
+                },
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 5,
+                  "first_active_clip_second": 32.875,
+                  "active_states": 2,
+                  "entry": "sampled_off_to_on",
+                  "preceding_inactive_clip_second": 32.339,
+                  "last_active_clip_second": 33.138
+                },
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 7,
+                  "first_active_clip_second": 36.605,
+                  "active_states": 57,
+                  "entry": "first_seen_active",
+                  "last_active_clip_second": 52.063,
+                  "following_inactive_clip_second": 52.326
+                }
+              ]
+            },
+            "seeing": {
+              "alive_active_states": 0,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 0,
+              "sum_first_to_last_active_sample_seconds": 0,
+              "per_life_intervals": []
+            },
+            "jump": {
+              "alive_active_states": 0,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 0,
+              "sum_first_to_last_active_sample_seconds": 0,
+              "per_life_intervals": []
+            }
+          },
+          "speed_visual_review_clip_seconds": [
+            {
+              "first_active": 0.092,
+              "interior_active": 3.02
+            },
+            {
+              "first_active": 10.491,
+              "interior_active": 16.49
+            },
+            {
+              "first_active": 32.875,
+              "interior_active": 33.01
+            },
+            {
+              "first_active": 36.605,
+              "interior_active": 44.33
+            }
+          ],
+          "sampled_score_in_clip": {
+            "opening_sample": {
+              "clip_second": 0.092,
+              "world_epoch": 1,
+              "kills": 1,
+              "deaths": 0
+            },
+            "closing_sample": {
+              "clip_second": 119.852,
+              "world_epoch": 1,
+              "kills": 3,
+              "deaths": 4
+            },
+            "sampled_delta": {
+              "kills": 2,
+              "deaths": 4
+            }
+          }
+        },
+        "boba": {
+          "distinct_fresh_states_in_clip": 419,
+          "distinct_fresh_alive_states_in_clip": 385,
+          "speed_hotkey_requests_in_whole_session_retained_console": 2,
+          "powers_in_clip": {
+            "speed": {
+              "alive_active_states": 54,
+              "sampled_off_to_on_transitions": 1,
+              "observed_active_intervals": 1,
+              "sum_first_to_last_active_sample_seconds": 15.758,
+              "per_life_intervals": [
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 5,
+                  "first_active_clip_second": 44.323,
+                  "active_states": 54,
+                  "entry": "sampled_off_to_on",
+                  "preceding_inactive_clip_second": 44.057,
+                  "last_active_clip_second": 60.081,
+                  "following_inactive_clip_second": 60.349
+                }
+              ]
+            },
+            "seeing": {
+              "alive_active_states": 0,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 0,
+              "sum_first_to_last_active_sample_seconds": 0,
+              "per_life_intervals": []
+            },
+            "jump": {
+              "alive_active_states": 0,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 0,
+              "sum_first_to_last_active_sample_seconds": 0,
+              "per_life_intervals": []
+            }
+          },
+          "speed_visual_review_clip_seconds": [
+            {
+              "first_active": 44.323,
+              "interior_active": 52.2
+            }
+          ],
+          "sampled_score_in_clip": {
+            "opening_sample": {
+              "clip_second": 0.091,
+              "world_epoch": 1,
+              "kills": 1,
+              "deaths": 0
+            },
+            "closing_sample": {
+              "clip_second": 119.852,
+              "world_epoch": 1,
+              "kills": 3,
+              "deaths": 2
+            },
+            "sampled_delta": {
+              "kills": 2,
+              "deaths": 2
+            }
+          }
+        },
+        "jan": {
+          "distinct_fresh_states_in_clip": 416,
+          "distinct_fresh_alive_states_in_clip": 388,
+          "speed_hotkey_requests_in_whole_session_retained_console": 8,
+          "powers_in_clip": {
+            "speed": {
+              "alive_active_states": 232,
+              "sampled_off_to_on_transitions": 4,
+              "observed_active_intervals": 6,
+              "sum_first_to_last_active_sample_seconds": 65.349,
+              "per_life_intervals": [
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 3,
+                  "first_active_clip_second": 0.092,
+                  "active_states": 31,
+                  "entry": "first_seen_active",
+                  "last_active_clip_second": 9.141,
+                  "following_inactive_clip_second": 9.409
+                },
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 3,
+                  "first_active_clip_second": 11.294,
+                  "active_states": 56,
+                  "entry": "sampled_off_to_on",
+                  "preceding_inactive_clip_second": 11.031,
+                  "last_active_clip_second": 27.002,
+                  "following_inactive_clip_second": 27.268
+                },
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 3,
+                  "first_active_clip_second": 32.341,
+                  "active_states": 27,
+                  "entry": "sampled_off_to_on",
+                  "preceding_inactive_clip_second": 31.817,
+                  "last_active_clip_second": 39.799
+                },
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 5,
+                  "first_active_clip_second": 44.59,
+                  "active_states": 56,
+                  "entry": "first_seen_active",
+                  "last_active_clip_second": 60.081,
+                  "following_inactive_clip_second": 60.348
+                },
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 5,
+                  "first_active_clip_second": 69.996,
+                  "active_states": 55,
+                  "entry": "sampled_off_to_on",
+                  "preceding_inactive_clip_second": 69.73,
+                  "last_active_clip_second": 85.782,
+                  "following_inactive_clip_second": 86.051
+                },
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 7,
+                  "first_active_clip_second": 117.996,
+                  "active_states": 7,
+                  "entry": "sampled_off_to_on",
+                  "preceding_inactive_clip_second": 117.729,
+                  "last_active_clip_second": 119.853
+                }
+              ]
+            },
+            "seeing": {
+              "alive_active_states": 0,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 0,
+              "sum_first_to_last_active_sample_seconds": 0,
+              "per_life_intervals": []
+            },
+            "jump": {
+              "alive_active_states": 0,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 0,
+              "sum_first_to_last_active_sample_seconds": 0,
+              "per_life_intervals": []
+            }
+          },
+          "speed_visual_review_clip_seconds": [
+            {
+              "first_active": 0.092,
+              "interior_active": 4.62
+            },
+            {
+              "first_active": 11.294,
+              "interior_active": 19.15
+            },
+            {
+              "first_active": 32.341,
+              "interior_active": 36.07
+            },
+            {
+              "first_active": 44.59,
+              "interior_active": 52.34
+            },
+            {
+              "first_active": 69.996,
+              "interior_active": 77.89
+            },
+            {
+              "first_active": 117.996,
+              "interior_active": 118.92
+            }
+          ],
+          "sampled_score_in_clip": {
+            "opening_sample": {
+              "clip_second": 0.092,
+              "world_epoch": 1,
+              "kills": 0,
+              "deaths": 1
+            },
+            "closing_sample": {
+              "clip_second": 119.853,
+              "world_epoch": 1,
+              "kills": 1,
+              "deaths": 3
+            },
+            "sampled_delta": {
+              "kills": 1,
+              "deaths": 2
+            }
+          }
+        },
+        "yun": {
+          "distinct_fresh_states_in_clip": 414,
+          "distinct_fresh_alive_states_in_clip": 414,
+          "speed_hotkey_requests_in_whole_session_retained_console": 2,
+          "powers_in_clip": {
+            "speed": {
+              "alive_active_states": 43,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 1,
+              "sum_first_to_last_active_sample_seconds": 12.277,
+              "per_life_intervals": [
+                {
+                  "world_epoch": 1,
+                  "life_epoch": 3,
+                  "first_active_clip_second": 0.091,
+                  "active_states": 43,
+                  "entry": "first_seen_active",
+                  "last_active_clip_second": 12.368,
+                  "following_inactive_clip_second": 12.633
+                }
+              ]
+            },
+            "seeing": {
+              "alive_active_states": 0,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 0,
+              "sum_first_to_last_active_sample_seconds": 0,
+              "per_life_intervals": []
+            },
+            "jump": {
+              "alive_active_states": 0,
+              "sampled_off_to_on_transitions": 0,
+              "observed_active_intervals": 0,
+              "sum_first_to_last_active_sample_seconds": 0,
+              "per_life_intervals": []
+            }
+          },
+          "speed_visual_review_clip_seconds": [
+            {
+              "first_active": 0.091,
+              "interior_active": 6.23
+            }
+          ],
+          "sampled_score_in_clip": {
+            "opening_sample": {
+              "clip_second": 0.091,
+              "world_epoch": 1,
+              "kills": 0,
+              "deaths": 1
+            },
+            "closing_sample": {
+              "clip_second": 119.852,
+              "world_epoch": 1,
+              "kills": 2,
+              "deaths": 1
+            },
+            "sampled_delta": {
+              "kills": 2,
+              "deaths": 0
+            }
+          }
+        }
+      }
+    },
+    "review": {
+      "inspected_video_frame_seconds": [
+        0,
+        5,
+        10,
+        15,
+        20,
+        25,
+        30,
+        35,
+        40,
+        45,
+        50,
+        55,
+        60,
+        65,
+        70,
+        75,
+        80,
+        85,
+        90,
+        95,
+        100,
+        105,
+        110,
+        115
+      ],
+      "findings": [
+        "Stock Speed is active during four observed Lily intervals in the recording; the prior 61a4aed session had no observed Lily Speed activity. These are different, unseeded matches.",
+        "Lily has 123 Speed-active states among 354 distinct living states within the conservatively clipped recording window. The 33.565-second sum covers first-to-last observed active spans, not exact COG uptime.",
+        "Seeing remains inactive in all 1,659 distinct fresh in-clip observations across four seats. No Jump-active states or Lily Jump requests were recorded. This clip does not demonstrate a charged Force Jump.",
+        "The second minute shows repeated pool-edge movement and renewed water entry. Lily reaches above-water bank positions, but does not consistently secure a lasting escape. This remains a navigation defect to improve.",
+        "Lily gains two kills and four deaths between the first and last sampled in-clip scores. This demonstration does not establish elite human competitive strength."
+      ],
+      "limits": [
+        "Observation publication may precede polling by up to one second; recorder call bracketing adds approximately 0.1124 seconds of total start uncertainty.",
+        "Requests in retained console include warm-up; active intervals and requests are not interchangeable cast counts.",
+        "Thirty FPS describes the MP4 encoding, not the game simulation or distinct render frame rate."
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "title": "Retry after cancelled competitive Force Pull",
+  "method": "Host-compiled driver runs of the native and JKWeb source trees with controlled peer identities, visible stock gun models, inventory eligibility, COG victim symbol and ordinary input state. These tests cover targeting and input decisions. They do not measure live disarm success or infer whether another player activated Absorb.",
+  "regression_before_change": "With a wrong victim marker, the pre-fix driver accepted another Pull request for the same opponent and gun as soon as deselection completed. The new assertion rejecting that request failed on the previous implementation.",
+  "trigger": "A failed acquisition cancels through stock next-power input. The retry interval starts when deselection finishes and the original living opponent still carries the requested gun.",
+  "checks": {
+    "hold_seconds": 0.46,
+    "cancelled_retry_seconds": 1.0,
+    "same_gun_after_cancel": {
+      "immediate": "blocked",
+      "at_0.99_seconds": "blocked",
+      "at_1.01_seconds": "accepted"
+    },
+    "different_opponent_during_retry": "accepted",
+    "observed_death_and_respawn_reusing_same_player_thing": "accepted immediately after respawn",
+    "different_gun_during_acquisition": "cancelled old acquisition, new gun accepted immediately",
+    "different_gun_then_original_seen_during_acquisition": "cancelled old acquisition, rearmed gun accepted immediately",
+    "thing_index_replaced_during_acquisition": "cancelled old acquisition even when the current COG marker matched the new index, new target accepted immediately",
+    "additional_existing_checks": [
+      "missing victim marker, disarm or loss of range cancels",
+      "normal release uses a separate increasing retry for an unchanged gun",
+      "visible disarm/rearm and changed player signature clear old retry state"
+    ]
+  },
+  "test_sha256": "aa8dc76e8169a759086d8a83b975c2a19bf08a6f0a45435711c03fc74ed31134",
+  "runs": {
+    "native": {
+      "driver_pass_groups": 52,
+      "source_sha256": {
+        "jkBotForce.inc": "3598befb0098bc3a748efdb1383bd8daf9e1da2380462a5dc30345309e5c3ad3",
+        "jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+        "jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df"
+      }
+    },
+    "jkweb": {
+      "driver_pass_groups": 52,
+      "source_sha256": {
+        "jkBotForce.inc": "aa7267a52992928addde61240019dada4f58e0915fdd117db82e9638abd64c4c",
+        "jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+        "jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df"
+      }
+    }
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "schema": 1,
+  "title": "Current JKWeb private arena: additional match formats",
+  "build_commit": "91a1265e133bd1b03acf25119173534c878355c5",
+  "engine_sha256": "e3973a65d21fec4116a09ee9ef13e23e35898c40100cb4b08db13f73bbec8334",
+  "upstream_engine_commit": "7a6f95c9a3399e59acbf019dc6b25f9981d29dff",
+  "relay_commit": "642afa116f392e5734bad742bfd77c65119a0c52",
+  "map": "JK1MP/m10.jkl",
+  "platform": "Installed Chrome on Windows, hardware WebGL 2",
+  "method": "Four ordinary browser seats, one host and three joiners. Private own-state observations sampled at a nominal 0.5-second interval; 35 seconds of hold time after four-player/model/hardware qualification per mode. All owned browser and relay processes closed afterward.",
+  "rows": [
+    {
+      "mode": "nf-guns",
+      "qualified": true,
+      "exit_code": 0,
+      "phase": "complete",
+      "joined_players": 4,
+      "seconds_after_all_joined": 35.45,
+      "observation_counts": {
+        "lily": 99,
+        "boba": 79,
+        "jan": 72,
+        "yun": 87
+      },
+      "selected_weapon_bins": {
+        "lily": [
+          2
+        ],
+        "boba": [
+          2,
+          10
+        ],
+        "jan": [
+          0,
+          2,
+          10
+        ],
+        "yun": [
+          0,
+          2,
+          10
+        ]
+      },
+      "observed_active_force_masks": {
+        "lily": [
+          0
+        ],
+        "boba": [
+          0
+        ],
+        "jan": [
+          0
+        ],
+        "yun": [
+          0
+        ]
+      },
+      "final_scores": {
+        "lily": {
+          "kills": 1,
+          "deaths": 1
+        },
+        "boba": {
+          "kills": 2,
+          "deaths": 1
+        },
+        "jan": {
+          "kills": 1,
+          "deaths": 2
+        },
+        "yun": {
+          "kills": 1,
+          "deaths": 1
+        }
+      },
+      "private_qualification_sha256": "0c7cee185e3641dde7ade29e609e93796a6091c13f4e72f08ca5cd0dab5429d5"
+    },
+    {
+      "mode": "ff-sabers",
+      "qualified": true,
+      "exit_code": 0,
+      "phase": "complete",
+      "joined_players": 4,
+      "seconds_after_all_joined": 35.26,
+      "observation_counts": {
+        "lily": 96,
+        "boba": 84,
+        "jan": 69,
+        "yun": 77
+      },
+      "selected_weapon_bins": {
+        "lily": [
+          2,
+          10
+        ],
+        "boba": [
+          2,
+          10
+        ],
+        "jan": [
+          2,
+          10
+        ],
+        "yun": [
+          0,
+          2,
+          10
+        ]
+      },
+      "observed_active_force_masks": {
+        "lily": [
+          0,
+          4,
+          12,
+          1024,
+          1028
+        ],
+        "boba": [
+          0,
+          4,
+          1028
+        ],
+        "jan": [
+          0,
+          4,
+          132,
+          148
+        ],
+        "yun": [
+          0,
+          4,
+          132,
+          140
+        ]
+      },
+      "final_scores": {
+        "lily": {
+          "kills": 2,
+          "deaths": 0
+        },
+        "boba": {
+          "kills": 1,
+          "deaths": 2
+        },
+        "jan": {
+          "kills": 0,
+          "deaths": 2
+        },
+        "yun": {
+          "kills": 1,
+          "deaths": 0
+        }
+      },
+      "private_qualification_sha256": "a98b5b82be9ec33bd980da685557f09987ec4dffbdc989b4df5eb3fb0155bd68"
+    },
+    {
+      "mode": "nf-sabers",
+      "qualified": true,
+      "exit_code": 0,
+      "phase": "complete",
+      "joined_players": 4,
+      "seconds_after_all_joined": 35.29,
+      "observation_counts": {
+        "lily": 94,
+        "boba": 75,
+        "jan": 67,
+        "yun": 82
+      },
+      "selected_weapon_bins": {
+        "lily": [
+          2,
+          10
+        ],
+        "boba": [
+          0,
+          2,
+          10
+        ],
+        "jan": [
+          2,
+          10
+        ],
+        "yun": [
+          2,
+          10
+        ]
+      },
+      "observed_active_force_masks": {
+        "lily": [
+          0
+        ],
+        "boba": [
+          0
+        ],
+        "jan": [
+          0
+        ],
+        "yun": [
+          0
+        ]
+      },
+      "final_scores": {
+        "lily": {
+          "kills": 0,
+          "deaths": 2
+        },
+        "boba": {
+          "kills": 0,
+          "deaths": 1
+        },
+        "jan": {
+          "kills": 3,
+          "deaths": 0
+        },
+        "yun": {
+          "kills": 1,
+          "deaths": 1
+        }
+      },
+      "private_qualification_sha256": "4996679a4f729a6baa6be46a84b30d2d11a79a93203f1beab090a4f6ad25e830"
+    }
+  ],
+  "limitations": [
+    "These are connected-format smoke sessions, not elite human benchmarks.",
+    "Weapon samples include the normal starting pistol and switching/dead states. They do not independently establish which weapon fired. Saber-only attack enforcement is exercised separately by the native driver.",
+    "Full-Force saber format permits stock offensive Force powers. No-Force observations remained at active Force mask zero.",
+    "This exact build precedes the subsequent pickup-contact, arming and water-exit changes; the mode startup code is unchanged by those AI-only changes."
+  ]
+}

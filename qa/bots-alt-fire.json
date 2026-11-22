@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "title": "Elite JK multiplayer gun selection and alternate fire",
+  "scope": "Stock Jedi Knight FF guns. Both drivers select standard weapon slots and press ordinary attack buttons. The weapon COG and engine handle mounting, animation, ammunition, recoil, fire rate, projectile creation and damage.",
+  "stock_evidence": {
+    "source": "SHA-256 of original Res2.gob entries as reported at extraction, before normalizing text for review. Template values below are from stock Canyon Oasis. Times are base game seconds before stock power boosts.",
+    "cog_sha256": {
+      "weap_bryar.cog": "066e48483ac08da081acd7034a9c9a43c44be64320457594305a0a6fe7a79a31",
+      "weap_concrifle.cog": "2ef67f24561d93033062530c32ab25c22c50e2613ead4f2dac24be054b661a3c",
+      "weap_crossbow.cog": "201ca06a46aa96f44d90cc6483ac1e6889924a6f7d556d4d188313817db28804",
+      "weap_raildet.cog": "c42ea817b0d73eb31b9518c05c010857b601457e4d4653a24e7c9dd3337180ec",
+      "weap_repeater.cog": "77ab80bbf4ba23ef8f0abdf4fccd27779a061c647185a8b2d9960587239df9a0",
+      "weap_saber.cog": "53766ca86238384433b517b31fb48a1a659934b43b96f14ac812c81290dae56e",
+      "weap_seqcharge.cog": "ae1aa50a1597e03c1897318b90f783a3838bea93134a300f6ab2c1623f76730e",
+      "weap_strifle.cog": "a04897a6525d595eeecfbf9fd4c8ff443be2329321b2e48bc9aa9f92c0136941",
+      "weap_thermdet.cog": "ef3dbac603d5ca481a9cc1bb98a88cfa102bae5bd13f69b2eb762d04ca24c438"
+    }
+  },
+  "weapon_policy": {
+    "concussion": "Either mode requires eight cells. Primary consumes eight and sends a seven-unit/s projectile with a 0.8-unit blast. A clear, predictable floor impact retains priority with at least 16 cells. Secondary consumes four and traces an instant 0.005-radius beam up to five units for 80 base damage on first contact. Both use a 1.2-second base interval. The bot considers secondary for direct, crossing, splash-unsafe or low-reserve shots. A weapon-shaped stock collision query checks the target-center line and the current physical barrel independently. Walls, moving objects and intervening players can block it. Invalid or unavailable beam templates fall back to normal primary checks.",
+    "repeater": "Primary spends one cell each 0.1 seconds. Secondary spends three cells per 0.3-second volley. Its three bolts leave at 4 degrees pitch and at -2.5 degrees pitch with +/-2.5 degrees yaw. Elite bots front-load the volley only when all three fit the target's collision radius under the estimated muzzle offset and current aim error, the wider protected-player corridor is clear, distance is below 1.4 and at least three cells remain. The volley offers burst timing, with the same nominal bolt throughput.",
+    "bowcaster": "Primary fires on release. Beyond 0.6 and 1.2 seconds of charge it can add one pair of spread bolts at each threshold if it can spend the next two cells. The bot uses the immediate two-cell ricochet secondary, with a 0.6-second base interval. Both the direct corridor and an eight-unit protected-player proximity guard must pass. This policy does not plan bank shots or charge the primary because key-up on target loss could release it.",
+    "rail": "Both modes cost one rail. Primary detonates on impact. Secondary sticks and uses a 2.5-second timer. The bot uses direct primary with a clear muzzle corridor and stock 0.5-unit splash separation. Delayed trap placement remains outside the policy.",
+    "saber": "In elite guns play, a nearby facing Bryar or stormtrooper rifle can justify drawing the saber for bolt defense. Both attack buttons remain up outside contact so stock autoblock can operate. Mobile contacts use primary. A grounded bot can request the 160-base-damage dry secondary, with 0.30 reach and a two-second base wait, only for eligible immobilized contact without a nearby protected player. Underwater stock swings in either mode use 50 damage and 0.15 reach. A concussion or rail threat gives no voluntary saber-selection bonus.",
+    "blasters_and_explosives": "Bryar and stormtrooper rifle use primary. The bot yields the starter pistol to useful loaded ranged upgrades. Thermal throws release according to hold duration, and sequencer placement requires a trap policy. Neither receives an attack button, even if stock auto-selection has already mounted it.",
+    "timing": "A change between primary and secondary passes through one neutral control frame before pressing the opposite key. During a committed moving tactical Force Jump, selection and fire defer concussion and rail because their stock shots push the shooter. Eligible recoil-free guns can keep firing."
+  },
+  "controlled_tests": {
+    "runner": "native/tests/run_bot_driver_tests.py",
+    "fixtures": ["native/tests/test_bot_altfire.inc", "native/tests/test_bot_combat.inc", "native/tests/test_bot_combat_jump.inc"],
+    "both_trees": {"driver_pass_groups": 50, "hearing_pass_groups": 7},
+    "native_tree": {"companion_datagram_suite": "pass"},
+    "cases": [
+      "Actual selection and fire bits across threat weapons, range, motion, ammo, unavailable weapon bins, water, walls, protected neighbors, first-hit moving obstacles and physical barrel direction.",
+      "Concussion floor primary, crossing and low-reserve secondary, five-unit range, eight-cell activation gate, neutral handoff in both directions and refusal of an explosive alternate template.",
+      "Repeater burst width and reserve, bowcaster secondary and proximity veto, rail primary, unsupported mounted explosives, saber contact and defensive guard, tactical-jump recoil veto.",
+      "Full combat dispatch requests secondary when a close concussion primary would endanger the shooter. Opt-in final input logging only reports a new weapon/mode at most twice per second."
+    ],
+    "limits": "The driver fixture models an arena and moving spheres. It checks ordinary controls. It does not run the game COG, spend ammunition, create projectiles, confirm hits or establish live effectiveness. BOT_FIRE_INPUT is a bounded change log: repeated shots in the same mode produce no extra entry. Web companion chat requires Wasm and WSRelay; the native datagram check applies to the native tree."
+  },
+  "engine_first_impact_cross_check": {
+    "method": "In controlled geometry, compare the frozen bot's ray decision against stock sithWeapon_HandleImpact with the same configured beam. The engine performs the collision query. A diagnostic receiver records the first body and raw damage before shields.",
+    "matched_cases": 6,
+    "cases": [
+      "Intended opponent first, another player behind: accepted, 80 raw damage to intended opponent.",
+      "Another player first: declined, stock diagnostic ray contacts intervening player.",
+      "Moving COG first: declined, stock diagnostic ray contacts moving COG.",
+      "Moving COG outside ray: accepted, 80 raw damage to intended opponent.",
+      "Intended opponent beyond range: declined, stock diagnostic ray contacts no body.",
+      "Current barrel points at floor: declined, stock diagnostic ray contacts the world."
+    ],
+    "numeric_receipt_sha256": "f713bc867d15c2497482f2997abbc864c4e95c675f299140d06039a58ea3e7dc"
+  },
+  "source_sha256_both_trees": {
+    "src/AI/jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
+    "src/AI/jkBot.c": "90217bac6dd10e7ac03efd519c8f53ed094f247f2a5e44e6ee7a0e311bfe0c8c"
+  }
+}

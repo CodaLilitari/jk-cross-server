@@ -1,0 +1,205 @@
+{
+  "schema": 1,
+  "title": "Four-seat Canyon Oasis full-Force guns trial of refinement candidate 3",
+  "qualification": {
+    "capture": "passed",
+    "sustained_competitive_movement": "failed",
+    "reason": "Lily repeatedly left the water, chose another underwater supply and dived back in. Her horizontal confinement totaled 189.055 seconds in 17 intervals during the capture. The 27 controlled bank-landing cases passed separately."
+  },
+  "build": {
+    "local_runtime_commit": "536d293",
+    "wasm_sha256": "607c58429d62f7be53e0b82922e146e8055127ef3d054cf8f71a4e61ce383f4a",
+    "js_sha256": "8eee651e0804ca97b07113541b7ab613eab81fe6c59eba39adfc8da858f04331",
+    "build_receipt": "qa/bots-refinement-web-build.json",
+    "bank_replay_receipt": "qa/bots-bank-landing.json",
+    "supply_receipt": "qa/bots-supply-recovery.json",
+    "build_receipt_revision": "536d293c2cd3a96fec6e01c1a4eadcd45978d132",
+    "build_receipt_sha256": "c61b8e4b4425cda6d8345a472d049b245367d26e46d43c6fbd66ad6a36dc8851"
+  },
+  "capture": {
+    "map": "JK1MP/m10.jkl (Canyon Oasis)",
+    "recorded_seconds": 240.002,
+    "qualified_hardware_accelerated_seats": 4,
+    "mode": "ff-guns",
+    "living_observations_autonomous_all_seats": true,
+    "directed_commands": 0,
+    "observed_chat_events": 0,
+    "third_person_flags": 7,
+    "host_model": "dlil.3do",
+    "renderer_saber_materials": {
+      "side": "saberred1.mat",
+      "tip": "saberred0.mat"
+    },
+    "compressed_trace_sha256": "51028681f243e89ef5893e2fc788959d807c61ed5531442556a982523600c9ef",
+    "raw_webm_sha256": "da63f3907cef0a2596de6f380edc3f41380bd5a4e4807aa45296c6993b3b6a73"
+  },
+  "private_video": {
+    "filename": "Darth_Lilitari_Canyon_Oasis_Refinement_3.mp4",
+    "sha256": "ff273f73c1d34a1616c3c924f84b56b2705f95c0759ea2c7cb26904323b2774d",
+    "bytes": 45203379,
+    "video": {
+      "codec": "H.264",
+      "width": 960,
+      "height": 540,
+      "fps": 30,
+      "frames": 7194,
+      "stream_duration_s": 239.8
+    },
+    "audio": {
+      "codec": "AAC",
+      "channels": 2,
+      "sample_rate_hz": 48000,
+      "stream_duration_s": 240.021333,
+      "mean_dbfs": -21.7,
+      "peak_dbfs": 0.0
+    },
+    "full_decode_exit_code": 0
+  },
+  "sampling": {
+    "window_trace_seconds": [
+      49.783667,
+      289.677741
+    ],
+    "start_uncertainty_s": 0.053963,
+    "states": "First active-driver sample per world, life and game time, with observation age 0 to 1 second. Wet and dry classify the sampled player center. Three Lily positions matched both. Floor attachment was not exposed in the live observations.",
+    "confinement": "At least 2 seconds within 0.13 horizontal world units of a segment\u2019s first point. Vertical motion is allowed. Death, identity changes, poll gaps over 0.8 seconds, game-time gaps over 1 second or leaving the radius end the segment.",
+    "comparison": "Two unseeded autonomous matches with differing spawns, encounters and available pickups."
+  },
+  "metrics_columns": [
+    "seat",
+    "baseline_wet",
+    "baseline_living",
+    "candidate_wet",
+    "candidate_dry",
+    "candidate_ambiguous",
+    "candidate_living",
+    "candidate_living_with_target",
+    "baseline_total_confined_s",
+    "candidate_total_confined_s",
+    "baseline_longest_confined_s",
+    "candidate_longest_confined_s",
+    "candidate_open_kills_deaths",
+    "candidate_close_kills_deaths"
+  ],
+  "metrics": [
+    [
+      "lily",
+      201,
+      810,
+      659,
+      178,
+      3,
+      840,
+      97,
+      52.756,
+      189.055,
+      10.072,
+      16.985,
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    [
+      "boba",
+      558,
+      784,
+      259,
+      543,
+      0,
+      802,
+      286,
+      153.171,
+      38.233,
+      54.087,
+      26.192,
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    [
+      "jan",
+      452,
+      805,
+      367,
+      500,
+      0,
+      867,
+      182,
+      89.469,
+      48.209,
+      29.347,
+      8.82,
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    [
+      "yun",
+      260,
+      800,
+      187,
+      670,
+      0,
+      857,
+      275,
+      95.582,
+      69.384,
+      17.959,
+      9.652,
+      [
+        2,
+        0
+      ],
+      [
+        4,
+        1
+      ]
+    ]
+  ],
+  "item_retry": {
+    "air_returns_all_seats": 19,
+    "same_life_same_slot_guid_signature_replans_before_45_game_seconds": 0,
+    "lily_air_returns": 8,
+    "lily_fixed_item_slots_in_order": [
+      11,
+      10,
+      12,
+      10,
+      11,
+      10,
+      12,
+      11
+    ],
+    "lily_observed_wait_examples_game_seconds": {
+      "11": 45.48,
+      "10": 46.27,
+      "12": 45.1
+    },
+    "dry_sector_41_native_status_s": [
+      94.652,
+      184.922
+    ],
+    "interpretation": "The eight returns and the later same-item plans are consistent with separate cooldowns. Different supplies in the same area can still attract an already armed bot back to water. The trace lacks each frame\u2019s graph edge and full decision state."
+  },
+  "combat_and_equipment": {
+    "lily": "After 43.4 s, 700 of 706 remaining living samples showed concussion selected. Only ten had a target, and the power-cell balance increased twice by 32. The retained in-clip trigger log showed two Bryar-primary changes and one fists-primary change. Bow and repeater secondary appeared only during warm-up for Lily.",
+    "other_seats": "Yun requested concussion secondary at 41.712 s and repeater secondary at 161.762 s. Boba requested repeater secondary and both saber modes. Jan requested bow secondary. Yun logged rack 11 contact before his own rail inventory rose by six, without unique grant attribution.",
+    "limits": "The logger emits at most two changes of requested weapon/mode per second. Repeated firing in the same mode can leave no new entry. A plan, a shot request, a projectile hit and a credited pickup each require different observations."
+  },
+  "follow_up": "Reproduce how a well-equipped bot chooses successive dives after reaching air or a dry sector, test a policy correction, then record another full four-minute match on the resulting build."
+}

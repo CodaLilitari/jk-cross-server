@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "title": "Canyon Oasis bank landing after a supported touchdown",
+  "change": "Increase the maximum supported final walk from 0.14 to 0.16 world units. The flight still needs a clear full-body sweep, support at the actual touchdown in the intended dry sector, and a walkable final span without a drop. Takeoff still requires the correct surface, speed and fresh jump input.",
+  "qualification": "Controlled stock-physics replay through normal bot input dispatch. Both the native and JKWeb source configurations were compiled for the host harness.",
+  "bank_source_sha256": {
+    "before": "c7f9e9e8916a2f97d37a727a1844dab7aa07f7ee7459cfaa1b831e14cd739f30",
+    "after": "2d1b36d679222c48936b8d4e920991da87fda6e536010e783ea54232dc241383"
+  },
+  "reproduction": {
+    "case_manifest": "native/tests/stock_water_replay/bank_cases.tsv",
+    "manifest_sha256": "2ae401185bdeb36944ea15fcebc72d42098920c779e424b4778dd7f9a5c0a67e",
+    "instructions": "native/tests/stock_water_replay/README.md",
+    "synthetic_portal_runner": "native/tests/run_bot_portal_tests.py"
+  },
+  "results": {
+    "baseline_cases_passed": 19,
+    "baseline_timeouts": 8,
+    "corrected_cases_passed_per_source": 27,
+    "corrected_source_configurations": 2,
+    "complete_portal_groups_passed_per_source": 11,
+    "comparison": "Frozen candidate 2 and the source with the supply recovery changes alone produced identical baseline tables. The native and JKWeb source trees with the bank correction produced identical result tables."
+  },
+  "outcome": "Success requires 38 consecutive stock physics steps attached to the floor in the requested dry sector. Times are simulated seconds. A null baseline dry time means the 60-second replay deadline expired.",
+  "synthetic_controls": "The 0.159-unit supported final walk failed before the change. After the change 0.139 and 0.159 passed while 0.161 remained outside the limit. A water-marked touchdown or final floor, a 0.30-unit floor drop and a ceiling blocking the flight each prevented approval.",
+  "control_tradeoffs": "At 79 ms the earlier sector-42 control took 29.940 seconds instead of 25.573, reaching sustained dry support with 60 HP in both runs. At 26 ms it took one additional physics step (12.527 versus 12.520 seconds) with 10 HP.",
+  "limits": "One swimmer, no other actors, zero initial horizontal velocity, a synthetic 20-second dive age and a constant control interval. An active multiplayer match adds variable controls, other actors, supply decisions and pre-existing navigation state.",
+  "matrix_columns": [
+    "case",
+    "yaw_deg",
+    "baseline_dry_s",
+    "corrected_first_breath_s",
+    "hp_at_first_breath",
+    "corrected_dry_s",
+    "hp_at_dry",
+    "dry_sector"
+  ],
+  "matrix_rows": [
+    ["boba-190.017", -90, 5.973, 3.353, 100, 5.9, 100, 41],
+    ["boba-190.017", 0, 5.973, 3.353, 100, 5.9, 100, 41],
+    ["boba-190.017", 90, 5.973, 3.353, 100, 5.9, 100, 41],
+    ["boba-190.017", 180, 5.973, 3.353, 100, 5.9, 100, 41],
+    ["boba-200.077", -90, null, 1.933, 100, 5.133, 100, 41],
+    ["boba-200.077", 0, null, 1.933, 100, 5.207, 100, 41],
+    ["boba-200.077", 90, null, 1.933, 100, 5.133, 100, 41],
+    ["boba-200.077", 180, null, 1.94, 100, 5.133, 100, 41],
+    ["boba-210.147", -90, null, 16.993, 90, 21.127, 90, 41],
+    ["boba-210.147", 0, null, 16.993, 90, 21.127, 90, 41],
+    ["boba-210.147", 90, null, 16.993, 90, 21.127, 90, 41],
+    ["boba-210.147", 180, null, 16.993, 90, 21.127, 90, 41],
+    ["boba-220.237", -90, 3.52, 0.573, 100, 3.38, 100, 41],
+    ["boba-220.237", 0, 3.52, 0.573, 100, 3.38, 100, 41],
+    ["boba-220.237", 90, 3.52, 0.573, 100, 3.38, 100, 41],
+    ["boba-220.237", 180, 18.707, 1.053, 100, 3.933, 100, 41],
+    ["boba-230.247", -90, 8.353, 4.787, 100, 8.253, 100, 41],
+    ["boba-230.247", 0, 8.353, 4.787, 100, 8.253, 100, 41],
+    ["boba-230.247", 90, 8.353, 4.8, 100, 8.253, 100, 41],
+    ["boba-230.247", 180, 8.353, 4.8, 100, 8.253, 100, 41],
+    ["lily-232.797", -90, 7.313, 3.66, 100, 7.193, 100, 41],
+    ["lily-232.797", 0, 7.313, 3.66, 100, 7.193, 100, 41],
+    ["lily-232.797", 90, 7.313, 3.66, 100, 7.193, 100, 41],
+    ["lily-232.797", 180, 7.313, 3.66, 100, 7.193, 100, 41],
+    ["pool-90", 0, 10.8, 1.96, 100, 10.72, 100, 10],
+    ["pool-100", 0, 25.573, 2.16, 60, 29.94, 60, 10],
+    ["pool-110", 0, 12.52, 1.313, 10, 12.527, 10, 10]
+  ]
+}

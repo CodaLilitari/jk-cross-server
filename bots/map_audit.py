@@ -8,8 +8,10 @@ connected gameplay. The engine builds collision-checked routes at runtime.
 from __future__ import annotations
 import argparse
 from collections import Counter
+from ctypes import c_float
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 from manager.content import archive_index, child_casefold
@@ -31,6 +33,37 @@ def pickup_catalog(source: str) -> dict[str, str]:
     return result
 
 
+_PROPERTY = re.compile(r"(\w+)=(\([^()=]*\)|[^\s=()]+)(?:\s+|$)")
+_POSE_DECIMAL = re.compile(r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?")
+_SECTOR_INTEGER = re.compile(r"[+-]?[0-9]+")
+
+
+def _property_fields(fields: str) -> dict[str, str]:
+    """Read contiguous assignments; a parenthesized value may contain spaces."""
+    props = {}
+    cursor = 0
+    while cursor < len(fields):
+        match = _PROPERTY.match(fields, cursor)
+        if match is None:
+            token = fields[cursor:].split(None, 1)[0]
+            if re.fullmatch(r"\w+=", token):
+                raise ValueError(f"Property {token[:-1]} has an empty value")
+            raise ValueError(f"Malformed property assignment at {token!r}")
+        props[match[1].casefold()] = match[2].casefold()
+        cursor = match.end()
+    return props
+
+
+def _pose_component(token: str) -> float:
+    if not _POSE_DECIMAL.fullmatch(token):
+        raise ValueError(f"Invalid pose decimal {token!r}")
+    value = float(token)
+    # The engine stores its parsed double in a float. Keep the source precision in the atlas.
+    if not math.isfinite(c_float(value).value):
+        raise ValueError(f"Pose component {token!r} exceeds finite binary32 range")
+    return value
+
+
 def parse_jkl(text: str) -> dict:
     """Parse only metadata needed by the audit, preserving inherited templates."""
     section = ""
@@ -39,7 +72,8 @@ def parse_jkl(text: str) -> dict:
     cogs: list[dict] = []
     counts: dict[str, int] = {}
     errors: list[str] = []
-    for original in text.splitlines():
+    authored_order = 0
+    for line_number, original in enumerate(text.splitlines(), 1):
         line = original.split("#", 1)[0].strip()
         if not line:
             continue
@@ -51,21 +85,34 @@ def parse_jkl(text: str) -> dict:
         if match:
             counts[match[1].lower()] = int(match[2])
         if section == "templates":
-            row = line.split()
+            row = line.split(maxsplit=2)
             if len(row) < 2 or row[0].lower() in {"world", "end"}:
                 continue
             name, base = (v.casefold() for v in row[:2])
+            if name in templates:
+                errors.append(f"Line {line_number}: Duplicate template {name}")
+                continue
             if base != "none" and base not in templates:
                 errors.append(f"Template {name} has unknown earlier base {base}")
             props = templates.get(base, {}).copy()
-            props.update({k.casefold(): v.casefold() for k, v in re.findall(r"(\w+)=([^\s]+)", line)})
+            try:
+                if len(row) == 3:
+                    props.update(_property_fields(row[2]))
+            except ValueError as exc:
+                errors.append(f"Line {line_number}, template {name}: {exc}")
+                continue
             templates[name] = props
         elif section == "things":
-            row = line.split()
-            if not row or not re.fullmatch(r"\d+:", row[0]):
+            row = line.split(maxsplit=10)
+            if line.casefold() == "end" or re.fullmatch(r"(?i)world\s+things\s+\d+", line):
+                continue
+            order = authored_order
+            authored_order += 1
+            if not re.fullmatch(r"\d+:", row[0]):
+                errors.append(f"Malformed thing index on line {line_number}")
                 continue
             if len(row) < 10:
-                errors.append("Incomplete thing row")
+                errors.append(f"Incomplete thing row on line {line_number}")
                 continue
             try:
                 index = int(row[0][:-1]); name = row[1].casefold()
@@ -74,11 +121,16 @@ def parse_jkl(text: str) -> dict:
                 if index in things:
                     raise ValueError(f"Duplicate thing {index}")
                 props = templates[name].copy()
-                props.update({k.casefold(): v.casefold() for k, v in re.findall(r"(\w+)=([^\s]+)", line)})
-                things[index] = {"template": name, "position": tuple(float(x) for x in row[3:6]),
-                                 "sector": int(row[9]), "properties": props}
+                if len(row) == 11:
+                    props.update(_property_fields(row[10]))
+                position = tuple(_pose_component(x) for x in row[3:6])
+                orientation = tuple(_pose_component(x) for x in row[6:9])
+                if not _SECTOR_INTEGER.fullmatch(row[9]):
+                    raise ValueError(f"Thing {index} has invalid sector integer {row[9]!r}")
+                things[index] = {"template": name, "position": position, "orientation": orientation,
+                                 "authored_order": order, "sector": int(row[9]), "properties": props}
             except ValueError as exc:
-                errors.append(str(exc))
+                errors.append(f"Line {line_number}: {exc}")
         elif section == "cogs":
             row = line.split()
             if len(row) >= 2 and re.fullmatch(r"\d+:", row[0]):

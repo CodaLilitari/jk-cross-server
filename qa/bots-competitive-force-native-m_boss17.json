@@ -1,0 +1,367 @@
+{
+  "version": 1,
+  "requested_map": "m_boss17.jkl",
+  "requested_match_seconds": 75,
+  "status": "live_join_and_loadout_verified",
+  "commit": "ba6a3ca668c70b5263192bde0dc71cd50923ad5f",
+  "branch": "feature/competitive-bot-foundation",
+  "source_tree_clean": true,
+  "platform": {
+    "python": "3.12.3",
+    "glibc": "2.39"
+  },
+  "render_environment": {
+    "SDL_VIDEODRIVER": "offscreen",
+    "SDL_VIDEO_DRIVER": "offscreen",
+    "EGL_PLATFORM": "surfaceless",
+    "LIBGL_ALWAYS_SOFTWARE": "1",
+    "ALSOFT_DRIVERS": "null",
+    "SDL_AUDIODRIVER": "dummy",
+    "LP_NUM_THREADS": "2"
+  },
+  "bot_options": {
+    "taunts": false,
+    "team": 0,
+    "force_style": "competitive",
+    "trace_force": true
+  },
+  "sha256": {
+    "bin/bots-linux-x86_64/jk-bot-client": "fc5331973d4c68d53ceba238ecaca50eb606f66d7a647c00ce0c5e6daaf1bd67",
+    "bin/bots-linux-x86_64/libGameNetworkingSockets.so": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+    "native/bot-client.patch": "d318b22a03a8fad496be56605b0189ac34b9b99a4150912ad555884d14d6f8e9",
+    "bin/linux-x86_64/openjkdf2": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
+    "bin/linux-x86_64/libGameNetworkingSockets.so": "45797fcd310f0812af9f55354ff22663859ca68c2d8bb0005efb88a748c471e7",
+    "jk1mp.gob": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+    "res1hi.gob": "6c6d51eca9c85dffe7dce9b449642a052f055352e3f817abf03b465da861aafd",
+    "res2.gob": "c75f7d5211bdd2e07a3af6a987c718037e8f0fd6909018ddb4327137bf3a7ebf",
+    "jkl/m_boss17.jkl": "5c0795709ff3f2da525d0ad9ce4a3e41b13445febc1b5f88f727c864b606349f"
+  },
+  "server_registry": {
+    "gameName": "Native Force QA",
+    "serverEpisodeGob": "JK1MP",
+    "serverMapJkl": "m_boss17.jkl",
+    "maxPlayers": 4,
+    "bIsDedicated": true,
+    "maxRank": 8,
+    "tickRate": 100,
+    "portNum": 48060,
+    "gameFlags": 0,
+    "sessionFlags": 0,
+    "timeLimit": 0,
+    "scoreLimit": 0,
+    "bUseScoreLimit": false,
+    "bUseTimeLimit": false,
+    "bIsSingleLevel": false,
+    "bIsTeams": false,
+    "bIsCoop": false,
+    "bIsEpisodeCoop": false,
+    "enableVsync": false,
+    "enableBloom": false,
+    "enableSSAO": false,
+    "fpslimit": 60
+  },
+  "server_argv": [
+    "-headless",
+    "-dedicatedServer",
+    "-episode",
+    "JK1MP",
+    "-map",
+    "m_boss17.jkl"
+  ],
+  "bots": {
+    "dark": {
+      "side": "dark",
+      "joined": {
+        "slot": 1,
+        "net": 3
+      },
+      "loadout": {
+        "rank": 8,
+        "style": "competitive",
+        "spent": 24,
+        "remaining": 0
+      },
+      "behavior": {
+        "sabers_only": 0,
+        "fists_peace": 0,
+        "force_enabled": 1
+      },
+      "samples": 162,
+      "matching_star_samples": 162,
+      "first_stars": [
+        4,
+        4,
+        4,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        4,
+        0
+      ],
+      "input_counts": {
+        "21": 5,
+        "23": 3,
+        "24": 1,
+        "31": 1,
+        "33": 3
+      },
+      "active_counts": {
+        "21": 3,
+        "23": 112,
+        "24": 1,
+        "31": 10
+      },
+      "immobile_samples": 0,
+      "ranges": {
+        "health": [
+          90.04,
+          100
+        ],
+        "shields": [
+          75.7,
+          100
+        ],
+        "mana": [
+          0,
+          400
+        ],
+        "t": [
+          0,
+          82.11
+        ]
+      },
+      "mana_decreases": 10,
+      "health_decreases": 1,
+      "target_slots": [
+        2
+      ],
+      "examples": {
+        "first_active": {
+          "t": 0.51,
+          "health": 100,
+          "shields": 100,
+          "mana": 400,
+          "immobile": 0,
+          "active": 1
+        },
+        "first_mana_decrease": {
+          "t": 1.02,
+          "health": 100,
+          "shields": 100,
+          "mana": 380,
+          "immobile": 0,
+          "active": 0
+        },
+        "first_health_decrease": {
+          "t": 38.25,
+          "health": 90.04,
+          "shields": 100,
+          "mana": 4,
+          "immobile": 0,
+          "active": 4
+        }
+      },
+      "argv": [
+        "-headless",
+        "-botConnect",
+        "127.0.0.1:48060",
+        "-botName",
+        "Bot_BobaFett",
+        "-botSkin",
+        "kyh4.3do",
+        "-botSound",
+        "kybobafett.snd"
+      ]
+    },
+    "light": {
+      "side": "light",
+      "joined": {
+        "slot": 2,
+        "net": 5
+      },
+      "loadout": {
+        "rank": 8,
+        "style": "competitive",
+        "spent": 24,
+        "remaining": 0
+      },
+      "behavior": {
+        "sabers_only": 0,
+        "fists_peace": 0,
+        "force_enabled": 1
+      },
+      "samples": 147,
+      "matching_star_samples": 147,
+      "first_stars": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "input_counts": {
+        "23": 3,
+        "24": 2,
+        "25": 1,
+        "28": 2
+      },
+      "active_counts": {
+        "23": 119,
+        "24": 2,
+        "25": 1,
+        "28": 78
+      },
+      "immobile_samples": 9,
+      "ranges": {
+        "health": [
+          50,
+          100
+        ],
+        "shields": [
+          51.7,
+          100
+        ],
+        "mana": [
+          2.07,
+          400
+        ],
+        "t": [
+          0,
+          74.47
+        ]
+      },
+      "mana_decreases": 8,
+      "health_decreases": 8,
+      "target_slots": [
+        1
+      ],
+      "examples": {
+        "first_active": {
+          "t": 14.29,
+          "health": 100,
+          "shields": 100,
+          "mana": 370,
+          "immobile": 0,
+          "active": 4
+        },
+        "first_mana_decrease": {
+          "t": 14.29,
+          "health": 100,
+          "shields": 100,
+          "mana": 370,
+          "immobile": 0,
+          "active": 4
+        },
+        "first_immobile": {
+          "t": 55.6,
+          "health": 84,
+          "shields": 51.7,
+          "mana": 156.07,
+          "immobile": 1,
+          "active": 4
+        },
+        "first_health_decrease": {
+          "t": 55.6,
+          "health": 84,
+          "shields": 51.7,
+          "mana": 156.07,
+          "immobile": 1,
+          "active": 4
+        }
+      },
+      "argv": [
+        "-headless",
+        "-botConnect",
+        "127.0.0.1:48060",
+        "-botName",
+        "Bot_JanOrs",
+        "-botSkin",
+        "kya10.3do",
+        "-botSound",
+        "kyfemale.snd"
+      ]
+    }
+  },
+  "dedicated_server_owned_udp_port": true,
+  "both_joined_observation_wall_seconds": 75,
+  "effects": {
+    "any_active_bin_sample": true,
+    "any_mana_decrease": true,
+    "any_immobile_sample": true,
+    "any_health_decrease": true,
+    "target_effect_caster_attribution": "unverified"
+  },
+  "elapsed_wall_seconds": 98.9,
+  "harness_source_sha256": "99af029eca3084482f9842086606aef7019e98c9b1b855d01d929ff39a28df9d",
+  "harness_commit": "8b301820ef6823b721a38a636dc781f8910b9736",
+  "runtime_dependency_additions": [
+    {
+      "dependency": "libopenal1",
+      "version": "1:1.23.1-4build1",
+      "package_sha256": "1781774a540ab7c9baccc41b49592e3b427c5820c64e390af4868d6a861ef8c7",
+      "library_sha256": "89bf02dc4e8f13680b3aae45770f9436627841b427693a565c15d4895f4c7331",
+      "isolated_runtime_copy": true
+    },
+    {
+      "dependency": "libsndio7.0",
+      "version": "1.9.0-0.3build3",
+      "package_sha256": "b3944745ee48ea2c7a851fb78a617d34bb731a2f956a2c213cc9dffcaba35382",
+      "library_sha256": "e7ce0d18eb8dd47edd102d5d08da6032257db0f2c1fbbb56125eb7c5e03db10a",
+      "isolated_runtime_copy": true
+    },
+    {
+      "dependency": "libasound2t64",
+      "version": "1.2.11-1ubuntu0.3",
+      "package_sha256": "5d17bfb5683eb99f1be951fe48e1be5bf3c52391913b6b74a8aecf9b4f5e779f",
+      "library_sha256": "ff4c69ef420f2d0ab92c813d2222d097c6a7eafe3b13952aed069e2bb0204f55",
+      "isolated_runtime_copy": true
+    }
+  ],
+  "network_isolation": "Unprivileged user/network namespace; launcher verified loopback was the only network interface.",
+  "evidence_scope": {
+    "native_join": true,
+    "live_competitive_loadouts": true,
+    "mutual_target_slots_sampled": true,
+    "seeing_active_on_both_clients": true,
+    "absorb_active_on_light_client": true,
+    "grip_active_on_dark_client": true,
+    "light_client_immobility_sampled": true,
+    "light_client_health_decreases_sampled": true,
+    "dark_destruction_requests": 3,
+    "isolated_damage_or_caster_attribution": false,
+    "current_jkweb_interoperability": false,
+    "human_competitive_strength": false
+  },
+  "cleanup": "Harness stopped and reaped owned server/bot process groups; staged game archives and isolated profiles removed.",
+  "limitations": [
+    "This was a local native-versus-native observation with two bots on one stock map, not a human benchmark or a browser interoperability test.",
+    "BOT_FORCE_INPUT reports requested input; active flags and the other client's state are additional independent observations.",
+    "The mixed combat trace does not isolate exact damage source, prove every Destruction projectile hit, or qualify every Force matchup.",
+    "The stock controls-disabled forced-release path remains separate from controller-initiated Grip release verification."
+  ],
+  "trace_evidence": {
+    "trace_file": "qa/competitive-force/trace-m_boss17.jsonl",
+    "trace_sha256": "7e9f24a8837a8f041de99d78d81663b3c69ee6fe097d007b2176fcbc2095e29b",
+    "trace_rows": 330,
+    "receipt_sha256": "37247f3cf394e04b69c2b0578b9999889860749173b02e4a9bfad705b1122876"
+  },
+  "cleanup_observation": {
+    "owned_native_processes_remaining": 0,
+    "staged_input_directories_remaining": 0
+  }
+}

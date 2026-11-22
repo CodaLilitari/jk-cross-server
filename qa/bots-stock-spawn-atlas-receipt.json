@@ -1,0 +1,201 @@
+{
+  "schema": 1,
+  "date": "2026-11-21",
+  "evidence": "authored_stock_spawn_poses_and_raw_row_crosscheck",
+  "source_baseline": "260ef1449e8d65fefff2c574dab8dbce824cffad",
+  "code_commit": "1bd860456db42b76bfe98f36087ad74d29a91b6c",
+  "source_sha256": {
+    "bots/__init__.py": "bcb2d17ad45888a115146a9491ee107f968593ede7cc98a1163b15b69a653893",
+    "bots/settings.py": "04f7187279f77f58e15ce9f7b8de864012e71337eede30dce96cbe0be461d288",
+    "bots/map_audit.py": "6d0ea18ac1a465e80d32defdbfea3977abf23be2c7ab0f2c1b69591028f6d8c0",
+    "bots/spawn_atlas.py": "096e1e952e547172e3e7910dcce585277de84510b5b69eb37fb0558471bb9414",
+    "manager/__init__.py": "0473c521e59b406646bd31bd5caae352fd3a450fb68b374dce1c6f58a8fd1618",
+    "manager/config.py": "fdc2a130e1b29677808a675193961213a412803369a5652777f00744e7bbdfb4",
+    "manager/content.py": "d4dae8db1b658f0b545d476b2e324b39c79cee622fd7ac77d8ccc955ca7f7812"
+  },
+  "cli_exit": 0,
+  "python_version": "3.13.15",
+  "baseline_hashes_and_counts_match": true,
+  "raw_pose_records_checked": 193,
+  "raw_pose_mismatches": [],
+  "episodes": [
+    {
+      "episode": "jk1mp",
+      "archive_sha256": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+      "maps": [
+        {
+          "map": "m10.jkl",
+          "sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+          "authored_things": 66,
+          "player_starts": 16,
+          "status": "pass"
+        },
+        {
+          "map": "m2.jkl",
+          "sha256": "938f8a892bcdc90a7f54f25aed4fd58baba750293c5d01ac2dec68ef170eef9a",
+          "authored_things": 139,
+          "player_starts": 16,
+          "status": "pass"
+        },
+        {
+          "map": "m4.jkl",
+          "sha256": "150eda1c2e6c7f316c8b76a0f2f060ce5d49dcc9ae24bb43e4fb42a5df20d89c",
+          "authored_things": 149,
+          "player_starts": 17,
+          "status": "pass"
+        },
+        {
+          "map": "m5.jkl",
+          "sha256": "61713ac79aa60bba1b558f8457a1351f720b076c242469110975ac26b2dcff38",
+          "authored_things": 185,
+          "player_starts": 16,
+          "status": "pass"
+        },
+        {
+          "map": "m_boss15.jkl",
+          "sha256": "1f8502deba0220a3f39a2a3fb2f638ecf71b214f127b74d47ac482194e907458",
+          "authored_things": 113,
+          "player_starts": 16,
+          "status": "pass"
+        },
+        {
+          "map": "m_boss17.jkl",
+          "sha256": "5c0795709ff3f2da525d0ad9ce4a3e41b13445febc1b5f88f727c864b606349f",
+          "authored_things": 41,
+          "player_starts": 16,
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "episode": "jk1ctf",
+      "archive_sha256": "da98fe3fc769168f1bb562cc1f6532560b12d8e920fd6c34586d69b424b5b1fc",
+      "maps": [
+        {
+          "map": "c1.jkl",
+          "sha256": "349fb5beffba7c84fd573fe1184f3fbb569d4fcdad07d2d9b26fcb8afdb849e0",
+          "authored_things": 159,
+          "player_starts": 32,
+          "status": "pass"
+        },
+        {
+          "map": "c2.jkl",
+          "sha256": "bc9975eb3c93ee45e83928307d27dfd5d8f94ad4eea3216fa3fecf784e593ade",
+          "authored_things": 255,
+          "player_starts": 32,
+          "status": "pass"
+        },
+        {
+          "map": "c3.jkl",
+          "sha256": "b4d804591cebebbd59f05ad42a8e059178dc468e24172bd6bc5b7d6ba1c2f0a7",
+          "authored_things": 345,
+          "player_starts": 32,
+          "status": "pass"
+        }
+      ]
+    }
+  ],
+  "not_established": [
+    "Runtime spawn eligibility or engine player-start ordinal",
+    "Mode-specific route completion",
+    "New native executable or changed combat behavior",
+    "External companion bridge",
+    "Mixed interoperability with current upstream jkweb",
+    "Competitive strength against human players"
+  ],
+  "status": "pass",
+  "test_runs": [
+    {
+      "source_commit": "0f3fb574bde4e8a6c58cd3541f4e24a2264a88f6",
+      "scope": "full Python suite before final output-archive guard",
+      "tests_run": 203,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "source_commit": "1bd860456db42b76bfe98f36087ad74d29a91b6c",
+      "scope": "final atlas and map audit checks",
+      "atlas_tests": 8,
+      "map_tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "alias_cases": 6
+    }
+  ],
+  "subsequent_parser_validation": {
+    "code_commit": "fd78d3b1114bd51017cf0450638eb3839b0f6c43",
+    "source_sha256": {
+      "bots/__init__.py": "bcb2d17ad45888a115146a9491ee107f968593ede7cc98a1163b15b69a653893",
+      "bots/settings.py": "04f7187279f77f58e15ce9f7b8de864012e71337eede30dce96cbe0be461d288",
+      "bots/map_audit.py": "9354db3bc60ecd031b51f933b37eb809ebb6bfb4c5cd2b2a6b1e38b373119df4",
+      "bots/spawn_atlas.py": "096e1e952e547172e3e7910dcce585277de84510b5b69eb37fb0558471bb9414",
+      "manager/__init__.py": "0473c521e59b406646bd31bd5caae352fd3a450fb68b374dce1c6f58a8fd1618",
+      "manager/config.py": "fdc2a130e1b29677808a675193961213a412803369a5652777f00744e7bbdfb4",
+      "manager/content.py": "d4dae8db1b658f0b545d476b2e324b39c79cee622fd7ac77d8ccc955ca7f7812"
+    },
+    "cli_exit": 0,
+    "status": "pass",
+    "canonical_episodes_sha256": "e6c9de7ba3135ba0d65eccedb8f501f235d2529125e3fa7c8ad8de451b7044e6",
+    "matches_prior_raw_row_validated_result": true,
+    "original_archives_unchanged": true,
+    "counts": [
+      {
+        "episode": "jk1mp",
+        "maps": [
+          {
+            "map": "m10.jkl",
+            "starts": 16,
+            "status": "pass"
+          },
+          {
+            "map": "m2.jkl",
+            "starts": 16,
+            "status": "pass"
+          },
+          {
+            "map": "m4.jkl",
+            "starts": 17,
+            "status": "pass"
+          },
+          {
+            "map": "m5.jkl",
+            "starts": 16,
+            "status": "pass"
+          },
+          {
+            "map": "m_boss15.jkl",
+            "starts": 16,
+            "status": "pass"
+          },
+          {
+            "map": "m_boss17.jkl",
+            "starts": 16,
+            "status": "pass"
+          }
+        ]
+      },
+      {
+        "episode": "jk1ctf",
+        "maps": [
+          {
+            "map": "c1.jkl",
+            "starts": 32,
+            "status": "pass"
+          },
+          {
+            "map": "c2.jkl",
+            "starts": 32,
+            "status": "pass"
+          },
+          {
+            "map": "c3.jkl",
+            "starts": 32,
+            "status": "pass"
+          }
+        ]
+      }
+    ],
+    "python": "3.13.15"
+  }
+}

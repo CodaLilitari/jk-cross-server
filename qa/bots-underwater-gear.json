@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "title": "Underwater gear collection and return to dry support",
+  "historical_scope": "These replays document the second refinement candidate. That version remembered one failed underwater supply and used a nearby item becoming disabled as a contact signal. Later supply recovery observes the stock touch callback and keeps independent retry deadlines.",
+  "subsequent_supply_recovery_receipt": "qa/bots-supply-recovery.json",
+  "observed_failure": {
+    "scenario": "In the pre-change four-seat Canyon Oasis pilot, one disarmed bot repeatedly swam from sector 35 toward the rail rack in 40, reached the air objective and immediately reacquired the same rack following a brief surface crossing. Fresh samples reached 0.3045 units from the rack center. No award appeared in that pilot interval.",
+    "pilot_compressed_trace_sha256": "0ecdfcd5766cdb176de95cfac3027aa2e6a87a4c1bbe931c572e1155ccce63f6"
+  },
+  "change": "When an underwater supply attempt reaches existing air urgency, remember that particular pickup identity for 45 game seconds. Wait for a stock endurance reset and continue toward the checked dry bank for up to six seconds. A confirmed nearby item disable after four seconds underwater also starts a return. Competitive Speed may use its ordinary input on a directed, full-body-clear final swimming leg in one sector at control intervals up to 70 ms; existing reserve, exit and other Force gates still apply.",
+  "ordinary_driver": {
+    "runner": "python3 native/tests/run_bot_driver_tests.py --source \"$PATCHED_SOURCE\" --build \"$CONFIGURED_NATIVE_BUILD\"",
+    "groups_per_source": 52,
+    "portal_runner": "python3 native/tests/run_bot_portal_tests.py --source \"$PATCHED_SOURCE\" --build \"$CONFIGURED_NATIVE_BUILD\"",
+    "portal_groups_per_source": 10,
+    "cases": "Exact air-urgency threshold, real dry/surface breath signal, bounded bank release, pickup identity reuse and cooldown expiry; ordinary dry Speed and a non-surface attachment union."
+  },
+  "paired_replay": {
+    "geometry": "Owned Canyon Oasis geometry and authored rail rack 11 in sector 40 at [3.00136,-0.113613,-1.75558]. Stock player radius 0.065, rack radius 0.1. The starting sector is 35, with a blocked direct approach from the starting point and a graph leg before the final direct span.",
+    "starting_state": {
+      "position": [
+        1.444,
+        -0.416,
+        -1.1004
+      ],
+      "velocity_estimated_from_adjacent_observations": [
+        0.13,
+        0.025,
+        -0.2
+      ],
+      "pitch": 0,
+      "yaw_test_values_deg": [
+        -90,
+        0,
+        90
+      ],
+      "initial_endurance_ms": 400,
+      "mana": 200,
+      "hp": 100,
+      "loadout": "saber, optional rank-four Speed; the other powers are unavailable",
+      "starting_physics_flags": "0x4b4f"
+    },
+    "method": "For each combination, execute the normal bot dispatcher, stock inventory key processing, movement controls, world collision, floor attachment, sector transitions, endurance and drowning at 150 physics updates per game second. Emulate the owned Speed COG activation, mana debit, thrust and expiry in C. After sphere overlap call the stock item collision handler with LOS and debounce. Count the resulting TOUCHED message, then disable the rack in the fixture. Enable a dry repeater after a touch or abandonment so the next supply choice can also be observed. The receiver, network acknowledgment and full server inventory award are outside this replay.",
+    "canonical_15hz_yaw_minus90": {
+      "without_speed": {
+        "stock_touches": 0,
+        "closest_center_distance": 0.4944,
+        "air_urgency_s": 7.6,
+        "breath_s": 23.267,
+        "hp": 80,
+        "remaining_mana": 200,
+        "sustained_dry_at_s": 28.733
+      },
+      "with_speed": {
+        "normal_speed_activation_s": 3.2,
+        "first_stock_touch_s": 6.547,
+        "closest_center_distance_through_touch": 0.1644,
+        "breath_s": 17.167,
+        "hp": 100,
+        "mana_after_swim_activation": 180,
+        "remaining_mana_after_second_land_cast": 160,
+        "sustained_dry_at_s": 20.267
+      }
+    },
+    "matrix_columns": [
+      "control_hz",
+      "speed_available",
+      "touches_over_three_headings",
+      "touch_s_range",
+      "first_stock_breath_s_range",
+      "ending_hp_range",
+      "dry_floor_successes_over_three_headings",
+      "one_second_continuous_dry_floor_reached_s_range_successes"
+    ],
+    "matrix_rows": [
+      [
+        12,
+        false,
+        0,
+        null,
+        [
+          24.247,
+          24.393
+        ],
+        [
+          70.0,
+          70.0
+        ],
+        2,
+        [
+          30.753,
+          30.753
+        ]
+      ],
+      [
+        12,
+        true,
+        0,
+        null,
+        [
+          24.247,
+          24.393
+        ],
+        [
+          70.0,
+          70.0
+        ],
+        2,
+        [
+          30.753,
+          30.753
+        ]
+      ],
+      [
+        15,
+        false,
+        0,
+        null,
+        [
+          23.267,
+          29.88
+        ],
+        [
+          40.0,
+          80.0
+        ],
+        3,
+        [
+          28.733,
+          69.6
+        ]
+      ],
+      [
+        15,
+        true,
+        3,
+        [
+          6.547,
+          7.12
+        ],
+        [
+          17.167,
+          17.773
+        ],
+        [
+          100.0,
+          100.0
+        ],
+        3,
+        [
+          20.267,
+          20.8
+        ]
+      ],
+      [
+        20,
+        false,
+        0,
+        null,
+        [
+          21.253,
+          21.333
+        ],
+        [
+          90.0,
+          90.0
+        ],
+        3,
+        [
+          25.253,
+          25.3
+        ]
+      ],
+      [
+        20,
+        true,
+        3,
+        [
+          5.56,
+          5.66
+        ],
+        [
+          13.8,
+          13.913
+        ],
+        [
+          100.0,
+          100.0
+        ],
+        3,
+        [
+          46.84,
+          47.387
+        ]
+      ],
+      [
+        30,
+        false,
+        3,
+        [
+          5.767,
+          5.987
+        ],
+        [
+          16.333,
+          16.587
+        ],
+        [
+          100.0,
+          100.0
+        ],
+        3,
+        [
+          19.467,
+          19.833
+        ]
+      ],
+      [
+        30,
+        true,
+        3,
+        [
+          4.087,
+          4.187
+        ],
+        [
+          10.587,
+          10.687
+        ],
+        [
+          100.0,
+          100.0
+        ],
+        3,
+        [
+          13.1,
+          13.167
+        ]
+      ],
+      [
+        60,
+        false,
+        3,
+        [
+          3.933,
+          4.133
+        ],
+        [
+          11.873,
+          12.073
+        ],
+        [
+          100.0,
+          100.0
+        ],
+        3,
+        [
+          14.567,
+          15.24
+        ]
+      ],
+      [
+        60,
+        true,
+        3,
+        [
+          2.847,
+          3.347
+        ],
+        [
+          7.093,
+          7.587
+        ],
+        [
+          100.0,
+          100.0
+        ],
+        3,
+        [
+          9.573,
+          10.107
+        ]
+      ]
+    ],
+    "matrix_scope": "30 runs per source; web and native outputs agree for every case. Each run selected the alternative dry supply. Each failed-dive case recorded zero reacquisitions of the abandoned item while its cooldown was active and the case was running. At 12 Hz the swimmer did not receive Speed during the dive. Two 12 Hz headings activated Speed later on dry land; the third reached breath but did not finish sustained dry support before the 70-second limit in either arm. At 20 Hz Speed recovered air quickly but first sustained floor support took up to 47.387 seconds. The slowest 15 Hz no-Speed alternate heading returned dry at 69.600 seconds with 40 HP.",
+    "sanitizer": "The previously failing 20 Hz, -90 degree, Speed-enabled path passed AddressSanitizer through a supported landing after an explicit surface-attachment check was added before reading the stock attachment union.",
+    "raw_matrix_sha256": "a327ed103c6d4bf7e7b326cde96f8d5566afdf1baa0e8b8e949e2652f4160542"
+  },
+  "remaining_navigation_scope": {
+    "surface_detection": "Immediate upward surface detection still covers 0.42 world units. The air planner can follow submerged graph legs toward a shallower column. Deep shafts without a usable graph route are outside the tested guarantee.",
+    "other_arbitration": "Active supply routes, urgent air and committed traversal precede hearing in this scenario. A nonurgent fallback sound can still consume a turn without translation. Other bank exits may steer toward their waypoint after passing the rim. The controlled run has no opponents or random client-frame jitter."
+  },
+  "shoreline": {
+    "graph_before": "From spawn sector 18, 558 nodes, 487 reachable nodes, 38 reachable item identities of 42 authored and 40 anchored. Of 28 wet-to-dry and 22 dry-to-wet SWIM edges, 16 in each direction failed a full-body straight sweep. Seven rejected wet-to-dry chords admitted a dedicated stock jump arc.",
+    "graph_after": "Same 558 nodes and 38 reachable item identities, 483 reachable nodes. Zero dry-to-wet SWIM shortcuts remain. Dedicated checks handle entries and bank jumps. Seven remaining shallow wet-to-dry SWIM edges require a safe open surface column, a whole-player sweep to the supported destination, a second sweep from immediately above the water into the same adjacent dry sector, no more than 1.2 horizontal units, and a floor height within 0.051 units of water level.",
+    "physical_shallow_exits": "All seven retained shallow exits from their graph anchors, at 15 and 30 Hz controls, ended with at least 150 consecutive physics updates supported in the requested destination dry sector at 100 HP. Headings initially faced the destination. These are passage / floor checks; exact arrival at the nominal waypoint is not required.",
+    "dedicated_entry_exit": "Sector 10 to 44, dedicated water entry: 1.840s and 1.833s to one sustained second underwater at 15 / 30 Hz. Reverse dedicated exit 44 to 10: 6.767s and 4.607s to one sustained second on the dry floor. Separate sector 3 to 35 entry: 2.347s and 2.320s.",
+    "leg_results_sha256": "6707a25890181dc080bdd8fbc2e442b8dc4962fc75fd93da4f329e71e1973348",
+    "prior_real_pool_replay": {
+      "runner": "native/tests/stock_water_replay/run.py; use sector-42 captured inputs in the accompanying README",
+      "success_requires": "38 consecutive physics steps of supported dry landing in original target sector 10",
+      "rows_columns": [
+        "original_game_s",
+        "actual_breath_s",
+        "supported_dry_s",
+        "ending_hp"
+      ],
+      "rows": [
+        [
+          90,
+          1.96,
+          10.8,
+          100
+        ],
+        [
+          100,
+          2.16,
+          25.573,
+          60
+        ],
+        [
+          110,
+          1.313,
+          12.52,
+          10
+        ]
+      ],
+      "notes": "All three survived at the same HP as previously reported. These routes took longer to reach sector 10."
+    }
+  },
+  "sha256": {
+    "owned_stock_jkl": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "owned_stock_speed_cog": "0f50c82e245269b7620834cb38c82f8ed45ca5518031b0d43a335f50602f1b6b",
+    "equipment_driver_fixture": "f48e6ef87ccaf36e074741083000e4f0a2ff24c4a24171ece3b11b54f517ec56",
+    "movement_driver_fixture": "a242a07245b08e268bf68eef1805b1d36a32c08b3ce66c04eadcff9686e7241b",
+    "portal_fixture": "9f1af27e197f7d41b9e81848b4827c6b06118f132025de1a9e9cb0f451d05d80",
+    "private_replay": {
+      "probe.c": "c465bfd11aa8890765215b7f66b81b1741aeac8b8825ce496a2d2f018f30c3b9",
+      "replay_loop.inc": "fd65189264c5d4ba0b634cf37e042cd36d6881b737d092d0089bcd0f50b588c5",
+      "equipment.inc": "ee847b32975dc7a4176f45ea2e7b2e7310a051e60949b1297805cb3631c041f1",
+      "stock_functions.inc": "a565ee3b3cccf5135d18e4693518eab01eea726b27f2f7c2569f42859e2dece1",
+      "inv.inc": "ba8debe505ef3ccb5f27d773438a7b7c7ec83446008db23f8080949fe96d36f1",
+      "speed.inc": "cb0a633df57a0d48c79c014456de127745430fa2c799656c987b6bf0b98744cf",
+      "matrix.py": "e03fb440c359412b6c47f9e442e88b5e39e9d86c42dad6842a6743ee0d48d455",
+      "leg.c": "1da2b0e5c8806cdeac15ea4c569f1a38e3b62812b4675a145be812a9f4635ff4",
+      "leg-equipment.inc": "e54847cf10f5cf4adc534e28c211a4a1d44d6c04271b88d1bd2137f90d42f0e4",
+      "edge-audit.c": "0ac4755fb1dde26de966557f1526fdf2184e7f2687fde10d338b9e5d4e436530"
+    },
+    "source": {
+      "jkweb": {
+        "jkBot.c": "f50dbfda07ff36b68b93e63c356a7df6ed88f018962b41777ebe334101b2bffa",
+        "jkBotNavigation.inc": "cbd94541955a383d174ccb51681cd6132517f79b0bcde9bf63653ae8935aa072",
+        "jkBotNavigate.inc": "dd5fc6672330ff2fc5a14e710b8f7111f2403ccd313db14df04abccc41c0ce7e",
+        "jkBotForce.inc": "aa7267a52992928addde61240019dada4f58e0915fdd117db82e9638abd64c4c"
+      },
+      "native": {
+        "jkBot.c": "f50dbfda07ff36b68b93e63c356a7df6ed88f018962b41777ebe334101b2bffa",
+        "jkBotNavigation.inc": "cbd94541955a383d174ccb51681cd6132517f79b0bcde9bf63653ae8935aa072",
+        "jkBotNavigate.inc": "dd5fc6672330ff2fc5a14e710b8f7111f2403ccd313db14df04abccc41c0ce7e",
+        "jkBotForce.inc": "3598befb0098bc3a748efdb1383bd8daf9e1da2380462a5dc30345309e5c3ad3"
+      }
+    }
+  }
+}

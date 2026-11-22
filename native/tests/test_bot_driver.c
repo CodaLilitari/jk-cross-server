@@ -8,6 +8,7 @@
 uint32_t jkPlayer_maxPlayers;
 SithPlayer jkPlayer_playerInfos[JKPLAYER_NUM_INFOS];
 int32_t sithNet_MultiModeFlags;
+int32_t sithNet_tickrate=16;
 SithThing *sithPlayer_g_pLocalPlayerThing;
 flex_t sithTime_g_secGameTime;
 static int testLOS=1;
@@ -22,6 +23,7 @@ static SithCollision fixtureHit;
 #include "test_bot_c1_geometry.inc"
 #include "test_bot_static_bridge.inc"
 #include "test_bot_slope_geometry.inc"
+#include "test_bot_combat.inc"
 /* Bounded box matching stock m2 sector110; not a full level simulation. */
 int sithIntersect_IsSphereInSector(const rdVector3 *p, flex_t radius, SithSector *sector)
 {
@@ -45,8 +47,13 @@ flex_t sithCollision_SearchForCollisions(SithSector *sector, SithThing *thing,
     const rdVector3 *from, const rdVector3 *direction, flex_t distance,
     flex_t radius, int flags)
 {
-    (void)thing;
     queryDepth++; pendingHit=0;
+    if (testCombatArena) {
+        pendingHit=TestCombatCollision(sector,from,direction,distance,radius,&corridorHit);
+        if (thing && thing->type==SITH_THING_WEAPON && flags==0)
+            TestBeamCollision(thing,from,direction,distance,radius,&corridorHit,&pendingHit);
+        return distance;
+    }
     if (testC1Active) {
         pendingHit=TestC1Collision(sector,from,direction,distance,radius,&corridorHit);
         return distance;
@@ -97,9 +104,17 @@ int sithInventory_GetPowerKeybind(int index)
 int sithCollision_HasLOS(SithThing *from, SithThing *to, int flags)
 { (void)from; (void)to; (void)flags; return testLOS; }
 SithThing *sithTemplate_GetTemplate(const char *name)
-{ (void)name; return NULL; }
+{
+    if (testCombatArena && !strcmp(name,"+concblast2")) return &testConcBeam;
+    if (testCombatArena && !strcmp(name,"+concbullet")) return &testConcProjectile;
+    if (testCombatArena && !strcmp(name,"+raildet")) return &testRailProjectile;
+    return NULL;
+}
 #include "test_bot_behavior.inc"
 #include "test_bot_navigation.inc"
+#include "test_bot_movement_tick.inc"
+#include "test_bot_combat_jump.inc"
+#include "test_bot_equipment.inc"
 
 int main(void)
 {
@@ -166,7 +181,11 @@ int main(void)
     bot.progressPos=(rdVector3){0,0,0};
     self.position=(rdVector3){0,0,0.20f};
     self.attach_flags=0;
-    Bot_Recovery(&self);
+    bot.followingRoute=1; bot.frameDt=0.05f; bot.stuckAt=bot.now;
+    for (int i=0;i<41;i++) {
+        bot.now+=bot.frameDt;
+        Bot_Recovery(&self);
+    }
     assert(bot.goal==-1 && bot.routeCount==0);
     assert(bot.keys[INPUT_FUNC_ACTIVATE]==1 && bot.nodes[0].avoidUntil>bot.now);
     puts("PASS vertical jumping alone does not conceal a navigation stall");
@@ -214,5 +233,10 @@ int main(void)
     test_bot_slope_steering();
     test_bot_behavior();
     test_bot_navigation();
+    test_bot_gunshots();
+    test_bot_arming();
+    test_bot_equipment();
+    test_bot_movement_ownership();
+    test_combat_supply_jump();
     return 0;
 }

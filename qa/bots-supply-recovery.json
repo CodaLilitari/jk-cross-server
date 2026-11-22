@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "title": "Underwater supply contact, failed dives and single-anchor backpack approaches",
+  "scope": "Accepted source corrections after the four-minute Canyon Oasis trial of the second refinement candidate. Controlled tests exercise the real bot driver and stock item collision handler with fixture collision and item responses.",
+  "cases": [
+    {
+      "case": "Delayed acknowledgment or destruction on contact",
+      "before": "The stock TOUCHED callback at 4000 ms underwater left the expected air objective unset. Running the control tick before the physics callback also reproduced the failure.",
+      "after": "The local bot requests air and clears the planned equipment route immediately before the ordinary stock handler dispatches TOUCHED. The fixture leaves inventory unchanged with either a delayed response or immediate destruction of the drop.",
+      "guards": "Verified rejected line of sight, 3999 ms endurance, wrong player or item identity, stale life or world, and an ended multiplayer session. The last case failed before the session guard was added."
+    },
+    {
+      "case": "Two failed supply identities and saturation",
+      "before": "Failing B one second after A allowed A to be selected during its 45-second cooldown.",
+      "after": "Eight entries retain independent deadlines by one-based item slot, GUID and signature. A further untracked failure defers underwater supplies for 45 seconds without displacing live entries. Dry supplies remain eligible. The tests cover replacement identity, expiry, respawn and 23 outstanding failures."
+    },
+    {
+      "case": "A pack beyond the direct approach limit",
+      "before": "A pack 2.4 units away was ignored although the only graph node split the route into two clear 1.2-unit legs.",
+      "after": "The driver routes to that node and switches to final approach there. An invalid water-to-dry first leg and a blocked final span both reject the route."
+    }
+  ],
+  "host_compiled_final_results": {
+    "native_source": {"driver_groups_passed": 53, "portal_groups_passed": 10, "hearing_groups_passed": 8, "companion_groups_passed": 1},
+    "jkweb_source": {"driver_groups_passed": 53, "portal_groups_passed": 10, "hearing_groups_passed": 8, "posix_companion": "failed"},
+    "independent_review": "Repeated the full driver suite on both source trees and accepted all three fixes.",
+    "posix_companion_failure": "The native-host harness applied to JKWeb source failed to receive the expected public chat frame. The previous candidate failed the identical assertion. The browser fork compiles this chat hook under ARCH_WASM and PLATFORM_WSRELAY, which these POSIX flags omit."
+  },
+  "reproduction": {
+    "command_template": "python3 native/tests/run_bot_<suite>_tests.py --source <patched-engine-tree> --build <configured-native-build>",
+    "suite": ["driver", "portal", "hearing", "companion"],
+    "fixtures": ["native/tests/test_bot_equipment.inc", "native/tests/test_bot_driver.c", "native/tests/test_bot_portal_collision.c", "native/tests/test_bot_hearing.c", "native/tests/test_bot_companion.c"]
+  },
+  "inputs_sha256": {
+    "both: src/AI/jkBot.c": "913bad7cbaf6610162a36edc6def029d09df08d8d2252d0174ee216d706e9e72",
+    "both: src/AI/jkBot.h": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
+    "both: src/AI/jkBotNavigation.inc": "ed71db70146211113d5429dca1d5bc28b34ca0c8340d38cb05f5e46f70ad6cb2",
+    "native: src/World/sithItem.c": "6691b995a84878f79d6647acd13d61eb01f6744f34e4465449fe0639ce76c6cd",
+    "jkweb: src/World/sithItem.c": "ee735511a0a1dd4ed66e41ee3a3a332411784581f39dc9656c31985d5ea6e4e9",
+    "native/tests/run_bot_driver_tests.py": "4406e668c223bcefd6d8b07298d1306a74f9246f0be81807ad90671f69a72e13",
+    "native/tests/test_bot_equipment.inc": "90248138c7b2ae49ca25ab3dc7365bd998b4bb2aa2928b95ae8bc4f6ffd97d88"
+  },
+  "limits": "These groups establish local decisions, checked movement and contact ordering. Live host grants, WASM chat delivery, general bank traversal and pickup denial against a human require other evidence."
+}

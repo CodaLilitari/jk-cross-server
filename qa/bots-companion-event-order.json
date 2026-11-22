@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "title": "Companion v1 publishes state before events in each new world or life",
+  "before": "Through the real game tick, an active audible cue in the first world produced SOUND (kind 4) followed by STATE (kind 1). The hub accepts a new world/life fence only on STATE, so it discarded that SOUND. The previous regular publication deadline could also defer the initial state after death, respawn or a world change.",
+  "change": "Make the first state due on the transition tick. Send the state before any newly reported sound from that observation. A later chat on the same transport carries the established epoch. Ordinary publication remains at 5 Hz and event sequence numbers advance across boundaries.",
+  "test_scope": {
+    "ordered_callback": "native/tests/test_bot_hearing.c",
+    "socketpair_and_backpressure": "native/tests/test_bot_companion.c",
+    "native": "8 hearing groups passed; native companion datagram suite passed.",
+    "jkweb_source": "8 hearing groups passed in a native-compiled test harness using the portable callback.",
+    "cases": [
+      "First state precedes a simultaneous ordinary weapon-hearing event. An intervening ordinary tick emits no extra state.",
+      "Death during a pending publication interval emits the new-life state before an immediately observed peer chat.",
+      "Respawn with a fresh audible cue emits the new-life state before its sound.",
+      "Game-world replacement emits the new-world state before subsequent chat. Event sequence numbers remain consecutive across all cases.",
+      "A callback accepting no output still permits ordinary processing of eight queued commands per native tick."
+    ]
+  },
+  "inputs_sha256": {
+    "src/AI/jkBotCompanion.inc (both trees)": "89dd8dd4f93ed76c48bf8ce76485f880dd73b604dcce8e6b7b7d3cb3c82915c7",
+    "native/tests/test_bot_hearing.c": "47098867f75c667c332f02267b4c0a95eb9264eb0d73a60e9220d438f363d0ee",
+    "native/tests/test_bot_companion.c": "949a3ed4fe775780f3f43d97c7e7cea4fcfd86de2da22a95acc1de5c93ed18ed"
+  },
+  "limits": "These tests check emission order in a controlled world. Native datagrams and the browser bridge remain bounded and may drop records under backpressure or disconnection. The tests do not measure browser latency or claim end-to-end delivery in a live match."
+}

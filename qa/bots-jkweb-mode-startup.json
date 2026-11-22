@@ -1,0 +1,82 @@
+{
+  "qualification": "Executable C startup and behavior-file integration check for the four JKWeb arena formats",
+  "result": "passed",
+  "upstream_engine_base": "7a6f95c9a3399e59acbf019dc6b25f9981d29dff",
+  "source_functions": [
+    {
+      "function": "jkGuiMultiplayer_WebBotStartup",
+      "file": "src/Gui/jkGUIMultiplayer.c",
+      "sha256": "b9ecdc51353241b291d423a5112966f7a69b7eab8441f774602605031c6e8460"
+    },
+    {
+      "function": "jkGuiMultiplayer_WebName",
+      "file": "src/Gui/jkGUIMultiplayer.c",
+      "sha256": "5c3f77271f2c9a1dd71cdef365c4814f5d2819bce13366c1b49a86f2516f0643"
+    },
+    {
+      "function": "Bot_ReadBehavior",
+      "file": "src/AI/jkBotBehavior.inc",
+      "sha256": "fdab065496583c387d2b406d599ed7e712160a006edcb4557bce217048bda8d5"
+    }
+  ],
+  "hash_scope": "SHA-256 of each extracted UTF-8 source fragment, with outer whitespace stripped and one final LF. These identify only the exercised fragments.",
+  "method": {
+    "compiler": "GCC 14.2.0, C11",
+    "execution": "Compiled the listed functions from the working engine source into one temporary C executable. Ran the resulting binary and checked its assertions and exit status.",
+    "real_operations": "The startup function chose the format, wrote and closed its behavior file, set its environment path, and passed ranks to host or join character/session calls. At the Configure call, the harness reopened that file and ran the real Bot_ReadBehavior parser.",
+    "stand_ins": "A temporary directory replaced the in-browser filesystem path. The harness supplied environment variables, a local relay listing and return values for game initialization, character creation, session creation/open and level loading. The Configure stand-in recorded the parsed rules. No browser or running game took part."
+  },
+  "expected_formats": [
+    {
+      "input": null,
+      "rank": 8,
+      "sabers_only": 0,
+      "fists_peace": 0,
+      "force_enabled": 1
+    },
+    {
+      "input": "ff-guns",
+      "rank": 8,
+      "sabers_only": 0,
+      "fists_peace": 0,
+      "force_enabled": 1
+    },
+    {
+      "input": "ff-sabers",
+      "rank": 8,
+      "sabers_only": 1,
+      "fists_peace": 0,
+      "force_enabled": 1
+    },
+    {
+      "input": "nf-guns",
+      "rank": 0,
+      "sabers_only": 0,
+      "fists_peace": 0,
+      "force_enabled": 0
+    },
+    {
+      "input": "nf-sabers",
+      "rank": 0,
+      "sabers_only": 1,
+      "fists_peace": 0,
+      "force_enabled": 0
+    }
+  ],
+  "checks": {
+    "host_startups_passed": 5,
+    "join_startups_passed": 5,
+    "total_successful_startups": 10,
+    "missing_mode_default": "ff-guns",
+    "mismatched_advertised_rank_rejected_before_open": 5,
+    "invalid_mode_rejected_before_configure": 1,
+    "behavior_file_version": 1,
+    "host_seats_argument": 4,
+    "host_flags_argument": "MULTIMODEFLAG_SINGLE_LEVEL"
+  },
+  "interpretation": [
+    "The rank under test is the value passed to the ordinary character/session API. Character persistence, Force expenditure, combat, physics, relay traffic and multiplayer timing require independent qualification.",
+    "Saber formats restrict each configured bot's weapon inputs. Full-Force sabers permits stock offensive Force. Guns versus sabers is a local bot policy and is not an extra lobby rule.",
+    "A private local launcher supplies a consistent format to its four seats. The startup join path checks the named room, protocol marker, password flag, episode, map and rank. Seat count and team flags are outside the join checks exercised here."
+  ]
+}

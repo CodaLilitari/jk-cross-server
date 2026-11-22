@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "title": "Private web host recorder recovery and relay handshake timeouts",
+  "versions": {
+    "python": "3.12.14",
+    "aiohttp": "3.14.5"
+  },
+  "sha256": {
+    "web_bots/serve.py": "6a0f182960e61ec845e4ae29e92c7024d641688c4acea15220735d578d2b9619",
+    "tests/test_web_bot_host.py": "0d4058b17d242df08d89b541842bc34765882844c1ff8c64fb56b49d81105488"
+  },
+  "recorder": {
+    "method": "Authenticated aiohttp test client and real capture handlers with a temporary filesystem. Two tests pause a request at the awaited JSON read and interleave another normal recorder action before resuming it. Idle timeout tests advance the last-chunk timestamp without sleeping.",
+    "results": [
+      "After 10 seconds without chunks the watchdog closes the file and preserves its .webm.part. A replacement capture starts; late chunks for the old ID receive HTTP 409 and the replacement can finish.",
+      "Replacing the recording browser instance closes and aborts its previous recording.",
+      "When a concurrent start wins the slot, the paused start returns HTTP 409 and creates no second partial file.",
+      "A paused start from a superseded browser instance returns HTTP 409.",
+      "A paused finish after expiry and replacement returns HTTP 409. The old bytes remain in the partial, and the new capture stays active."
+    ],
+    "suite": "python -m unittest discover -s tests -p test_web_bot_host.py",
+    "passed": 11,
+    "skipped": 1,
+    "skip": "Windows-specific token SID and filesystem DACL test on Linux."
+  },
+  "relay": {
+    "method": "Independent local aiohttp WebSocket handshake and quiet-connection checks using the same ClientTimeout(total=None, connect=5, sock_connect=5, sock_read=5) and default WebSocket receive timeout as the host.",
+    "delayed_upgrade": {
+      "elapsed_seconds": 5.034,
+      "result": "SocketTimeoutError while awaiting the upgrade response"
+    },
+    "upgraded_quiet_connection": {
+      "elapsed_seconds": 5.309,
+      "result": "First WebSocket text message reached the client after the quiet interval."
+    }
+  },
+  "limits": "This receipt covers recorder state, file ownership and the installed transport version. Test chunks are synthetic. The timeout checks are single observations on loopback. They do not measure game latency, video quality or other aiohttp versions."
+}

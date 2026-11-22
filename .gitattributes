@@ -1,5 +1,6 @@
 # Unified patches preserve upstream context whitespace. Check their source trees
 # separately; source/build receipts verify that these patches apply exactly.
 native/*.patch -whitespace
+web_bots/*.patch -whitespace
 *.sh text eol=lf
 *.command text eol=lf

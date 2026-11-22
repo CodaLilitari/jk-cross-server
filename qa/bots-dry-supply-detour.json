@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "title": "Choosing dry supply routes after a failed water crossing",
+  "trigger": "Uses the existing 45-second retry after an observed failed bank-to-water approach, in autonomous elite guns mode at 40 or more health with an owned, available concussion rifle and at least 32 cells, or rail detonator and at least four charges. Urgent breathing and committed air recovery retain priority.",
+  "route_decision": {
+    "optional_dry_gear": "Extra guns, surplus or unusable ammo, and packs without ammunition needed by an available owned gun use the path search that excludes the failed entry. They can still be reached through a different viable bank. The same rule is rechecked on a cached descent and during underwater equipment rescans.",
+    "needed_dry_gear": "Ammunition below 15% of its stock capacity for an owned available gun, including a useful duplicate rack or dropped pack, can justify the ordinary path. The 15% tier is a bot heuristic. Needed health/shields, pursuit, air and explicit objectives retain full graph access.",
+    "last_resort": "When no productive alternative is available, ordinary exploration can choose a dry waypoint via the only crossing. Distance and visit age determine the choice without a reward for the optional weapon."
+  },
+  "dispatch_regressions": [
+    {
+      "case": "Loaded concussion, 88 cells, full health and shields, no rails, dry rail or repeater beyond the failed entry.",
+      "before": "Candidate 4 selected the rail and commanded +1.000 inward slide.",
+      "after": "Both optional racks yield to bank patrol with -1.000 slide. A supplied subsequent pose closer to the dry goal retained onward input."
+    },
+    {
+      "case": "An optional rail route was cached when the bot lacked ammunition.",
+      "before": "With ammunition restored the cached route still commanded +1.000 into water.",
+      "after": "The descent is invalidated with zero inward slide on that frame. The next dispatch moves toward the dry alternative."
+    },
+    {
+      "case": "An optional rack appears during a necessary water crossing.",
+      "before": "Candidate 4 lost the dry shield goal or its onward input inside five 0.20-second ticks.",
+      "after": "Shield recovery and dry pursuit retain their crossing despite the new optional rack and rescans."
+    },
+    {
+      "case": "Same dry cells, differing reserves.",
+      "before": "An intermediate gun-only correction still selected surplus cells across the failed entry.",
+      "after": "At 88 cells the bot declines that detour. At 32 cells it can take it. A pack carrying needed ammo and a health pickup while hurt retain full-path access. A pack valued only for an extra gun yields."
+    },
+    {
+      "case": "Alternative entry or only exit.",
+      "after": "Both planners can reach the same extra weapon via a different viable entrance. With no productive alternative, a dry exploration goal produces onward movement through the only exit."
+    }
+  ],
+  "map_control": "On the 558-node Canyon Oasis graph both versions retained all 483 reachable anchors from the sampled bank. With a failure active and either dry rack offered as the only supply, candidate 4’s dedicated equipment selector picked the gun and candidate 5’s declined it. Both selected the guns before failure. Candidate 4’s ordinary planner already chose bank exploration in this map control. The separate synthetic fixture reproduced the ordinary-planner defect.",
+  "host_compiled_results": {
+    "native_source": {
+      "driver": 56,
+      "portal": 11,
+      "hearing": 8,
+      "companion": 1,
+      "collision": 3,
+      "legal_loadouts": 54,
+      "invalid_loadouts": "passed",
+      "total_named_groups": 79
+    },
+    "jkweb_source": {
+      "driver": 56,
+      "portal": 11,
+      "hearing": 8,
+      "legal_loadouts": 54,
+      "invalid_loadouts": "passed",
+      "posix_companion": "Baseline host-only chat-frame assertion. The JKWeb hook requires the WASM relay configuration.",
+      "collision": "Baseline one-ULP endpoint assertion, hit 0.205065846 against 0.205065832."
+    },
+    "independent_review": "Accepted for build and live qualification after independent full-driver reruns against both source configurations."
+  },
+  "bank_replays": {
+    "manifest": "native/tests/stock_water_replay/bank_cases.tsv",
+    "cases_per_source": 27,
+    "result": "Both stock-physics result tables matched the preceding candidate byte for byte. The 79 ms control retained its 29.940-second supported landing and 60 HP."
+  },
+  "inputs_sha256": {
+    "src/AI/jkBot.c": "7aa57b2534401057e24ba7f532efc572816fe67f0f86db9572cfc9da78f8ef14",
+    "src/AI/jkBotNavigate.inc": "fd8b8df6a1e209a7c69dde4705d52a7eb23243c5cb38417a0124cd99c0dbc756",
+    "src/AI/jkBotNavigation.inc": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
+    "native/tests/test_bot_equipment.inc": "58334b0e70bf36a88ffeb45664369aa8237c9cd16f4e6a4ebdf28d161c364001",
+    "native/tests/test_bot_portal_collision.c": "be057767830a7b52bd102edc5b24b11f5c4ffc6d93996d2c655548390a06af06"
+  },
+  "limits": "The dispatcher fixtures establish selected goals and requested movement using supplied poses. The separate 27 stock-physics cases establish bank escapes. Neither measures forward traversal through the shaft, a gear grant, or four-player match performance. Candidate 5 live qualification is pending."
+}

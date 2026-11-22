@@ -75,15 +75,44 @@ time.sleep(30)
     def test_stock_roster_has_eight_distinct_profiles_and_128_lines(self):
         profiles = run.load_profiles()
         self.assertEqual(len(profiles), 8)
+        self.assertEqual({p["force_style"] for p in profiles.values()}, {"competitive"})
         self.assertEqual(sum(len(lines) for row in profiles.values() for lines in row["taunts"].values()), 128)
         self.assertEqual(profiles["boba_fett"]["model"], "kyh4.3do")
         self.assertEqual(profiles["jan_ors"]["sound"], "kyfemale.snd")
+
+    def test_companion_descriptor_is_private_and_opt_in(self):
+        engine = self.program("channel-check", """
+import os,socket,pathlib,time
+fd = os.environ.get("JK_BOT_COMPANION_FD")
+if fd:
+    sock = socket.socket(fileno=int(fd))
+    assert sock.family == socket.AF_UNIX and sock.type == socket.SOCK_DGRAM
+    assert not os.get_blocking(sock.fileno())
+    sock.send(b"ignored bad record")
+pathlib.Path("companion-present").write_text(str(bool(fd)))
+print("BOT_JOINED slot=1 net=" + str(os.getpid()), flush=True)
+time.sleep(30)
+""")
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled):
+                code, directory = self.launch(engine=engine, companion_port=0 if enabled else None)
+                self.assertEqual(code, 0)
+                for profile in self.profiles:
+                    self.assertEqual((directory / profile["id"] / "companion-present").read_text(), str(enabled))
+                self.assertEqual(list(directory.glob("companion/*.json")), [])
+                self.assertNotIn("token", (directory / "session.json").read_text())
+
+    def test_companion_launch_failure_closes_owned_server(self):
+        with patch.object(run.subprocess, "Popen", side_effect=OSError("fixture spawn failure")):
+            code, directory = self.launch(companion_port=0)
+        self.assertEqual(code, 1)
+        self.assertEqual(list(directory.glob("companion/*.json")), [])
 
     def test_invalid_profile_content_and_duplicate_names_are_rejected(self):
         original = json.loads(run.PROFILE_FILE.read_text())
         bad_values = [None, [], {"version": 1, "game": "jk", "profiles": []}]
         for field, value in [("name", "Bot name"), ("model", "../ky.3do"),
-                             ("sound", "evil.snd\n"), ("id", "UPPER"),
+                             ("sound", "evil.snd\n"), ("id", "UPPER"), ("force_style", "allpowers"),
                              ("taunts", {"spawn": ["only one context"]})]:
             changed = copy.deepcopy(original)
             changed["profiles"][0][field] = value
@@ -204,6 +233,12 @@ time.sleep(30)
         self.assertEqual(len(pids), 2)
 
     def test_team_force_metadata_and_external_behavior_file_are_passed_without_mutation(self):
+        custom = json.loads(run.PROFILE_FILE.read_text())
+        custom["profiles"][0]["force_style"] = "competitive"
+        del custom["profiles"][1]["force_style"]
+        path = self.root / "custom.json"
+        path.write_text(json.dumps(custom))
+        self.profiles = list(run.load_profiles(path).values())[:2]
         self.config.update(teams=True, game_flags=256, rank=8)
         behavior = self.root / "rules.cfg"
         behavior.write_text("version=1\nsabers_only=1\nfists_peace=0\nforce_enabled=1\n")
@@ -220,7 +255,8 @@ time.sleep(30)
             self.assertEqual(row["requested_team"], 1 + index % 2)
             self.assertNotIn("team", row)  # A request is not an observed CTF assignment.
             self.assertEqual(env["JK_BOT_FORCE_SIDE"], self.profiles[index].get("force_side", "light"))
-            self.assertEqual(env["JK_BOT_FORCE_STYLE"], self.profiles[index].get("force_style", "balanced"))
+            self.assertEqual(env["JK_BOT_FORCE_STYLE"], ("competitive", "balanced")[index])
+            self.assertEqual(row["force_style"], env["JK_BOT_FORCE_STYLE"])
             self.assertEqual(env["JK_BOT_BEHAVIOR_FILE"], str(behavior))
 
     def test_finite_duration_without_join_is_failure_and_stops_owned_processes(self):

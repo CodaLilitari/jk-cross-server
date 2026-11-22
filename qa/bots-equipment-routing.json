@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "title": "Equipment routes during competitive gun combat",
+  "scope": "Controlled host builds of the native and JKWeb sources. The turn-and-walk physics replay and the stock pickup grant fixture are separate experiments. Live-match pickup attribution is outside this receipt.",
+  "equipment_revision": {
+    "description": "Matching source snapshots at the end of the equipment change, at the time of the physical equipment replay.",
+    "source_sha256": {
+      "jkBot.c": "f50dbfda07ff36b68b93e63c356a7df6ed88f018962b41777ebe334101b2bffa",
+      "jkBotNavigation.inc": "cbd94541955a383d174ccb51681cd6132517f79b0bcde9bf63653ae8935aa072"
+    }
+  },
+  "route_policy": {
+    "scope": "Elite guns mode, outside CTF objectives and directed companion modes.",
+    "scan_interval_seconds": 0.75,
+    "static_direct_geometry_probes_per_scan": 4,
+    "dynamic_packs_per_scan_maximum": 5,
+    "approach_nodes_per_pack_maximum": 5,
+    "item_identity": [
+      "world slot",
+      "GUID",
+      "signature",
+      "last position"
+    ],
+    "movement_replan_displacement_world_units": 0.035,
+    "medium": "Dry final walks require supporting floor and a body path. A direct underwater leg stays inside one submerged sector. Longer routes use the existing movement graph, including its water, lift and jump edges.",
+    "combat": "Ordinary forward and strafe inputs follow the equipment route while weapon aim and fire remain available. Committed traversal keeps its heading when needed. Low heavy-ammunition reserves, a lost gun, and useful health or shield stock affect destination choice. Newly replicated dropped packs use their synchronized bins and a transient contact point.",
+    "static_graph": "Dropped packs never become persistent graph nodes. Each scan preserves the best connected static goal even if all nearby direct probes fail. The four highest-ranked packs and graph approaches retain their probes. One extra rotating candidate can enter each shortlist.",
+    "companion_orders": "Explicit resource and recover orders use their own item-weighted graph plans while facing an opponent or hearing a cue. Pressure keeps its own combat movement rules."
+  },
+  "dispatcher_regressions": {
+    "runner": "native/tests/run_bot_driver_tests.py",
+    "fixture_sha256": {
+      "test_bot_equipment.inc": "91bb62126fc1225307286e90b46103f8ce097ab20839cdf6bc02bd12b7fd888c",
+      "test_bot_navigation.inc": "373a020370db91e4020ad30938d444e67872023962fabeaa8b0c2aadd9ae4f8b",
+      "test_bot_portal_collision.c": "9f1af27e197f7d41b9e81848b4827c6b06118f132025de1a9e9cb0f451d05d80"
+    },
+    "both_source_trees_passed": true,
+    "checks": [
+      "A visible target four units ahead stays under legal pistol fire while the bot takes a perpendicular, multi-edge route to a concussion rifle 4.2 units away. Recent damage, a Force threat and a projectile cue leave that movement intact.",
+      "With an E11 owned and one rail charge in stock, a pack created after graph construction supplies a better goal. An existing reachable node approaches the pack and a short checked final leg brings it into reach. Blocking enemy LOS suppresses firing.",
+      "Slot reuse, movement beyond the recorded tolerance, depletion, and pending destruction invalidate a previous pack identity. Full heavy reserves permit shield patrol, and a simulated removal of the owned concussion makes a still-useful pack the next destination.",
+      "Pack scoring reads at most the actual layout capacity (12 entries on native, 16 on JKWeb). Invalid entries, unsupported equipment, full ammo, empty contents, expired items, and useful paired gun/ammo contents are covered.",
+      "Four better-looking but disconnected racks cannot displace a proven graph route to a fifth rack. A fifth useful drop can also get a checked path past four blocked candidates. Resource and recover commands sustain lateral movement to a shield and legal gun input with an opponent in sight. A projectile cue cannot take over recovery movement when the opponent disappears.",
+      "The portal runner checks dry and submerged contact points, player-sized clearance, ordinary pickup reach and vision, and absence of graph-node creation."
+    ],
+    "weapon_selection_companion_check": "The controlled driver also passes the separate elite-weapon cases for retained heavy readiness, close saber opportunity and bolt defense, separating opponents, elevation, underwater limits, reserve ammo and safe splash clearance."
+  },
+  "controls_and_physics": {
+    "map": "Canyon Oasis (m10)",
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "receipt_sha256": "1e0db6184ce536190fc87d0d19e2086fc95abea618e3107824243d1148f03699",
+    "trials": 16,
+    "reached_contact_with_moving_fire_input": 16,
+    "owning_source_trees": [
+      "native",
+      "JKWeb (host-compiled)"
+    ],
+    "method": "A stock-sized pack and stationary opponent are staged at supported graph locations. Other pickups are disabled to isolate this decision. Every frame runs jkBot_Tick and ordinary player look and movement controls, followed by stock floor attachment, collision, physics and body rotation. Force is disabled. A fire-input frame counts as moving above 0.1 world units/second. Completion requires ordinary pickup-sphere overlap with physical line of sight. The weapon COG and the item grant are outside this experiment.",
+    "physical_steps_per_second": 150,
+    "initial_endpoint_distance_world_units": 1.0709,
+    "stock_sphere_contact_radius_sum_world_units": 0.165,
+    "units": "The per-condition results are identical between the two source trees. Each row represents two trials. Opponent departure at 2 seconds is scripted.",
+    "conditions": [
+      {
+        "command_hz": 30,
+        "initial_opponent_yaw_degrees": 88.52,
+        "opponent_removed_at_seconds": null,
+        "command_frames_to_contact": 170,
+        "physics_steps_to_contact": 846,
+        "firing_input_frames": 100,
+        "firing_input_frames_while_moving": 95,
+        "displacement_before_first_firing_input_world_units": 0.2149,
+        "center_distance_at_contact_world_units": 0.165
+      },
+      {
+        "command_hz": 30,
+        "initial_opponent_yaw_degrees": 88.52,
+        "opponent_removed_at_seconds": 2,
+        "command_frames_to_contact": 131,
+        "physics_steps_to_contact": 654,
+        "firing_input_frames": 39,
+        "firing_input_frames_while_moving": 39,
+        "displacement_before_first_firing_input_world_units": 0.2149,
+        "center_distance_at_contact_world_units": 0.1639
+      },
+      {
+        "command_hz": 60,
+        "initial_opponent_yaw_degrees": 88.52,
+        "opponent_removed_at_seconds": null,
+        "command_frames_to_contact": 337,
+        "physics_steps_to_contact": 843,
+        "firing_input_frames": 196,
+        "firing_input_frames_while_moving": 185,
+        "displacement_before_first_firing_input_world_units": 0.2212,
+        "center_distance_at_contact_world_units": 0.1631
+      },
+      {
+        "command_hz": 60,
+        "initial_opponent_yaw_degrees": 88.52,
+        "opponent_removed_at_seconds": 2,
+        "command_frames_to_contact": 261,
+        "physics_steps_to_contact": 651,
+        "firing_input_frames": 77,
+        "firing_input_frames_while_moving": 77,
+        "displacement_before_first_firing_input_world_units": 0.2212,
+        "center_distance_at_contact_world_units": 0.1645
+      },
+      {
+        "command_hz": 30,
+        "initial_opponent_yaw_degrees": 174.9,
+        "opponent_removed_at_seconds": null,
+        "command_frames_to_contact": 125,
+        "physics_steps_to_contact": 625,
+        "firing_input_frames": 90,
+        "firing_input_frames_while_moving": 90,
+        "displacement_before_first_firing_input_world_units": 0.3088,
+        "center_distance_at_contact_world_units": 0.1645
+      },
+      {
+        "command_hz": 30,
+        "initial_opponent_yaw_degrees": 174.9,
+        "opponent_removed_at_seconds": 2,
+        "command_frames_to_contact": 125,
+        "physics_steps_to_contact": 624,
+        "firing_input_frames": 25,
+        "firing_input_frames_while_moving": 25,
+        "displacement_before_first_firing_input_world_units": 0.3088,
+        "center_distance_at_contact_world_units": 0.1648
+      },
+      {
+        "command_hz": 60,
+        "initial_opponent_yaw_degrees": 174.9,
+        "opponent_removed_at_seconds": null,
+        "command_frames_to_contact": 251,
+        "physics_steps_to_contact": 626,
+        "firing_input_frames": 180,
+        "firing_input_frames_while_moving": 180,
+        "displacement_before_first_firing_input_world_units": 0.3123,
+        "center_distance_at_contact_world_units": 0.1646
+      },
+      {
+        "command_hz": 60,
+        "initial_opponent_yaw_degrees": 174.9,
+        "opponent_removed_at_seconds": 2,
+        "command_frames_to_contact": 250,
+        "physics_steps_to_contact": 625,
+        "firing_input_frames": 49,
+        "firing_input_frames_while_moving": 49,
+        "displacement_before_first_firing_input_world_units": 0.3123,
+        "center_distance_at_contact_world_units": 0.165
+      }
+    ]
+  },
+  "stock_grant_fixture": {
+    "original_backpack_cog_sha256": "7bacc8efb06a8d6b71ab3780f2ab6302ad1c63d245bd9524c0b89258053b08ed",
+    "items_dat_sha256": "9f668a33ceb17d6c39b727c61682dddd109042fa80883041e74c36a7dc5380e7",
+    "receipt_sha256": "025b240421b2adbc59fd71c6ab1c8d58d3c245ded155b8d1d86fe717bcf95ade",
+    "stock_drop_bin_eligibility": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      15
+    ],
+    "stock_drop_template_lifetime_seconds": 30,
+    "setup": "A separate host-compiled JKWeb fixture puts the player at a verified pack contact in synthetic sector geometry. It invokes stock sphere intersection, LOS, the item collision callback and mechanically compiled stock backpack touched/taken handler bodies. A loopback adapter delivers the original client and authority message handlers in process. Media effects are stubbed and stock automatic weapon switching is disabled. The full COG VM and a live network session are outside this fixture.",
+    "request_message": "TAKEITEM1",
+    "after_request": {
+      "concussion": 0,
+      "power": 0
+    },
+    "authority_message": "TAKEITEM2",
+    "after_acknowledgement": {
+      "concussion": 1,
+      "power": 32,
+      "pack_consumed": true,
+      "forced_switch": false
+    }
+  }
+}

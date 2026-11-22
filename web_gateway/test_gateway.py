@@ -218,6 +218,33 @@ class GatewayIntegration(unittest.IsolatedAsyncioTestCase):
         response = await self.client.get(self.url + "/relay", headers={"Origin": "https://unrelated.invalid"})
         self.assertEqual(response.status, 403)
 
+    async def test_explicit_incompatible_netcode_is_rejected_before_upgrade(self):
+        for query in ("net=1", "net=2", "net=999"):
+            with self.subTest(query=query):
+                response = await self.client.get(self.url + "/relay?" + query)
+                self.assertEqual(response.status, 409)
+                body = await response.json()
+                self.assertEqual(body["error"], "unsupported-netcode")
+                self.assertEqual(body["supported_netcode"], 0)
+        self.assertEqual(len(self.gateway.connections), 0)
+        self.assertEqual(len(self.fixture.peers), 0)
+
+    async def test_invalid_or_ambiguous_netcode_is_rejected(self):
+        for query in ("net=", "net=-1", "net=0&net=2", "net=00", "net=nan"):
+            with self.subTest(query=query):
+                response = await self.client.get(self.url + "/relay?" + query)
+                self.assertEqual(response.status, 400)
+                self.assertEqual((await response.json())["error"], "invalid-netcode")
+        self.assertEqual(len(self.gateway.connections), 0)
+
+    async def test_explicit_legacy_netcode_keeps_pinned_browser_transport(self):
+        async with self.client.ws_connect(self.url + "/relay?net=0&pw=1") as ws:
+            await ws.send_str("list jk1")
+            listing = await self.text(ws, "list")
+            self.assertEqual(bytes.fromhex(listing.split()[3]), descriptor())
+        response = await self.client.get(self.url + "/health")
+        self.assertEqual((await response.json())["browser_netcode"], 0)
+
     async def test_webrtc_negotiated_browser_channels(self):
         from aiortc import RTCConfiguration, RTCPeerConnection, RTCSessionDescription
         ws, player, key = await self.join()

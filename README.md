@@ -83,7 +83,29 @@ Open **Spectator view** in the existing control panel to follow a joined player 
 
 ![Host spectator view in the JK Cross Server control panel](docs/images/spectator-view.png)
 
-## Optional player bots
+## Current JKWeb bot arena
+
+The experimental [browser bot arena](web_bots/README.md) uses the current
+JKWeb engine and its netcode-2 relay. Four ordinary browser players can run
+FF Guns, FF Sabers, NF Guns, or NF Sabers on stock Canyon Oasis. One browser
+hosts; the other three join it. This path runs independently of the older
+Cross Server browser adapter.
+
+The bots can use privileged game-state and sound observations while submitting
+normal movement, weapon, and Force inputs. The [companion bridge](docs/COMPANION.md)
+lets a local controller observe a bot, issue expiring strategy preferences, and
+speak through ordinary game chat. The arena guide includes the pinned build,
+private setup, optional cosmetic model, and hardware capture instructions.
+Competitive strength remains experimental and requires human match evaluation.
+
+The [development tools](scripts/bot_development/README.md) preserve the recording,
+trace analysis, source verification and native observation helpers used during
+the bot refinements. The custom JKWeb JavaScript/WebAssembly runtime, complete
+engine patch and reproducible build inputs are included in this branch.
+See the [continuation checkpoint](docs/BOTS_CONTINUATION.md) for the latest trial
+and remaining navigation work.
+
+## Optional native player bots
 
 The Linux server panel can start one to four ordinary player bots, chosen from
 eight stock multiplayer identities with occasional original character chat.

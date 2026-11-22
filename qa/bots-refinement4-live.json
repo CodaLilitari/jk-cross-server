@@ -1,0 +1,306 @@
+{
+  "schema": 1,
+  "title": "Four-seat Canyon Oasis full-Force guns trial of refinement candidate 4",
+  "qualification": {
+    "capture": "passed",
+    "sustained_competitive_movement": "failed",
+    "reason": "Boba and Jan repeatedly crossed a recently failed bank entry for optional dry equipment while holding loaded concussion rifles. Lily had a more mobile run and no sampled positions in the problem shaft."
+  },
+  "build": {
+    "local_runtime_commit": "097b361eed588cbe1eb543778218b489f0aa49a0",
+    "wasm_sha256": "7f5ab43857e84f0c3e905e28db07a23fc4575095174813c29459db48ad8f0adf",
+    "js_sha256": "dd348b7f5dace28a4cd387eca7942eb30e25ef78b091e87217937a39cf2a2cd7",
+    "build_receipt": "qa/bots-refinement-web-build.json",
+    "build_receipt_revision": "097b361eed588cbe1eb543778218b489f0aa49a0",
+    "build_receipt_sha256": "2b394126da499d1633a9f4531c5b002e5339e78208944575762762d73701ac79",
+    "route_policy_receipt": "qa/bots-supply-approach-retry.json",
+    "bank_replay_receipt": "qa/bots-bank-landing.json"
+  },
+  "capture": {
+    "map": "JK1MP/m10.jkl (Canyon Oasis)",
+    "recorded_seconds": 240.0114,
+    "qualified_hardware_accelerated_seats": 4,
+    "mode": "ff-guns",
+    "living_observations_autonomous_all_seats": true,
+    "directed_commands": 0,
+    "observed_chat_events": 0,
+    "third_person_flags": 7,
+    "host_model": "dlil.3do",
+    "renderer_saber_materials": {
+      "side": "saberred1.mat",
+      "tip": "saberred0.mat"
+    },
+    "compressed_trace_sha256": "d398d014dde9780b3d465b2b81f24fac50bb6d388304adfc073442ca52ff0e0f",
+    "raw_webm_sha256": "74466f0064e6c2ded696ee9e070f62782c785d5e50ed73a8b02ba3496fbe5d6b"
+  },
+  "private_video": {
+    "filename": "Darth_Lilitari_Canyon_Oasis_Refinement_4.mp4",
+    "sha256": "42de78e03e5aa6e2cd6ab2ff1917b58ff86395db2d31b263de26956d80a13ff0",
+    "bytes": 44684258,
+    "video": {
+      "codec": "H.264",
+      "width": 960,
+      "height": 540,
+      "fps": 30,
+      "frames": 7196,
+      "stream_duration_s": 239.86666666666667
+    },
+    "audio": {
+      "codec": "AAC",
+      "channels": 2,
+      "sample_rate_hz": 48000,
+      "stream_duration_s": 240.02133333333333,
+      "mean_dbfs": -17.9,
+      "peak_dbfs": 0
+    },
+    "full_decode_exit_code": 0
+  },
+  "sampling": {
+    "window_trace_seconds": [
+      52.163156,
+      291.961448
+    ],
+    "start_uncertainty_s": 0.106554,
+    "states": "First active-driver observation per world, life and game time, age 0 to 1 second. Wet and dry refer to player-center classification. One Yun sample was ambiguous. These observations do not establish floor attachment.",
+    "confinement": "At least 2 seconds within 0.13 horizontal world units of a segment\u2019s first point. Vertical motion is allowed. Death, identity changes, poll gaps over 0.8 seconds, game-time gaps over 1 second or leaving the radius end the segment.",
+    "comparison": "The same measures were applied to three unseeded autonomous matches. Spawns, encounters and supply opportunities varied. The observed differences are descriptive.",
+    "sector_54": "An extended span requires at least six consecutive seconds of unambiguous sector 54 samples. Loaded heavy means concussion selected with at least eight cells or rail selected with at least one charge. The planner uses a separate four-shot threshold."
+  },
+  "metrics_columns": [
+    "seat",
+    "wet_states_c2_c3_c4",
+    "living_states_c2_c3_c4",
+    "total_confined_s_c2_c3_c4",
+    "longest_confined_s_c4",
+    "dry_c4",
+    "ambiguous_c4",
+    "with_target_c4",
+    "extended_sector54_spans_c2_c3_c4",
+    "sector54_living_c4",
+    "loaded_heavy_c4",
+    "loaded_heavy_with_target_c4",
+    "loaded_heavy_in_54_c4",
+    "opening_kills_deaths_c4",
+    "closing_kills_deaths_c4"
+  ],
+  "metrics": [
+    [
+      "lily",
+      [
+        201,
+        659,
+        103
+      ],
+      [
+        810,
+        840,
+        815
+      ],
+      [
+        52.756,
+        189.055,
+        23.152
+      ],
+      5.368,
+      712,
+      0,
+      234,
+      [
+        1,
+        11,
+        0
+      ],
+      0,
+      327,
+      80,
+      0,
+      [
+        0,
+        0
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    [
+      "boba",
+      [
+        558,
+        259,
+        387
+      ],
+      [
+        784,
+        802,
+        826
+      ],
+      [
+        153.171,
+        38.233,
+        125.809
+      ],
+      21.832,
+      439,
+      0,
+      175,
+      [
+        6,
+        1,
+        6
+      ],
+      326,
+      379,
+      11,
+      255,
+      [
+        0,
+        0
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    [
+      "jan",
+      [
+        452,
+        367,
+        547
+      ],
+      [
+        805,
+        867,
+        819
+      ],
+      [
+        89.469,
+        48.209,
+        150.679
+      ],
+      25.372,
+      272,
+      0,
+      170,
+      [
+        6,
+        0,
+        8
+      ],
+      486,
+      670,
+      99,
+      473,
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    [
+      "yun",
+      [
+        260,
+        187,
+        300
+      ],
+      [
+        800,
+        857,
+        826
+      ],
+      [
+        95.582,
+        69.384,
+        60.997
+      ],
+      12.934,
+      525,
+      1,
+      232,
+      [
+        3,
+        0,
+        0
+      ],
+      0,
+      310,
+      52,
+      0,
+      [
+        0,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ]
+  ],
+  "item_retry": {
+    "air_returns": 8,
+    "observed_same_life_same_identity_replans_within_45_game_seconds": 0,
+    "native_failed_approach_marks": {
+      "boba_41_to_54": 2,
+      "jan_41_to_54": 2,
+      "yun_2_to_35": 1
+    },
+    "lily": "One return for air without a failed-approach marker. No observed living sample in sector 54. Her more mobile round provides no direct test of deferral at that shaft."
+  },
+  "dry_upgrade_counterexamples": {
+    "boba": "At 176.256 s the native driver marked the 41 to 54 approach failed. While that retry was active he selected the railgun in dry sector 57 and then the repeater in dry sector 59. He entered sector 54 under each plan. Two stretches of 62 and 61 consecutive sector 54 samples showed concussion selected, 88 cells, 100 health, 100 shields and zero target observations.",
+    "jan": "After a failed-approach marker at 15.026 s with 24 cells, Jan stocked up and entered the shaft for the dry railgun with 56 cells. A later dry shield plan took her back through the shaft, where she had zero shields. Subsequent dry repeater and rail plans demonstrate the need to distinguish optional weapon upgrades from useful recovery supplies.",
+    "limits": "A logged gear plan names its destination and a failure marker identifies the observed bank and water sector. Sparse native statuses and sampled center positions cannot establish every predicate, intermediate graph edge or floor contact."
+  },
+  "combat_and_equipment": {
+    "per_seat": {
+      "lily": {
+        "gear_plans": 65,
+        "pack_plan_events": 0,
+        "ammo_increase_samples_by_bin": {
+          "energy": 12,
+          "power": 15,
+          "rail": 9
+        },
+        "recorded_fire_mode_changes": 13
+      },
+      "boba": {
+        "gear_plans": 42,
+        "pack_plan_events": 9,
+        "ammo_increase_samples_by_bin": {
+          "energy": 3,
+          "power": 3,
+          "rail": 3
+        },
+        "recorded_fire_mode_changes": 12
+      },
+      "jan": {
+        "gear_plans": 39,
+        "pack_plan_events": 4,
+        "ammo_increase_samples_by_bin": {
+          "power": 6,
+          "energy": 3,
+          "rail": 2
+        },
+        "recorded_fire_mode_changes": 7
+      },
+      "yun": {
+        "gear_plans": 57,
+        "pack_plan_events": 6,
+        "ammo_increase_samples_by_bin": {
+          "power": 12,
+          "energy": 9,
+          "rail": 8
+        },
+        "recorded_fire_mode_changes": 15
+      }
+    },
+    "fire": "Lily recorded three rail-primary and two bow-secondary changes. Yun recorded one repeater-secondary change during the capture. No seat logged a change to a concussion mode during the clip. The logger records requested changes at most twice per second and cannot count shots or attribute damage.",
+    "grants": "Stock contact followed by an ammunition increase is consistent with a pickup. The logs lack independent attribution of the grant to a specific rack or pack."
+  },
+  "follow_up": "Pending route-policy correction and fresh match: distinguish an optional dry weapon upgrade whose route starts through the failed bank from needed recovery supplies. Preserve ordinary transit for recovery, pursuit and objectives and test a route with no viable alternative. This recording predates that work."
+}

@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "title": "Reviewed Linux x86-64 bot refinement build and regression results",
+  "engine_repository": "https://gitlab.com/codalilitari/OpenJKDF2-MotS-Fixes",
+  "engine_base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+  "clean_patch_applied": true,
+  "sha256": {
+    "bin/bots-linux-x86_64/jk-bot-client": "862e566209dae8fab218243a47455b5a5616bf98fb8d1f09fa65969f9c8519aa",
+    "bin/bots-linux-x86_64/libGameNetworkingSockets.so": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+    "native/bot-client.patch": "6950c859f9e82aca8285daac011e1b72cb2a57644f01d2a465987312100ac52d",
+    "native/bot-relink-linux-x86_64.tar.gz": "ca63beaa5c3a283639950be045df0d5ffa5a2fb39cc259db479c3deee4a4a123",
+    "native/BOT_BUILD.json": "973e8aa89f7c065058481461768c6779e4e65eab0b729c525f0c6d639045837d"
+  },
+  "source_and_link_verification": {
+    "translation_units_scanned": 205,
+    "rebuilt_translation_units": [
+      "src/AI/jkBot.c"
+    ],
+    "changed_engine_source_files": 3,
+    "source_hashes_checked": 223,
+    "link_input_hashes_checked": 218,
+    "removed_public_symbols": 0,
+    "relinked_executable_sha256": "862e566209dae8fab218243a47455b5a5616bf98fb8d1f09fa65969f9c8519aa",
+    "relinked_executable_byte_identical": true,
+    "upstream_external_headers_verified_against_pinned_git_trees": 112
+  },
+  "clean_patched_source_tests": {
+    "suites_passed": 6,
+    "named_groups_by_suite": {
+      "hearing": 8,
+      "companion": 1,
+      "driver": 56,
+      "portal": 11,
+      "collision": 3
+    },
+    "total_named_groups": 79,
+    "loadout_suite": {
+      "legal_combinations_passed": 54,
+      "invalid_inputs_passed": true
+    }
+  },
+  "headless_malformed_profile_exit_code": 6,
+  "live_native_multiplayer_match_tested": false
+}

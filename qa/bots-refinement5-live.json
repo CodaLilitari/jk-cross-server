@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "title": "Four-seat Canyon Oasis full-Force guns trial of refinement candidate 5",
+  "qualification": {
+    "capture": "passed",
+    "sustained_competitive_movement": "failed",
+    "specific_dry_weapon_detour": "No identified dry railgun or repeater upgrade drew a healthy, loaded heavy user back through the marked shaft during the observed retry windows. Only three of seven markers had a sampled bank return and nearly complete follow-up. One pack had unknown contents. The trace does not expose every candidate or rejected path.",
+    "reason": "Useful recovery items beyond the shaft still drew bots into long, target-poor excursions. Yun failed to gain shields during two such trips."
+  },
+  "build": {
+    "local_runtime_commit": "5ed040735bfd1ef57448a47aa063453d6b53ef18",
+    "wasm_sha256": "9e802daf1ebeb808cf3822bd63e9b58506c34be4126a7ce5bdc26c9295751542",
+    "js_sha256": "dd348b7f5dace28a4cd387eca7942eb30e25ef78b091e87217937a39cf2a2cd7",
+    "build_receipt": "qa/bots-refinement-web-build.json",
+    "build_receipt_revision": "5ed040735bfd1ef57448a47aa063453d6b53ef18",
+    "build_receipt_sha256": "41bd73af487c7795ad2ab1c3a0d81d37ddceb4675c9a00782563267d9fc38238",
+    "route_policy_receipt": "qa/bots-dry-supply-detour.json",
+    "bank_replay_receipt": "qa/bots-bank-landing.json"
+  },
+  "capture": {
+    "map": "JK1MP/m10.jkl (Canyon Oasis)",
+    "recorded_seconds": 240.0305,
+    "qualified_hardware_accelerated_seats": 4,
+    "mode": "ff-guns",
+    "living_observations_autonomous_all_seats": true,
+    "directed_commands": 0,
+    "observed_chat_events": 0,
+    "third_person_flags": 7,
+    "host_model": "dlil.3do",
+    "renderer_saber_materials": {
+      "side": "saberred1.mat",
+      "tip": "saberred0.mat"
+    },
+    "compressed_trace_sha256": "7eabc5c8ca2a448fb66baca32cb5bc48dec302f071ba38a92e27527632251a17",
+    "raw_webm_sha256": "e4059b576009c97913b1053775b70257586a0e513f787cd41cb70055ebd0cf93"
+  },
+  "private_video": {
+    "filename": "Darth_Lilitari_Canyon_Oasis_Refinement_5.mp4",
+    "sha256": "9da58ccb68eb4c7520c62714113f50e822a7b10577cda3f6496bb34743c02f44",
+    "bytes": 44869898,
+    "video": {
+      "codec": "H.264",
+      "width": 960,
+      "height": 540,
+      "fps": 30,
+      "frames": 7191,
+      "stream_duration_s": 239.7
+    },
+    "audio": {
+      "codec": "AAC",
+      "channels": 2,
+      "sample_rate_hz": 48000,
+      "stream_duration_s": 240.02133333333333,
+      "mean_dbfs": -17.4,
+      "peak_dbfs": 0
+    },
+    "full_decode_exit_code": 0
+  },
+  "sampling": {
+    "window_trace_seconds": [
+      52.2111272,
+      292.1394665
+    ],
+    "start_uncertainty_s": 0.051081,
+    "states": "First active-driver state per world, life and game time, aged 0 to 1 second. Wet/dry center classification was ambiguous in one Lily and one Yun sample. The live trace lacks floor attachment.",
+    "confinement": "At least 2 seconds within 0.13 horizontal world units of a segment\u2019s first point. Vertical motion is allowed. Death, identity changes, poll gaps over 0.8 seconds, game-time gaps over 1 second or leaving the radius end the segment.",
+    "comparison": "All four unseeded matches use the same criteria. Different spawns, fights and pickup availability prevent causal comparisons of scores or time confined.",
+    "sector_54": "An extended span requires at least six consecutive seconds of unambiguous sector 54 samples. Loaded heavy means concussion selected with at least eight cells or rail selected with at least one charge. The planner uses a separate four-shot threshold."
+  },
+  "metrics_columns": [
+    "seat",
+    "wet_states_c2_c3_c4_c5",
+    "living_states_c2_c3_c4_c5",
+    "total_confined_s_c2_c3_c4_c5",
+    "longest_confined_s_c5",
+    "dry_c5",
+    "ambiguous_c5",
+    "with_target_c5",
+    "extended_sector54_spans_c2_c3_c4_c5",
+    "sector54_living_c5",
+    "loaded_heavy_c5",
+    "loaded_heavy_with_target_c5",
+    "loaded_heavy_in_54_c5",
+    "longest_mapped_dry_s_c5",
+    "opening_kills_deaths_c5",
+    "closing_kills_deaths_c5"
+  ],
+  "metrics": [
+    [
+      "lily",
+      [
+        201,
+        659,
+        103,
+        489
+      ],
+      [
+        810,
+        840,
+        815,
+        800
+      ],
+      [
+        52.756,
+        189.055,
+        23.152,
+        127.788
+      ],
+      16.782,
+      310,
+      1,
+      254,
+      [
+        1,
+        11,
+        0,
+        6
+      ],
+      290,
+      118,
+      5,
+      100,
+      45.062,
+      [
+        0,
+        0
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    [
+      "boba",
+      [
+        558,
+        259,
+        387,
+        426
+      ],
+      [
+        784,
+        802,
+        826,
+        789
+      ],
+      [
+        153.171,
+        38.233,
+        125.809,
+        64.757
+      ],
+      13.606,
+      363,
+      0,
+      183,
+      [
+        6,
+        1,
+        6,
+        0
+      ],
+      0,
+      53,
+      4,
+      0,
+      40.303,
+      [
+        0,
+        1
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    [
+      "jan",
+      [
+        452,
+        367,
+        547,
+        257
+      ],
+      [
+        805,
+        867,
+        819,
+        801
+      ],
+      [
+        89.469,
+        48.209,
+        150.679,
+        53.881
+      ],
+      38.229,
+      544,
+      0,
+      357,
+      [
+        6,
+        0,
+        8,
+        1
+      ],
+      149,
+      413,
+      144,
+      111,
+      68.636,
+      [
+        0,
+        0
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    [
+      "yun",
+      [
+        260,
+        187,
+        300,
+        520
+      ],
+      [
+        800,
+        857,
+        826,
+        810
+      ],
+      [
+        95.582,
+        69.384,
+        60.997,
+        150.311
+      ],
+      23.983,
+      289,
+      1,
+      305,
+      [
+        3,
+        0,
+        0,
+        8
+      ],
+      451,
+      591,
+      162,
+      379,
+      39.967,
+      [
+        1,
+        1
+      ],
+      [
+        3,
+        4
+      ]
+    ]
+  ],
+  "item_retry": {
+    "air_returns": 13,
+    "same_life_same_identity_replans_within_45_game_seconds": 0,
+    "observed_native_failed_approach_marks": {
+      "lily": 2,
+      "boba": 1,
+      "jan": 1,
+      "yun": 3
+    },
+    "windows": "Three nearly complete windows had observed bank returns. Four were truncated by a life change or clip end. The earlier Yun pack plan has unknown contents."
+  },
+  "useful_recovery_counterexamples": {
+    "yun": "Following the 82.622 s bank 41 to water 54 failure marker, Yun planned two distinct dry shield recharges. Between 95.925 and 127.620 s all 115 living samples showed 100 health, 70 shields, 80 power cells, selected concussion and no target. Shield balance stayed at 70. Native statuses confirmed both goals while he was in the shaft.",
+    "lily": "Lily\u2019s 146.302 s failure occurred with Bryar and no power cells or rails. Her early excursion near dry energy yielded ammunition. During the later Bacta plan, all 105 living samples over 160.772 to 191.302 s showed full health/shields, concussion and 112 cells. Only one had a target. Carried Bacta is absent from the trace, so touch eligibility and marginal benefit remain unknown.",
+    "jan": "The longest individual confinement lasted 38.23 s. Jan had a target in 104 of 138 samples, 24 cells and changing health, shields and weapons. This was a different situation from Yun\u2019s target-free, loaded state."
+  },
+  "combat_and_equipment": {
+    "per_seat": {
+      "lily": {
+        "gear_plans": 29,
+        "pack_plan_events": 4,
+        "ammo_increase_samples_by_bin": {
+          "power": 3,
+          "energy": 2
+        },
+        "recorded_fire_mode_changes": 5,
+        "selected_weapons": {
+          "fists": 28,
+          "E11": 88,
+          "bow": 79,
+          "Bryar": 364,
+          "saber": 123,
+          "concussion": 118
+        }
+      },
+      "boba": {
+        "gear_plans": 33,
+        "pack_plan_events": 1,
+        "ammo_increase_samples_by_bin": {
+          "energy": 7,
+          "power": 6,
+          "rail": 2
+        },
+        "recorded_fire_mode_changes": 8,
+        "selected_weapons": {
+          "Bryar": 147,
+          "saber": 42,
+          "repeater": 264,
+          "fists": 12,
+          "E11": 256,
+          "rail": 53,
+          "bow": 15
+        }
+      },
+      "jan": {
+        "gear_plans": 43,
+        "pack_plan_events": 8,
+        "ammo_increase_samples_by_bin": {
+          "rail": 7,
+          "energy": 7,
+          "power": 10
+        },
+        "recorded_fire_mode_changes": 25,
+        "selected_weapons": {
+          "concussion": 120,
+          "fists": 12,
+          "Bryar": 113,
+          "rail": 297,
+          "bow": 50,
+          "E11": 80,
+          "repeater": 129
+        }
+      },
+      "yun": {
+        "gear_plans": 48,
+        "pack_plan_events": 7,
+        "ammo_increase_samples_by_bin": {
+          "power": 7,
+          "energy": 4,
+          "rail": 3
+        },
+        "recorded_fire_mode_changes": 12,
+        "selected_weapons": {
+          "repeater": 44,
+          "saber": 14,
+          "Bryar": 148,
+          "concussion": 439,
+          "rail": 152,
+          "bow": 8,
+          "fists": 3,
+          "E11": 2
+        }
+      }
+    },
+    "trigger": "Lily requested Bryar and E11 primary, bowcaster secondary and saber primary. Jan recorded six rail-primary and four repeater-secondary changes. Yun recorded one concussion-primary change. No seat logged a change to concussion secondary. The logger records changes at most twice per second and cannot count shots or hits.",
+    "pickup_attribution": "Boba logged rack contact, then a six-charge rail increase. The record cannot uniquely identify the grant. Equipment plans are intentions."
+  },
+  "follow_up": "Test whether ordinary stock controls can carry a loaded player forward through the deep shaft and on to a useful shield before air recovery. Compare actual progress, time to a confirmed gain and remaining resources with an alternative route from a supported bank. Include urgent health/combat and no-alternative controls. Earlier bank-escape replays test the opposite journey."
+}

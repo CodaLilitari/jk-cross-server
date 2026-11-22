@@ -1,0 +1,296 @@
+{
+  "version": 1,
+  "requested_match_seconds": 105,
+  "status": "live_join_and_loadout_verified",
+  "commit": "ba6a3ca668c70b5263192bde0dc71cd50923ad5f",
+  "branch": "feature/competitive-bot-foundation",
+  "source_tree_clean": true,
+  "platform": {
+    "python": "3.12.3",
+    "glibc": "2.39"
+  },
+  "render_environment": {
+    "SDL_VIDEODRIVER": "offscreen",
+    "SDL_VIDEO_DRIVER": "offscreen",
+    "EGL_PLATFORM": "surfaceless",
+    "LIBGL_ALWAYS_SOFTWARE": "1",
+    "ALSOFT_DRIVERS": "null",
+    "SDL_AUDIODRIVER": "dummy",
+    "LP_NUM_THREADS": "2"
+  },
+  "bot_options": {
+    "taunts": false,
+    "team": 0,
+    "force_style": "competitive",
+    "trace_force": true
+  },
+  "sha256": {
+    "bin/bots-linux-x86_64/jk-bot-client": "fc5331973d4c68d53ceba238ecaca50eb606f66d7a647c00ce0c5e6daaf1bd67",
+    "bin/bots-linux-x86_64/libGameNetworkingSockets.so": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+    "native/bot-client.patch": "d318b22a03a8fad496be56605b0189ac34b9b99a4150912ad555884d14d6f8e9",
+    "bin/linux-x86_64/openjkdf2": "16944b47e2ceecf3f09cc2820af26372e2af8642057c2b0a963e353ff090c745",
+    "bin/linux-x86_64/libGameNetworkingSockets.so": "45797fcd310f0812af9f55354ff22663859ca68c2d8bb0005efb88a748c471e7",
+    "jk1mp.gob": "27a4b3642e0965753232f35b1e8e846c91df1eca1da77398b5efda66ca369a2e",
+    "res1hi.gob": "6c6d51eca9c85dffe7dce9b449642a052f055352e3f817abf03b465da861aafd",
+    "res2.gob": "c75f7d5211bdd2e07a3af6a987c718037e8f0fd6909018ddb4327137bf3a7ebf",
+    "jkl/m2.jkl": "938f8a892bcdc90a7f54f25aed4fd58baba750293c5d01ac2dec68ef170eef9a"
+  },
+  "server_registry": {
+    "gameName": "Native Force QA",
+    "serverEpisodeGob": "JK1MP",
+    "serverMapJkl": "m2.jkl",
+    "maxPlayers": 4,
+    "bIsDedicated": true,
+    "maxRank": 8,
+    "tickRate": 100,
+    "portNum": 50833,
+    "gameFlags": 0,
+    "sessionFlags": 0,
+    "timeLimit": 0,
+    "scoreLimit": 0,
+    "bUseScoreLimit": false,
+    "bUseTimeLimit": false,
+    "bIsSingleLevel": false,
+    "bIsTeams": false,
+    "bIsCoop": false,
+    "bIsEpisodeCoop": false,
+    "enableVsync": false,
+    "enableBloom": false,
+    "enableSSAO": false,
+    "fpslimit": 60
+  },
+  "server_argv": [
+    "-headless",
+    "-dedicatedServer",
+    "-episode",
+    "JK1MP",
+    "-map",
+    "m2.jkl"
+  ],
+  "bots": {
+    "dark": {
+      "side": "dark",
+      "joined": {
+        "slot": 1,
+        "net": 3
+      },
+      "loadout": {
+        "rank": 8,
+        "style": "competitive",
+        "spent": 24,
+        "remaining": 0
+      },
+      "behavior": {
+        "sabers_only": 0,
+        "fists_peace": 0,
+        "force_enabled": 1
+      },
+      "samples": 220,
+      "matching_star_samples": 220,
+      "first_stars": [
+        4,
+        4,
+        4,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        4,
+        0
+      ],
+      "input_counts": {
+        "21": 2
+      },
+      "active_counts": {
+        "21": 1
+      },
+      "immobile_samples": 0,
+      "ranges": {
+        "health": [
+          100,
+          100
+        ],
+        "shields": [
+          100,
+          180
+        ],
+        "mana": [
+          376,
+          400
+        ],
+        "t": [
+          0,
+          111.69
+        ]
+      },
+      "mana_decreases": 2,
+      "health_decreases": 0,
+      "target_slots": [],
+      "examples": {
+        "first_mana_decrease": {
+          "t": 104.04,
+          "health": 100,
+          "shields": 180,
+          "mana": 380,
+          "immobile": 0,
+          "active": 0
+        },
+        "first_active": {
+          "t": 107.61,
+          "health": 100,
+          "shields": 180,
+          "mana": 396,
+          "immobile": 0,
+          "active": 1
+        }
+      },
+      "argv": [
+        "-headless",
+        "-botConnect",
+        "127.0.0.1:50833",
+        "-botName",
+        "Bot_BobaFett",
+        "-botSkin",
+        "kyh4.3do",
+        "-botSound",
+        "kybobafett.snd"
+      ]
+    },
+    "light": {
+      "side": "light",
+      "joined": {
+        "slot": 2,
+        "net": 5
+      },
+      "loadout": {
+        "rank": 8,
+        "style": "competitive",
+        "spent": 24,
+        "remaining": 0
+      },
+      "behavior": {
+        "sabers_only": 0,
+        "fists_peace": 0,
+        "force_enabled": 1
+      },
+      "samples": 207,
+      "matching_star_samples": 207,
+      "first_stars": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "input_counts": {
+        "21": 2
+      },
+      "active_counts": {
+        "21": 1
+      },
+      "immobile_samples": 0,
+      "ranges": {
+        "health": [
+          100,
+          100
+        ],
+        "shields": [
+          90.99,
+          100
+        ],
+        "mana": [
+          364,
+          400
+        ],
+        "t": [
+          0,
+          105.06
+        ]
+      },
+      "mana_decreases": 2,
+      "health_decreases": 0,
+      "target_slots": [],
+      "examples": {
+        "first_mana_decrease": {
+          "t": 0.51,
+          "health": 100,
+          "shields": 100,
+          "mana": 380,
+          "immobile": 0,
+          "active": 0
+        },
+        "first_active": {
+          "t": 2.55,
+          "health": 100,
+          "shields": 100,
+          "mana": 384,
+          "immobile": 0,
+          "active": 1
+        }
+      },
+      "argv": [
+        "-headless",
+        "-botConnect",
+        "127.0.0.1:50833",
+        "-botName",
+        "Bot_JanOrs",
+        "-botSkin",
+        "kya10.3do",
+        "-botSound",
+        "kyfemale.snd"
+      ]
+    }
+  },
+  "dedicated_server_owned_udp_port": true,
+  "both_joined_observation_wall_seconds": 105.11,
+  "effects": {
+    "any_active_bin_sample": true,
+    "any_mana_decrease": true,
+    "any_immobile_sample": false,
+    "any_health_decrease": false,
+    "target_effect_caster_attribution": "unverified"
+  },
+  "elapsed_wall_seconds": 122.16,
+  "harness_source_sha256": "97d09d524a99e3e82137477c92cd2ef9c2c15b4623aed09a49dda631ed63f433",
+  "evidence_scope": {
+    "native_join": true,
+    "live_competitive_loadouts": true,
+    "force_jump_input_active_bin_and_mana_observed": true,
+    "seeing_absorb_grip_or_destruction_exercised": false,
+    "target_effect_caster_attribution": false,
+    "current_jkweb_interoperability": false,
+    "human_competitive_strength": false
+  },
+  "network_isolation": "Unprivileged user/network namespace; launcher verified loopback was the only network interface.",
+  "cleanup": "Harness stopped and reaped owned server/bot process groups; staged game archives and isolated profiles removed.",
+  "limitations": [
+    "Only two ordinary native bot clients on stock JK1MP/m2.jkl, rank 8, no humans or browser client.",
+    "No player target appeared in the periodic status samples and only Jump appeared in the requested-power trace.",
+    "Sampled active flags and mana changes do not establish a particular remote player's damage source or a completed combat combo.",
+    "Original game assets were local read-only inputs and are excluded from this repository."
+  ],
+  "trace_evidence": {
+    "trace_file": "qa/competitive-force/trace-m2.jsonl",
+    "trace_sha256": "6e443d0cf48d37759f48c18b5242500cd6412e745830035ca0cb48568c71eec1",
+    "trace_rows": 431,
+    "receipt_sha256": "244435e073f436d2cd2353a8e3cca10c838227e330af6702d1c5f15408c3c50f"
+  },
+  "cleanup_observation": {
+    "owned_native_processes_remaining": 0,
+    "staged_input_directories_remaining": 0
+  }
+}
