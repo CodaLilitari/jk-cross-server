@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "declared_at_utc": "2026-11-22T13:54:22.170177+00:00",
+  "experiment": "independent stock-physics feedback and one contact/history ablation",
+  "cases": "qa/lily-motor-stress-cases.tsv",
+  "cases_sha256": "297a89c078dc5757c974dbb03ca9290a508f247cc13e6f24f2ae5bd0036925f7",
+  "pose_groups": 8,
+  "yaw_trials": 16,
+  "classification": "predeclared nearby perturbation stress; one known map and known escape regions",
+  "selection": "Four shaft depths at one interior XY position and four pool coordinate interpolations, chosen from previously known geometry. All use 40 ms control, 100 HP, 12000 ms endurance, zero initial pitch and vertical velocity; yaws 0 and 90. No traversal outcome was viewed to select or remove a case.",
+  "outcomes_available_at_declaration": false,
+  "contact_candidate_fitted_at_declaration": false,
+  "frozen_v1_file_sha256": "eb514ebc9ebd34021be306ab97070177bcadc5f1c16c78f361a9c06f69bae3da",
+  "conditional_candidate": {
+    "gate": "Frozen v1 every-tick arm fails to match all native baseline landings on the original 27 starts.",
+    "features_added": [
+      "on_water_surface",
+      "previous_applied_jump"
+    ],
+    "hidden_units": 32,
+    "epochs": 200,
+    "seed": 23,
+    "learning_rate": 0.01,
+    "button_threshold": 0.5,
+    "train_pose_groups": 7,
+    "original_heldout_role": "inspected development evidence",
+    "candidate_fits": 1
+  },
+  "stress_evaluation": "Freeze candidate and exported policy hashes before examining any controller outcomes on these starts. Compare native baseline, frozen v1 every-tick and contact candidate every-tick. Retain all assigned failures and infrastructure-censored trials. Repeated baseline records, if needed for pairing, are not independent additional evidence.",
+  "promotion": "No automatic production promotion. The fixture exposes ideal synchronous observations, including physical contact not yet supplied by the live motor observation contract.",
+  "geometry_validation": {
+    "schema": 1,
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "cases_sha256": "297a89c078dc5757c974dbb03ca9290a508f247cc13e6f24f2ae5bd0036925f7",
+    "helper_sha256": "c38998a0dc3f62e2e2ce4d440a380fd95d597d79c05f93c1e000de5c97db428a",
+    "engine_input_sha256": {
+      "src/World/sithSurface.h": "90e3ad70eb145985510b61f4f684088a49020638a5da06b472725f478c9e4141",
+      "src/types_enums.h": "a546b85816c58d9aede433728997353a94528a8c083b9dcfee189dad81c08a1e",
+      "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96"
+    },
+    "method": "all engine collision/movement sector planes; binary32 inputs, Python distance arithmetic",
+    "radius": 0.065,
+    "rounding_clearance_allowance": 1e-05,
+    "all_spheres_inside": true,
+    "pose_groups": 8,
+    "yaw_trials": 16,
+    "cases": [
+      {
+        "case": "perturb-shaft-a",
+        "start_sector": 54,
+        "plane_count": 10,
+        "minimum_plane_distance": 0.13475586169857476,
+        "radius_clearance": 0.06975586169857476,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-shaft-b",
+        "start_sector": 54,
+        "plane_count": 10,
+        "minimum_plane_distance": 0.13475586169857476,
+        "radius_clearance": 0.06975586169857476,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-shaft-c",
+        "start_sector": 54,
+        "plane_count": 10,
+        "minimum_plane_distance": 0.13475586169857476,
+        "radius_clearance": 0.06975586169857476,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-shaft-d",
+        "start_sector": 54,
+        "plane_count": 10,
+        "minimum_plane_distance": 0.09999996423721313,
+        "radius_clearance": 0.03499996423721313,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-pool-a",
+        "start_sector": 42,
+        "plane_count": 26,
+        "minimum_plane_distance": 0.10850000381469727,
+        "radius_clearance": 0.04350000381469726,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-pool-b",
+        "start_sector": 42,
+        "plane_count": 26,
+        "minimum_plane_distance": 0.1390000581741333,
+        "radius_clearance": 0.0740000581741333,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-pool-c",
+        "start_sector": 42,
+        "plane_count": 26,
+        "minimum_plane_distance": 0.09549999237060547,
+        "radius_clearance": 0.030499992370605467,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-pool-d",
+        "start_sector": 42,
+        "plane_count": 26,
+        "minimum_plane_distance": 0.11430001258850098,
+        "radius_clearance": 0.049300012588500974,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      }
+    ],
+    "limitation": "Geometry-only sufficient check; no controller outcomes or reachability inferred."
+  },
+  "limitations": [
+    "Nearby interpolation and shaft-depth perturbations are not new-map generalization.",
+    "The 16 yaw trials share eight poses; yaws are not independent sample groups.",
+    "No human opponent, pickup contest or combat is evaluated.",
+    "Initial poses are synthetic physically valid stress starts, not captured gameplay."
+  ]
+}

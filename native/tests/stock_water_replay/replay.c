@@ -26,7 +26,8 @@ int main(int argc,char **argv){
         s->surfaces=w->surfaces+integer(f);s->numSurfaces=integer(f);
         for(int j=0;j<s->numSurfaces;j++){SithSurface *p=s->surfaces+j;p->pSector=s;if(p->pAdjoin){p->pAdjoin->mirror->sector=s;p->pAdjoin->next=s->adjoins;s->adjoins=p->pAdjoin;}}
     }
-    w->numThingsLoaded=integer(f);w->numThings=w->numThingsLoaded-1;w->aThings=calloc(w->numThingsLoaded,sizeof(*w->aThings));SithPlayer own={0};
+    w->numThingsLoaded=integer(f);w->numThings=w->numThingsLoaded-1;w->aThings=calloc(w->numThingsLoaded,sizeof(*w->aThings));
+    SithPlayer *own=&jkPlayer_playerInfos[0]; memset(own,0,sizeof(*own));
     SithThing *me=NULL;int origin=atoi(argv[2]);
     for(int i=0;i<w->numThingsLoaded;i++){
         SithThing *t=w->aThings+i;t->type=integer(f);t->sector=w->aSectors+integer(f);vec(f,&t->position);assert(fscanf(f,"%31s",t->aName)==1);
@@ -35,7 +36,11 @@ int main(int argc,char **argv){
         t->actorParams.health=100;t->actorParams.jumpSpeed=1.5f;t->physicsParams.maxVelocity=1;t->moveSize=t->collideSize=.065f;
         if(!me&&t->sector->id==origin)me=t;
     }
-    fclose(f);assert(me);jkBot_Configure("probe","ky.3do");bot.world=w;bot.forceEnabled=1;me->actorParams.pPlayer=&own;own.aItems[SITHBIN_F_JUMP].amount=4;own.aItems[SITHBIN_FORCEMANA].amount=400;
+    fclose(f);assert(me);jkBot_Configure("probe","ky.3do");bot.world=w;bot.forceEnabled=1;me->actorParams.pPlayer=own;own->aItems[SITHBIN_F_JUMP].amount=4;own->aItems[SITHBIN_FORCEMANA].amount=400;
+    /* A normal identified seat makes the optional real companion transport live.
+       These are fixture initialization fields, never modified by a controller. */
+    own->playerNetId=1;own->flags=1;own->pLocalPlayer=me;jkPlayer_maxPlayers=1;playerThingIdx=0;
+    me->guid=1;me->signature=1;Companion_NewWorld();
     sithPlayer_g_pLocalPlayerThing=me; me->actorParams.maxThrust=2; me->physicsParams.airDrag=.5f; Bot_BuildNodes(me);while(!bot.graphDone)Bot_BuildGraphStep();
     flex_t d[BOT_NODES];int parent[BOT_NODES],start=Bot_Nearest(me);assert(start>=0);Bot_PathDistances(me,start,d,parent);
 

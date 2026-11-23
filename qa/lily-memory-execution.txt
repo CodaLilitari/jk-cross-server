@@ -1,0 +1,19 @@
+{"block": "calibration", "assigned": 144, "attempted": 144, "completed": 144, "wins": 110, "failed": 34, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "s-g01", "assigned": 144, "attempted": 144, "completed": 144, "wins": 128, "failed": 16, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "r-g01", "assigned": 144, "attempted": 144, "completed": 144, "wins": 134, "failed": 10, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "s-g02", "assigned": 144, "attempted": 144, "completed": 144, "wins": 131, "failed": 13, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "r-g02", "assigned": 144, "attempted": 144, "completed": 144, "wins": 119, "failed": 25, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "s-g03", "assigned": 144, "attempted": 144, "completed": 144, "wins": 142, "failed": 2, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "r-g03", "assigned": 144, "attempted": 144, "completed": 144, "wins": 131, "failed": 13, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "s-g04", "assigned": 144, "attempted": 144, "completed": 144, "wins": 136, "failed": 8, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "r-g04", "assigned": 144, "attempted": 144, "completed": 144, "wins": 130, "failed": 14, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "s-g05", "assigned": 144, "attempted": 144, "completed": 144, "wins": 138, "failed": 6, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "r-g05", "assigned": 144, "attempted": 144, "completed": 144, "wins": 128, "failed": 16, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "s-g06", "assigned": 144, "attempted": 144, "completed": 144, "wins": 133, "failed": 11, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "r-g06", "assigned": 144, "attempted": 144, "completed": 144, "wins": 140, "failed": 4, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "s-g07", "assigned": 144, "attempted": 144, "completed": 144, "wins": 139, "failed": 5, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "r-g07", "assigned": 144, "attempted": 144, "completed": 144, "wins": 130, "failed": 14, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "s-g08", "assigned": 144, "attempted": 144, "completed": 144, "wins": 141, "failed": 3, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "r-g08", "assigned": 144, "attempted": 144, "completed": 144, "wins": 133, "failed": 11, "censored": 0, "invalid": 0, "unrun": 0}
+{"block": "open", "assigned": 160, "attempted": 160, "completed": 160, "wins": 146, "failed": 14, "censored": 0, "invalid": 0, "unrun": 0}
+BlockStopped: sealed: incomplete block: {'assigned': 288, 'attempted': 2, 'completed': 0, 'wins': 0, 'failed': 0, 'censored': 0, 'invalid': 2, 'unrun': 286}

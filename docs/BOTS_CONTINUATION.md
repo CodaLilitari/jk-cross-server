@@ -5,7 +5,80 @@ analysis, source verification and native observation helpers used for this work.
 The packaged custom JKWeb runtime includes its complete source patch and build
 inputs; the tool guide maps each artifact to its repository location.
 
-## Packaged fifth refinement candidate
+## Adaptive Lily development branch
+
+`feature/lily-adaptive-player` adds an explicitly enabled Lily controller while
+retaining the existing autonomous bots. `--adaptive-lily` enables its companion
+capability only for Lily. Her separate Python supervisor can stage new executable
+policies during play, preserve an active undertaking until a safe handover, and
+retain conditional route/skill outcomes across restarts. Motor commands use
+ordinary movement, view, weapon and Force inputs.
+
+The native and JKWeb packages in this branch contain the new adapter. The
+[build receipt](../qa/lily-adaptive-build.json) records pinned source, source
+correspondence, exact runtime hashes and independent relinks. This branch has no
+new rendered multiplayer qualification. The [physical integration receipt](../qa/lily-adaptive-live.json)
+separately records live policy changes through the native companion under stock
+physics, including an unsuccessful unrestricted movement probe.
+
+Read [the operator guide](LILY_ADAPTIVE.md), [wire contract](LILY_PROTOCOL.md), and
+[learning experiment](LILY_MOTOR_LEARNING.md). The first small neural movement
+candidate was trained from 27 successful physical replays and remains unpromoted.
+The [latest outcome-learning checkpoint](reviews/2026-11-22-lily-outcome-learning-checkpoint.md)
+completed 832 unaided training executions and 96 development executions. G4 and
+G8 both improved pool landings from v3's 11/24 to 24/24, gaining starts across all
+six development pool positions. Both also lost the same shaft start, scoring 7/8
+against v3's 8/8. The predeclared retention rule selected neither, so the sealed
+and historical stages remained unopened. The audit verified every one of 519,793
+model decisions; all 928 attempts completed, including 100 simulation timeouts
+and one death. All 105 model/export artifacts and the complete private evidence
+are retained. The deployed controllers and existing engine packages are unchanged.
+
+The next learning question is retaining prior shaft behavior while improving
+pool movement and learning the transition from surfacing to stable support. The
+regressed heads reach first breath but never complete the required landing.
+Broader skill rehearsal and learned phase/history are proposed experiments, not
+current results or case-specific navigation rules. See the
+[independent measured-evidence review](reviews/2026-11-22-lily-outcome-independent-review.md).
+
+The [preceding recovery checkpoint](reviews/2026-11-22-lily-recovery-learning-checkpoint.md)
+records one corrective recovery fit. Frozen v2 first drove eight scheduled
+branches from the two original training pool poses; the native teacher then
+took over without resetting the actor or held inputs. Six branches landed and
+two timed out. Their 768 eligible correction rows were appended to the unchanged
+3,431 original rows for one fixed fit. The weights and export were frozen before
+opening the six fresh pool positions at four headings each.
+
+Recovery v3 landed 10/24 fresh starts against v2's 0/24 and the native baseline's
+23/24. It also reached 26/27 original starts and 10/16 prior nearby starts, versus
+21/27 and 7/16 for v2. Gains cover five fresh positions, and all 20 historical
+original shaft winners remain successful. The original `pool-100-yaw0` and prior
+`perturb-shaft-a-yaw90` regressions remain recorded. All 268 evaluation executions
+have complete physical outcomes and no native assistance to model inputs; 67
+are repeated baseline checks. See the [collection](../qa/lily-recovery-collection.json),
+[freeze](../qa/lily-recovery-freeze.json) and [evaluation](../qa/lily-recovery-evaluation.json).
+The declared engineering criterion is met. V3 remains an unpromoted synchronous
+fixture policy, with 14/24 fresh failures and no new live multiplayer qualification.
+
+The [preceding independent checkpoint](reviews/2026-11-22-lily-independent-motor-checkpoint.md)
+retains the v1 feedback-cadence comparison, contact/history v2 and the
+[failure diagnosis](../qa/lily-contact-failures.json). Frozen v1/v2 artifacts,
+the production controllers and native/browser engine packages are preserved.
+
+The [preceding bank checkpoint](reviews/2026-11-22-lily-bank-checkpoint.md)
+records the deployed task and handover experiment.
+The bank-escape task now holds one target and policy revision across motor chunks,
+persists one task terminal, and separates live sampled stops from the exact stock
+landing oracle. The [matched comparison](../qa/lily-bank-task.json) found 27/27
+baseline landings and 22/27 candidate-assigned landings, with no independently
+attributable learned landing. The model remains unpromoted. The
+[human Oasis review](reviews/2026-11-22-human-oasis-reference.md) preserves the
+bounded footage observations and an explicit correction to an unverified ammo
+interpretation. Pickup/combat task scoring, learned combat, self-play and recurrent
+movement policies remain development work. Historical candidate 5 below is the preserved
+comparison baseline; its binary hashes describe that earlier package.
+
+## Historical fifth refinement candidate
 
 The Linux and JKWeb packages include the reviewed correction for optional dry upgrades through a
 recently failed water approach, alongside the earlier supply and bank-landing repairs. Independent

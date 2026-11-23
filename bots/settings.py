@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 PROFILE_IDS = ("boba_fett", "jan_ors", "kyle_katarn", "stormtrooper",
-               "bossk", "greedo", "sariss", "yun")
+               "bossk", "greedo", "sariss", "yun", "lily")
 BEHAVIOR_FIELDS = ("bots_sabers_only", "bots_fists_peace", "bots_force_enabled")
 
 

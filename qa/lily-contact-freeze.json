@@ -1,0 +1,301 @@
+{
+  "canonical_model_sha256": "71ca8d3ef8f32b2cc48d577531bc05f13475f7646fe9fa68d840866477a098a1",
+  "development_rows_used_in_fit": 0,
+  "event": "contact_candidate_frozen",
+  "files_sha256": {
+    "bots/lily/models/water_bc_v1.json": "eb514ebc9ebd34021be306ab97070177bcadc5f1c16c78f361a9c06f69bae3da",
+    "bots/lily/models/water_contact_v2.json": "ae90a49fa07bbbd56c86fb0315f3f3980902a2bf1d5497c9439e532c95a7554f",
+    "bots/lily/motor_contact.py": "dc294acfab45ca007dd03eec054f4cd83b089a44210ef39cb0ff5b632f9ce667",
+    "bots/lily/motor_model.py": "631c18643b1ad77937e875d8e08c3eeea9b1cfd877fd1fe24e3574e07e97c97a",
+    "bots/lily/policies/water_contact_v2.py": "fa470f017927057f7b9406219b2baba757b4ae01a60e1e9c1f76620f61ebc251",
+    "bots/lily/train_contact_motor.py": "c7663edb92a654e772bfa9afa3a42ce262ff8780bc185e71cbd985b65877ef58",
+    "bots/lily/train_motor.py": "f1885b8ca9edc7887057471e2b7f6a4005a7557a251a68838d2921eb87bfe334",
+    "qa/lily-bank-task.json": "631c76be833dbe5104dfe5fdfa3c6c9168fa5d6d9380c5dee062a1912ada1032",
+    "qa/lily-motor-gate-addendum.json": "3c99c789c0ae2b6effea1abee8924fbcb1f0d84f43cc93cdafcbc65ab33d892b",
+    "qa/lily-motor-stress-cases.tsv": "297a89c078dc5757c974dbb03ca9290a508f247cc13e6f24f2ae5bd0036925f7",
+    "qa/lily-motor-stress-plan.json": "9f328af455171ee262d27f018e501dd49b31e016991e9ed2d2255f0a70bb98c1"
+  },
+  "fits": 1,
+  "fixture_provenance": {
+    "baseline_reference_sha256": "631c76be833dbe5104dfe5fdfa3c6c9168fa5d6d9380c5dee062a1912ada1032",
+    "candidate_sha256": "3d2d94a66b011afee23049e2a701319a482a97d95e05c6eab05936e93bf138dc",
+    "compiler_flags_sha256": "684a26e6f8978a6fdc4716d10be28f018ee533caa83288d01ea9ef9a7f837ceb",
+    "executable_sha256": "fc76de70b29f112fc852a61bd5761487813cee3eca507c4668d613af600b86e3",
+    "fixture_source_sha256": {
+      "bots/lily/protocol.py": "8993370f8a659c9847ae70112836ab62c897849be1a4b3725f9d070d71853e9e",
+      "native/tests/stock_water_replay/bank_drive.inc": "55dca3292ad52cea75930e547f0e5ddaace3d5b11f881ed73e75880552907a38",
+      "native/tests/stock_water_replay/bank_oracle.h": "4539e0e38349c2166b965287f879790e520bf8f205240d0d1fb42dd59c5f618b",
+      "native/tests/stock_water_replay/bank_trace.inc": "84f26269a3a6f95571fc483f09035315d37ca8b86dda7702014844b46741624d",
+      "native/tests/stock_water_replay/collect_motor.py": "9b898eaffd000be8d89fcc382cd6b18426aef30618000ab721cb7e81fcaeef4c",
+      "native/tests/stock_water_replay/evaluate_bank.py": "bfd164fe3d80f64808f36ecd9f37adde13bc78cf9248c0bc69f607ee03636f41",
+      "native/tests/stock_water_replay/evaluate_motor.py": "5ef9b8903c42e8ccc4883a92ced71c8c818044730eec85b5846e0afa9265682b",
+      "native/tests/stock_water_replay/geometry.py": "22757770f5347d5cfc29f4cc83361d711d391841cf02f34a8e6c4a394901b0d6",
+      "native/tests/stock_water_replay/independent_motor.inc": "7e320a68de0ff4aad6a5813ba53410df92060d008b84d56698d27836fe7780ae",
+      "native/tests/stock_water_replay/live_policy.py": "82ebf0a395037210d24a555b02ace9587a553a2181dd95f305d7e104caa5d2a4",
+      "native/tests/stock_water_replay/replay.c": "7f875e149125aeb4dbe2b45213b8a880a2c68205ace525162f5072ef4fcad1ae",
+      "native/tests/stock_water_replay/replay_loop.inc": "c660a55c0d51456cd15a640aa3a0cdca31bb64c5d2e2407707ab4e8b0740db8c",
+      "native/tests/stock_water_replay/replay_trace.inc": "4088dfbc2192e0dac247dd1057ce7186c8fe87e27cdae9e1528992e85d9b729d",
+      "native/tests/stock_water_replay/run.py": "54ec53e4387e7b817eae6b98d10ed7b69486b7056ec173b14dcc7ba40b2619ee",
+      "native/tests/test_bot_portal_collision.c": "be057767830a7b52bd102edc5b24b11f5c4ffc6d93996d2c655548390a06af06"
+    },
+    "geometry_sha256": "b566073b9b7781f057e27ed06ef90ab46392ac0b68e1312bb488fbcce8fca62d",
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "model_sha256": "eb514ebc9ebd34021be306ab97070177bcadc5f1c16c78f361a9c06f69bae3da",
+    "policy_hash": "16c43f6cd74950261bea092553ae72707588d3175befefd49c218d8b8339ba91",
+    "source_hashes": {
+      "src/AI/jkBot.c": "6913e05c649a625da9f15352ad62eca21f42d65158ba3501b64162c5e0774425",
+      "src/AI/jkBot.h": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
+      "src/AI/jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df",
+      "src/AI/jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+      "src/AI/jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
+      "src/AI/jkBotCompanion.inc": "d4f43db307bbf4df2cd9669daff5d2a4f5a56660a83e236b2e070252cb082d7f",
+      "src/AI/jkBotForce.inc": "02a2625e4a9386ef8d20d976e14113e2cf47ba82047ee99a935f6db0d432b2e7",
+      "src/AI/jkBotHearing.inc": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+      "src/AI/jkBotLily.inc": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
+      "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+      "src/AI/jkBotNavigate.inc": "34f621368b9626ca7c771f58c0b4c381bb9afd0f9298fc5ca27fdca8018487fa",
+      "src/AI/jkBotNavigation.inc": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
+      "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+      "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+      "src/AI/jkBotWaterExit.inc": "2d1b36d679222c48936b8d4e920991da87fda6e536010e783ea54232dc241383",
+      "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+      "src/Engine/sithCollision.c": "ac54301bdf0da274af87ff6c8d20e6905c5688f92984f0f5d7321ea0235d4c63",
+      "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+      "src/Engine/sithPhysics.c": "bfd0e3e70ad7e88162805617744f1536d7bae0a4ee08b18c58bc673755d4796b",
+      "src/Gameplay/sithPlayerActions.c": "f8f8e156acdbaa251f1a10cafe06437b204db20034add746decaa5ab805d717c",
+      "src/General/stdMath.c": "ed3f12a57d4454ad8731ba94a68f42c5f983631e5540da7649cd4488a7c75995",
+      "src/Primitives/rdMath.c": "b3587b90480a02df9178779f424441f6111d87da470a8e17bb72fd5ad026539a",
+      "src/Primitives/rdMatrix.c": "0f0889fd0c9ce05fb768062061d4435b1df455fd6e16d629ea84e435581d1658",
+      "src/Primitives/rdVector.c": "097638a3da4264865ed16e95a486f85a69c415c12c17781e3bcf2a0802a9edca",
+      "src/World/sithActor.c": "8ff7b7025d7318c9e53a797c95d125274b5da707aa4b939aac8a65cbdb532e71",
+      "src/World/sithSector.c": "0a6e9cb0113e2d602a5550ceb7c2ffd203e81d6b385099729cede2edbb3e3e17",
+      "src/World/sithThing.c": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec"
+    }
+  },
+  "gate_receipt_sha256": "6248b7c1281342f0a5a2c629d59353b15f449cfcccd7586d5d20be984dea7b8c",
+  "input_order": "ASCII-sorted original training episode IDs, then original control-tick order",
+  "model_file_sha256": "ae90a49fa07bbbd56c86fb0315f3f3980902a2bf1d5497c9439e532c95a7554f",
+  "numpy": "2.3.5",
+  "policy_file_sha256": "fa470f017927057f7b9406219b2baba757b4ae01a60e1e9c1f76620f61ebc251",
+  "python": "3.12.14",
+  "schema": 1,
+  "stress_trials_opened_before_freeze": 0,
+  "training": {
+    "baseline_reference_file_sha256": "631c76be833dbe5104dfe5fdfa3c6c9168fa5d6d9380c5dee062a1912ada1032",
+    "batch_size": 128,
+    "button_threshold": 0.5,
+    "development_episode_ids": [
+      "lily-232.797-yaw-90",
+      "lily-232.797-yaw0",
+      "lily-232.797-yaw180",
+      "lily-232.797-yaw90",
+      "pool-100-yaw0"
+    ],
+    "development_split_groups": [
+      "lily-232.797",
+      "pool-100"
+    ],
+    "epochs": 200,
+    "hidden": 32,
+    "intended_use": "Unpromoted synchronous stock-input bank experiment.",
+    "learning_rate": 0.01,
+    "method": "supervised_behavior_cloning",
+    "original_model_file_sha256": "eb514ebc9ebd34021be306ab97070177bcadc5f1c16c78f361a9c06f69bae3da",
+    "seed": 23,
+    "source_receipt_file_sha256": "6248b7c1281342f0a5a2c629d59353b15f449cfcccd7586d5d20be984dea7b8c",
+    "train_samples": 3431,
+    "train_split_groups": [
+      "boba-190.017",
+      "boba-200.077",
+      "boba-210.147",
+      "boba-220.237",
+      "boba-230.247",
+      "pool-110",
+      "pool-90"
+    ],
+    "training_sources": [
+      {
+        "episode_id": "boba-190.017-yaw-90",
+        "motor_sha256": "a0729186927a0034947e19a20d7832751bb3fee8ae80d84e143be33f8adcc4f2",
+        "native_sha256": "8596d9589ddb192968b919e3e72356254a4d6d9a24cbb1ef3c4e989c6b240566",
+        "samples": 144,
+        "split_group": "boba-190.017",
+        "yaw_deg": -90
+      },
+      {
+        "episode_id": "boba-190.017-yaw0",
+        "motor_sha256": "a7ddff8baeb641259628455b15e2184105e477a43fa0574685fc16ce40b6bf8b",
+        "native_sha256": "43df98182bb30cb435d487c635c93b507cd6bb53afc9a61fb59a02e936b0c051",
+        "samples": 144,
+        "split_group": "boba-190.017",
+        "yaw_deg": 0
+      },
+      {
+        "episode_id": "boba-190.017-yaw180",
+        "motor_sha256": "48558079e9bf05b87ee162f231523bcd92825fd7094215dd4beacfa8ab2d2091",
+        "native_sha256": "0b8d9df6187f0c8ca9948dc22ce62c34ac4173f208b977a014781542bb2a5f4d",
+        "samples": 144,
+        "split_group": "boba-190.017",
+        "yaw_deg": 180
+      },
+      {
+        "episode_id": "boba-190.017-yaw90",
+        "motor_sha256": "d6c7a1c027cf52898a2fe26a0b878e84443ce160ae10c62ea2ee7114c54de8b0",
+        "native_sha256": "7c343d67d1c6e0e247524cb4e3c7db04e600566d22b5fbb48ac508cc81c45ced",
+        "samples": 144,
+        "split_group": "boba-190.017",
+        "yaw_deg": 90
+      },
+      {
+        "episode_id": "boba-200.077-yaw-90",
+        "motor_sha256": "e3c7a3db1dad1272cc64295e946adee3f84fefc21b22f4f4ee3dec469341c75f",
+        "native_sha256": "8aabb8f2312cf43f8dbba03297f01f8eb3f1cb3b6cca6fba9fd40d0fe706e99e",
+        "samples": 70,
+        "split_group": "boba-200.077",
+        "yaw_deg": -90
+      },
+      {
+        "episode_id": "boba-200.077-yaw0",
+        "motor_sha256": "34cdbf318a23c4ff254d987be41edb0fd96cc56133e1ab282113a08467536d51",
+        "native_sha256": "32afbba2aee3e7d1006c36d444ae993d32778c11d35bcf75fbb44fa8ee5449a2",
+        "samples": 71,
+        "split_group": "boba-200.077",
+        "yaw_deg": 0
+      },
+      {
+        "episode_id": "boba-200.077-yaw180",
+        "motor_sha256": "ae7273ec3936c4858e50cb41a2472ea064b01c84738859d91e74cdd1836b0649",
+        "native_sha256": "45e9b16b356c4fe53081cc968a000755fff8eda7ef0b7eae457f0881a4437384",
+        "samples": 70,
+        "split_group": "boba-200.077",
+        "yaw_deg": 180
+      },
+      {
+        "episode_id": "boba-200.077-yaw90",
+        "motor_sha256": "b9670c03c2165fc8c25f9e5db3c3adff161d136b0c6d859cec2e95f24551a70c",
+        "native_sha256": "e3f8321e45b57569cd8ef7da2a5424453b68dfcd4580c2f409e537ded2d2e604",
+        "samples": 70,
+        "split_group": "boba-200.077",
+        "yaw_deg": 90
+      },
+      {
+        "episode_id": "boba-210.147-yaw-90",
+        "motor_sha256": "f8d44b2afff6a2e684c6b96e4fd87e040fd5c049584aa5e60487547469118d5a",
+        "native_sha256": "ea55c80a0b5f6c6a3fcacd9389cee4771bbf6f30f5dfde4967ea3ce19372a62c",
+        "samples": 243,
+        "split_group": "boba-210.147",
+        "yaw_deg": -90
+      },
+      {
+        "episode_id": "boba-210.147-yaw0",
+        "motor_sha256": "7bdc71dd26b944df287a0087bb2c69cfc90111e7185b71c9b03a9e66439e4849",
+        "native_sha256": "f12a3142ca988232904ff0beeceb6f171f5a463f883318f0035f408bd83ea489",
+        "samples": 243,
+        "split_group": "boba-210.147",
+        "yaw_deg": 0
+      },
+      {
+        "episode_id": "boba-210.147-yaw180",
+        "motor_sha256": "f9505f30b9f7927f922035f9ee1f6cb9dc85e68eeafbdd78f149ccfb94d72548",
+        "native_sha256": "8618ca95b3ea488f4e324c47ecb1d6ccdb9b27e4f0b15bfaed6e0b973909625e",
+        "samples": 243,
+        "split_group": "boba-210.147",
+        "yaw_deg": 180
+      },
+      {
+        "episode_id": "boba-210.147-yaw90",
+        "motor_sha256": "518e7fe3c83debf33691e1660f8d87ffa0995951f8bd5aa65b962038e02b7091",
+        "native_sha256": "73690620bb2b13d53611077cdd59797b54e6999a5f9a9d05aedba70ab5e5611d",
+        "samples": 243,
+        "split_group": "boba-210.147",
+        "yaw_deg": 90
+      },
+      {
+        "episode_id": "boba-220.237-yaw-90",
+        "motor_sha256": "522008541d89ca4cfa9453a16c668f46f3ac3c52bb72807791ac155fb97a7b4a",
+        "native_sha256": "b79d416d65729fb4a0fcbaef50616d0cd5f82586c2e7a38dd72d3199f9847c94",
+        "samples": 49,
+        "split_group": "boba-220.237",
+        "yaw_deg": -90
+      },
+      {
+        "episode_id": "boba-220.237-yaw0",
+        "motor_sha256": "f253fe1c18cc78f266a7322adf04620471ad91a99e971e7f3dce30b2f1a45cd9",
+        "native_sha256": "c3a1a9213349ff4ab76e927c5bf8a5a46c734755c85bac032219edb9403e4b85",
+        "samples": 49,
+        "split_group": "boba-220.237",
+        "yaw_deg": 0
+      },
+      {
+        "episode_id": "boba-220.237-yaw180",
+        "motor_sha256": "03f5ca822444968dd8e06e832952a40f19a33e23df0299d2eacfa906b37fca6f",
+        "native_sha256": "44c7e02a718bb85b7104c47a9d3f1fe001a9fdf21722728956144dd849c4ad9d",
+        "samples": 57,
+        "split_group": "boba-220.237",
+        "yaw_deg": 180
+      },
+      {
+        "episode_id": "boba-220.237-yaw90",
+        "motor_sha256": "bfb22909999a9363d3f8309d19fb5881f84bb48ec0d29d5cb7d9bc74cf7cc8f6",
+        "native_sha256": "dc156ccddea785918b4f3280c59dec645a18e911e117333f35a61b2ff5a6d23b",
+        "samples": 49,
+        "split_group": "boba-220.237",
+        "yaw_deg": 90
+      },
+      {
+        "episode_id": "boba-230.247-yaw-90",
+        "motor_sha256": "8a3b2a4ad622d440db4523e85879283867ffad83f664bd95be450ea4ebe19a85",
+        "native_sha256": "64bf8063d44b3137b113fd72c5d658541575eb97fe79e45ec7ad285157a3303d",
+        "samples": 162,
+        "split_group": "boba-230.247",
+        "yaw_deg": -90
+      },
+      {
+        "episode_id": "boba-230.247-yaw0",
+        "motor_sha256": "4c04d64f5a7f08622395ae72339680018236a27370bbbaa1202847571e1776f7",
+        "native_sha256": "bc2a658b2991320d95e8cd2d9046fc14aa1f372fcdea6c9f2c24684d5c329701",
+        "samples": 162,
+        "split_group": "boba-230.247",
+        "yaw_deg": 0
+      },
+      {
+        "episode_id": "boba-230.247-yaw180",
+        "motor_sha256": "ac73f25eb2077cab6d3408ae7a1a2c9c08291bf85533801119f7ba36908124ac",
+        "native_sha256": "169d1f112c49dd85a0eb770f2380e10c81a27b34bfe9c5a1a6f4e01e29d83fa7",
+        "samples": 162,
+        "split_group": "boba-230.247",
+        "yaw_deg": 180
+      },
+      {
+        "episode_id": "boba-230.247-yaw90",
+        "motor_sha256": "6c1ae2258cf761e3ec62786bc30edef14169ab0104c60d75ea6f3abacb42eb9a",
+        "native_sha256": "d6bfbddeb2fb555adc72eb3d326cee5c0a7b00664f1e0854e86a3d66829bde6a",
+        "samples": 162,
+        "split_group": "boba-230.247",
+        "yaw_deg": 90
+      },
+      {
+        "episode_id": "pool-110-yaw0",
+        "motor_sha256": "8ab6846bde381a105ddbdb55d0fceb9e09a2611384600887dad16917043b3ea4",
+        "native_sha256": "a4b49de86a1dec512f461c0e3f72202dc83706359f419f14d2fa8e59a6f6ec76",
+        "samples": 482,
+        "split_group": "pool-110",
+        "yaw_deg": 0
+      },
+      {
+        "episode_id": "pool-90-yaw0",
+        "motor_sha256": "600ef80cf426f32c223884b3eed75a6514760b5a91d7bd3e7478dda35ca7a2b7",
+        "native_sha256": "a17c7345a9593ec084b4ca106ddd00f56a40371dbd8601cde033435baea0e0be",
+        "samples": 268,
+        "split_group": "pool-90",
+        "yaw_deg": 0
+      }
+    ]
+  },
+  "training_threads": {
+    "MKL_NUM_THREADS": 1,
+    "OMP_NUM_THREADS": 1,
+    "OPENBLAS_NUM_THREADS": 1
+  },
+  "utc": "2026-11-22T14:05:22.995416+00:00"
+}

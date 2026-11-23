@@ -4,7 +4,7 @@
   "patch": "native/bot-client.patch",
   "platform": "Linux x86_64",
   "reconstructed_after_scratch_reset": true,
-  "method": "Verified the saved native refinement candidate 4 relink package; compiled 1 native translation units affected by changed sources and headers, then linked with the verified remaining objects and libraries.",
+  "method": "Recompile bot driver and multiplayer GUI from pinned patched source, using verified published objects and static dependencies for remaining units.",
   "compiler": "cc (Debian 14.2.0-19) 14.2.0",
   "distribution": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.7\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
   "source_pins": [
@@ -35,16 +35,17 @@
     " 5a82f71ed1dfc0bec044d9702463dbdf84ea3b71 lib/zlib (5a82f71)"
   ],
   "compiled_sources": {
-    "src/AI/jkBot.c": "7aa57b2534401057e24ba7f532efc572816fe67f0f86db9572cfc9da78f8ef14",
+    "src/AI/jkBot.c": "6913e05c649a625da9f15352ad62eca21f42d65158ba3501b64162c5e0774425",
     "src/AI/jkBot.h": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
     "src/AI/jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df",
     "src/AI/jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
     "src/AI/jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
-    "src/AI/jkBotCompanion.inc": "89dd8dd4f93ed76c48bf8ce76485f880dd73b604dcce8e6b7b7d3cb3c82915c7",
-    "src/AI/jkBotForce.inc": "3598befb0098bc3a748efdb1383bd8daf9e1da2380462a5dc30345309e5c3ad3",
+    "src/AI/jkBotCompanion.inc": "d4f43db307bbf4df2cd9669daff5d2a4f5a56660a83e236b2e070252cb082d7f",
+    "src/AI/jkBotForce.inc": "02a2625e4a9386ef8d20d976e14113e2cf47ba82047ee99a935f6db0d432b2e7",
     "src/AI/jkBotHearing.inc": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+    "src/AI/jkBotLily.inc": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
     "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
-    "src/AI/jkBotNavigate.inc": "fd8b8df6a1e209a7c69dde4705d52a7eb23243c5cb38417a0124cd99c0dbc756",
+    "src/AI/jkBotNavigate.inc": "34f621368b9626ca7c771f58c0b4c381bb9afd0f9298fc5ca27fdca8018487fa",
     "src/AI/jkBotNavigation.inc": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
     "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
     "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
@@ -261,26 +262,26 @@
   },
   "files": {
     "bin/bots-linux-x86_64/jk-bot-client": {
-      "sha256": "862e566209dae8fab218243a47455b5a5616bf98fb8d1f09fa65969f9c8519aa",
-      "bytes": 8694880
+      "sha256": "d04f5106a3a0a3f123162e82a364bc98ec495ae8bd2fe89fb0f1b2461fc44fe3",
+      "bytes": 8703440
     },
     "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
       "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
       "bytes": 3644744
     },
     "native/bot-client.patch": {
-      "sha256": "6950c859f9e82aca8285daac011e1b72cb2a57644f01d2a465987312100ac52d",
-      "bytes": 319664
+      "sha256": "12fc518bdf29bd7322c4d69935f9be499ea3f829f25538bd1f66de0dc2ff4af6",
+      "bytes": 338693
     },
     "native/bot-relink-linux-x86_64.tar.gz": {
-      "sha256": "ca63beaa5c3a283639950be045df0d5ffa5a2fb39cc259db479c3deee4a4a123",
-      "bytes": 6044446
+      "sha256": "a9d6ac49ff89d662c8ef4d56973994d572701a27ff6ba944c069df0c21ff3d21",
+      "bytes": 6055658
     }
   },
   "relink_inputs": {
     "CMakeFiles/openjkdf2.dir/src/main.c.o": "5cac74e46ccdb6f00cfe4b60d06df1a8282ddc27ad1c7001009af728d3d88c95",
     "CMakeFiles/sith_engine.dir/generated/globals.c.o": "b8ea7a66262f5d97d72f6fbf66522fb48d49a57e62d9b4d0a8cf95a7603ca713",
-    "CMakeFiles/sith_engine.dir/src/AI/jkBot.c.o": "478aff61badcb3345aa2bd92b3d454aca5c945bb8342e7c6e2351bcd3000fd0d",
+    "CMakeFiles/sith_engine.dir/src/AI/jkBot.c.o": "e885cabccc337caa8667f15aa798ff36ab5468052f62ec585fd6a63ae694fa4b",
     "CMakeFiles/sith_engine.dir/src/AI/jkBotPersona.c.o": "4db8c6c71e81ce9ca8911974014861cebaca2a5279c5efa78e65b4010d9b89f3",
     "CMakeFiles/sith_engine.dir/src/AI/sithAI.c.o": "cbda1c7df0dd425eaeb69e14308b53c9869fe6120c6d98f2d1743d86076bddc5",
     "CMakeFiles/sith_engine.dir/src/AI/sithAIAwareness.c.o": "2b590541a50ed915d863874172cf0a84d9398a6114e62adb8da8e2ed6dea0cfb",
@@ -498,186 +499,5 @@
     "zlib/Linux/x86_64/lib/libz.a": "5a71244efcb324aebb6e95accd0cce114b899107ebf96de4e3c280a5d7c790c8"
   },
   "game_assets_included": false,
-  "server_modified": false,
-  "incremental_rebuild": {
-    "prior_relink_archive_sha256": "1b0063672d322b30c44599706d2b005694d416d18fa2cd367918cb609459a558",
-    "prior_patch_sha256": "964ebedb05177d46a3a972da51aa08c8d56578c4a5d3c6e4d9f81540910b26d1",
-    "prior_binary_sha256": "d2ad6f4527ee00de93e13d709ed9502ca6dadf4fef8ed8a3d95a8df6f4704808",
-    "scanned_translation_units": 205,
-    "dependency_method": "Compiler-preprocessed header dependencies of all linked engine-source units; actual rebuilt dependencies recorded with -MMD.",
-    "compile_flags": [
-      "-DARCH_64BIT",
-      "-DBUILDING_LIBCURL",
-      "-DCURL_STATICLIB",
-      "-DHAVE_CONFIG_H",
-      "-DHAVE_STRUCT_TIMEVAL",
-      "-DLINUX",
-      "-DLINUX_TMP",
-      "-DNO_JK_MMAP",
-      "-DOPENJKDF2_MAJOR_VERSION=0",
-      "-DOPENJKDF2_MINOR_VERSION=9",
-      "-DOPENJKDF2_PATCH_VERSION=9",
-      "-DOPENJKDF2_PROJECT_NAME=OpenJKDF2",
-      "-DOPENJKDF2_PROJECT_VERSION=0.9.9.0",
-      "-DOPENJKDF2_RELEASE_COMMIT=\"\"",
-      "-DOPENJKDF2_RELEASE_COMMIT_SHORT=\"\"",
-      "-DOPENJKDF2_RELEASE_COMMIT_SHORT_U=u\"\"",
-      "-DOPENJKDF2_RELEASE_COMMIT_U=u\"\"",
-      "-DOPENJKDF2_RELEASE_VERSION_STRING=\"v0.9.9\"",
-      "-DOPENJKDF2_RELEASE_VERSION_STRING_U=u\"v0.9.9\"",
-      "-DOPENJKDF2_RELEASE_VERSION_STRING_W=L\"v0.9.9\"",
-      "-DOPENJKDF2_TWEAK_VERSION=0",
-      "-DPLATFORM_CURL",
-      "-DPLATFORM_GNS",
-      "-DPLATFORM_LINUX",
-      "-DPLATFORM_NO_CACERT_BLOB",
-      "-DPLATFORM_PHYSFS",
-      "-DPLATFORM_POSIX",
-      "-DQOL_IMPROVEMENTS",
-      "-DSDL2_RENDER",
-      "-DSTDSOUND_OPENAL",
-      "-DTARGET_CAN_JKGM",
-      "-DUSE_MBEDTLS",
-      "-D_DEFAULT_SOURCE",
-      "-D_XOPEN_SOURCE=500",
-      "-D__USE_MINGW_ANSI_STDIO",
-      "-D_FORTIFY_SOURCE=3",
-      "-fstack-protector-strong",
-      "-fstack-clash-protection",
-      "-fcf-protection",
-      "-DGLEW_NO_GLU",
-      "-std=gnu11",
-      "-fshort-wchar",
-      "-O2",
-      "-Wno-unused-variable",
-      "-Wno-parentheses",
-      "-Wno-incompatible-pointer-types",
-      "-Werror=implicit-function-declaration",
-      "-pthread",
-      "-DNDEBUG"
-    ],
-    "source_include_roots": [
-      "src",
-      "src/external/libsmacker",
-      "src/external/libsmusher/src",
-      "src/external/nativefiledialog-extended",
-      "src/external/fcaseopen",
-      "3rdparty/json/include",
-      "generated",
-      "SDL/include",
-      "SDL/include/SDL3",
-      "GLEW/include",
-      "GLVND/include",
-      "OpenAL/include/AL"
-    ],
-    "externals": {
-      "generated/globals.h": "edec9732ccad1f32d9fe4740ca17fdb76a05459181b196c779dbe45519a00e78"
-    },
-    "external_header_verification": {
-      "glew": {
-        "commit": "8f9a60f6aafdeba39a232f5b397eb910bb6ff7c8",
-        "available_headers_verified": 4
-      },
-      "glvnd": {
-        "commit": "faa23f21fc677af5792825dc30cb1ccef4bf33a6",
-        "available_headers_verified": 6
-      },
-      "openal": {
-        "commit": "d3875f333fb6abe2f39d82caca329414871ae53b",
-        "available_headers_verified": 6
-      },
-      "SDL": {
-        "commit": "f87239e71e42da91ca317a12eefb82cfbf3393eb",
-        "available_headers_verified": 96
-      }
-    },
-    "units": {
-      "src/AI/jkBot.c": {
-        "object": "CMakeFiles/sith_engine.dir/src/AI/jkBot.c.o",
-        "sha256": "478aff61badcb3345aa2bd92b3d454aca5c945bb8342e7c6e2351bcd3000fd0d",
-        "engine_dependencies": [
-          "src/AI/jkBot.c",
-          "src/AI/jkBot.h",
-          "src/AI/jkBotBehavior.h",
-          "src/AI/jkBotBehavior.inc",
-          "src/AI/jkBotCombat.inc",
-          "src/AI/jkBotCompanion.inc",
-          "src/AI/jkBotForce.inc",
-          "src/AI/jkBotHearing.inc",
-          "src/AI/jkBotLoadout.h",
-          "src/AI/jkBotNavigate.inc",
-          "src/AI/jkBotNavigation.inc",
-          "src/AI/jkBotWaterExit.inc",
-          "src/Cog/sithCog.h",
-          "src/Cog/sithCogExec.h",
-          "src/Cog/sithCogParse.h",
-          "src/Cog/sithCogYACC.h",
-          "src/Dss/sithMulti.h",
-          "src/Engine/rdCamera.h",
-          "src/Engine/rdCanvas.h",
-          "src/Engine/rdKeyframe.h",
-          "src/Engine/rdLight.h",
-          "src/Engine/rdMaterial.h",
-          "src/Engine/rdPuppet.h",
-          "src/Engine/rdThing.h",
-          "src/Engine/sithCamera.h",
-          "src/Engine/sithCollision.h",
-          "src/Engine/sithIntersect.h",
-          "src/Gameplay/sithInventory.h",
-          "src/Gameplay/sithPlayer.h",
-          "src/Gameplay/sithTime.h",
-          "src/General/stdConffile.h",
-          "src/General/stdPalEffects.h",
-          "src/Primitives/rdMatrix.h",
-          "src/Primitives/rdModel3.h",
-          "src/Primitives/rdParticle.h",
-          "src/Primitives/rdPolyline.h",
-          "src/Primitives/rdRect.h",
-          "src/Primitives/rdSprite.h",
-          "src/Primitives/rdVector.h",
-          "src/Raster/rdCache.h",
-          "src/Raster/rdFace.h",
-          "src/Win95/stdVBuffer.h",
-          "src/World/jkPlayer.h",
-          "src/World/sithSector.h",
-          "src/World/sithSoundClass.h",
-          "src/World/sithSurface.h",
-          "src/World/sithTemplate.h",
-          "src/World/sithThing.h",
-          "src/World/sithWorld.h",
-          "src/engine_config.h",
-          "src/hook.h",
-          "src/jk.h",
-          "src/stdPlatform.h",
-          "src/types.h",
-          "src/types_enums.h",
-          "src/types_win_enums.h",
-          "src/version.h"
-        ]
-      }
-    },
-    "external_header_commits": {
-      "glew": "8f9a60f6aafdeba39a232f5b397eb910bb6ff7c8",
-      "glvnd": "faa23f21fc677af5792825dc30cb1ccef4bf33a6",
-      "openal": "d3875f333fb6abe2f39d82caca329414871ae53b",
-      "SDL": "f87239e71e42da91ca317a12eefb82cfbf3393eb"
-    },
-    "verification": {
-      "prior_global_symbols_removed": 0,
-      "clean_pinned_source_accepts_patch": true,
-      "packaged_source_dependency_hashes_verified": 223,
-      "all_packaged_link_input_hashes_verified": 218,
-      "relinked_executable_sha256": "862e566209dae8fab218243a47455b5a5616bf98fb8d1f09fa65969f9c8519aa",
-      "headless_invalid_profile_exit": 6,
-      "patched_source_regressions": [
-        "hearing",
-        "companion",
-        "driver",
-        "portal",
-        "collision",
-        "loadout"
-      ],
-      "live_multiplayer_match": false
-    }
-  }
+  "server_modified": false
 }

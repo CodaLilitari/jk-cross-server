@@ -299,10 +299,17 @@ def utc_now() -> str:
 def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
            runtime: Path, seconds: float, taunts: bool, behavior_file: Path | None = None,
            status_file: Path | None = None, managed: bool = False,
-           companion_port: int | None = None, companion_chat: bool = False) -> tuple[int, Path]:
+           companion_port: int | None = None, companion_chat: bool = False,
+           adaptive_lily: bool = False) -> tuple[int, Path]:
     check_scope(config, len(profiles))
-    if companion_chat and companion_port is None:
-        raise ValueError("--companion-chat requires --companion-port.")
+    ids = [profile["id"] for profile in profiles]
+    if adaptive_lily and "lily" not in ids:
+        raise ValueError("--adaptive-lily requires selecting lily with --profiles.")
+    companion_ids = ids if companion_port is not None else []
+    if adaptive_lily and not companion_ids:
+        companion_ids = ["lily"]
+    if companion_chat and not companion_ids:
+        raise ValueError("--companion-chat requires --companion-port or --adaptive-lily.")
     if companion_port is not None and (type(companion_port) is not int or not 0 <= companion_port <= 65535):
         raise ValueError("--companion-port must be in 0..65535.")
     if sys.platform != "linux":
@@ -352,8 +359,9 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
     exit_code = 1
     hub = None
     try:
-        if companion_port is not None:
-            hub = Hub(run_directory, [p["id"] for p in profiles], companion_port, allow_chat=companion_chat)
+        if companion_ids:
+            hub = Hub(run_directory, companion_ids, companion_port or 0, allow_chat=companion_chat,
+                      experimental_ids=("lily",) if adaptive_lily else ())
             print(f"Companion {hub.url} (private credentials in {hub.directory})", flush=True)
         for sig in (signal.SIGINT, signal.SIGTERM):
             previous_signals[sig] = signal.signal(sig, lambda signum, frame: stopped.append(signum))
@@ -378,7 +386,9 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
                 env = bot_environment(engine, directory, run_directory, index, display, taunts,
                                       behavior_file=behavior_file, team=team, force_side=force_side,
                                       force_style=force_style)
-                if hub:
+                if adaptive_lily and profile["id"] == "lily":
+                    env["JK_BOT_LILY"] = "1"
+                if profile["id"] in companion_ids:
                     channel = hub.take_socket(profile["id"])
                     env["JK_BOT_COMPANION_FD"] = str(channel.fileno())
                 process = subprocess.Popen(command, cwd=directory, stdin=subprocess.DEVNULL,
@@ -482,6 +492,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--runtime", type=Path, default=ROOT / "runtime/bots")
     parser.add_argument("--seconds", type=float, default=0, help="Stop after this many seconds; 0 runs until interrupted")
     parser.add_argument("--companion-port", type=int, help="Enable the private loopback companion API; 0 chooses a port.")
+    parser.add_argument("--adaptive-lily", action="store_true", help="Enable adaptive controls on the selected lily seat.")
     parser.add_argument("--companion-chat", action="store_true", help="Authorize companion SAY actions for this run.")
     parser.add_argument("--no-taunts", action="store_true")
     parser.add_argument("--behavior-file", type=Path, help="Read live behavior settings from this existing file")
@@ -503,7 +514,7 @@ def main(argv: list[str] | None = None) -> int:
                          runtime=args.runtime, seconds=args.seconds,
                          taunts=config["bots_taunts"] and not args.no_taunts,
                          behavior_file=args.behavior_file, status_file=args.status_file, managed=args.managed,
-                         companion_port=args.companion_port, companion_chat=args.companion_chat)
+                         companion_port=args.companion_port, companion_chat=args.companion_chat, adaptive_lily=args.adaptive_lily)
         return code
     except (OSError, ValueError, RuntimeError) as error:
         print("Bot launcher: " + str(error), file=sys.stderr)

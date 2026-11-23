@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "checkpoint": "lily-outcome-head-v4",
+  "disposition": "no_selection",
+  "implementation_commit": "0b1e1fc3cae838b88ee1b1cabdde61a1289917b6",
+  "declaration_commit": "68907b6ac1209aa9372a04a088ade88182e9e941",
+  "declaration_sha256": "911ca8c8a3218334d117de8995ce88114f99ebde431c77500e894db196ac3b98",
+  "evaluation_sha256": "cfbebdbea0101e1df447b2fc4d87c2e69f845f52360b893e355641f7d324a2c2",
+  "freeze_sha256": "3bf0546fce3d87a94f71df9662c507334cf9839cd9babd77ac722c61a8a1747a",
+  "full_suite": {
+    "command": "python3 -B -m unittest discover -s tests -v",
+    "native_fixture_environment_enabled": true,
+    "tests": 413,
+    "passed": 410,
+    "skipped": 3,
+    "failed": 0,
+    "unittest_elapsed_seconds": 136.181,
+    "process_elapsed_seconds": 136.83900268300204,
+    "exit_code": 0,
+    "source_commit": "0b1e1fc3cae838b88ee1b1cabdde61a1289917b6",
+    "log": "qa/lily-outcome-unit-tests.txt",
+    "log_sha256": "e20753344358f70bf5e59cc589826c9631bcd1b236d6fcb56d22cf0450be7c26",
+    "skips": [
+      "PowerShell is not installed (two tests)",
+      "Windows token SID and filesystem DACL (one test)"
+    ]
+  },
+  "source_review": {
+    "initial_important_findings": 4,
+    "closed_important_findings": 4,
+    "remaining_findings": 0,
+    "scoped_fix_commit": "0b1e1fc3cae838b88ee1b1cabdde61a1289917b6",
+    "frozen_repository_sources": 60,
+    "authenticated_external_project_inputs": 96,
+    "host_system_headers_and_libraries_in_project_manifest": false
+  },
+  "independent_evidence_review": {
+    "path": "docs/reviews/2026-11-22-lily-outcome-independent-review.md",
+    "sha256": "775bfb3aedc7637ad33f26c0095d1a044fde248f28f5f6c66d668183f75575d5",
+    "verdict": "pass",
+    "physical_executions_by_reviewer": 0,
+    "public_rows_checked": 928,
+    "full_policy_reinference_by_auditor": 519793
+  },
+  "execution": {
+    "train": {
+      "started_at_utc": "2026-11-22T17:04:20.098792+00:00",
+      "ended_at_utc": "2026-11-22T17:08:00.031025+00:00",
+      "elapsed_seconds": 219.93223643499368,
+      "exit_code": 0,
+      "commit": "68907b6ac1209aa9372a04a088ade88182e9e941"
+    },
+    "select": {
+      "started_at_utc": "2026-11-22T17:08:31.540522+00:00",
+      "ended_at_utc": "2026-11-22T17:11:03.251423+00:00",
+      "elapsed_seconds": 151.71089920100349,
+      "exit_code": 0,
+      "commit": "68907b6ac1209aa9372a04a088ade88182e9e941"
+    },
+    "audit": {
+      "started_at_utc": "2026-11-22T17:12:14.740623+00:00",
+      "ended_at_utc": "2026-11-22T17:14:41.421669+00:00",
+      "elapsed_seconds": 146.6810491040087,
+      "exit_code": 0,
+      "commit": "68907b6ac1209aa9372a04a088ade88182e9e941"
+    }
+  },
+  "preservation": {
+    "candidate_bundle": {
+      "path": "qa/lily-outcome-candidates.tar.gz",
+      "sha256": "37d3f40886f253fb12b347238ad7081e2c9ea09608261815f75be217f79f5e49",
+      "bytes": 1066573,
+      "members": 210,
+      "model_artifacts": 105,
+      "source_bytes": 4479817,
+      "layout": "models/<artifact>/{model.json,policy.py}",
+      "verified_against_measured_files": true
+    },
+    "project_input_bundle": {
+      "path": "qa/lily-outcome-build-inputs.tar.gz",
+      "sha256": "6c0cc363ca28040eaec778031bd154249152f1783483b8b56bf288ed9b9febb6",
+      "bytes": 304264,
+      "members": 98,
+      "project_inputs": 96,
+      "notice_files": 2,
+      "project_input_bytes": 1332811,
+      "verified_against_measured_files": true
+    },
+    "private_evidence": {
+      "filename": "lily_outcome_evidence_2026-11-22.tar.gz",
+      "sha256": "cd0c153c59612cea1d86bde019872ea0e679f10afbf975ab9ec0b4a70ec88395",
+      "bytes": 82309070,
+      "members": 7459,
+      "source_bytes": 523243636,
+      "full_run_bytes": 529056264,
+      "full_run_files": 7765,
+      "public_bundle_members_excluded": 306,
+      "root_directory": "lily-outcome-learning-20261122-01",
+      "verified_against_every_original_file": true,
+      "started_at_utc": "2026-11-22T17:13:00.997870+00:00",
+      "ended_at_utc": "2026-11-22T17:13:14.256485+00:00",
+      "elapsed_seconds": 13.258620527994935,
+      "saved_persistently": true
+    }
+  },
+  "sealed_and_diagnostic_executions": 0,
+  "live_policy_promoted": false,
+  "preserved_foundation_commit": "04d482ea760f0604c5fb9e66a6c5f854b1d4385a"
+}

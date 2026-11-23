@@ -1,0 +1,9 @@
+case	origin	wet	dry	start_sector	x	y	z	control_dt	flags	health	endurance_ms	pitch	vertical_speed	yaw_offsets
+outcome-development-pool-01	41	44	10	42	-0.869060	0.829031	-0.573757	.040	cb4f	100	12000	0	0	-90,0,90,180
+outcome-development-pool-02	41	44	10	42	-1.536645	1.065720	-0.264589	.040	cb4f	100	12000	0	0	-90,0,90,180
+outcome-development-pool-03	41	44	10	42	-1.214176	1.019580	-0.614402	.040	cb4f	100	12000	0	0	-90,0,90,180
+outcome-development-shaft-01	41	54	41	54	2.989105	-0.119862	-0.648962	.040	4b4f	100	12000	0	0	-90,0,90,180
+outcome-development-pool-04	41	44	10	42	-1.797268	1.225945	-0.397417	.040	cb4f	100	12000	0	0	-90,0,90,180
+outcome-development-pool-05	41	44	10	42	-1.485708	1.476463	-0.455507	.040	cb4f	100	12000	0	0	-90,0,90,180
+outcome-development-pool-06	41	44	10	42	-2.137482	1.789270	-0.447704	.040	cb4f	100	12000	0	0	-90,0,90,180
+outcome-development-shaft-02	41	54	41	54	2.973547	-0.145550	0.139927	.040	4b4f	100	12000	0	0	-90,0,90,180

@@ -1,0 +1,302 @@
+{
+  "schema": 1,
+  "experiment": "lily-corrective-recovery-v3",
+  "declared_at_utc": "2026-11-22T14:38:57.570558+00:00",
+  "base_commit": "79f8373c8c80097c8e7e1ca214bfa9aec35e8180",
+  "reference_receipt_sha256": "e03d9b9e24ec5bf30cb6f419ac872d722711bf511601a29a805af7e62a8f4aa9",
+  "v2_model_sha256": "ae90a49fa07bbbd56c86fb0315f3f3980902a2bf1d5497c9439e532c95a7554f",
+  "v2_policy_sha256": "fa470f017927057f7b9406219b2baba757b4ae01a60e1e9c1f76620f61ebc251",
+  "cases_sha256": "2ae401185bdeb36944ea15fcebc72d42098920c779e424b4778dd7f9a5c0a67e",
+  "spec_sha256": "eae9132e3c9f75ece2350cd28ea31474486f034669a8f9823a2198cb09969273",
+  "canonical_collection_executed": false,
+  "candidate_fitted": false,
+  "fresh_controller_outcomes_opened": false,
+  "recovery_jobs": [
+    {
+      "episode_id": "pool-90-yaw0",
+      "handoff_tick": 25,
+      "handoff_step": 150,
+      "nominal_threshold_step": 150,
+      "reference_start_sha256": "96d89a3d9779cb6d84f97d38fc4f1db50358c9590f0d535a7164854eb9b6f9c8",
+      "reference_motor_sha256": "3d97c066b2d969214e89c821065dff16e25b0f66b9747da6d7bb46b9349ab46c",
+      "reference_native_sha256": "050408cbb5423f3eaffc3045568bf70e61c18ba1b594c5d0d99de04feb2e4f44",
+      "reference_decisions_sha256": "de669e894003617922547039162bf3103cfe51e77bd67c57171fa2e26a81d897",
+      "reference_boundary_observation_sha256": "137f5af2870aca4e45eb3f772ef1d8b022d39c1a90126f52ffd920e682f6fdbc",
+      "reference_motor_prefix_including_boundary_sha256": "5a7ad02a6da2af89e45c5b6f3513154ddc8f19e971b101b945c0eacaead90429",
+      "reference_decision_prefix_sha256": "d7f45c28b2ea2c2bde7a78b1c749337af15ea285e4334bec66464931a3c0e523"
+    },
+    {
+      "episode_id": "pool-90-yaw0",
+      "handoff_tick": 100,
+      "handoff_step": 600,
+      "nominal_threshold_step": 600,
+      "reference_start_sha256": "96d89a3d9779cb6d84f97d38fc4f1db50358c9590f0d535a7164854eb9b6f9c8",
+      "reference_motor_sha256": "3d97c066b2d969214e89c821065dff16e25b0f66b9747da6d7bb46b9349ab46c",
+      "reference_native_sha256": "050408cbb5423f3eaffc3045568bf70e61c18ba1b594c5d0d99de04feb2e4f44",
+      "reference_decisions_sha256": "de669e894003617922547039162bf3103cfe51e77bd67c57171fa2e26a81d897",
+      "reference_boundary_observation_sha256": "a04343c5fffa3106a42f4c947c7fa58dedf429c5ace8d55f6a8671da7e975a30",
+      "reference_motor_prefix_including_boundary_sha256": "08e7f6f34afd7adea85c7fdb9a7dbb1c3b9edc03f30fc965093fad3d7ac89d63",
+      "reference_decision_prefix_sha256": "5d6fd9ec8bbd82378a80d97d6bb539368c5af7a1ab117301202d5a1740c4167f"
+    },
+    {
+      "episode_id": "pool-90-yaw0",
+      "handoff_tick": 200,
+      "handoff_step": 1200,
+      "nominal_threshold_step": 1200,
+      "reference_start_sha256": "96d89a3d9779cb6d84f97d38fc4f1db50358c9590f0d535a7164854eb9b6f9c8",
+      "reference_motor_sha256": "3d97c066b2d969214e89c821065dff16e25b0f66b9747da6d7bb46b9349ab46c",
+      "reference_native_sha256": "050408cbb5423f3eaffc3045568bf70e61c18ba1b594c5d0d99de04feb2e4f44",
+      "reference_decisions_sha256": "de669e894003617922547039162bf3103cfe51e77bd67c57171fa2e26a81d897",
+      "reference_boundary_observation_sha256": "bca1af7757245820c6eb3a7c19308f6bd3840917f24e45ad6c01f406fe4b6deb",
+      "reference_motor_prefix_including_boundary_sha256": "ab796ea09ea4312f31918fcaf344930eca333e33c74693f878511cfd67742609",
+      "reference_decision_prefix_sha256": "4ccf6f257a86b24474016d333c30ea05bf5cd6503cac19ae99609a3eda45d8df"
+    },
+    {
+      "episode_id": "pool-90-yaw0",
+      "handoff_tick": 400,
+      "handoff_step": 2400,
+      "nominal_threshold_step": 2400,
+      "reference_start_sha256": "96d89a3d9779cb6d84f97d38fc4f1db50358c9590f0d535a7164854eb9b6f9c8",
+      "reference_motor_sha256": "3d97c066b2d969214e89c821065dff16e25b0f66b9747da6d7bb46b9349ab46c",
+      "reference_native_sha256": "050408cbb5423f3eaffc3045568bf70e61c18ba1b594c5d0d99de04feb2e4f44",
+      "reference_decisions_sha256": "de669e894003617922547039162bf3103cfe51e77bd67c57171fa2e26a81d897",
+      "reference_boundary_observation_sha256": "2fd19e2830a40ae9d849e01497f5a9f55533cae93e28081de477ecff9024a83b",
+      "reference_motor_prefix_including_boundary_sha256": "31160995a77f15b0b14fe544feb87646f3bf91005e122b342cef7c6fd37ff9f2",
+      "reference_decision_prefix_sha256": "91f5738508360c5177f1f581ac6c432ac6115c6e0137ce899b5bd1fad24f39c0"
+    },
+    {
+      "episode_id": "pool-110-yaw0",
+      "handoff_tick": 39,
+      "handoff_step": 152,
+      "nominal_threshold_step": 150,
+      "reference_start_sha256": "96d89a3d9779cb6d84f97d38fc4f1db50358c9590f0d535a7164854eb9b6f9c8",
+      "reference_motor_sha256": "e0fa2e045d1af2beaae77b13c7813169c976985e8d0935d168868a87d0ef5e33",
+      "reference_native_sha256": "103efb127c045d507cb7b98864c3c91cbed1750534211aaa08d28df4f78b2da2",
+      "reference_decisions_sha256": "92369e7a6ad59ee7ea5b90bc4639e6102c184d55b9b0d1c6638d7f5d209176e1",
+      "reference_boundary_observation_sha256": "05ca355beedd8e686c7a11830891521a604d74ed03dbf3f43a000013ac8c9af2",
+      "reference_motor_prefix_including_boundary_sha256": "9821afc02cba35d43afb4ba10811e780d1bcd39ec586d968c7164eae7dcef614",
+      "reference_decision_prefix_sha256": "4093c19977d171c57c7c1cefcaa1d0b436a78def595630e7df914885d3d6d512"
+    },
+    {
+      "episode_id": "pool-110-yaw0",
+      "handoff_tick": 154,
+      "handoff_step": 601,
+      "nominal_threshold_step": 600,
+      "reference_start_sha256": "96d89a3d9779cb6d84f97d38fc4f1db50358c9590f0d535a7164854eb9b6f9c8",
+      "reference_motor_sha256": "e0fa2e045d1af2beaae77b13c7813169c976985e8d0935d168868a87d0ef5e33",
+      "reference_native_sha256": "103efb127c045d507cb7b98864c3c91cbed1750534211aaa08d28df4f78b2da2",
+      "reference_decisions_sha256": "92369e7a6ad59ee7ea5b90bc4639e6102c184d55b9b0d1c6638d7f5d209176e1",
+      "reference_boundary_observation_sha256": "047cd2a26327cddbf066d1ac1930870bbc7c20488ce64db24e8ae98754d2f9af",
+      "reference_motor_prefix_including_boundary_sha256": "290fc14c3e3ebf3363566dd7dbb2efa9eb33ae41c38b12fc0de27f19c5b1aeac",
+      "reference_decision_prefix_sha256": "c18b7f6f00586a86e0d1987a21701cdd61749ea9f62ebc2e5d3caaec26a3264c"
+    },
+    {
+      "episode_id": "pool-110-yaw0",
+      "handoff_tick": 308,
+      "handoff_step": 1201,
+      "nominal_threshold_step": 1200,
+      "reference_start_sha256": "96d89a3d9779cb6d84f97d38fc4f1db50358c9590f0d535a7164854eb9b6f9c8",
+      "reference_motor_sha256": "e0fa2e045d1af2beaae77b13c7813169c976985e8d0935d168868a87d0ef5e33",
+      "reference_native_sha256": "103efb127c045d507cb7b98864c3c91cbed1750534211aaa08d28df4f78b2da2",
+      "reference_decisions_sha256": "92369e7a6ad59ee7ea5b90bc4639e6102c184d55b9b0d1c6638d7f5d209176e1",
+      "reference_boundary_observation_sha256": "d3de292b99b89de3d77d969f172ab66a67d806595791244df5d18164cdb9df8a",
+      "reference_motor_prefix_including_boundary_sha256": "407455e5cad70fae4291efcea371dfbfbc59cb3df043af3a5e77e09629cb1c43",
+      "reference_decision_prefix_sha256": "18d09b125505509dd2b5ae98c4f24f23148ce37433d3b5a951efac0a02d0832b"
+    },
+    {
+      "episode_id": "pool-110-yaw0",
+      "handoff_tick": 616,
+      "handoff_step": 2402,
+      "nominal_threshold_step": 2400,
+      "reference_start_sha256": "96d89a3d9779cb6d84f97d38fc4f1db50358c9590f0d535a7164854eb9b6f9c8",
+      "reference_motor_sha256": "e0fa2e045d1af2beaae77b13c7813169c976985e8d0935d168868a87d0ef5e33",
+      "reference_native_sha256": "103efb127c045d507cb7b98864c3c91cbed1750534211aaa08d28df4f78b2da2",
+      "reference_decisions_sha256": "92369e7a6ad59ee7ea5b90bc4639e6102c184d55b9b0d1c6638d7f5d209176e1",
+      "reference_boundary_observation_sha256": "cd94f452da3e7a10d19fe6253fe36d437edd3b193ef41286e61ab404ca4d41e9",
+      "reference_motor_prefix_including_boundary_sha256": "170784fcc48f8d4edcf4402f3af03a05ee91048cdeef2dd3b30e0c5fc8987cbc",
+      "reference_decision_prefix_sha256": "114aba003c80078e34aa60576a35e75d322c86de23e9805edd95b8652befc794"
+    }
+  ],
+  "collection_contract": {
+    "assignments": 8,
+    "training_pose_groups": [
+      "pool-90",
+      "pool-110"
+    ],
+    "controller_order": [
+      "frozen_contact_v2",
+      "cold_native_teacher"
+    ],
+    "total_physics_budget": 9000,
+    "physics_hz": 150,
+    "landing_streak": 38,
+    "physical_state_reset": false,
+    "input_history_reset": false,
+    "prefix_and_boundary_match_reference_bytes": true,
+    "cold_teacher_bookkeeping": [
+      "current position and clock as new progress timer",
+      "native-style water interval observed passively across prefix",
+      "preceding observed health and breath debt"
+    ],
+    "teacher_selects_own_route": true,
+    "all_mixed_successes_assisted": true,
+    "retry_policy": "Only a diagnosed infrastructure fault, retaining original attempt; never substitute a physical failure."
+  },
+  "training_contract": {
+    "original_samples": 3431,
+    "original_training_groups": 7,
+    "include": "Only complete physically successful teacher suffixes, first128 ticks before existing eligibility filter.",
+    "maximum_teacher_ticks_per_run": 128,
+    "maximum_extra_rows": 1024,
+    "order": "Original canonical3431 rows, then correction case ID, numeric handoff tick, control tick. Unit weights.",
+    "zero_correction_rows": "No fit; publish collection result.",
+    "candidate_fits": 1,
+    "initialization": "fresh seed23 using existing fit_weights",
+    "features": 17,
+    "hidden_units": 32,
+    "outputs": 6,
+    "epochs": 200,
+    "seed": 23,
+    "learning_rate": 0.01,
+    "batch_size": 128,
+    "button_threshold": 0.5,
+    "normalization": "combined training corpus only",
+    "development_or_fresh_rows": 0,
+    "limitation": "Augmentation changes normalization, batches and total optimizer updates; no matched-compute causal claim."
+  },
+  "fresh_evaluation": {
+    "cases": "qa/lily-recovery-fresh-cases.tsv",
+    "cases_sha256": "9e83493cf8dbd010c05c812ee3c2254b0e316a901022fe3a8ca6f8f7da563c4e",
+    "pose_groups": 6,
+    "yaw_trials": 24,
+    "recipe": "All lexicographic permutations of barycentric weights(1,2,5)/8 over(pool-90,pool-100,pool-110) XYZ from original cases.",
+    "yaw_degrees": [
+      -90,
+      0,
+      90,
+      180
+    ],
+    "control_dt": 0.04,
+    "health": 100,
+    "used_breath_ms": 12000,
+    "pitch": 0,
+    "vertical_speed": 0,
+    "no_binary32_position_duplicates_with_original_or_prior_stress": true,
+    "controllers": [
+      "native_baseline",
+      "frozen_contact_v2_every_tick",
+      "recovery_v3_every_tick"
+    ],
+    "pairing": "same assigned initial observation, seed and edge; repeated baseline native/motor trace bytes equal; first actions can differ across models.",
+    "open_outcomes_only_after_candidate_freeze": true,
+    "geometry_validation": {
+      "schema": 1,
+      "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+      "cases_sha256": "9e83493cf8dbd010c05c812ee3c2254b0e316a901022fe3a8ca6f8f7da563c4e",
+      "helper_sha256": "cb34ee277db47896879632fb745c42d03f7c134b799b6a4a61aa709ab8fc4525",
+      "engine_input_sha256": {
+        "src/World/sithSurface.h": "90e3ad70eb145985510b61f4f684088a49020638a5da06b472725f478c9e4141",
+        "src/types_enums.h": "a546b85816c58d9aede433728997353a94528a8c083b9dcfee189dad81c08a1e",
+        "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96"
+      },
+      "method": "all engine collision/movement sector planes; binary32 inputs, Python distance with a conservative native roundoff bound",
+      "radius": 0.065,
+      "rounding_allowance": "1e-5 + gamma(12, binary32) * sum(abs(normal) * (abs(position) + abs(plane_vertex)))",
+      "all_spheres_inside": true,
+      "pose_groups": 6,
+      "yaw_trials": 24,
+      "cases": [
+        {
+          "case": "recovery-pool-125",
+          "start_sector": 42,
+          "plane_count": 26,
+          "minimum_plane_distance": 0.12487494945526123,
+          "radius_clearance": 0.05987494945526123,
+          "maximum_rounding_allowance": 1.3100814667350171e-05,
+          "conservative_radius_clearance": 0.05986217774785357,
+          "center_inside": true,
+          "sphere_inside": true,
+          "yaw_trials": 4
+        },
+        {
+          "case": "recovery-pool-152",
+          "start_sector": 42,
+          "plane_count": 26,
+          "minimum_plane_distance": 0.13462495803833008,
+          "radius_clearance": 0.06962495803833008,
+          "maximum_rounding_allowance": 1.3120931198191252e-05,
+          "conservative_radius_clearance": 0.069612193304677,
+          "center_inside": true,
+          "sphere_inside": true,
+          "yaw_trials": 4
+        },
+        {
+          "case": "recovery-pool-215",
+          "start_sector": 42,
+          "plane_count": 26,
+          "minimum_plane_distance": 0.11399996280670166,
+          "radius_clearance": 0.04899996280670166,
+          "maximum_rounding_allowance": 1.3107341376528616e-05,
+          "conservative_radius_clearance": 0.048987183320891844,
+          "center_inside": true,
+          "sphere_inside": true,
+          "yaw_trials": 4
+        },
+        {
+          "case": "recovery-pool-251",
+          "start_sector": 42,
+          "plane_count": 26,
+          "minimum_plane_distance": 0.12699997425079346,
+          "radius_clearance": 0.061999974250793455,
+          "maximum_rounding_allowance": 1.3134163502915247e-05,
+          "conservative_radius_clearance": 0.06198720406332306,
+          "center_inside": true,
+          "sphere_inside": true,
+          "yaw_trials": 4
+        },
+        {
+          "case": "recovery-pool-512",
+          "start_sector": 42,
+          "plane_count": 26,
+          "minimum_plane_distance": 0.0911250114440918,
+          "radius_clearance": 0.026125011444091795,
+          "maximum_rounding_allowance": 1.3147038120170221e-05,
+          "conservative_radius_clearance": 0.02611221559683008,
+          "center_inside": true,
+          "sphere_inside": true,
+          "yaw_trials": 4
+        },
+        {
+          "case": "recovery-pool-521",
+          "start_sector": 42,
+          "plane_count": 26,
+          "minimum_plane_distance": 0.09437501430511475,
+          "radius_clearance": 0.029375014305114744,
+          "maximum_rounding_allowance": 1.3153743630450583e-05,
+          "conservative_radius_clearance": 0.029362220782437887,
+          "center_inside": true,
+          "sphere_inside": true,
+          "yaw_trials": 4
+        }
+      ],
+      "limitation": "Geometry-only sufficient check; no controller outcomes or reachability inferred."
+    }
+  },
+  "progress_criterion": {
+    "fresh_net_additional_landings_minimum": 4,
+    "fresh_positions_with_positive_net_minimum": 3,
+    "new_original_shaft_failures_among_v2_successes_maximum": 0,
+    "complete_paired_evidence_required": true,
+    "interpretation": "Predeclared engineering signal for same-pool transfer, not statistical significance or automatic production promotion."
+  },
+  "diagnostic_sets": [
+    "Original27 starts",
+    "Prior16 perturbation starts"
+  ],
+  "limitations": [
+    "Only two original training pool poses generate correction branches.",
+    "Successful teacher suffix filtering excludes states the teacher cannot recover.",
+    "Six fresh nearby pool positions and their headings remain a clustered known-map test.",
+    "One supervised refit, no online neural reinforcement learning or multiplayer qualification."
+  ]
+}

@@ -22,7 +22,7 @@ import threading
 import time
 
 from aiohttp import ClientSession, ClientTimeout, WSMsgType, web
-from bots.companion import ACK, HEADER, Hub, create_private_directory
+from bots.companion import ACK, HEADER, KINDS, LILY_COMMANDS, LILY_EVENTS, UINT_MAX, Hub, create_private_directory
 
 HERE = Path(__file__).resolve().parent
 ASSETS = ("resource/Res1hi.gob", "resource/Res2.gob", "resource/jk_.cd", "episode/JK1MP.gob")
@@ -113,7 +113,7 @@ def child_relay(path):
 
 
 class Host:
-    def __init__(self, data, engine, runtime, room, model, chat, mode="ff-guns"):
+    def __init__(self, data, engine, runtime, room, model, chat, mode="ff-guns", *, adaptive_lily=False):
         if mode not in ARENA_MODES:
             raise ValueError("Unknown arena mode. Choose one of " + ", ".join(ARENA_MODES) + ".")
         self.mode = mode
@@ -132,7 +132,8 @@ class Host:
         create_private_directory(self.runtime, parents=True)
         self.secrets_dir = self.runtime/"engines"
         create_private_directory(self.secrets_dir)
-        self.hub = Hub(self.runtime, SEATS, 0, allow_chat=chat, channel_factory=browser_pair)
+        self.hub = Hub(self.runtime, SEATS, 0, allow_chat=chat, channel_factory=browser_pair,
+                       experimental_ids=("lily",) if adaptive_lily else ())
         self.tokens = {ident: secrets.token_urlsafe(32) for ident in SEATS}
         self.channels = {ident:self.hub.open_browser_channel(ident) for ident in SEATS}
         self.seats = {ident: {"instance":None,"cookie":None,"poll":0., "seq_base":0,"world_base":0,
@@ -147,6 +148,7 @@ class Host:
         for ident,token in self.tokens.items():
             private_json(self.secrets_dir/(ident+".json"),{"version":1,"id":ident,"url":self.url,"token":token})
         private_json(self.runtime/"run.json", {"url":self.url,"status":self.url+"/status","room":self.room,"mode":self.mode,
+            "adaptive_lily":self.hub.bots["lily"].adaptive_lily,
             "pages":{i:self.url+"/bot/"+i for i in SEATS}, "companion":self.hub.url,
             "engine_credentials":"engines","companion_credentials":"companion"})
 
@@ -245,11 +247,12 @@ class Host:
             if ident == "lily" and seat["instance"]:
                 self.abort_capture("Recording browser restarted.")
             # Make frames from a restarted WASM instance advance monotonically
-            # across its reset. The hub's first new state invalidates old leases.
+            # across its reset. Revoke the old ticket before the new browser polls.
             self.hub.pump()
             with self.hub.lock:
                 bot = self.hub.bots[ident]
                 seat.update(world_base=bot.world,seq_base=bot.event_seq)
+                bot.reset_state()
             self.channels[ident].outgoing_frames()
             seat.update(instance=body["instance"],cookie=secrets.token_urlsafe(24),stage="boot",graphics=None,view=None)
         seat["poll"] = time.monotonic()
@@ -258,6 +261,7 @@ class Host:
             model,sound="dlil.3do","dlil.snd"
         response = web.json_response({"id":ident,"assets":[{"path":path,"url":f"/engine/{ident}/assets/{n}"} for n,(path,_) in enumerate(self.assets)],
             "mod":self.model,"env":{"JK_BOT_WEB_ROLE":"host" if ident=="lily" else "join","JK_BOT_WEB_ROOM":self.room,"JK_BOT_WEB_MODE":self.mode,
+                **({"JK_BOT_LILY":"1"} if self.hub.bots[ident].adaptive_lily else {}),
                 "JK_BOT_WEB_NAME":name,"JK_BOT_WEB_MODEL":model,"JK_BOT_WEB_SOUND":sound,
                 "JK_BOT_WEB_SABER_COLOR":"red" if ident=="lily" else "green",
                 "JK_BOT_TRACE_FORCE":"1" if os.environ.get("JK_BOT_TRACE_FORCE")=="1" else "0",
@@ -296,11 +300,13 @@ class Host:
             if not HEADER.size<=len(frame)<=512:
                 raise web.HTTPBadRequest()
             magic,ver,kind,length,world,life,seq=HEADER.unpack_from(frame)
-            if magic!=b"JKCP" or ver!=1 or kind not in (1,2,3,4) or length!=len(frame)-20:
+            allowed = kind in (1, 2, 3, 4) or (self.hub.bots[ident].adaptive_lily and kind in LILY_EVENTS)
+            if (magic != b"JKCP" or ver != 1 or not allowed or length != len(frame) - HEADER.size
+                    or not world or not life or not seq):
                 raise web.HTTPBadRequest()
-            struct.pack_into("<I",frame,8,(world+seat["world_base"])&0xffffffff)
+            struct.pack_into("<I",frame,8,(world - 1 + seat["world_base"]) % UINT_MAX + 1)
             if kind!=ACK:
-                struct.pack_into("<I",frame,16,(seq+seat["seq_base"])&0xffffffff)
+                struct.pack_into("<I",frame,16,(seq - 1 + seat["seq_base"]) % UINT_MAX + 1)
             frames.append(bytes(frame))
         if "graphics" in msg:
             info=msg["graphics"]
@@ -328,10 +334,12 @@ class Host:
         result=[]
         for frame in self.channels[ident].outgoing_frames():
             raw=bytearray(frame)
-            world=struct.unpack_from("<I",raw,8)[0]
-            if world<=seat["world_base"]:
+            _, _, kind, _, world, life, _ = HEADER.unpack_from(raw)
+            bot = self.hub.bots[ident]
+            if (bot.state is None or (world, life) != (bot.world, bot.life)
+                    or kind not in KINDS.values() or kind in LILY_COMMANDS.values() and not bot.adaptive_lily):
                 continue
-            struct.pack_into("<I",raw,8,world-seat["world_base"])
+            struct.pack_into("<I", raw, 8, (world - 1 - seat["world_base"]) % UINT_MAX + 1)
             result.append(base64.b64encode(raw).decode())
         return web.json_response({"frames":result,"server_mono":self.hub.clock()})
 
@@ -343,7 +351,7 @@ class Host:
         with self.hub.lock:
             for ident,seat in self.seats.items():
                 b=self.hub.bots[ident]
-                active=bool(b.state and now-b.observed<=3 and b.world>seat["world_base"])
+                active=bool(b.state and now-b.observed<=3)
                 seats[ident]={"joined":active,"world_epoch":b.world,"life_epoch":b.life,
                     "self":None if not active else {k:b.state[k] for k in ("slot","net_id","position","health","kills","deaths","mode")},
                     "graphics":seat["graphics"],"view":seat["view"],"stage":seat["stage"],"browser_dropped":seat["dropped"]}
@@ -458,7 +466,8 @@ def relay_ready_port(line):
 
 async def serve(args):
     run=Path(args.runtime)/("arena-"+time.strftime("%Y%m%d-%H%M%S")+"-"+secrets.token_hex(4))
-    host=Host(args.data,args.engine_dir,run,args.room,args.model_gob,args.companion_chat,mode=args.mode)
+    host=Host(args.data,args.engine_dir,run,args.room,args.model_gob,args.companion_chat,mode=args.mode,
+              adaptive_lily=args.adaptive_lily)
     runner=web.AppRunner(host.app(),access_log=None,shutdown_timeout=1.)
     proc=drain=None
     try:
@@ -523,6 +532,7 @@ def main(argv=None):
     p.add_argument("--port",type=int,default=0)
     p.add_argument("--mode", choices=ARENA_MODES, default="ff-guns", help="Force profile and bot weapon policy on Canyon Oasis.")
     p.add_argument("--room",default="Canyon_"+secrets.token_hex(4))
+    p.add_argument("--adaptive-lily",action="store_true",help="Enable experimental controls on the Lily seat.")
     p.add_argument("--companion-chat",action="store_true")
     args=p.parse_args(argv)
     if args.relay_child:

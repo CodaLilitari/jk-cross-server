@@ -1,0 +1,1475 @@
+{
+  "schema": 1,
+  "scope": "Physical native input, same-session executable policy replacement and an unpromoted movement cloning experiment.",
+  "date": "2026-11-22",
+  "live_multiplayer_tested": false,
+  "build_receipt": "qa/lily-adaptive-build.json",
+  "physical_probes": [
+    {
+      "schema": 1,
+      "probe": "stock-physics live JKCP motor control and executable replacement",
+      "provenance": {
+        "source_hashes": {
+          "src/AI/jkBot.c": "6913e05c649a625da9f15352ad62eca21f42d65158ba3501b64162c5e0774425",
+          "src/AI/jkBot.h": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
+          "src/AI/jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df",
+          "src/AI/jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+          "src/AI/jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
+          "src/AI/jkBotCompanion.inc": "d4f43db307bbf4df2cd9669daff5d2a4f5a56660a83e236b2e070252cb082d7f",
+          "src/AI/jkBotForce.inc": "02a2625e4a9386ef8d20d976e14113e2cf47ba82047ee99a935f6db0d432b2e7",
+          "src/AI/jkBotHearing.inc": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+          "src/AI/jkBotLily.inc": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
+          "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+          "src/AI/jkBotNavigate.inc": "34f621368b9626ca7c771f58c0b4c381bb9afd0f9298fc5ca27fdca8018487fa",
+          "src/AI/jkBotNavigation.inc": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
+          "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+          "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+          "src/AI/jkBotWaterExit.inc": "2d1b36d679222c48936b8d4e920991da87fda6e536010e783ea54232dc241383",
+          "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+          "src/Engine/sithCollision.c": "ac54301bdf0da274af87ff6c8d20e6905c5688f92984f0f5d7321ea0235d4c63",
+          "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+          "src/Engine/sithPhysics.c": "bfd0e3e70ad7e88162805617744f1536d7bae0a4ee08b18c58bc673755d4796b",
+          "src/Gameplay/sithPlayerActions.c": "f8f8e156acdbaa251f1a10cafe06437b204db20034add746decaa5ab805d717c",
+          "src/General/stdMath.c": "ed3f12a57d4454ad8731ba94a68f42c5f983631e5540da7649cd4488a7c75995",
+          "src/Primitives/rdMath.c": "b3587b90480a02df9178779f424441f6111d87da470a8e17bb72fd5ad026539a",
+          "src/Primitives/rdMatrix.c": "0f0889fd0c9ce05fb768062061d4435b1df455fd6e16d629ea84e435581d1658",
+          "src/Primitives/rdVector.c": "097638a3da4264865ed16e95a486f85a69c415c12c17781e3bcf2a0802a9edca",
+          "src/World/sithActor.c": "8ff7b7025d7318c9e53a797c95d125274b5da707aa4b939aac8a65cbdb532e71",
+          "src/World/sithSector.c": "0a6e9cb0113e2d602a5550ceb7c2ffd203e81d6b385099729cede2edbb3e3e17",
+          "src/World/sithThing.c": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec"
+        },
+        "policy_hash": "16c43f6cd74950261bea092553ae72707588d3175befefd49c218d8b8339ba91",
+        "executable_sha256": "fa2b5277ff3657a05258d6fea878e02ba1378a58c001d0606c5f6a4b3fb338bd",
+        "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc"
+      },
+      "policy_hashes": [
+        "c069741d7483b12592bdd40b9697348fadc6f79e9f20b409a6903e3e7c27791a",
+        "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5"
+      ],
+      "checks": {
+        "engine_landed": false,
+        "controller_exited_cleanly": true,
+        "both_policies_activated": true,
+        "both_policies_applied_inputs": true,
+        "invalid_candidate_rejected": true,
+        "baseline_resumed_after_controller_stop": true
+      },
+      "activated": [
+        {
+          "policy_hash": "c069741d7483b12592bdd40b9697348fadc6f79e9f20b409a6903e3e7c27791a",
+          "previous_hash": null,
+          "monotonic_seconds": 81691.815760536
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "previous_hash": "c069741d7483b12592bdd40b9697348fadc6f79e9f20b409a6903e3e7c27791a",
+          "monotonic_seconds": 81693.790460384
+        }
+      ],
+      "observed_motor_samples": {
+        "c069741d7483b12592bdd40b9697348fadc6f79e9f20b409a6903e3e7c27791a": 25,
+        "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5": 304
+      },
+      "outcomes": [
+        {
+          "policy_hash": "c069741d7483b12592bdd40b9697348fadc6f79e9f20b409a6903e3e7c27791a",
+          "action_seq": 1,
+          "status": "playback",
+          "physical_success": null,
+          "duration_seconds": 0.5783445029956056,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "c069741d7483b12592bdd40b9697348fadc6f79e9f20b409a6903e3e7c27791a",
+          "action_seq": 2,
+          "status": "playback",
+          "physical_success": null,
+          "duration_seconds": 0.5893551240005763,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "c069741d7483b12592bdd40b9697348fadc6f79e9f20b409a6903e3e7c27791a",
+          "action_seq": 3,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5950909640087048,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 4,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5595216169895139,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 5,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5965480620070593,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 6,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5585648410051363,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 7,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5523201809992315,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 8,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5797876970027573,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 9,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5594357079971815,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 10,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5840514239971526,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 11,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5797628760046791,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 12,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5438907920033671,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 13,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5910724619898247,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 14,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5687920289929025,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 15,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5989623880013824,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 16,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5674420049908804,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 17,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5650690809998196,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 18,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5873057680000784,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 19,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5631445149920182,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 20,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5739857839944307,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 21,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.6043003829981899,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 22,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5999483419873286,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 23,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5693025840009796,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 24,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5860876790102338,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 25,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5907729780010413,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 26,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5948673550010426,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 27,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5785799879959086,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 28,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5915195710113039,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 29,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5635279410053045,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 30,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5594321969983866,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 31,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5726975860015955,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 32,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5976940019900212,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 33,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.6313336620078189,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 34,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5965706630086061,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 35,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5737992619979195,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 36,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5844838899938622,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 37,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5574988819862483,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 38,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5917440970079042,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "36276bd308d3e10da6fdbc170fa819b3cae7fb971ef4350e7de1106f81e4aff5",
+          "action_seq": 39,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5849921359913424,
+          "applied_ms": 574
+        }
+      ],
+      "limitations": [
+        "No rendering, multiplayer opponents, inventory COG execution or Force effects in this fixture.",
+        "The two probe policies deliberately test control authority; they are not competitive candidates.",
+        "A short observed displacement is distinct from successful water escape or improved game performance."
+      ],
+      "trial": "lily-live-physics-01",
+      "trace_sha256": "015b4029a8e10cac0fb19f3b86981011a7db4a30ee6580dab2cd0a98e1173ad7",
+      "summary": {
+        "completed_displacement_goals": 37,
+        "censored_or_unscored": 2
+      }
+    },
+    {
+      "schema": 1,
+      "probe": "stock-physics live JKCP motor control and executable replacement",
+      "provenance": {
+        "source_hashes": {
+          "src/AI/jkBot.c": "6913e05c649a625da9f15352ad62eca21f42d65158ba3501b64162c5e0774425",
+          "src/AI/jkBot.h": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
+          "src/AI/jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df",
+          "src/AI/jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+          "src/AI/jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
+          "src/AI/jkBotCompanion.inc": "d4f43db307bbf4df2cd9669daff5d2a4f5a56660a83e236b2e070252cb082d7f",
+          "src/AI/jkBotForce.inc": "02a2625e4a9386ef8d20d976e14113e2cf47ba82047ee99a935f6db0d432b2e7",
+          "src/AI/jkBotHearing.inc": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+          "src/AI/jkBotLily.inc": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
+          "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+          "src/AI/jkBotNavigate.inc": "34f621368b9626ca7c771f58c0b4c381bb9afd0f9298fc5ca27fdca8018487fa",
+          "src/AI/jkBotNavigation.inc": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
+          "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+          "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+          "src/AI/jkBotWaterExit.inc": "2d1b36d679222c48936b8d4e920991da87fda6e536010e783ea54232dc241383",
+          "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+          "src/Engine/sithCollision.c": "ac54301bdf0da274af87ff6c8d20e6905c5688f92984f0f5d7321ea0235d4c63",
+          "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+          "src/Engine/sithPhysics.c": "bfd0e3e70ad7e88162805617744f1536d7bae0a4ee08b18c58bc673755d4796b",
+          "src/Gameplay/sithPlayerActions.c": "f8f8e156acdbaa251f1a10cafe06437b204db20034add746decaa5ab805d717c",
+          "src/General/stdMath.c": "ed3f12a57d4454ad8731ba94a68f42c5f983631e5540da7649cd4488a7c75995",
+          "src/Primitives/rdMath.c": "b3587b90480a02df9178779f424441f6111d87da470a8e17bb72fd5ad026539a",
+          "src/Primitives/rdMatrix.c": "0f0889fd0c9ce05fb768062061d4435b1df455fd6e16d629ea84e435581d1658",
+          "src/Primitives/rdVector.c": "097638a3da4264865ed16e95a486f85a69c415c12c17781e3bcf2a0802a9edca",
+          "src/World/sithActor.c": "8ff7b7025d7318c9e53a797c95d125274b5da707aa4b939aac8a65cbdb532e71",
+          "src/World/sithSector.c": "0a6e9cb0113e2d602a5550ceb7c2ffd203e81d6b385099729cede2edbb3e3e17",
+          "src/World/sithThing.c": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec"
+        },
+        "policy_hash": "16c43f6cd74950261bea092553ae72707588d3175befefd49c218d8b8339ba91",
+        "executable_sha256": "836a63d830de60d1627ca22214265deca9a42e041f4183c50a5269fdc250b54a",
+        "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc"
+      },
+      "policy_hashes": [
+        "d674d52a8393edce2f276ac86b632b4d8a5027c2f6dc93ae9796b332438a105c",
+        "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb"
+      ],
+      "checks": {
+        "engine_landed": true,
+        "controller_exited_cleanly": true,
+        "both_policies_activated": true,
+        "both_policies_applied_inputs": true,
+        "invalid_candidate_rejected": true,
+        "baseline_resumed_after_controller_stop": true
+      },
+      "activated": [
+        {
+          "policy_hash": "d674d52a8393edce2f276ac86b632b4d8a5027c2f6dc93ae9796b332438a105c",
+          "previous_hash": null,
+          "monotonic_seconds": 81754.411925781
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "previous_hash": "d674d52a8393edce2f276ac86b632b4d8a5027c2f6dc93ae9796b332438a105c",
+          "monotonic_seconds": 81762.137200445
+        }
+      ],
+      "observed_motor_samples": {
+        "d674d52a8393edce2f276ac86b632b4d8a5027c2f6dc93ae9796b332438a105c": 25,
+        "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb": 228
+      },
+      "outcomes": [
+        {
+          "policy_hash": "d674d52a8393edce2f276ac86b632b4d8a5027c2f6dc93ae9796b332438a105c",
+          "action_seq": 1,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5952989719953621,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "d674d52a8393edce2f276ac86b632b4d8a5027c2f6dc93ae9796b332438a105c",
+          "action_seq": 2,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5877255279920064,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "d674d52a8393edce2f276ac86b632b4d8a5027c2f6dc93ae9796b332438a105c",
+          "action_seq": 3,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5544816670008004,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 4,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5886965169920586,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 5,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5831658149982104,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 6,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5818956989969593,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 7,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5792189680068986,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 8,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5845968530047685,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 9,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5518283090059413,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 10,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5674446580087533,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 11,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5955097660043975,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 12,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5704959149879869,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 13,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5799972870008787,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 14,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5600846429879311,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 15,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5462744209944503,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 16,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5803430180094438,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 17,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5434921810083324,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 18,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5997110699972836,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 19,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5785298310074722,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 20,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5673616989952279,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 21,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5676816219929606,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 22,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5921827489946736,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 23,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5984861659962917,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 24,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5784596019948367,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 25,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.579015673007234,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 26,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.592437092011096,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 27,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5997185750020435,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 28,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5981282759894384,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 29,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.6467549759981921,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 30,
+          "status": "playback",
+          "physical_success": null,
+          "duration_seconds": 0.5851603570044972,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "2da9353e4f72512fd1da324730bc1a0dc46071aaca45ddd80224511c7fcc3abb",
+          "action_seq": 31,
+          "status": "supervisor_exit",
+          "physical_success": null,
+          "duration_seconds": 0.08346491100382991,
+          "applied_ms": null
+        }
+      ],
+      "limitations": [
+        "No rendering, multiplayer opponents, inventory COG execution or Force effects in this fixture.",
+        "The two probe policies deliberately test control authority; they are not competitive candidates.",
+        "A short observed displacement is distinct from successful water escape or improved game performance."
+      ],
+      "trial": "lily-live-physics-02",
+      "trace_sha256": "66c6765b5fdf140cb36ff4656271faa388e80801a3e65acd93f9b706e81c9b0c",
+      "summary": {
+        "completed_displacement_goals": 29,
+        "censored_or_unscored": 2
+      }
+    },
+    {
+      "schema": 1,
+      "probe": "stock-physics live JKCP motor control and executable replacement",
+      "provenance": {
+        "source_hashes": {
+          "src/AI/jkBot.c": "6913e05c649a625da9f15352ad62eca21f42d65158ba3501b64162c5e0774425",
+          "src/AI/jkBot.h": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
+          "src/AI/jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df",
+          "src/AI/jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+          "src/AI/jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
+          "src/AI/jkBotCompanion.inc": "d4f43db307bbf4df2cd9669daff5d2a4f5a56660a83e236b2e070252cb082d7f",
+          "src/AI/jkBotForce.inc": "02a2625e4a9386ef8d20d976e14113e2cf47ba82047ee99a935f6db0d432b2e7",
+          "src/AI/jkBotHearing.inc": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+          "src/AI/jkBotLily.inc": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
+          "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+          "src/AI/jkBotNavigate.inc": "34f621368b9626ca7c771f58c0b4c381bb9afd0f9298fc5ca27fdca8018487fa",
+          "src/AI/jkBotNavigation.inc": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
+          "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+          "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+          "src/AI/jkBotWaterExit.inc": "2d1b36d679222c48936b8d4e920991da87fda6e536010e783ea54232dc241383",
+          "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+          "src/Engine/sithCollision.c": "ac54301bdf0da274af87ff6c8d20e6905c5688f92984f0f5d7321ea0235d4c63",
+          "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+          "src/Engine/sithPhysics.c": "bfd0e3e70ad7e88162805617744f1536d7bae0a4ee08b18c58bc673755d4796b",
+          "src/Gameplay/sithPlayerActions.c": "f8f8e156acdbaa251f1a10cafe06437b204db20034add746decaa5ab805d717c",
+          "src/General/stdMath.c": "ed3f12a57d4454ad8731ba94a68f42c5f983631e5540da7649cd4488a7c75995",
+          "src/Primitives/rdMath.c": "b3587b90480a02df9178779f424441f6111d87da470a8e17bb72fd5ad026539a",
+          "src/Primitives/rdMatrix.c": "0f0889fd0c9ce05fb768062061d4435b1df455fd6e16d629ea84e435581d1658",
+          "src/Primitives/rdVector.c": "097638a3da4264865ed16e95a486f85a69c415c12c17781e3bcf2a0802a9edca",
+          "src/World/sithActor.c": "8ff7b7025d7318c9e53a797c95d125274b5da707aa4b939aac8a65cbdb532e71",
+          "src/World/sithSector.c": "0a6e9cb0113e2d602a5550ceb7c2ffd203e81d6b385099729cede2edbb3e3e17",
+          "src/World/sithThing.c": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec"
+        },
+        "policy_hash": "16c43f6cd74950261bea092553ae72707588d3175befefd49c218d8b8339ba91",
+        "executable_sha256": "c96d844cbcdf7f6828bf920b5f1d591a5b90b49baae7451964fa5e9c3c45fcc6",
+        "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc"
+      },
+      "restart_readback": {
+        "matched": true,
+        "method": "After the live CLI exited, independent supervisors and workers used the identical captured pose and policy bytes. Validated decisions were captured before transport.",
+        "comparison_policy_sha256": "db60dd528ed8ef34ff76c5ad32d64bfc1a878d423ec4d2af6ea667a4f102d92e",
+        "fresh_database_decision": {
+          "skill": "sidestep",
+          "steps": [
+            {
+              "duration_ms": 250,
+              "strafe": 0.6
+            }
+          ],
+          "estimate": {
+            "attempts": 0,
+            "trials": 0,
+            "wins": 0,
+            "probability": 0.5,
+            "mean_seconds": null
+          }
+        },
+        "reopened_database_decision": {
+          "skill": "forward-probe",
+          "steps": [
+            {
+              "duration_ms": 250,
+              "forward": 0.6
+            }
+          ],
+          "estimate": {
+            "attempts": 3,
+            "trials": 3,
+            "wins": 3,
+            "probability": 0.8,
+            "mean_seconds": 0.5744281039951602
+          }
+        },
+        "skill": "forward-probe",
+        "source_sample_id": 86,
+        "action_seq": 1,
+        "key_sha256": "33fff3acf0b83634ee5c05d932360665af2a8570bf1cba1933e4343603f7363e",
+        "trace_wins": 3,
+        "trace_trials": 3,
+        "worker_context_estimate": {
+          "attempts": 3,
+          "trials": 3,
+          "wins": 3,
+          "probability": 0.8,
+          "mean_seconds": 0.5744281039951602
+        }
+      },
+      "policy_hashes": [
+        "47f4a0cd7f2f419cbbc0eb7fef03bdf6a2238b436f530afced423032b7fd1ff8",
+        "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8"
+      ],
+      "checks": {
+        "engine_landed": true,
+        "controller_exited_cleanly": true,
+        "both_policies_activated": true,
+        "both_policies_applied_inputs": true,
+        "invalid_candidate_rejected": true,
+        "baseline_resumed_after_controller_stop": true,
+        "real_outcomes_in_restarted_worker_context": true
+      },
+      "activated": [
+        {
+          "policy_hash": "47f4a0cd7f2f419cbbc0eb7fef03bdf6a2238b436f530afced423032b7fd1ff8",
+          "previous_hash": null,
+          "monotonic_seconds": 82374.506472424
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "previous_hash": "47f4a0cd7f2f419cbbc0eb7fef03bdf6a2238b436f530afced423032b7fd1ff8",
+          "monotonic_seconds": 82382.238191114
+        }
+      ],
+      "observed_motor_samples": {
+        "47f4a0cd7f2f419cbbc0eb7fef03bdf6a2238b436f530afced423032b7fd1ff8": 25,
+        "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8": 224
+      },
+      "outcomes": [
+        {
+          "policy_hash": "47f4a0cd7f2f419cbbc0eb7fef03bdf6a2238b436f530afced423032b7fd1ff8",
+          "action_seq": 1,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5579921689932235,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "47f4a0cd7f2f419cbbc0eb7fef03bdf6a2238b436f530afced423032b7fd1ff8",
+          "action_seq": 2,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5808502489962848,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "47f4a0cd7f2f419cbbc0eb7fef03bdf6a2238b436f530afced423032b7fd1ff8",
+          "action_seq": 3,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5546833039988996,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 4,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.720873580998159,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 5,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5964184119948186,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 6,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5554978529980872,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 7,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5945807669922942,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 8,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5572483860014472,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 9,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5871106649865396,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 10,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5610618959908606,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 11,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5620186390005983,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 12,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5627473250060575,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 13,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5644627660076367,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 14,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5933062419935595,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 15,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5955310319986893,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 16,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5628756340011023,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 17,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5953738820098806,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 18,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5844418939959724,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 19,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5563956940022763,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 20,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5838882370007923,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 21,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5907374590024119,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 22,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5976546910096658,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 23,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.590123168003629,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 24,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5990064130019164,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 25,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5898318709951127,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 26,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5956968009995762,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 27,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5908609220059589,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 28,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5906291550054448,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 29,
+          "status": "motor_goal_reached",
+          "physical_success": true,
+          "duration_seconds": 0.5723050399974454,
+          "applied_ms": 574
+        },
+        {
+          "policy_hash": "289f97130909f6db5fd34e0d82edd40afc89d0e97d937c0692f84583f6de63b8",
+          "action_seq": 30,
+          "status": "supervisor_exit",
+          "physical_success": null,
+          "duration_seconds": 0.561048565999954,
+          "applied_ms": null
+        }
+      ],
+      "limitations": [
+        "No rendering, multiplayer opponents, inventory COG execution or Force effects in this fixture.",
+        "The two probe policies deliberately test control authority; they are not competitive candidates.",
+        "A short observed displacement is distinct from successful water escape or improved game performance."
+      ],
+      "trial": "lily-live-physics-03",
+      "trace_sha256": "4f4e69018fb9662bcc1717821cd621dfc6aacc71ed6c3e5c3a969bddfa01a29b",
+      "summary": {
+        "completed_displacement_goals": 29,
+        "censored_or_unscored": 1,
+        "accepted_training_samples": 241,
+        "used_to_fit_candidate": false
+      }
+    }
+  ],
+  "baseline_demonstrations": {
+    "schema": 1,
+    "controller": "native-baseline",
+    "provenance": {
+      "source_hashes": {
+        "src/AI/jkBot.c": "6913e05c649a625da9f15352ad62eca21f42d65158ba3501b64162c5e0774425",
+        "src/AI/jkBot.h": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
+        "src/AI/jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df",
+        "src/AI/jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+        "src/AI/jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
+        "src/AI/jkBotCompanion.inc": "d4f43db307bbf4df2cd9669daff5d2a4f5a56660a83e236b2e070252cb082d7f",
+        "src/AI/jkBotForce.inc": "02a2625e4a9386ef8d20d976e14113e2cf47ba82047ee99a935f6db0d432b2e7",
+        "src/AI/jkBotHearing.inc": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+        "src/AI/jkBotLily.inc": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
+        "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+        "src/AI/jkBotNavigate.inc": "34f621368b9626ca7c771f58c0b4c381bb9afd0f9298fc5ca27fdca8018487fa",
+        "src/AI/jkBotNavigation.inc": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
+        "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+        "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+        "src/AI/jkBotWaterExit.inc": "2d1b36d679222c48936b8d4e920991da87fda6e536010e783ea54232dc241383",
+        "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+        "src/Engine/sithCollision.c": "ac54301bdf0da274af87ff6c8d20e6905c5688f92984f0f5d7321ea0235d4c63",
+        "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+        "src/Engine/sithPhysics.c": "bfd0e3e70ad7e88162805617744f1536d7bae0a4ee08b18c58bc673755d4796b",
+        "src/Gameplay/sithPlayerActions.c": "f8f8e156acdbaa251f1a10cafe06437b204db20034add746decaa5ab805d717c",
+        "src/General/stdMath.c": "ed3f12a57d4454ad8731ba94a68f42c5f983631e5540da7649cd4488a7c75995",
+        "src/Primitives/rdMath.c": "b3587b90480a02df9178779f424441f6111d87da470a8e17bb72fd5ad026539a",
+        "src/Primitives/rdMatrix.c": "0f0889fd0c9ce05fb768062061d4435b1df455fd6e16d629ea84e435581d1658",
+        "src/Primitives/rdVector.c": "097638a3da4264865ed16e95a486f85a69c415c12c17781e3bcf2a0802a9edca",
+        "src/World/sithActor.c": "8ff7b7025d7318c9e53a797c95d125274b5da707aa4b939aac8a65cbdb532e71",
+        "src/World/sithSector.c": "0a6e9cb0113e2d602a5550ceb7c2ffd203e81d6b385099729cede2edbb3e3e17",
+        "src/World/sithThing.c": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec"
+      },
+      "policy_hash": "16c43f6cd74950261bea092553ae72707588d3175befefd49c218d8b8339ba91",
+      "executable_sha256": "7ec6c7366b93b5db7a04ab698b683fa6d0a8c6fe85d45357443ab4449975c7b7",
+      "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc"
+    },
+    "cases_sha256": "2ae401185bdeb36944ea15fcebc72d42098920c779e424b4778dd7f9a5c0a67e",
+    "episodes": [
+      {
+        "episode_id": "boba-190.017-yaw-90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 5.9000001,
+        "samples": 144,
+        "trace_sha256": "934f1f9ea5e21336a49613af02d08a019fa30c3a2aceca79700d8b30b4734f8d"
+      },
+      {
+        "episode_id": "boba-190.017-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 5.9000001,
+        "samples": 144,
+        "trace_sha256": "ba603614553c51ec34323877b38164b3a7c6e299b84a1580dbace18974247694"
+      },
+      {
+        "episode_id": "boba-190.017-yaw90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 5.9000001,
+        "samples": 144,
+        "trace_sha256": "78468b80ae57e74a51f41128b8420bc779fc1cc4ea7422f845cab63ae3083e0a"
+      },
+      {
+        "episode_id": "boba-190.017-yaw180",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 5.9000001,
+        "samples": 144,
+        "trace_sha256": "15d09892a3481841a30799e975c7de66d8f5c5ee4fdea57a6782dbd9c2d23f2c"
+      },
+      {
+        "episode_id": "boba-200.077-yaw-90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 5.13333321,
+        "samples": 70,
+        "trace_sha256": "c92e538b35a5e0b2df2cf42c612c99fbca1f80a5aef1bb405b1b4d3d9b4e2ba9"
+      },
+      {
+        "episode_id": "boba-200.077-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 5.20666647,
+        "samples": 71,
+        "trace_sha256": "d7877003156a773f8cece4313cf4603d3660cd7cf80dae4b0634900f678f3007"
+      },
+      {
+        "episode_id": "boba-200.077-yaw90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 5.13333321,
+        "samples": 70,
+        "trace_sha256": "865fea3f7bb495736133e85f958e777a9c892e7038c6ce67e38f452e38ae1465"
+      },
+      {
+        "episode_id": "boba-200.077-yaw180",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 5.13333321,
+        "samples": 70,
+        "trace_sha256": "06ab036ac9b78ab60898de63a1df08a7cdd473005ec9f2ef53fb8794df183c53"
+      },
+      {
+        "episode_id": "boba-210.147-yaw-90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 21.126667,
+        "samples": 243,
+        "trace_sha256": "f591563fcd3875e870256995bd09eb2e2eba699aec65291dbc92ebe41686ae43"
+      },
+      {
+        "episode_id": "boba-210.147-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 21.126667,
+        "samples": 243,
+        "trace_sha256": "952e5787ca8171f9c20373d7a18b90f5f44f9db7405b5228ec88d5596cf1a962"
+      },
+      {
+        "episode_id": "boba-210.147-yaw90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 21.126667,
+        "samples": 243,
+        "trace_sha256": "6dc7236acf899159507f9b73463f3102b4c9128db4ddd308d62d2d5c5c7bc1f7"
+      },
+      {
+        "episode_id": "boba-210.147-yaw180",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 21.126667,
+        "samples": 243,
+        "trace_sha256": "77a929c8bd4454f6ea031df338fce85224fbb38c4e4d9b4e836aba2c9cc66c33"
+      },
+      {
+        "episode_id": "boba-220.237-yaw-90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 3.38000011,
+        "samples": 49,
+        "trace_sha256": "f0cf428d9bf3babb908aa4e2982d9206b762dc669fb47c66243cb7e3d0242def"
+      },
+      {
+        "episode_id": "boba-220.237-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 3.38000011,
+        "samples": 49,
+        "trace_sha256": "283a3476757e5fcc355bb6d88d81ee7367300f7854516999f504eeee3b29a9f5"
+      },
+      {
+        "episode_id": "boba-220.237-yaw90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 3.38000011,
+        "samples": 49,
+        "trace_sha256": "be0d241b4677694deefa9fa0079558b35169fd85360f953d2ff357ae69382ffc"
+      },
+      {
+        "episode_id": "boba-220.237-yaw180",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 3.9333334,
+        "samples": 57,
+        "trace_sha256": "81af6244cd2c64675c588135025582944fad5196b460ecbcb9a70dac3f2758aa"
+      },
+      {
+        "episode_id": "boba-230.247-yaw-90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 8.25333309,
+        "samples": 162,
+        "trace_sha256": "1d257ce390e871b86ed4687612b1d0a7d4a810a4398ccc808dc12b85aca26709"
+      },
+      {
+        "episode_id": "boba-230.247-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 8.25333309,
+        "samples": 162,
+        "trace_sha256": "a453718fe6c83eadf0bf9a9b5dba47ed996d8af39c90f8767c4e006c7ff445f0"
+      },
+      {
+        "episode_id": "boba-230.247-yaw90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 8.25333309,
+        "samples": 162,
+        "trace_sha256": "7fe9878a7f4220158c4fef2ceed5051316c55ccfbab6d3ed633e925ad032f8e8"
+      },
+      {
+        "episode_id": "boba-230.247-yaw180",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 8.25333309,
+        "samples": 162,
+        "trace_sha256": "5bb61b30fb4292993b97f5266efd3b5757cb8c7d27f60172e5dff6e7874470a9"
+      },
+      {
+        "episode_id": "lily-232.797-yaw-90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 7.19333315,
+        "samples": 124,
+        "trace_sha256": "d2d27d47f5845226b6d81b495d04baa19f954fdd8dee305a19dd4932b9498ebd"
+      },
+      {
+        "episode_id": "lily-232.797-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 7.19333315,
+        "samples": 124,
+        "trace_sha256": "3016309c175a4cd9e46d404699147f12bafddb9cb91be3f005ccccc406d65bcd"
+      },
+      {
+        "episode_id": "lily-232.797-yaw90",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 7.19333315,
+        "samples": 124,
+        "trace_sha256": "ee21f102665f4739b4dc237d513c5a16a5c7ef474e167a760dd5722919ce61fc"
+      },
+      {
+        "episode_id": "lily-232.797-yaw180",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 7.19333315,
+        "samples": 124,
+        "trace_sha256": "b9fade58a1fbe5b83a497fdb1aa61ef3d93f8788ce6fa787cd7fd7596a127a01"
+      },
+      {
+        "episode_id": "pool-90-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 10.7200003,
+        "samples": 268,
+        "trace_sha256": "bce140cc834d2c8cce85993a00ca8623f0376412fdae50820088e8e79056774c"
+      },
+      {
+        "episode_id": "pool-100-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 29.9400005,
+        "samples": 379,
+        "trace_sha256": "4227a12c547cb4c8086644404a2393baca64a5c1b0ee7518e054d0a954ebb63d"
+      },
+      {
+        "episode_id": "pool-110-yaw0",
+        "returncode": 0,
+        "physical_success": true,
+        "duration_seconds": 12.5266666,
+        "samples": 482,
+        "trace_sha256": "2b6873b45c698bb8235041a17427559845b5607e6ada2e4923f15c1caf372685"
+      }
+    ],
+    "limitations": [
+      "Stock world physics and input handling, simplified actor fixture; no rendered multiplayer match.",
+      "Initial horizontal velocity is zero and the existing air-recovery timer is primed.",
+      "Successful demonstrations support behavior cloning, not a claim of stronger gameplay."
+    ]
+  },
+  "learned_model": {
+    "path": "bots/lily/models/water_bc_v1.json",
+    "policy": "bots/lily/policies/water_bc_v1.py",
+    "model_sha256": "2f860dc57aecaa78139cd79e66097c423d08b6c4b560f2072618474253fd19fc",
+    "metrics": {
+      "demonstrations": {
+        "count": 27,
+        "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+        "source_policy_hash": "16c43f6cd74950261bea092553ae72707588d3175befefd49c218d8b8339ba91",
+        "trace_sha256": [
+          "934f1f9ea5e21336a49613af02d08a019fa30c3a2aceca79700d8b30b4734f8d",
+          "ba603614553c51ec34323877b38164b3a7c6e299b84a1580dbace18974247694",
+          "78468b80ae57e74a51f41128b8420bc779fc1cc4ea7422f845cab63ae3083e0a",
+          "15d09892a3481841a30799e975c7de66d8f5c5ee4fdea57a6782dbd9c2d23f2c",
+          "c92e538b35a5e0b2df2cf42c612c99fbca1f80a5aef1bb405b1b4d3d9b4e2ba9",
+          "d7877003156a773f8cece4313cf4603d3660cd7cf80dae4b0634900f678f3007",
+          "865fea3f7bb495736133e85f958e777a9c892e7038c6ce67e38f452e38ae1465",
+          "06ab036ac9b78ab60898de63a1df08a7cdd473005ec9f2ef53fb8794df183c53",
+          "f591563fcd3875e870256995bd09eb2e2eba699aec65291dbc92ebe41686ae43",
+          "952e5787ca8171f9c20373d7a18b90f5f44f9db7405b5228ec88d5596cf1a962",
+          "6dc7236acf899159507f9b73463f3102b4c9128db4ddd308d62d2d5c5c7bc1f7",
+          "77a929c8bd4454f6ea031df338fce85224fbb38c4e4d9b4e836aba2c9cc66c33",
+          "f0cf428d9bf3babb908aa4e2982d9206b762dc669fb47c66243cb7e3d0242def",
+          "283a3476757e5fcc355bb6d88d81ee7367300f7854516999f504eeee3b29a9f5",
+          "be0d241b4677694deefa9fa0079558b35169fd85360f953d2ff357ae69382ffc",
+          "81af6244cd2c64675c588135025582944fad5196b460ecbcb9a70dac3f2758aa",
+          "1d257ce390e871b86ed4687612b1d0a7d4a810a4398ccc808dc12b85aca26709",
+          "a453718fe6c83eadf0bf9a9b5dba47ed996d8af39c90f8767c4e006c7ff445f0",
+          "7fe9878a7f4220158c4fef2ceed5051316c55ccfbab6d3ed633e925ad032f8e8",
+          "5bb61b30fb4292993b97f5266efd3b5757cb8c7d27f60172e5dff6e7874470a9",
+          "d2d27d47f5845226b6d81b495d04baa19f954fdd8dee305a19dd4932b9498ebd",
+          "3016309c175a4cd9e46d404699147f12bafddb9cb91be3f005ccccc406d65bcd",
+          "ee21f102665f4739b4dc237d513c5a16a5c7ef474e167a760dd5722919ce61fc",
+          "b9fade58a1fbe5b83a497fdb1aa61ef3d93f8788ce6fa787cd7fd7596a127a01",
+          "bce140cc834d2c8cce85993a00ca8623f0376412fdae50820088e8e79056774c",
+          "4227a12c547cb4c8086644404a2393baca64a5c1b0ee7518e054d0a954ebb63d",
+          "2b6873b45c698bb8235041a17427559845b5607e6ada2e4923f15c1caf372685"
+        ]
+      },
+      "epochs": 200,
+      "heldout_axis_mse": 0.1856510445630308,
+      "heldout_button_accuracy": 0.8588571428571429,
+      "heldout_episode_ids": [
+        "lily-232.797-yaw-90",
+        "lily-232.797-yaw0",
+        "lily-232.797-yaw180",
+        "lily-232.797-yaw90",
+        "pool-100-yaw0"
+      ],
+      "heldout_samples": 875,
+      "heldout_split_groups": [
+        "lily-232.797",
+        "pool-100"
+      ],
+      "initial_heldout_axis_mse": 0.3889614874889422,
+      "intended_use": "Unpromoted one-map movement cloning experiment; no demonstrated closed-loop or competitive improvement.",
+      "limitation": "Held-out action fit does not establish successful traversal or stronger gameplay.",
+      "method": "behavior_cloning",
+      "seed": 23,
+      "train_episode_ids": [
+        "boba-190.017-yaw-90",
+        "boba-190.017-yaw0",
+        "boba-190.017-yaw180",
+        "boba-190.017-yaw90",
+        "boba-200.077-yaw-90",
+        "boba-200.077-yaw0",
+        "boba-200.077-yaw180",
+        "boba-200.077-yaw90",
+        "boba-210.147-yaw-90",
+        "boba-210.147-yaw0",
+        "boba-210.147-yaw180",
+        "boba-210.147-yaw90",
+        "boba-220.237-yaw-90",
+        "boba-220.237-yaw0",
+        "boba-220.237-yaw180",
+        "boba-220.237-yaw90",
+        "boba-230.247-yaw-90",
+        "boba-230.247-yaw0",
+        "boba-230.247-yaw180",
+        "boba-230.247-yaw90",
+        "pool-110-yaw0",
+        "pool-90-yaw0"
+      ],
+      "train_samples": 3431,
+      "train_split_groups": [
+        "boba-190.017",
+        "boba-200.077",
+        "boba-210.147",
+        "boba-220.237",
+        "boba-230.247",
+        "pool-110",
+        "pool-90"
+      ]
+    },
+    "closed_loop_evaluated": false,
+    "promoted": false,
+    "policy_source_sha256": "fa0b92211d09e0c1eaa14e0bd55b103eec6278ce57d497fe16a94b787c662402"
+  },
+  "interpretation": [
+    "The first probe did not reach dry support despite 37 successful short displacement goals. Local movement rewards do not establish task completion.",
+    "The second probe allowed baseline swimming and airborne movement to complete before exercising motor authority and hot replacement.",
+    "The three physical handover probes used purpose-built test policies. The unpromoted neural candidate was evaluated on held-out demonstrated actions only.",
+    "No new multiplayer win rate, human-opponent result or sustained-movement improvement is established."
+  ],
+  "baseline_comparison": {
+    "reference": "bots-bank-landing.json",
+    "reference_sha256": "2824f9a4d612335d4536ca68fc38bb0135b57f0984fdff3f73753bb24d5039c6",
+    "observed_receipt_sha256": "9a7b51578ed736ea9850f08c75325ddeaf54e8283dc0fe15411388bc4a59a91e",
+    "matched_case_yaws": 27,
+    "expected_case_yaws": 27,
+    "mismatches": [],
+    "criterion": "Capability disabled. Equal supported dry time at original millisecond precision, landing health and sector.",
+    "max_unrounded_duration_delta_seconds": 0.00033352999999980426
+  }
+}

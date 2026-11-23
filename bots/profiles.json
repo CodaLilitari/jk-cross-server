@@ -73,6 +73,15 @@
         "death": ["I rushed the approach.", "That lesson will stay with me.", "Next time I will watch the distance.", "Pride does not improve my defense."],
         "ambient": ["Every encounter tests a different lesson.", "The empty corridor still demands attention.", "Speed is useful when the direction is right.", "I am learning where these passages lead."]
       }
+    },
+    {
+      "id": "lily", "force_side": "dark", "force_style": "competitive", "name": "Bot_Lilitari", "model": "ky.3do", "sound": "ky.snd",
+      "taunts": {
+        "spawn": ["Again."],
+        "kill": ["I will remember that opening."],
+        "death": ["Time for a different approach."],
+        "ambient": ["Listening for footsteps."]
+      }
     }
   ]
 }

@@ -1,0 +1,1401 @@
+{
+  "cases": {
+    "perturb-pool-a-yaw0": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 2,
+        "final_goal_distance": 0.1097,
+        "first5s_median_distance_to_training_tracks": 0.0625,
+        "first_breath_step": 258,
+        "jump_edges": 19,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 4,
+          "horizontal_net": 0.5087,
+          "horizontal_path": 0.56,
+          "jump_held_ticks": 50,
+          "median_distance_to_training_tracks": 0.0189,
+          "median_normalized_features_to_training": 1.386,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 35
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 8,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 1,
+        "final_goal_distance": 0.2662,
+        "first5s_median_distance_to_training_tracks": 0.0488,
+        "first_breath_step": 248,
+        "jump_edges": 5,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 4,
+          "horizontal_net": 0.5102,
+          "horizontal_path": 0.6107,
+          "jump_held_ticks": 56,
+          "median_distance_to_training_tracks": 0.0601,
+          "median_normalized_features_to_training": 2.3246,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 81
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 3,
+        "terminal": "supported_dry"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 2.0643,
+        "first5s_median_distance_to_training_tracks": 0.1784,
+        "first_breath_step": 713,
+        "jump_edges": 54,
+        "last5s": {
+          "distinct_inputs": 19,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.1613,
+          "horizontal_path": 0.1615,
+          "jump_held_ticks": 125,
+          "median_distance_to_training_tracks": 1.3178,
+          "median_normalized_features_to_training": 5.1938,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 125
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 37,
+        "terminal": "sim_timeout"
+      }
+    },
+    "perturb-pool-a-yaw90": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 1,
+        "final_goal_distance": 0.4199,
+        "first5s_median_distance_to_training_tracks": 0.0659,
+        "first_breath_step": 279,
+        "jump_edges": 21,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 2,
+          "horizontal_net": 0.2436,
+          "horizontal_path": 0.4233,
+          "jump_held_ticks": 38,
+          "median_distance_to_training_tracks": 0.0376,
+          "median_normalized_features_to_training": 1.3041,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 45
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 12,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.4049,
+        "first5s_median_distance_to_training_tracks": 0.2035,
+        "first_breath_step": 974,
+        "jump_edges": 9,
+        "last5s": {
+          "distinct_inputs": 101,
+          "fresh_jump_edges": 3,
+          "horizontal_net": 0.2841,
+          "horizontal_path": 0.6932,
+          "jump_held_ticks": 93,
+          "median_distance_to_training_tracks": 0.5588,
+          "median_normalized_features_to_training": 4.9976,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 15
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 2,
+        "terminal": "sim_timeout"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 2.8749,
+        "first5s_median_distance_to_training_tracks": 0.1641,
+        "first_breath_step": 238,
+        "jump_edges": 24,
+        "last5s": {
+          "distinct_inputs": 123,
+          "fresh_jump_edges": 3,
+          "horizontal_net": 0.0229,
+          "horizontal_path": 0.1259,
+          "jump_held_ticks": 31,
+          "median_distance_to_training_tracks": 2.1199,
+          "median_normalized_features_to_training": 8.4073,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 76
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 3,
+        "terminal": "sim_timeout"
+      }
+    },
+    "perturb-pool-b-yaw0": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 2,
+        "final_goal_distance": 0.4232,
+        "first5s_median_distance_to_training_tracks": 0.0404,
+        "first_breath_step": 266,
+        "jump_edges": 18,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 3,
+          "horizontal_net": 0.3885,
+          "horizontal_path": 0.5423,
+          "jump_held_ticks": 46,
+          "median_distance_to_training_tracks": 0.0363,
+          "median_normalized_features_to_training": 1.2231,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 16
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 8,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.1288,
+        "first5s_median_distance_to_training_tracks": 0.0531,
+        "first_breath_step": 239,
+        "jump_edges": 22,
+        "last5s": {
+          "distinct_inputs": 118,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.3482,
+          "horizontal_path": 0.3701,
+          "jump_held_ticks": 125,
+          "median_distance_to_training_tracks": 0.4447,
+          "median_normalized_features_to_training": 2.8275,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 0
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 13,
+        "terminal": "sim_timeout"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 2.6214,
+        "first5s_median_distance_to_training_tracks": 0.1656,
+        "first_breath_step": 1227,
+        "jump_edges": 55,
+        "last5s": {
+          "distinct_inputs": 100,
+          "fresh_jump_edges": 2,
+          "horizontal_net": 0.4174,
+          "horizontal_path": 0.6384,
+          "jump_held_ticks": 105,
+          "median_distance_to_training_tracks": 1.5897,
+          "median_normalized_features_to_training": 6.9466,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 88
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 38,
+        "terminal": "sim_timeout"
+      }
+    },
+    "perturb-pool-b-yaw90": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 1,
+        "final_goal_distance": 0.1076,
+        "first5s_median_distance_to_training_tracks": 0.0536,
+        "first_breath_step": 270,
+        "jump_edges": 19,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 2,
+          "horizontal_net": 0.5461,
+          "horizontal_path": 0.5968,
+          "jump_held_ticks": 49,
+          "median_distance_to_training_tracks": 0.0188,
+          "median_normalized_features_to_training": 1.5052,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 32
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 10,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 2.5476,
+        "first5s_median_distance_to_training_tracks": 0.1839,
+        "first_breath_step": null,
+        "jump_edges": 4,
+        "last5s": {
+          "distinct_inputs": 80,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.6821,
+          "horizontal_path": 0.6821,
+          "jump_held_ticks": 125,
+          "median_distance_to_training_tracks": 1.6194,
+          "median_normalized_features_to_training": 6.9964,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 0
+        },
+        "sectors": [
+          42
+        ],
+        "surface_jump_edges": 0,
+        "terminal": "died"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.7005,
+        "first5s_median_distance_to_training_tracks": 0.0659,
+        "first_breath_step": 315,
+        "jump_edges": 68,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 7,
+          "horizontal_net": 0.3444,
+          "horizontal_path": 0.348,
+          "jump_held_ticks": 38,
+          "median_distance_to_training_tracks": 1.2555,
+          "median_normalized_features_to_training": 5.7083,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 37
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 44,
+        "terminal": "sim_timeout"
+      }
+    },
+    "perturb-pool-c-yaw0": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 2,
+        "final_goal_distance": 0.4235,
+        "first5s_median_distance_to_training_tracks": 0.08,
+        "first_breath_step": 252,
+        "jump_edges": 16,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 3,
+          "horizontal_net": 0.3499,
+          "horizontal_path": 0.506,
+          "jump_held_ticks": 49,
+          "median_distance_to_training_tracks": 0.0381,
+          "median_normalized_features_to_training": 1.3392,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 16
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 7,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 7,
+        "final_goal_distance": 0.2894,
+        "first5s_median_distance_to_training_tracks": 0.0472,
+        "first_breath_step": 231,
+        "jump_edges": 15,
+        "last5s": {
+          "distinct_inputs": 122,
+          "fresh_jump_edges": 9,
+          "horizontal_net": 0.6929,
+          "horizontal_path": 0.8952,
+          "jump_held_ticks": 24,
+          "median_distance_to_training_tracks": 0.2491,
+          "median_normalized_features_to_training": 6.2606,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 28
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 9,
+        "terminal": "supported_dry"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 2.9449,
+        "first5s_median_distance_to_training_tracks": 0.1516,
+        "first_breath_step": 519,
+        "jump_edges": 43,
+        "last5s": {
+          "distinct_inputs": 121,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.268,
+          "horizontal_path": 0.9203,
+          "jump_held_ticks": 106,
+          "median_distance_to_training_tracks": 1.972,
+          "median_normalized_features_to_training": 8.5543,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 121
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 13,
+        "terminal": "sim_timeout"
+      }
+    },
+    "perturb-pool-c-yaw90": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 2,
+        "final_goal_distance": 0.4159,
+        "first5s_median_distance_to_training_tracks": 0.0461,
+        "first_breath_step": 265,
+        "jump_edges": 5,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 3,
+          "horizontal_net": 0.2833,
+          "horizontal_path": 0.3633,
+          "jump_held_ticks": 42,
+          "median_distance_to_training_tracks": 0.0215,
+          "median_normalized_features_to_training": 1.3692,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 29
+        },
+        "sectors": [
+          10,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 2,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.5744,
+        "first5s_median_distance_to_training_tracks": 0.1559,
+        "first_breath_step": 849,
+        "jump_edges": 50,
+        "last5s": {
+          "distinct_inputs": 118,
+          "fresh_jump_edges": 19,
+          "horizontal_net": 1.0983,
+          "horizontal_path": 1.1575,
+          "jump_held_ticks": 98,
+          "median_distance_to_training_tracks": 0.8567,
+          "median_normalized_features_to_training": 4.937,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 50
+        },
+        "sectors": [
+          12,
+          33,
+          42,
+          43
+        ],
+        "surface_jump_edges": 16,
+        "terminal": "sim_timeout"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.7209,
+        "first5s_median_distance_to_training_tracks": 0.1715,
+        "first_breath_step": 221,
+        "jump_edges": 64,
+        "last5s": {
+          "distinct_inputs": 115,
+          "fresh_jump_edges": 4,
+          "horizontal_net": 0.1758,
+          "horizontal_path": 0.2396,
+          "jump_held_ticks": 76,
+          "median_distance_to_training_tracks": 1.2066,
+          "median_normalized_features_to_training": 5.2665,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 76
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 28,
+        "terminal": "sim_timeout"
+      }
+    },
+    "perturb-pool-d-yaw0": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 2,
+        "final_goal_distance": 0.4216,
+        "first5s_median_distance_to_training_tracks": 0.0752,
+        "first_breath_step": 258,
+        "jump_edges": 18,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 4,
+          "horizontal_net": 0.364,
+          "horizontal_path": 0.5442,
+          "jump_held_ticks": 50,
+          "median_distance_to_training_tracks": 0.0361,
+          "median_normalized_features_to_training": 1.5781,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 16
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 7,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 19,
+        "final_goal_distance": 1.0452,
+        "first5s_median_distance_to_training_tracks": 0.043,
+        "first_breath_step": 250,
+        "jump_edges": 42,
+        "last5s": {
+          "distinct_inputs": 124,
+          "fresh_jump_edges": 3,
+          "horizontal_net": 0.129,
+          "horizontal_path": 0.2399,
+          "jump_held_ticks": 115,
+          "median_distance_to_training_tracks": 0.9463,
+          "median_normalized_features_to_training": 3.766,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 29
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 27,
+        "terminal": "sim_timeout"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 2.0768,
+        "first5s_median_distance_to_training_tracks": 0.1655,
+        "first_breath_step": 732,
+        "jump_edges": 54,
+        "last5s": {
+          "distinct_inputs": 16,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.1636,
+          "horizontal_path": 0.1637,
+          "jump_held_ticks": 125,
+          "median_distance_to_training_tracks": 1.3116,
+          "median_normalized_features_to_training": 5.2309,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 125
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 36,
+        "terminal": "sim_timeout"
+      }
+    },
+    "perturb-pool-d-yaw90": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 1,
+        "final_goal_distance": 0.4207,
+        "first5s_median_distance_to_training_tracks": 0.0774,
+        "first_breath_step": 275,
+        "jump_edges": 19,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 3,
+          "horizontal_net": 0.277,
+          "horizontal_path": 0.5339,
+          "jump_held_ticks": 48,
+          "median_distance_to_training_tracks": 0.0397,
+          "median_normalized_features_to_training": 1.397,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 18
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 9,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.0487,
+        "first5s_median_distance_to_training_tracks": 0.1746,
+        "first_breath_step": 1003,
+        "jump_edges": 8,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.1704,
+          "horizontal_path": 0.353,
+          "jump_held_ticks": 113,
+          "median_distance_to_training_tracks": 0.3704,
+          "median_normalized_features_to_training": 3.1274,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 12
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 1,
+        "terminal": "sim_timeout"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 2.2215,
+        "first5s_median_distance_to_training_tracks": 0.1712,
+        "first_breath_step": 226,
+        "jump_edges": 65,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 6,
+          "horizontal_net": 0.2112,
+          "horizontal_path": 0.2835,
+          "jump_held_ticks": 60,
+          "median_distance_to_training_tracks": 1.5498,
+          "median_normalized_features_to_training": 6.7906,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 62
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 31,
+        "terminal": "sim_timeout"
+      }
+    },
+    "perturb-shaft-a-yaw0": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 1,
+        "final_goal_distance": 0.0965,
+        "first5s_median_distance_to_training_tracks": 0.0074,
+        "first_breath_step": 481,
+        "jump_edges": 2,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 1,
+          "horizontal_net": 0.2165,
+          "horizontal_path": 0.4105,
+          "jump_held_ticks": 56,
+          "median_distance_to_training_tracks": 0.0058,
+          "median_normalized_features_to_training": 0.8861,
+          "neutral_inputs": 1,
+          "surface_contact_ticks": 43
+        },
+        "sectors": [
+          41,
+          54
+        ],
+        "surface_jump_edges": 1,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 1,
+        "final_goal_distance": 0.2099,
+        "first5s_median_distance_to_training_tracks": 0.0318,
+        "first_breath_step": 465,
+        "jump_edges": 3,
+        "last5s": {
+          "distinct_inputs": 125,
+          "fresh_jump_edges": 2,
+          "horizontal_net": 0.1209,
+          "horizontal_path": 0.5255,
+          "jump_held_ticks": 61,
+          "median_distance_to_training_tracks": 0.0394,
+          "median_normalized_features_to_training": 1.6752,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 46
+        },
+        "sectors": [
+          41,
+          54,
+          55
+        ],
+        "surface_jump_edges": 1,
+        "terminal": "supported_dry"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 1,
+        "final_goal_distance": 0.3247,
+        "first5s_median_distance_to_training_tracks": 0.0409,
+        "first_breath_step": 461,
+        "jump_edges": 2,
+        "last5s": {
+          "distinct_inputs": 6,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.0018,
+          "horizontal_path": 0.0018,
+          "jump_held_ticks": 0,
+          "median_distance_to_training_tracks": 0.1227,
+          "median_normalized_features_to_training": 1.3702,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 125
+        },
+        "sectors": [
+          41,
+          54,
+          55
+        ],
+        "surface_jump_edges": 1,
+        "terminal": "sim_timeout"
+      }
+    },
+    "pool-100-yaw0": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 7,
+        "final_goal_distance": 0.1193,
+        "first5s_median_distance_to_training_tracks": 0.0586,
+        "first_breath_step": 324,
+        "jump_edges": 10,
+        "last5s": {
+          "distinct_inputs": 63,
+          "fresh_jump_edges": 1,
+          "horizontal_net": 0.2103,
+          "horizontal_path": 0.4383,
+          "jump_held_ticks": 1,
+          "median_distance_to_training_tracks": 0.3898,
+          "median_normalized_features_to_training": 2.5903,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 47
+        },
+        "sectors": [
+          10,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 7,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.129,
+        "first5s_median_distance_to_training_tracks": 0.1902,
+        "first_breath_step": null,
+        "jump_edges": 4,
+        "last5s": {
+          "distinct_inputs": 63,
+          "fresh_jump_edges": 2,
+          "horizontal_net": 0.2705,
+          "horizontal_path": 0.2718,
+          "jump_held_ticks": 37,
+          "median_distance_to_training_tracks": 0.4612,
+          "median_normalized_features_to_training": 4.2459,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 0
+        },
+        "sectors": [
+          42
+        ],
+        "surface_jump_edges": 0,
+        "terminal": "died"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 1,
+        "final_goal_distance": 0.1918,
+        "first5s_median_distance_to_training_tracks": 0.057,
+        "first_breath_step": 1056,
+        "jump_edges": 3,
+        "last5s": {
+          "distinct_inputs": 63,
+          "fresh_jump_edges": 1,
+          "horizontal_net": 0.0737,
+          "horizontal_path": 0.3633,
+          "jump_held_ticks": 51,
+          "median_distance_to_training_tracks": 0.2407,
+          "median_normalized_features_to_training": 4.1038,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 54
+        },
+        "sectors": [
+          10,
+          42,
+          44
+        ],
+        "surface_jump_edges": 1,
+        "terminal": "supported_dry"
+      }
+    },
+    "pool-110-yaw0": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 2,
+        "final_goal_distance": 0.4259,
+        "first5s_median_distance_to_training_tracks": 0.0,
+        "first_breath_step": 197,
+        "jump_edges": 26,
+        "last5s": {
+          "distinct_inputs": 172,
+          "fresh_jump_edges": 9,
+          "horizontal_net": 0.2945,
+          "horizontal_path": 0.5627,
+          "jump_held_ticks": 46,
+          "median_distance_to_training_tracks": 0.0,
+          "median_normalized_features_to_training": 0.0,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 70
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 10,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 2.0229,
+        "first5s_median_distance_to_training_tracks": 0.0893,
+        "first_breath_step": 172,
+        "jump_edges": 16,
+        "last5s": {
+          "distinct_inputs": 152,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.0887,
+          "horizontal_path": 0.4785,
+          "jump_held_ticks": 192,
+          "median_distance_to_training_tracks": 1.1139,
+          "median_normalized_features_to_training": 5.0507,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 0
+        },
+        "sectors": [
+          12,
+          34,
+          42,
+          43
+        ],
+        "surface_jump_edges": 6,
+        "terminal": "sim_timeout"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.5757,
+        "first5s_median_distance_to_training_tracks": 0.0675,
+        "first_breath_step": 200,
+        "jump_edges": 64,
+        "last5s": {
+          "distinct_inputs": 164,
+          "fresh_jump_edges": 14,
+          "horizontal_net": 0.4785,
+          "horizontal_path": 1.3364,
+          "jump_held_ticks": 51,
+          "median_distance_to_training_tracks": 1.2902,
+          "median_normalized_features_to_training": 6.4672,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 136
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 23,
+        "terminal": "sim_timeout"
+      }
+    },
+    "pool-90-yaw0": {
+      "baseline": {
+        "ever_target_supported_at_control_tick": true,
+        "exit_sector_surface_jump_edges": 2,
+        "final_goal_distance": 0.1083,
+        "first5s_median_distance_to_training_tracks": 0.0,
+        "first_breath_step": 294,
+        "jump_edges": 9,
+        "last5s": {
+          "distinct_inputs": 117,
+          "fresh_jump_edges": 3,
+          "horizontal_net": 0.4038,
+          "horizontal_path": 0.4219,
+          "jump_held_ticks": 56,
+          "median_distance_to_training_tracks": 0.0,
+          "median_normalized_features_to_training": 0.0,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 40
+        },
+        "sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ],
+        "surface_jump_edges": 3,
+        "terminal": "supported_dry"
+      },
+      "v1": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.7508,
+        "first5s_median_distance_to_training_tracks": 0.3212,
+        "first_breath_step": null,
+        "jump_edges": 5,
+        "last5s": {
+          "distinct_inputs": 124,
+          "fresh_jump_edges": 1,
+          "horizontal_net": 0.352,
+          "horizontal_path": 0.4187,
+          "jump_held_ticks": 86,
+          "median_distance_to_training_tracks": 0.7393,
+          "median_normalized_features_to_training": 6.0739,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 0
+        },
+        "sectors": [
+          34,
+          42
+        ],
+        "surface_jump_edges": 0,
+        "terminal": "died"
+      },
+      "v2": {
+        "ever_target_supported_at_control_tick": false,
+        "exit_sector_surface_jump_edges": 0,
+        "final_goal_distance": 1.4184,
+        "first5s_median_distance_to_training_tracks": 0.0541,
+        "first_breath_step": 206,
+        "jump_edges": 3,
+        "last5s": {
+          "distinct_inputs": 10,
+          "fresh_jump_edges": 0,
+          "horizontal_net": 0.0914,
+          "horizontal_path": 0.0914,
+          "jump_held_ticks": 0,
+          "median_distance_to_training_tracks": 0.6453,
+          "median_normalized_features_to_training": 3.9804,
+          "neutral_inputs": 0,
+          "surface_contact_ticks": 125
+        },
+        "sectors": [
+          12,
+          42,
+          43
+        ],
+        "surface_jump_edges": 1,
+        "terminal": "sim_timeout"
+      }
+    }
+  },
+  "definitions": {
+    "distance_to_training_tracks": "For each pre-input 3D actor position, minimum Euclidean distance in native game units to any pre-input training baseline position in the same region (pool-90 and pool-110 for pool). Each 5-s value is the median of those per-tick minimum distances.",
+    "ever_target_supported_at_control_tick": "At least one pre-input sample in assigned sector with supported=true. This indicator is separate from the 150 Hz terminal oracle.",
+    "median_normalized_features_to_training": "Per-tick Euclidean distance to nearest demonstrated 17-feature vector in the same region, scaled by the frozen contact model training stds; median in five-second window. This is a descriptive reference, not a calibrated out-of-distribution threshold.",
+    "neutral_inputs": "All four applied axes and button mask equal zero.",
+    "sectors": "Distinct sectors sampled at stock player control ticks. Sector 44 is the demonstrator pool exit approach and 10 the assigned dry target. Sub-control-tick sector transitions are not included.",
+    "surface_jump_edges": "Count of ticks with a witnessed fresh jump press and SITH_PF_ONWATERSURFACE before input. This does not by itself prove a jump impulse or supported landing.",
+    "time": "First and last five seconds of each individual arm, capped at trajectory length; stress input tick is 40 ms (125 ticks per five seconds). Final-five comparisons refer to different task phases for successes/timeouts."
+  },
+  "physics_transition_check": {
+    "perturb-pool-a-yaw0": {
+      "baseline": {
+        "engine_log_sha256": "3553535a28f32f20bfed70236add49c720f9fc28ebe90f5e82faa53872be40df",
+        "lines": 37,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "29b9b9ecc06585f8d9d6680a7e0198cc000cbf25bb37cbcc08018bbea2ae3796",
+        "lines": 12,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "f229da8417cfcb2d4f50b38e73f4f1e7e5143d1a9a236de9c24de5c10431fa32",
+        "lines": 155,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "perturb-pool-a-yaw90": {
+      "baseline": {
+        "engine_log_sha256": "2e3bcaf260e20571ebf6f917a037b8a24ee155b16c18e74fce45904af517f9fb",
+        "lines": 53,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "d1fc6d721a0cc1856d024bbfeea3146258e7eb374e7cea429f0ce34725127489",
+        "lines": 15,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "4f474f036b3e1d7482a2c3ab8f4c0e376c8b361e90718a6d10c7263727db3b43",
+        "lines": 39,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "perturb-pool-b-yaw0": {
+      "baseline": {
+        "engine_log_sha256": "f4d883f1397f259f538fc0e19b974322af55e9c6fcd79d4fd622cb659f6acaf0",
+        "lines": 37,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "1a3a7b15c7b013f4c8151cc43ca59e529b857210a4a603bd6453c78cd89f0550",
+        "lines": 59,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "66032b0d664ef0be92c65fb2751b05fa60d762898ec72eea3ef9d43de71e2677",
+        "lines": 162,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "perturb-pool-b-yaw90": {
+      "baseline": {
+        "engine_log_sha256": "62a891c5e773f6ddd96ddf40e25877b0d63e65f5adb6eec1cf483f1588f73174",
+        "lines": 45,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "2f4b1455ed454804f60915d4a6a87d7c966eddc66e1cd4c7ee4f20011c4374e1",
+        "lines": 0,
+        "transition_sectors": []
+      },
+      "v2": {
+        "engine_log_sha256": "86dc30ba8edd39dc62167b40e0c8ff29e5af4ef341e4f6b85065cd2eeea9a911",
+        "lines": 183,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "perturb-pool-c-yaw0": {
+      "baseline": {
+        "engine_log_sha256": "69622c8d26f0c9cd91c983e65835ce5d66297079161b0bd3d20ef51ec047baad",
+        "lines": 33,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "a82a4cfd4b7bb294b0b075e2e9b6bb3441d29ff6c426649b03e1196c7fe4a882",
+        "lines": 34,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "8dfec7d732559000c28db862f0f3a96a30fac0273b8a12590bdfe020a3723a60",
+        "lines": 72,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "perturb-pool-c-yaw90": {
+      "baseline": {
+        "engine_log_sha256": "d02a0b8e0cd08cd3456c02d9207d381a9e79e2e3e39f3e8547f224b5c10c723a",
+        "lines": 12,
+        "transition_sectors": [
+          10,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "554bd23fd456f3a28712f959febda7d8df039ce8d5a6046114b1a0af9101ab3e",
+        "lines": 71,
+        "transition_sectors": [
+          12,
+          33,
+          42,
+          43
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "f78c912cbccf905e6b838d4f90af8b5c4a7418943fde8fcc8a1837eb89a5d76a",
+        "lines": 127,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "perturb-pool-d-yaw0": {
+      "baseline": {
+        "engine_log_sha256": "37db882c18cc19935e307e2ec9a44e1b18b7a439064a8887e63210f2b4bdf51c",
+        "lines": 33,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "72fb4ee6b76ba57640925d1ace96e55f2411e6e6454931f5ef0bb6a0c0c1da55",
+        "lines": 117,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "358c0211dd24916fb54ffc553b0357297051196ac2e92880ec7bd0eed39dfcbf",
+        "lines": 151,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "perturb-pool-d-yaw90": {
+      "baseline": {
+        "engine_log_sha256": "f1ab03d04adeeb5a157798f209003cf597bef3cb8c861edc95e0ec0f38c60475",
+        "lines": 41,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "59344d7d7503c6f5f3650de1008e6d1763ad4b51a0aa7f8a11b6556a2bfc05d2",
+        "lines": 11,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "6f0b8114d563b113f2a39fe9ef9922a406813ca81591d8ab5235f48c110f5ed5",
+        "lines": 137,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "perturb-shaft-a-yaw0": {
+      "baseline": {
+        "engine_log_sha256": "9f6a198188befabfc213a53181305d6c4506c65101871c68142ebb74dab77a23",
+        "lines": 3,
+        "transition_sectors": [
+          41,
+          54,
+          55
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "90c0b62e63b504ebc757f75297160b1fc90628571e2f839291a1bb5063b682c6",
+        "lines": 3,
+        "transition_sectors": [
+          41,
+          54,
+          55
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "bfcb57a67219ec9ceaa5994bd0d67ddb82a2018691d3afaf78d8ceed0a4726ad",
+        "lines": 6,
+        "transition_sectors": [
+          41,
+          54,
+          55
+        ]
+      }
+    },
+    "pool-100-yaw0": {
+      "baseline": {
+        "engine_log_sha256": "6f715fc3382e4b7c477a32f98684630ebbd9b693cd8d395615bb30cfa6878aa1",
+        "lines": 32,
+        "transition_sectors": [
+          10,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "5dfb4c3e3c303754755f65fdeeeb91f47624aa7cfd4ab974e6957fb4f3b9c291",
+        "lines": 0,
+        "transition_sectors": []
+      },
+      "v2": {
+        "engine_log_sha256": "55e1789853d03f8f742e5ef98ac9f0aa58a53133d649ed55fc8e988ae66a0b45",
+        "lines": 4,
+        "transition_sectors": [
+          10,
+          42,
+          44,
+          45
+        ]
+      }
+    },
+    "pool-110-yaw0": {
+      "baseline": {
+        "engine_log_sha256": "83bc4dd835401d6a4f4d3ce750391805befff6e0bbc97744c9bf99e73272a1f7",
+        "lines": 45,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "be48f08c90ddcb366c4aef717d86300706b26cb7a0d3b8433e6c23385c399c54",
+        "lines": 29,
+        "transition_sectors": [
+          12,
+          34,
+          42,
+          43
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "e68c1040c9b8e1a56e148edb567d941a008892a85b8bc979abde186c14b83cbf",
+        "lines": 99,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    },
+    "pool-90-yaw0": {
+      "baseline": {
+        "engine_log_sha256": "0260ec8dd831ee2d6a7ae10547aaff49f6fba1f15826e6f4ce2b82dd5de4235e",
+        "lines": 18,
+        "transition_sectors": [
+          10,
+          12,
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      "v1": {
+        "engine_log_sha256": "fd79569a01302c15a815bd3aab280be686c5dd1e3913d6b9c2243676960d7158",
+        "lines": 2,
+        "transition_sectors": [
+          34,
+          42
+        ]
+      },
+      "v2": {
+        "engine_log_sha256": "5ce4add74d4458889f2bfc090bcc0c4a19a4135ee02b77fe56bb2c846e31f899",
+        "lines": 9,
+        "transition_sectors": [
+          12,
+          42,
+          43
+        ]
+      }
+    }
+  },
+  "schema": 1,
+  "scope": "All nine contact stress timeouts plus all three original pool trials; both matched comparison arms for each.",
+  "source_receipts": {
+    "original_contact": "e03d9b9e24ec5bf30cb6f419ac872d722711bf511601a29a805af7e62a8f4aa9",
+    "original_v1": "6248b7c1281342f0a5a2c629d59353b15f449cfcccd7586d5d20be984dea7b8c",
+    "stress_contact": "c4e3b09bb76a37f9b89c8e984327e3fd71c4292b415558ee7710713b958c8afd",
+    "stress_v1": "1fb5839d251b65bdb99c43c2f4fd02ca8fbbe930ba8c8a2e9cb9d669423eadcf"
+  }
+}

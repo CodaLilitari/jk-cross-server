@@ -1,0 +1,505 @@
+{
+  "schema": 1,
+  "run_id": "lily-memory-learning-20261122-01",
+  "declaration_sha256": "77ef88dcfa3f94c2095a4fbd397cbfd3c6b11fafe8b55f387503df24b66b5b4d",
+  "implementation_commit": "0df6d85faca861db917528bb8255e745f6725769",
+  "declaration_commit": "bfe9aa52957046375ca34733debdc8eb1ece3520",
+  "started_at_utc": "2026-11-23T03:19:32.245237+00:00",
+  "initial_free_bytes": 5225656320,
+  "build": {
+    "provenance": {
+      "source_hashes": {
+        "src/AI/jkBot.c": "6913e05c649a625da9f15352ad62eca21f42d65158ba3501b64162c5e0774425",
+        "src/AI/jkBot.h": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
+        "src/AI/jkBotBehavior.h": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df",
+        "src/AI/jkBotBehavior.inc": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+        "src/AI/jkBotCombat.inc": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
+        "src/AI/jkBotCompanion.inc": "d4f43db307bbf4df2cd9669daff5d2a4f5a56660a83e236b2e070252cb082d7f",
+        "src/AI/jkBotForce.inc": "02a2625e4a9386ef8d20d976e14113e2cf47ba82047ee99a935f6db0d432b2e7",
+        "src/AI/jkBotHearing.inc": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+        "src/AI/jkBotLily.inc": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
+        "src/AI/jkBotLoadout.h": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+        "src/AI/jkBotNavigate.inc": "34f621368b9626ca7c771f58c0b4c381bb9afd0f9298fc5ca27fdca8018487fa",
+        "src/AI/jkBotNavigation.inc": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
+        "src/AI/jkBotPersona.c": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+        "src/AI/jkBotPersona.h": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+        "src/AI/jkBotWaterExit.inc": "2d1b36d679222c48936b8d4e920991da87fda6e536010e783ea54232dc241383",
+        "src/Devices/sithControl.c": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+        "src/Engine/sithCollision.c": "ac54301bdf0da274af87ff6c8d20e6905c5688f92984f0f5d7321ea0235d4c63",
+        "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+        "src/Engine/sithPhysics.c": "bfd0e3e70ad7e88162805617744f1536d7bae0a4ee08b18c58bc673755d4796b",
+        "src/Gameplay/sithPlayerActions.c": "f8f8e156acdbaa251f1a10cafe06437b204db20034add746decaa5ab805d717c",
+        "src/General/stdMath.c": "ed3f12a57d4454ad8731ba94a68f42c5f983631e5540da7649cd4488a7c75995",
+        "src/Primitives/rdMath.c": "b3587b90480a02df9178779f424441f6111d87da470a8e17bb72fd5ad026539a",
+        "src/Primitives/rdMatrix.c": "0f0889fd0c9ce05fb768062061d4435b1df455fd6e16d629ea84e435581d1658",
+        "src/Primitives/rdVector.c": "097638a3da4264865ed16e95a486f85a69c415c12c17781e3bcf2a0802a9edca",
+        "src/World/sithActor.c": "8ff7b7025d7318c9e53a797c95d125274b5da707aa4b939aac8a65cbdb532e71",
+        "src/World/sithSector.c": "0a6e9cb0113e2d602a5550ceb7c2ffd203e81d6b385099729cede2edbb3e3e17",
+        "src/World/sithThing.c": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec"
+      },
+      "policy_hash": "16c43f6cd74950261bea092553ae72707588d3175befefd49c218d8b8339ba91",
+      "executable_sha256": "204ef95913b472b9190aa9b8d74aafff26043f0d8ddfd477f68d43d4ca54dd1f",
+      "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+      "geometry_sha256": "b566073b9b7781f057e27ed06ef90ab46392ac0b68e1312bb488fbcce8fca62d",
+      "compiler_flags_sha256": "684a26e6f8978a6fdc4716d10be28f018ee533caa83288d01ea9ef9a7f837ceb"
+    },
+    "files": {
+      "AI/jkBotLily.inc": {
+        "sha256": "be6d56ebca388c2e259ee8848fef2b874a9a9fad45c4abb3460954017633911f",
+        "bytes": 59
+      },
+      "configured/generated/globals.h": {
+        "sha256": "edec9732ccad1f32d9fe4740ca17fdb76a05459181b196c779dbe45519a00e78",
+        "bytes": 141677
+      },
+      "flags.make": {
+        "sha256": "684a26e6f8978a6fdc4716d10be28f018ee533caa83288d01ea9ef9a7f837ceb",
+        "bytes": 479
+      },
+      "map.numeric": {
+        "sha256": "b566073b9b7781f057e27ed06ef90ab46392ac0b68e1312bb488fbcce8fca62d",
+        "bytes": 63140
+      },
+      "replay": {
+        "sha256": "204ef95913b472b9190aa9b8d74aafff26043f0d8ddfd477f68d43d4ca54dd1f",
+        "bytes": 236744
+      },
+      "source/src/AI/jkBot.c": {
+        "sha256": "6913e05c649a625da9f15352ad62eca21f42d65158ba3501b64162c5e0774425",
+        "bytes": 51079
+      },
+      "source/src/AI/jkBot.h": {
+        "sha256": "47652fc419857c8c24bc0d4913b43dfe5f1a58ce5062c06f3b719400d02456b2",
+        "bytes": 1620
+      },
+      "source/src/AI/jkBotBehavior.h": {
+        "sha256": "59ff972747fb3aa9514fae11c003e803da8b40f1e42b68801db969414a2416df",
+        "bytes": 400
+      },
+      "source/src/AI/jkBotBehavior.inc": {
+        "sha256": "f28ddaf54328b1ea8a6242902e268648b089fbf6b655f9657a006460a0cce559",
+        "bytes": 9462
+      },
+      "source/src/AI/jkBotCombat.inc": {
+        "sha256": "4800acb98786f311b10433f9f2893a688012714a26a0f71ecd908f9933c70cca",
+        "bytes": 19720
+      },
+      "source/src/AI/jkBotCompanion.inc": {
+        "sha256": "d4f43db307bbf4df2cd9669daff5d2a4f5a56660a83e236b2e070252cb082d7f",
+        "bytes": 18218
+      },
+      "source/src/AI/jkBotForce.inc": {
+        "sha256": "02a2625e4a9386ef8d20d976e14113e2cf47ba82047ee99a935f6db0d432b2e7",
+        "bytes": 27382
+      },
+      "source/src/AI/jkBotHearing.inc": {
+        "sha256": "fe85aa4d9c940086e504d39e981550130acaae397479f09bcce6ef1bad087d1c",
+        "bytes": 14560
+      },
+      "source/src/AI/jkBotLily.inc": {
+        "sha256": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
+        "bytes": 16904
+      },
+      "source/src/AI/jkBotLoadout.h": {
+        "sha256": "aab6d025bb9ec2c431beb2d6bd559992b664e9ce075fcaa9c1103ae9ed5dcdc1",
+        "bytes": 2390
+      },
+      "source/src/AI/jkBotNavigate.inc": {
+        "sha256": "34f621368b9626ca7c771f58c0b4c381bb9afd0f9298fc5ca27fdca8018487fa",
+        "bytes": 30704
+      },
+      "source/src/AI/jkBotNavigation.inc": {
+        "sha256": "7fffa3f3e1afa5cf051372f960707c5b057d7cae4763061bb27693690079051e",
+        "bytes": 74642
+      },
+      "source/src/AI/jkBotPersona.c": {
+        "sha256": "618f31f58e45a13d89b5dc0493233d446d5eaeada681bd0de758a155a50d578d",
+        "bytes": 5613
+      },
+      "source/src/AI/jkBotPersona.h": {
+        "sha256": "e193097d937ed22400fe84d86a1e9e7f18884cc2be876fb1540627bee96e0bfb",
+        "bytes": 160
+      },
+      "source/src/AI/jkBotWaterExit.inc": {
+        "sha256": "2d1b36d679222c48936b8d4e920991da87fda6e536010e783ea54232dc241383",
+        "bytes": 11760
+      },
+      "source/src/AI/sithAI.h": {
+        "sha256": "f2ff94dfc5741982e6557422e81ca1d00a4e05cffc2a9506c393680674de60fa",
+        "bytes": 7909
+      },
+      "source/src/AI/sithAIClass.h": {
+        "sha256": "cccb66bb2e8a3922e0d3ba8ffe0500e232a234f4dd811e901ffe3bbe8d46f979",
+        "bytes": 1248
+      },
+      "source/src/Cog/sithCog.h": {
+        "sha256": "749dd251d951ae3658f6ae0cbdc5b820d868a92482410d6986d2d3cc31337883",
+        "bytes": 16283
+      },
+      "source/src/Cog/sithCogExec.h": {
+        "sha256": "c40949469949aa0313eba56529ec39ee24cf3cb349341a8fa736d56067856c82",
+        "bytes": 6228
+      },
+      "source/src/Cog/sithCogParse.h": {
+        "sha256": "be5c2003566b704c6c33b69611297d55188e191e3393b58efc57599961f879a6",
+        "bytes": 3946
+      },
+      "source/src/Cog/sithCogYACC.h": {
+        "sha256": "198d150e16513d315a5a48e681c0756e5f070e6b69a5f59dc07ae5597edc5cad",
+        "bytes": 1156
+      },
+      "source/src/Devices/sithControl.c": {
+        "sha256": "cef5ce7f5a952b42c9726b51709aa2c9e2a2ca2cbdb0e01497675a6ed26d1df1",
+        "bytes": 82307
+      },
+      "source/src/Devices/sithSound.h": {
+        "sha256": "04231418713ea6aca1a1121d4ede4463d4962b72b2d6307898b0bd46b8593fb9",
+        "bytes": 1741
+      },
+      "source/src/Devices/sithSoundMixer.h": {
+        "sha256": "932ae40638ffa450fe1d154118d7fc6e7813d6229a523abe3eac277958527ef9",
+        "bytes": 6026
+      },
+      "source/src/Dss/sithDSS.h": {
+        "sha256": "d83126353411fc529dafa57e52ca98f9028ded83681c4fd7458dd983094bd689",
+        "bytes": 2648
+      },
+      "source/src/Dss/sithDSSThing.h": {
+        "sha256": "0f1ebe565fca349387091de4459ec490b83af22364b6cfdc26b9cb5bad68d194",
+        "bytes": 7217
+      },
+      "source/src/Dss/sithMulti.h": {
+        "sha256": "bbe06d6ad75eb144bd15be0a655448fa1c2bfe5d62fd925a0082afc9cbd58fc4",
+        "bytes": 10305
+      },
+      "source/src/Engine/rdCamera.h": {
+        "sha256": "bb11e9b4f892fba2752f1ede62c13793aaeebe647aac2abb7cf624903980aa5a",
+        "bytes": 3984
+      },
+      "source/src/Engine/rdCanvas.h": {
+        "sha256": "2384a75feee85c7e5b8a17f23d821cfe28a3f054f9aa5f5841e31509550cebe3",
+        "bytes": 636
+      },
+      "source/src/Engine/rdColormap.h": {
+        "sha256": "af9594a51fd9fe0cbe1965f3985f5192d1c0c3031727fa3fda71881b3edc273e",
+        "bytes": 1726
+      },
+      "source/src/Engine/rdKeyframe.h": {
+        "sha256": "5a4c05ada17195b606ee87132c64ededbc48bf592898691b92233bb30f9379cd",
+        "bytes": 967
+      },
+      "source/src/Engine/rdLight.h": {
+        "sha256": "89557c9a52b4585c70904c6caf8cf1a64bca11eac72cf37faa9957945a9dfec6",
+        "bytes": 1461
+      },
+      "source/src/Engine/rdMaterial.h": {
+        "sha256": "0339bd3001c851402abb51ea6a3368d7a2b2c3ed2d54a6602382a47a23747145",
+        "bytes": 2330
+      },
+      "source/src/Engine/rdPuppet.h": {
+        "sha256": "757f1934b9e958a882bd4790e289cd32a82661dec1475d01b16644a2c92f04b9",
+        "bytes": 3437
+      },
+      "source/src/Engine/rdThing.h": {
+        "sha256": "9d000a4e8861131ca117f98a5490e7eec9856a3db1f34f77119f3dcc5e4fe36c",
+        "bytes": 1581
+      },
+      "source/src/Engine/sithAnimClass.h": {
+        "sha256": "ab48919fb73c6ccbee1863d57326adc58ec16082312f2f4dc98d822023d35244",
+        "bytes": 922
+      },
+      "source/src/Engine/sithCamera.h": {
+        "sha256": "34c9a73e8c4e3387e8fbf123661d93ed405cdb7e5170e283b44bf99d39fa263e",
+        "bytes": 4331
+      },
+      "source/src/Engine/sithCollision.c": {
+        "sha256": "ac54301bdf0da274af87ff6c8d20e6905c5688f92984f0f5d7321ea0235d4c63",
+        "bytes": 52623
+      },
+      "source/src/Engine/sithCollision.h": {
+        "sha256": "11763184309f4eed0f6c21f360595db7acce3bcb7cb1b6fed0a6c814d61e1631",
+        "bytes": 5804
+      },
+      "source/src/Engine/sithIntersect.c": {
+        "sha256": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96",
+        "bytes": 25922
+      },
+      "source/src/Engine/sithIntersect.h": {
+        "sha256": "03effe53cc9016668261c4a919b606cb8d1eaaf4531d3f939dc58b9328095b72",
+        "bytes": 4980
+      },
+      "source/src/Engine/sithKeyFrame.h": {
+        "sha256": "fd38663179b7d766ab76fcac29b7596b1e01b2fd7eaf1a4979b1803495e48b44",
+        "bytes": 654
+      },
+      "source/src/Engine/sithPhysics.c": {
+        "sha256": "bfd0e3e70ad7e88162805617744f1536d7bae0a4ee08b18c58bc673755d4796b",
+        "bytes": 42794
+      },
+      "source/src/Engine/sithPhysics.h": {
+        "sha256": "13125d7d7ff57bc85e51ebdbcb87ab96007b0ce3d08818ff7c53d66bc821e433",
+        "bytes": 2012
+      },
+      "source/src/Engine/sithPuppet.h": {
+        "sha256": "d06e81a606e075e10e69346be02472b712b3a0bdc940d70393a9adcd04f47f8c",
+        "bytes": 2974
+      },
+      "source/src/Engine/sithRender.h": {
+        "sha256": "0451d67b0b6a88e832f6ad7aeefd312b297e90a4bf47005e32169752e6d84f24",
+        "bytes": 3606
+      },
+      "source/src/Gameplay/sithEvent.h": {
+        "sha256": "fda9400b7ed8342214dfde5f14e14060e3b5bd142069be92a98fb7f005a9d494",
+        "bytes": 1201
+      },
+      "source/src/Gameplay/sithInventory.h": {
+        "sha256": "521eb08727eebd2c600b4dd1b3c94a3034e6d5ff451f535af2768efb571f5bd0",
+        "bytes": 8299
+      },
+      "source/src/Gameplay/sithPlayer.h": {
+        "sha256": "8ff1434f07503454bbcf04bc9cdb02868e9a31cf99cc3cb634e02cb1cf5357d9",
+        "bytes": 4474
+      },
+      "source/src/Gameplay/sithPlayerActions.c": {
+        "sha256": "f8f8e156acdbaa251f1a10cafe06437b204db20034add746decaa5ab805d717c",
+        "bytes": 11055
+      },
+      "source/src/Gameplay/sithPlayerActions.h": {
+        "sha256": "5bce4c1db14919be148c731c8d7ca4de01efcaac86bd0bed3cd2b22f9c088d45",
+        "bytes": 934
+      },
+      "source/src/Gameplay/sithTime.h": {
+        "sha256": "f0002c01c3fa96534540464a2f52da580adc2a60a7fef0db7fbfd457a28c6b87",
+        "bytes": 634
+      },
+      "source/src/General/crc32.h": {
+        "sha256": "636e4f05ad94db80c8501b6c576a1e7cd2e871e3a5c4ae650233f5bf833adf5d",
+        "bytes": 2108
+      },
+      "source/src/General/stdConffile.h": {
+        "sha256": "9ffc0858a23ca064e39c52e9d2e368751e934f28a024fbe0a6f0435fcf50aa1e",
+        "bytes": 1562
+      },
+      "source/src/General/stdHashtbl.h": {
+        "sha256": "45e9bcbbcb0b3625f313f81f5f612726a4b3c6b2ec275a7edeff01edd05daf1c",
+        "bytes": 1688
+      },
+      "source/src/General/stdMath.c": {
+        "sha256": "ed3f12a57d4454ad8731ba94a68f42c5f983631e5540da7649cd4488a7c75995",
+        "bytes": 23861
+      },
+      "source/src/General/stdMath.h": {
+        "sha256": "e27e0536926e9a9786adc702f38f42f3fbbee790ac1e05354b74816ae05d0f21",
+        "bytes": 5848
+      },
+      "source/src/General/stdMathTables.h": {
+        "sha256": "15c0a3695f29ea710277cc834f6c7cf3532db75da1249abb1370fe6b6d748c8d",
+        "bytes": 91704
+      },
+      "source/src/General/stdPalEffects.h": {
+        "sha256": "aa44c31864429d8ec181861140be2ac714d51294d57d8b468197d8677e0c67a4",
+        "bytes": 3555
+      },
+      "source/src/Primitives/rdMath.c": {
+        "sha256": "b3587b90480a02df9178779f424441f6111d87da470a8e17bb72fd5ad026539a",
+        "bytes": 2642
+      },
+      "source/src/Primitives/rdMath.h": {
+        "sha256": "c4e617a22d42835c6e0b6ec58580dfae829cab3799b89bf2c19afb2776ff8986",
+        "bytes": 1178
+      },
+      "source/src/Primitives/rdMatrix.c": {
+        "sha256": "0f0889fd0c9ce05fb768062061d4435b1df455fd6e16d629ea84e435581d1658",
+        "bytes": 29337
+      },
+      "source/src/Primitives/rdMatrix.h": {
+        "sha256": "867a7e8d8b2a6cbd9df2483e0004fc16bf0e7d5254e52b2083b67adb11e1e3eb",
+        "bytes": 8480
+      },
+      "source/src/Primitives/rdModel3.h": {
+        "sha256": "6766ee4f987c3e606fe793605ef89b8b30b0da72cb09d985946606b7b7c9a12d",
+        "bytes": 6274
+      },
+      "source/src/Primitives/rdParticle.h": {
+        "sha256": "94164b41216560e92be607e35d5a850cf8d6998132736ce32b694ffb2b99e884",
+        "bytes": 1842
+      },
+      "source/src/Primitives/rdPolyline.h": {
+        "sha256": "b089cad825e6a03a720055c6e2fef8b545a6568b9a3d21cf2f412592fcb40be3",
+        "bytes": 1285
+      },
+      "source/src/Primitives/rdRect.h": {
+        "sha256": "31d725fa4952dbfe76876a16626e1f2fc259202c921fdfa7020a3128479453ca",
+        "bytes": 413
+      },
+      "source/src/Primitives/rdSprite.h": {
+        "sha256": "d88ba8556f6fe30931f4bca1f4f17d2a93af0580314822a3b92a82271ac8788a",
+        "bytes": 1496
+      },
+      "source/src/Primitives/rdVector.c": {
+        "sha256": "097638a3da4264865ed16e95a486f85a69c415c12c17781e3bcf2a0802a9edca",
+        "bytes": 15614
+      },
+      "source/src/Primitives/rdVector.h": {
+        "sha256": "bfa349085ada02c21141d51f122c2a921456c26cc52270e4b1610c3384799f49",
+        "bytes": 7748
+      },
+      "source/src/Raster/rdCache.h": {
+        "sha256": "da5541ec6ac797deb17c65658aae6689ad1a7b0bec899ece59e8c8459b6f07d5",
+        "bytes": 2551
+      },
+      "source/src/Raster/rdFace.h": {
+        "sha256": "a79f15676b498b71e0cab3f871e090e3a0d45017fc85fc21f1965806696911be",
+        "bytes": 1067
+      },
+      "source/src/Win95/stdVBuffer.h": {
+        "sha256": "d34916c207f364b9b4a4e02eeb5360601f34ae0d9213fd516244355c7662e3b3",
+        "bytes": 107
+      },
+      "source/src/World/jkPlayer.h": {
+        "sha256": "db4a1f7f0bc7fff4e9ccb8f72a841723ec1b85c1c803e989c4ec5f04b61f8210",
+        "bytes": 7558
+      },
+      "source/src/World/sithActor.c": {
+        "sha256": "8ff7b7025d7318c9e53a797c95d125274b5da707aa4b939aac8a65cbdb532e71",
+        "bytes": 21993
+      },
+      "source/src/World/sithActor.h": {
+        "sha256": "f4aa451cbef7997e502cc84e1db3c6852f7959235ce79af0b4ce2e59f8ad27f3",
+        "bytes": 2287
+      },
+      "source/src/World/sithItem.h": {
+        "sha256": "add55c6b477b430377b9c4de98f4beaef616c0f731200b292b0e2a4d9a7b531c",
+        "bytes": 701
+      },
+      "source/src/World/sithMaterial.h": {
+        "sha256": "45440db50976bdfb0a0448946fab8925d2520e176404c50ae9b29dd633927a89",
+        "bytes": 1097
+      },
+      "source/src/World/sithSector.c": {
+        "sha256": "0a6e9cb0113e2d602a5550ceb7c2ffd203e81d6b385099729cede2edbb3e3e17",
+        "bytes": 13081
+      },
+      "source/src/World/sithSector.h": {
+        "sha256": "0c88a7476bcc35b5f5d723e30f623a3e5df19367cabe8935c347007de9b3aa55",
+        "bytes": 3331
+      },
+      "source/src/World/sithSoundClass.h": {
+        "sha256": "285401b1509e0293b06577cd34e28796fbb02e9c7fc2e0d0211d3e7488955cd3",
+        "bytes": 5870
+      },
+      "source/src/World/sithSurface.h": {
+        "sha256": "90e3ad70eb145985510b61f4f684088a49020638a5da06b472725f478c9e4141",
+        "bytes": 8712
+      },
+      "source/src/World/sithTemplate.h": {
+        "sha256": "171a60a9e95e9730bd869042164d3b55417419a897cbc7992104f585ddee6995",
+        "bytes": 1135
+      },
+      "source/src/World/sithThing.c": {
+        "sha256": "f3f6716e9e59f18b2be7278304522ca27aac01ca4288fcff5d92a8f64e7054ec",
+        "bytes": 69749
+      },
+      "source/src/World/sithThing.h": {
+        "sha256": "2b86b3569ed579880aa4cd87705e7080af695d25c647dd823cf97a2e926c1080",
+        "bytes": 8546
+      },
+      "source/src/World/sithWeapon.h": {
+        "sha256": "8de48200c4ee1393f07d87701c5b968d45c47d0626a01c4996a3de02d006dbb5",
+        "bytes": 6432
+      },
+      "source/src/World/sithWorld.h": {
+        "sha256": "fb6f4fe01ea306b06278517b4657a9bd133828f54ce83fe798bac58ddf3573ff",
+        "bytes": 2970
+      },
+      "source/src/engine_config.h": {
+        "sha256": "e5ff70cd244802764765426ab37cb2cd5c9e26ae6afb4fdcbad5234025721dd6",
+        "bytes": 19767
+      },
+      "source/src/hook.h": {
+        "sha256": "b47f9df079bd2dde81100c308ec017ae31ed1dbc3d39d2ac9b2ccd835411d90a",
+        "bytes": 335
+      },
+      "source/src/jk.h": {
+        "sha256": "9998d594d1c3827ee193391a1cc4efa46c78f1f97fc65d69981a8ff5cb2e7e68",
+        "bytes": 24505
+      },
+      "source/src/stdPlatform.h": {
+        "sha256": "dcd37d22150a1f5d0f33cd21e4d0b409f90dc081e3ba705bca788deb10b37b9a",
+        "bytes": 10515
+      },
+      "source/src/types.h": {
+        "sha256": "12e753ee33708366a2ce6fb625b81178aa8400c3bb77191225f2599b01c04f59",
+        "bytes": 91116
+      },
+      "source/src/types_enums.h": {
+        "sha256": "a546b85816c58d9aede433728997353a94528a8c083b9dcfee189dad81c08a1e",
+        "bytes": 44614
+      },
+      "source/src/types_win_enums.h": {
+        "sha256": "d59bffd3c98ce1f83ed3b6194ec7d7995845bf0819b74af3c5951952120b182c",
+        "bytes": 14960
+      },
+      "source/src/version.h": {
+        "sha256": "b2c5fdd960f0ee14bd255215b7f7c99818b376aa3dec87501e31c28b47c944d8",
+        "bytes": 531
+      },
+      "stock_functions.inc": {
+        "sha256": "fb9c40dfdfad6e2b00ff527341a91e2ab33531226e73aac24f5a5e1bc4a3c5be",
+        "bytes": 32194
+      }
+    },
+    "compiler": {
+      "path": "/usr/bin/cc",
+      "sha256": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f",
+      "version": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    }
+  },
+  "fixture_sources": {
+    "recovery": {
+      "native/tests/stock_water_replay/bank_drive.inc": "55dca3292ad52cea75930e547f0e5ddaace3d5b11f881ed73e75880552907a38",
+      "native/tests/stock_water_replay/bank_oracle.h": "4539e0e38349c2166b965287f879790e520bf8f205240d0d1fb42dd59c5f618b",
+      "native/tests/stock_water_replay/bank_trace.inc": "84f26269a3a6f95571fc483f09035315d37ca8b86dda7702014844b46741624d",
+      "native/tests/stock_water_replay/collect_motor.py": "9b898eaffd000be8d89fcc382cd6b18426aef30618000ab721cb7e81fcaeef4c",
+      "native/tests/stock_water_replay/collect_recovery.py": "370a38195415fb46fcccfc4e20c2de913502ab007f4fbcdf6c99730de7e68ba3",
+      "native/tests/stock_water_replay/evaluate_bank.py": "bfd164fe3d80f64808f36ecd9f37adde13bc78cf9248c0bc69f607ee03636f41",
+      "native/tests/stock_water_replay/evaluate_motor.py": "59d475b45b455b087c176827761dcacddff7199e2ad8feb113de775b4c8c2789",
+      "native/tests/stock_water_replay/geometry.py": "22757770f5347d5cfc29f4cc83361d711d391841cf02f34a8e6c4a394901b0d6",
+      "native/tests/stock_water_replay/independent_motor.inc": "3dd78b15afcc6470ff900d343fcdd51e53b3b2e069f98de77541b62b94119e27",
+      "native/tests/stock_water_replay/recovery.inc": "bc1a2ff725f77f6ad5aa3f2d2923948026dc18814d4e93dcd22053db84f6af8b",
+      "native/tests/stock_water_replay/replay.c": "7f875e149125aeb4dbe2b45213b8a880a2c68205ace525162f5072ef4fcad1ae",
+      "native/tests/stock_water_replay/replay_loop.inc": "7f22482e8478a7895f001746dce5b9f9dbaf9f5576655e2c6f97a5e17c28afba",
+      "native/tests/stock_water_replay/replay_trace.inc": "4088dfbc2192e0dac247dd1057ce7186c8fe87e27cdae9e1528992e85d9b729d",
+      "native/tests/stock_water_replay/run.py": "54ec53e4387e7b817eae6b98d10ed7b69486b7056ec173b14dcc7ba40b2619ee",
+      "native/tests/test_bot_portal_collision.c": "be057767830a7b52bd102edc5b24b11f5c4ffc6d93996d2c655548390a06af06",
+      "bots/lily/protocol.py": "8993370f8a659c9847ae70112836ab62c897849be1a4b3725f9d070d71853e9e",
+      "bots/map_audit.py": "9354db3bc60ecd031b51f933b37eb809ebb6bfb4c5cd2b2a6b1e38b373119df4"
+    },
+    "evaluator": {
+      "native/tests/stock_water_replay/bank_drive.inc": "55dca3292ad52cea75930e547f0e5ddaace3d5b11f881ed73e75880552907a38",
+      "native/tests/stock_water_replay/bank_trace.inc": "84f26269a3a6f95571fc483f09035315d37ca8b86dda7702014844b46741624d",
+      "native/tests/stock_water_replay/replay_loop.inc": "7f22482e8478a7895f001746dce5b9f9dbaf9f5576655e2c6f97a5e17c28afba",
+      "native/tests/stock_water_replay/recovery.inc": "bc1a2ff725f77f6ad5aa3f2d2923948026dc18814d4e93dcd22053db84f6af8b",
+      "native/tests/stock_water_replay/independent_motor.inc": "3dd78b15afcc6470ff900d343fcdd51e53b3b2e069f98de77541b62b94119e27",
+      "native/tests/stock_water_replay/replay_trace.inc": "4088dfbc2192e0dac247dd1057ce7186c8fe87e27cdae9e1528992e85d9b729d",
+      "native/tests/stock_water_replay/bank_oracle.h": "4539e0e38349c2166b965287f879790e520bf8f205240d0d1fb42dd59c5f618b",
+      "native/tests/stock_water_replay/replay.c": "7f875e149125aeb4dbe2b45213b8a880a2c68205ace525162f5072ef4fcad1ae",
+      "native/tests/stock_water_replay/collect_recovery.py": "370a38195415fb46fcccfc4e20c2de913502ab007f4fbcdf6c99730de7e68ba3",
+      "native/tests/stock_water_replay/collect_motor.py": "9b898eaffd000be8d89fcc382cd6b18426aef30618000ab721cb7e81fcaeef4c",
+      "native/tests/stock_water_replay/live_policy.py": "82ebf0a395037210d24a555b02ace9587a553a2181dd95f305d7e104caa5d2a4",
+      "native/tests/stock_water_replay/evaluate_motor.py": "59d475b45b455b087c176827761dcacddff7199e2ad8feb113de775b4c8c2789",
+      "native/tests/stock_water_replay/run.py": "54ec53e4387e7b817eae6b98d10ed7b69486b7056ec173b14dcc7ba40b2619ee",
+      "native/tests/stock_water_replay/geometry.py": "22757770f5347d5cfc29f4cc83361d711d391841cf02f34a8e6c4a394901b0d6",
+      "native/tests/stock_water_replay/evaluate_bank.py": "bfd164fe3d80f64808f36ecd9f37adde13bc78cf9248c0bc69f607ee03636f41",
+      "native/tests/test_bot_portal_collision.c": "be057767830a7b52bd102edc5b24b11f5c4ffc6d93996d2c655548390a06af06",
+      "bots/lily/protocol.py": "8993370f8a659c9847ae70112836ab62c897849be1a4b3725f9d070d71853e9e"
+    }
+  },
+  "python": {
+    "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "implementation": "CPython",
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+  },
+  "numpy": "2.3.5"
+}

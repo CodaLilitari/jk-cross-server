@@ -30,6 +30,7 @@ static int channel[2];
 static unsigned char frame[513];
 static uint32_t epoch, life;
 static unsigned callbackAcks, callbackStates;
+static FILE *observations;
 static int countFrame(const uint8_t *data,size_t size)
 {
     assert(size>=20 && size<=512 && !memcmp(data,"JKCP",4));
@@ -70,6 +71,8 @@ static int receive(int kind)
     while ((n=recv(channel[1],frame,sizeof(frame),MSG_DONTWAIT))>0) {
         assert(n>=20 && n<=512 && !memcmp(frame,"JKCP",4) && frame[4]==1);
         assert(n==20+frame[6]+256*frame[7]);
+        if (observations && frame[5]>=5 && frame[5]<=7)
+            assert(fwrite(frame,1,n,observations)==(size_t)n);
         if (frame[5]==kind) return n;
     }
     return 0;
@@ -79,8 +82,10 @@ static void ack(int kind,int status,int seq)
     assert(receive(2)==24 && word(frame+16)==(uint32_t)seq);
     assert(frame[20]==status && frame[21]==kind);
 }
-int main(void)
+#include "test_bot_lily.inc"
+int main(int argc,char **argv)
 {
+    if (argc==2) { observations=fopen(argv[1],"wb"); assert(observations); }
     assert(socketpair(AF_UNIX,SOCK_DGRAM,0,channel)==0);
     char fd[32]; snprintf(fd,sizeof(fd),"%d",channel[0]); setenv("JK_BOT_COMPANION_FD",fd,1);
     sithWorld_g_pCurrentWorld=&world; sithPlayer_g_pLocalPlayer=&jkPlayer_playerInfos[0];
@@ -159,6 +164,14 @@ int main(void)
     double start=clockseconds();
     for (int i=0;i<2000;i++) jkBot_ObserveChat(-1,1,91,"a bounded event");
     assert(clockseconds()-start<2.0);
+    while (receive(1)) {}
+    command(20,12,26,clockseconds()+2);
+    setword(frame+8,companion.world); setword(frame+12,companion.life);
+    setword(frame+28,1); setword(frame+32,11);
+    frame[36]=1; frame[37]=60; frame[39]=75; frame[43]=1;
+    submit(46); ack(20,CP_REJECTED,12);
+    testLily();
+    if (observations) assert(!fclose(observations));
     puts("PASS native and portable transport, applied strategy, expiry, identity, bounded backpressure and public chat");
     return 0;
 }

@@ -1,0 +1,142 @@
+{
+  "type": "Deterministic parameter-search envelope; no game outcomes or model efficacy measured.",
+  "search_source_sha256": "a9bcce9832db18e04a72d31e086a5f2ecd0b1ff298a67589cf1f8aac7f3e03a0",
+  "numpy_version": "2.3.5",
+  "generator": "PCG64",
+  "seed": 541124,
+  "shape": [
+    8,
+    4,
+    100
+  ],
+  "zero_based_a_slice": [
+    72,
+    76
+  ],
+  "generation_scales": [
+    0.35,
+    0.35,
+    0.35,
+    0.35,
+    0.175,
+    0.175,
+    0.175,
+    0.175
+  ],
+  "method": "For each unit take maximum absolute scaled delta among all four directions per generation. Starting at the declared binary64 logit apply each maximum with minus/plus in generation order for lower/upper extremes. Retaining the incumbent only draws an interior result. Across units extrema need not be jointly reachable. Retention and half-lives describe the linear decay of past state given these parameter extrema.",
+  "units": [
+    {
+      "unit": 1,
+      "initial_a": -0.8401293709085913,
+      "max_absolute_delta_each_generation": [
+        0.6007853868414571,
+        0.7794151440382188,
+        0.3266884621541684,
+        0.5995567507005108,
+        0.23331198972595404,
+        0.31179068717530745,
+        0.31009489229738124,
+        0.382146665295094
+      ],
+      "sum_absolute_maxima": 3.5437899782280917,
+      "reachable_binary64_a": [
+        -4.383919349136684,
+        2.7036606073195006
+      ],
+      "rho_at_40ms": [
+        0.012261008825365243,
+        0.9325560912453207
+      ],
+      "half_life_seconds": [
+        0.0062994323324035454,
+        0.39707123472514116
+      ]
+    },
+    {
+      "unit": 2,
+      "initial_a": 1.118814995985629,
+      "max_absolute_delta_each_generation": [
+        0.6354892486308193,
+        0.6490047212860398,
+        0.41077564385407034,
+        0.9756125036049557,
+        0.13961752140651676,
+        0.23886556940355966,
+        0.2117568425076209,
+        0.13199280126011428
+      ],
+      "sum_absolute_maxima": 3.3931148519536967,
+      "reachable_binary64_a": [
+        -2.2742998559680676,
+        4.511929847939327
+      ],
+      "rho_at_40ms": [
+        0.09280755052990572,
+        0.9841962267655184
+      ],
+      "half_life_seconds": [
+        0.011663120084041523,
+        1.7404842707259762
+      ]
+    },
+    {
+      "unit": 3,
+      "initial_a": 2.6607973162516654,
+      "max_absolute_delta_each_generation": [
+        0.6208367428296391,
+        0.9520631749413598,
+        0.527507676176206,
+        0.4718010390484418,
+        0.12369244847676562,
+        0.2340697522002597,
+        0.1478949681746799,
+        0.22781907898409906
+      ],
+      "sum_absolute_maxima": 3.3056848808314507,
+      "reachable_binary64_a": [
+        -0.6448875645797859,
+        5.966482197083116
+      ],
+      "rho_at_40ms": [
+        0.3424218232921161,
+        0.9924560943004115
+      ],
+      "half_life_seconds": [
+        0.025870653493335862,
+        3.661389152175619
+      ]
+    },
+    {
+      "unit": 4,
+      "initial_a": 4.179502370562407,
+      "max_absolute_delta_each_generation": [
+        0.538071502067428,
+        0.4514144004739256,
+        0.3505362000914056,
+        0.4072928953415645,
+        0.14450757140467027,
+        0.26266926676654956,
+        0.4057736057621654,
+        0.24312341612120533
+      ],
+      "sum_absolute_maxima": 2.8033888580289146,
+      "reachable_binary64_a": [
+        1.3761135125334925,
+        6.982891228591322
+      ],
+      "rho_at_40ms": [
+        0.7943742575159068,
+        0.9940778760964545
+      ],
+      "half_life_seconds": [
+        0.1204423039253485,
+        4.667870569674882
+      ]
+    }
+  ],
+  "all_strictly_inside_clip": true,
+  "clip": [
+    -40,
+    40
+  ]
+}

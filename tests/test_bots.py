@@ -74,6 +74,8 @@ time.sleep(30)
 
     def test_stock_roster_has_eight_distinct_profiles_and_128_lines(self):
         profiles = run.load_profiles()
+        lily = profiles.pop('lily')
+        self.assertEqual((lily['model'], lily['sound']), ('ky.3do', 'ky.snd'))
         self.assertEqual(len(profiles), 8)
         self.assertEqual({p["force_style"] for p in profiles.values()}, {"competitive"})
         self.assertEqual(sum(len(lines) for row in profiles.values() for lines in row["taunts"].values()), 128)
@@ -101,6 +103,19 @@ time.sleep(30)
                     self.assertEqual((directory / profile["id"] / "companion-present").read_text(), str(enabled))
                 self.assertEqual(list(directory.glob("companion/*.json")), [])
                 self.assertNotIn("token", (directory / "session.json").read_text())
+
+    def test_adaptive_lily_enables_private_channel_only_on_selected_lily(self):
+        with self.assertRaisesRegex(ValueError, "lily"):
+            self.launch(adaptive_lily=True)
+        self.profiles[0] = run.load_profiles()["lily"]
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled), patch.dict(os.environ, {"JK_BOT_LILY": "1"}):
+                code, directory = self.launch(adaptive_lily=enabled)
+                self.assertEqual(code, 0)
+                for profile in self.profiles:
+                    env = json.loads((directory / profile["id"] / "observed.json").read_text())["env"]
+                    self.assertEqual(env.get("JK_BOT_LILY"), "1" if enabled and profile["id"] == "lily" else None)
+                    self.assertEqual("JK_BOT_COMPANION_FD" in env, enabled and profile["id"] == "lily")
 
     def test_companion_launch_failure_closes_owned_server(self):
         with patch.object(run.subprocess, "Popen", side_effect=OSError("fixture spawn failure")):

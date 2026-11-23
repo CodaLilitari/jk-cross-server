@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "scope": "Native and browser binary packaging, source correspondence, and link-input verification.",
+  "native": {
+    "base_commit": "74e4657c4f1751d09af9ad9e056acb8f41997acb",
+    "build_manifest": "native/BOT_BUILD.json",
+    "build_manifest_sha256": "b06918b1287caa62ba15e86275230fae0965e41f0ca61db985313179cd62ba30",
+    "method": "Recompile bot driver and multiplayer GUI from pinned patched source, using verified published objects and static dependencies for remaining units.",
+    "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+    "sdl_commit": "f87239e71e42da91ca317a12eefb82cfbf3393eb",
+    "prior_relink_archive_sha256": "ca63beaa5c3a283639950be045df0d5ffa5a2fb39cc259db479c3deee4a4a123",
+    "translation_units_recompiled": [
+      "src/AI/jkBot.c",
+      "src/Gui/jkGUIMultiplayer.c"
+    ],
+    "patched_sources_verified_against_clean_base": 33,
+    "files": {
+      "bin/bots-linux-x86_64/jk-bot-client": {
+        "sha256": "d04f5106a3a0a3f123162e82a364bc98ec495ae8bd2fe89fb0f1b2461fc44fe3",
+        "bytes": 8703440
+      },
+      "bin/bots-linux-x86_64/libGameNetworkingSockets.so": {
+        "sha256": "8246a869b1d72115ecc849309629aa1abbce0bf1a0f23cc70deaded98d82d8e9",
+        "bytes": 3644744
+      },
+      "native/bot-client.patch": {
+        "sha256": "12fc518bdf29bd7322c4d69935f9be499ea3f829f25538bd1f66de0dc2ff4af6",
+        "bytes": 338693
+      },
+      "native/bot-relink-linux-x86_64.tar.gz": {
+        "sha256": "a9d6ac49ff89d662c8ef4d56973994d572701a27ff6ba944c069df0c21ff3d21",
+        "bytes": 6055658
+      }
+    },
+    "archive_object_digests_verified": 218,
+    "supplied_object_relink_sha256": "d04f5106a3a0a3f123162e82a364bc98ec495ae8bd2fe89fb0f1b2461fc44fe3",
+    "supplied_object_relink_byte_identical": true,
+    "recompiled_libsmacker_relink_sha256": "32fb09ea9daa7212256f65b2d338ab63ed9473fd9868ac8b4c4929fcdc1a9225",
+    "recompiled_libsmacker_relink_byte_identical": false
+  },
+  "browser": {
+    "schema": 1,
+    "engine_repository": "https://github.com/tristamus/OpenJKDF2",
+    "engine_base_commit": "7a6f95c9a3399e59acbf019dc6b25f9981d29dff",
+    "emscripten": "6.0.12",
+    "clean_pinned_source_accepts_patch": true,
+    "changed_source_hashes_verified": 29,
+    "files": {
+      "bin/bots-jkweb/openjkdf2.js": {
+        "sha256": "9d3a986b7d6a11f8ed03a81090d7cc258ce7e360abb86784ef33176604703c78",
+        "bytes": 563119
+      },
+      "bin/bots-jkweb/openjkdf2.wasm": {
+        "sha256": "a1bee43135182c235cd39291594c3b3737b055da02bebb7c35e173c50087c9c7",
+        "bytes": 3838771
+      },
+      "web_bots/engine.patch": {
+        "sha256": "fffac050ec822d871dab29a0f38dbe4df7228c94f593c24996a0ced0091f7c0d",
+        "bytes": 330015
+      },
+      "web_bots/engine-relink.tar.gz": {
+        "sha256": "3e172acd0c8d3821cea50618dd8459f634d7cbeed740f6e1d030a70f56f7955c",
+        "bytes": 1583424
+      }
+    },
+    "independent_direct_relink": {
+      "js_byte_identical": true,
+      "wasm_byte_identical": true,
+      "recompiled_libsmacker": false
+    },
+    "source_only": false,
+    "live_multiplayer_tested": false,
+    "build_manifest": "web_bots/BUILD.json",
+    "build_manifest_sha256": "fe86c5ffc476e45e36f47a9b356bd6cd293b44e608b0cdd70612a6e270b08cc6",
+    "js_syntax_valid": true,
+    "wasm_module_valid": true,
+    "required_companion_export_bindings_present": true,
+    "platform_difference": "Bot_PowerKey retains the pinned web fork's stock SITHINVENTORY_NUM_POWERKEYBINDS minus one bound.",
+    "compiler_revision": "5488e0871d46d19a3209988190fa6a653126256f",
+    "build_notes": [
+      "The first compile failed on the native-only SITHINVENTORY_POWERKEYBIND_COUNT_JK symbol. Reinstating the exact prior web fork keybind bound fixed compilation.",
+      "Emscripten reported link-only WebGL/WASM, memory, Asyncify and stack options passed during C compilation. The multiplayer GUI retained its pre-existing unused global warning."
+    ],
+    "separate_libsmacker_source_relink": {
+      "openjkdf2.js": {
+        "sha256": "ea48f2409e730846478dd7fec262b3d462578ad8a45607a83e5bd1fd58f3a56d",
+        "byte_identical": false
+      },
+      "openjkdf2.wasm": {
+        "sha256": "3a50fb30a7619b0c9e83ae6931cec8c0e86fcd3b67926d8a148c1335298fff09",
+        "byte_identical": false
+      }
+    }
+  },
+  "shared_adapter": {
+    "source": "src/AI/jkBotLily.inc",
+    "sha256": "6180fa6af33530350ca86934f0b4ae9acca8036b115175d38a2cf3d43210c85c",
+    "same_source_in_both_builds": true
+  },
+  "game_assets_included": false,
+  "live_gameplay_in_this_verification": false
+}

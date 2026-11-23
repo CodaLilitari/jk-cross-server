@@ -1,0 +1,9 @@
+case	origin	wet	dry	start_sector	x	y	z	control_dt	flags	health	endurance_ms	pitch	vertical_speed	yaw_offsets
+perturb-shaft-a	41	54	41	54	2.9900	-.1050	.2000	.040	4b4f	100	12000	0	0	0,90
+perturb-shaft-b	41	54	41	54	2.9900	-.1050	.4000	.040	4b4f	100	12000	0	0	0,90
+perturb-shaft-c	41	54	41	54	2.9900	-.1050	.6500	.040	4b4f	100	12000	0	0	0,90
+perturb-shaft-d	41	54	41	54	2.9900	-.1050	.8500	.040	4b4f	100	12000	0	0	0,90
+perturb-pool-a	41	44	10	42	-1.9095	1.8915	-.3125	.040	cb4f	100	12000	0	0	0,90
+perturb-pool-b	41	44	10	42	-1.8355	1.8610	-.3305	.040	cb4f	100	12000	0	0	0,90
+perturb-pool-c	41	44	10	42	-1.8720	1.9045	-.2940	.040	cb4f	100	12000	0	0	0,90
+perturb-pool-d	41	44	10	42	-1.8723	1.8857	-.3123	.040	cb4f	100	12000	0	0	0,90

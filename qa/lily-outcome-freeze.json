@@ -1,0 +1,13 @@
+{
+  "run_id": "lily-outcome-learning-20261122-01",
+  "declaration_sha256": "911ca8c8a3218334d117de8995ce88114f99ebde431c77500e894db196ac3b98",
+  "run_sha256": "6884edf86455a97c1e2bb814bfdc95f442039b4a3dec5d18e079972439386c15",
+  "fixture_source_sha256": "59d475b45b455b087c176827761dcacddff7199e2ad8feb113de775b4c8c2789",
+  "selected": null,
+  "model": null,
+  "selection": {
+    "path": "selection.json",
+    "sha256": "d3ecf9b4353be34777758cad49f263096fc40ce1ef2c3d67ee7c5e61126994b2"
+  },
+  "frozen_at_utc": "2026-11-22T17:11:03.220731+00:00"
+}

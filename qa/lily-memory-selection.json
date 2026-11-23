@@ -1,0 +1,79 @@
+{
+  "run_id": "lily-memory-learning-20261122-01",
+  "declaration_sha256": "77ef88dcfa3f94c2095a4fbd397cbfd3c6b11fafe8b55f387503df24b66b5b4d",
+  "run_sha256": "526aab01427067bfd5677f9fb446007cba549d3505dfcabb6c9a4c0df6815c48",
+  "fixture_source_sha256": "59d475b45b455b087c176827761dcacddff7199e2ad8feb113de775b4c8c2789",
+  "training": {
+    "path": "training.json",
+    "sha256": "e1b5383517e621bfb56414d9a957627f083d8b1e90614673c8d6c366c5ed4889"
+  },
+  "block": {
+    "path": "blocks/open/block.json",
+    "sha256": "1e5991170dcdbf4d4a5fd5c73849836b97480281a2733fd1fe8693bbd6fb62da"
+  },
+  "checkpoints": {
+    "v3": {
+      "artifact": "v3",
+      "model_sha256": "e08532a4c1a2f7b0fa88417456d177cedd03c67d26555c4a5be1f4d80b599043",
+      "canonical_sha256": "25cd7e67f73a747ee49a257556c068a7aeadd21605466080be3ce96bed74120e",
+      "policy_sha256": "f849e6bae2e41e86a3ed70b6df00d6365c1803da9973fbaae6e1db8d26650d51"
+    },
+    "g4": {
+      "artifact": "g4",
+      "model_sha256": "af75dcd370fcc828c71075c40942712aeacbac8f7efccdf02b584da5350cecf6",
+      "canonical_sha256": "83b5d06e4d110d0354c74b74512bbb89f2229d7ae708fc1d4ffac6f816838cf2",
+      "policy_sha256": "30ace86bb9f39221acf57b4b2f6abe11d4dab8e71d00dbc66d8e6586f15d9597"
+    },
+    "static": {
+      "artifact": "s-g08-c06",
+      "model_sha256": "9b2f150efbf1614d6dca0dd6af2d8d803277ae0919cdbc1688eee80023fb178f",
+      "canonical_sha256": "1b9f4033ff11d9f289d111b96cf8b2be5d1584578177ac095cdbf4740c5391f7",
+      "policy_sha256": "3650286c5c02fe2926236596a72a65c73b0a6af0dfed59520083dd36b0ae431d"
+    },
+    "recurrent": {
+      "artifact": "r-g08-c06",
+      "model_sha256": "2d79083c5df12a22e4a4c74cde2eab7fbbe02daa1136d5b45674d18c96d3601c",
+      "canonical_sha256": "46bfa3880d44b4d9a837e5d427105610eb09350bd7cdb3d89264360d4e510d29",
+      "policy_sha256": "5a5e9b688bfb9701ee5ab09318d1d67259035f1ab0653fa9466093e5c4fb4719"
+    },
+    "no_history": {
+      "artifact": "no_history",
+      "model_sha256": "6d1a89cfafba41baa01a7fe193d0f51befa393c45884a9f766e18ae092949210",
+      "canonical_sha256": "e6d2a13f8464cbbb1d99adc85b5c9a1130647c73a585de9dc92a5f61420dfd3f",
+      "policy_sha256": "956fc706394c6adb99e7765ca6689642ffc0de13169621eb6c5866433ea24706"
+    }
+  },
+  "selected": "static",
+  "policies": {
+    "v3": {
+      "pool_wins": 11,
+      "shaft_wins": 8,
+      "charged_steps": 158090,
+      "qualified": false
+    },
+    "g4": {
+      "pool_wins": 24,
+      "shaft_wins": 7,
+      "charged_steps": 75687,
+      "qualified": false
+    },
+    "static": {
+      "pool_wins": 24,
+      "shaft_wins": 8,
+      "charged_steps": 45889,
+      "qualified": true
+    },
+    "recurrent": {
+      "pool_wins": 24,
+      "shaft_wins": 8,
+      "charged_steps": 57099,
+      "qualified": true
+    },
+    "no_history": {
+      "pool_wins": 24,
+      "shaft_wins": 8,
+      "charged_steps": 56081,
+      "qualified": true
+    }
+  }
+}

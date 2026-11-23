@@ -1,0 +1,756 @@
+{
+  "schema": 1,
+  "seed": "41024",
+  "cells": [
+    {
+      "case": "outcome-train-pool-01",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        4,
+        0
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-02",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        2,
+        1
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-03",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        3,
+        0
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-04",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        1,
+        2
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-05",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        0,
+        1
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-06",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        1,
+        0
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-development-pool-01",
+      "split": "development",
+      "family": "pool",
+      "cell": [
+        4,
+        1
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-development-pool-02",
+      "split": "development",
+      "family": "pool",
+      "cell": [
+        2,
+        2
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-development-pool-03",
+      "split": "development",
+      "family": "pool",
+      "cell": [
+        3,
+        2
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-pool-01",
+      "split": "sealed",
+      "family": "pool",
+      "cell": [
+        2,
+        0
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-pool-02",
+      "split": "sealed",
+      "family": "pool",
+      "cell": [
+        0,
+        2
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-pool-03",
+      "split": "sealed",
+      "family": "pool",
+      "cell": [
+        1,
+        1
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-pool-04",
+      "split": "sealed",
+      "family": "pool",
+      "cell": [
+        4,
+        2
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-shaft-01",
+      "split": "train",
+      "family": "shaft",
+      "cell": [
+        4
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-shaft-02",
+      "split": "train",
+      "family": "shaft",
+      "cell": [
+        1
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-development-shaft-01",
+      "split": "development",
+      "family": "shaft",
+      "cell": [
+        0
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-shaft-01",
+      "split": "sealed",
+      "family": "shaft",
+      "cell": [
+        2
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-shaft-02",
+      "split": "sealed",
+      "family": "shaft",
+      "cell": [
+        3
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-07",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        0,
+        4
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-08",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        4,
+        4
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-09",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        1,
+        5
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-10",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        2,
+        3
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-11",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        3,
+        4
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-pool-12",
+      "split": "train",
+      "family": "pool",
+      "cell": [
+        2,
+        5
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-development-pool-04",
+      "split": "development",
+      "family": "pool",
+      "cell": [
+        1,
+        3
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-development-pool-05",
+      "split": "development",
+      "family": "pool",
+      "cell": [
+        2,
+        4
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-development-pool-06",
+      "split": "development",
+      "family": "pool",
+      "cell": [
+        0,
+        5
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-pool-05",
+      "split": "sealed",
+      "family": "pool",
+      "cell": [
+        4,
+        3
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-pool-06",
+      "split": "sealed",
+      "family": "pool",
+      "cell": [
+        3,
+        5
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-pool-07",
+      "split": "sealed",
+      "family": "pool",
+      "cell": [
+        3,
+        3
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-pool-08",
+      "split": "sealed",
+      "family": "pool",
+      "cell": [
+        0,
+        3
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-shaft-03",
+      "split": "train",
+      "family": "shaft",
+      "cell": [
+        6
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-train-shaft-04",
+      "split": "train",
+      "family": "shaft",
+      "cell": [
+        7
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-development-shaft-02",
+      "split": "development",
+      "family": "shaft",
+      "cell": [
+        5
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-shaft-03",
+      "split": "sealed",
+      "family": "shaft",
+      "cell": [
+        9
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    },
+    {
+      "case": "outcome-sealed-shaft-04",
+      "split": "sealed",
+      "family": "shaft",
+      "cell": [
+        8
+      ],
+      "accepted_proposal": 0,
+      "rejections": {}
+    }
+  ],
+  "historical_sha256": {
+    "native/tests/stock_water_replay/bank_cases.tsv": "2ae401185bdeb36944ea15fcebc72d42098920c779e424b4778dd7f9a5c0a67e",
+    "qa/lily-motor-stress-cases.tsv": "297a89c078dc5757c974dbb03ca9290a508f247cc13e6f24f2ae5bd0036925f7",
+    "qa/lily-recovery-fresh-cases.tsv": "9e83493cf8dbd010c05c812ee3c2254b0e316a901022fe3a8ca6f8f7da563c4e"
+  },
+  "generator_sha256": "d6ba84845afe186eced41e090b35f4124a4fcb3a84e75f81bd8acd18cf777f66",
+  "radius": 0.065,
+  "history_minimum": {
+    "pool": 0.075,
+    "shaft": 0.045
+  },
+  "accepted_minimum": {
+    "pool": 0.12,
+    "shaft": 0.08
+  },
+  "count_old": 23,
+  "count_new": 36,
+  "splits": {
+    "train": {
+      "tsv_sha256": "f0188dfbeccf74ad7b44ef44f9786eeeaa50112a41aa1f4c72a3a0b98f90c6e1",
+      "groups": 16,
+      "yaw_trials": 64,
+      "min_sphere_clearance": 0.061138198091053836
+    },
+    "development": {
+      "tsv_sha256": "3ccfb772e7889d407745ff4a2463bebeb6ad9e5dcf8fce9e7d61fe59e7c1a1ae",
+      "groups": 8,
+      "yaw_trials": 32,
+      "min_sphere_clearance": 0.05855111676710262
+    },
+    "sealed": {
+      "tsv_sha256": "f6372e315c558964c543436aff0b39d9bd35fe30a301f84b81ea24c0f4dcd020",
+      "groups": 12,
+      "yaw_trials": 48,
+      "min_sphere_clearance": 0.05175503512229361
+    }
+  },
+  "distance_units": "3-D Euclidean on engine binary32 center coordinates, in game units",
+  "nearest_by_family": {
+    "pool": {
+      "cross_split": {
+        "train__development": [
+          0.220475919014503,
+          "outcome-train-pool-10",
+          "outcome-development-pool-02"
+        ],
+        "train__sealed": [
+          0.2593977988655519,
+          "outcome-train-pool-05",
+          "outcome-sealed-pool-02"
+        ],
+        "development__sealed": [
+          0.2237041124544449,
+          "outcome-development-pool-01",
+          "outcome-sealed-pool-04"
+        ]
+      },
+      "within_split": {
+        "train": [
+          0.2692464474370208,
+          "outcome-train-pool-09",
+          "outcome-train-pool-12"
+        ],
+        "development": [
+          0.3335261234999342,
+          "outcome-development-pool-02",
+          "outcome-development-pool-04"
+        ],
+        "sealed": [
+          0.3089132857283809,
+          "outcome-sealed-pool-04",
+          "outcome-sealed-pool-07"
+        ]
+      },
+      "to_history": {
+        "train": [
+          0.1344385376113686,
+          "outcome-train-pool-09",
+          "pool-110"
+        ],
+        "development": [
+          0.28408949220554186,
+          "outcome-development-pool-06",
+          "perturb-pool-a"
+        ],
+        "sealed": [
+          0.6185027858195264,
+          "outcome-sealed-pool-06",
+          "pool-110"
+        ]
+      }
+    },
+    "shaft": {
+      "cross_split": {
+        "train__development": [
+          0.15515319835837046,
+          "outcome-train-shaft-02",
+          "outcome-development-shaft-01"
+        ],
+        "train__sealed": [
+          0.13542880912569086,
+          "outcome-train-shaft-01",
+          "outcome-sealed-shaft-02"
+        ],
+        "development__sealed": [
+          0.29745950987337977,
+          "outcome-development-shaft-02",
+          "outcome-sealed-shaft-02"
+        ]
+      },
+      "within_split": {
+        "train": [
+          0.14455265639571488,
+          "outcome-train-shaft-03",
+          "outcome-train-shaft-04"
+        ],
+        "development": [
+          0.7894604561326011,
+          "outcome-development-shaft-01",
+          "outcome-development-shaft-02"
+        ],
+        "sealed": [
+          0.19096936433522418,
+          "outcome-sealed-shaft-03",
+          "outcome-sealed-shaft-04"
+        ]
+      },
+      "to_history": {
+        "train": [
+          0.047726064091644094,
+          "outcome-train-shaft-04",
+          "boba-190.017"
+        ],
+        "development": [
+          0.05923753363460394,
+          "outcome-development-shaft-02",
+          "boba-230.247"
+        ],
+        "sealed": [
+          0.06160663435043752,
+          "outcome-sealed-shaft-04",
+          "perturb-shaft-c"
+        ]
+      }
+    }
+  },
+  "nearest_by_group": {
+    "outcome-train-pool-01": {
+      "nearest_other_split": "outcome-development-pool-01",
+      "other_split_distance": 0.37742748263807996,
+      "nearest_history": "pool-110",
+      "history_distance": 1.6540287815475914
+    },
+    "outcome-train-pool-02": {
+      "nearest_other_split": "outcome-development-pool-03",
+      "other_split_distance": 0.32981583620380844,
+      "nearest_history": "pool-100",
+      "history_distance": 1.1088011571261307
+    },
+    "outcome-train-pool-03": {
+      "nearest_other_split": "outcome-sealed-pool-01",
+      "other_split_distance": 0.34353873836336013,
+      "nearest_history": "pool-110",
+      "history_distance": 1.4444084239718618
+    },
+    "outcome-train-pool-04": {
+      "nearest_other_split": "outcome-development-pool-04",
+      "other_split_distance": 0.2692235358640998,
+      "nearest_history": "pool-100",
+      "history_distance": 0.7821305842891831
+    },
+    "outcome-train-pool-05": {
+      "nearest_other_split": "outcome-sealed-pool-02",
+      "other_split_distance": 0.2593977988655519,
+      "nearest_history": "pool-100",
+      "history_distance": 1.1019529096554508
+    },
+    "outcome-train-pool-06": {
+      "nearest_other_split": "outcome-sealed-pool-01",
+      "other_split_distance": 0.2962714220823209,
+      "nearest_history": "pool-100",
+      "history_distance": 1.3593269214461925
+    },
+    "outcome-train-pool-07": {
+      "nearest_other_split": "outcome-development-pool-06",
+      "other_split_distance": 0.2978644525512282,
+      "nearest_history": "pool-100",
+      "history_distance": 0.4955639464077389
+    },
+    "outcome-train-pool-08": {
+      "nearest_other_split": "outcome-sealed-pool-05",
+      "other_split_distance": 0.3543167601001016,
+      "nearest_history": "pool-110",
+      "history_distance": 1.008596558023231
+    },
+    "outcome-train-pool-09": {
+      "nearest_other_split": "outcome-development-pool-06",
+      "other_split_distance": 0.39475211291848566,
+      "nearest_history": "pool-110",
+      "history_distance": 0.1344385376113686
+    },
+    "outcome-train-pool-10": {
+      "nearest_other_split": "outcome-development-pool-02",
+      "other_split_distance": 0.220475919014503,
+      "nearest_history": "pool-110",
+      "history_distance": 0.6926012388388786
+    },
+    "outcome-train-pool-11": {
+      "nearest_other_split": "outcome-sealed-pool-07",
+      "other_split_distance": 0.31849455716025066,
+      "nearest_history": "pool-110",
+      "history_distance": 0.787785072277884
+    },
+    "outcome-train-pool-12": {
+      "nearest_other_split": "outcome-sealed-pool-06",
+      "other_split_distance": 0.27786291952960895,
+      "nearest_history": "pool-110",
+      "history_distance": 0.3434220337104914
+    },
+    "outcome-development-pool-01": {
+      "nearest_other_split": "outcome-sealed-pool-04",
+      "other_split_distance": 0.2237041124544449,
+      "nearest_history": "pool-110",
+      "history_distance": 1.4224648934239223
+    },
+    "outcome-development-pool-02": {
+      "nearest_other_split": "outcome-train-pool-10",
+      "other_split_distance": 0.220475919014503,
+      "nearest_history": "pool-110",
+      "history_distance": 0.8508059369940428
+    },
+    "outcome-development-pool-03": {
+      "nearest_other_split": "outcome-sealed-pool-07",
+      "other_split_distance": 0.23180250455778592,
+      "nearest_history": "pool-110",
+      "history_distance": 1.0781144546774633
+    },
+    "outcome-development-pool-04": {
+      "nearest_other_split": "outcome-train-pool-10",
+      "other_split_distance": 0.2552432466332788,
+      "nearest_history": "pool-100",
+      "history_distance": 0.6285157361975496
+    },
+    "outcome-development-pool-05": {
+      "nearest_other_split": "outcome-train-pool-10",
+      "other_split_distance": 0.2516481842173693,
+      "nearest_history": "pool-110",
+      "history_distance": 0.5255056627676253
+    },
+    "outcome-development-pool-06": {
+      "nearest_other_split": "outcome-train-pool-07",
+      "other_split_distance": 0.2978644525512282,
+      "nearest_history": "perturb-pool-a",
+      "history_distance": 0.28408949220554186
+    },
+    "outcome-sealed-pool-01": {
+      "nearest_other_split": "outcome-train-pool-06",
+      "other_split_distance": 0.2962714220823209,
+      "nearest_history": "pool-100",
+      "history_distance": 1.413898051559999
+    },
+    "outcome-sealed-pool-02": {
+      "nearest_other_split": "outcome-train-pool-05",
+      "other_split_distance": 0.2593977988655519,
+      "nearest_history": "pool-100",
+      "history_distance": 0.8976509848009582
+    },
+    "outcome-sealed-pool-03": {
+      "nearest_other_split": "outcome-train-pool-06",
+      "other_split_distance": 0.33491501244396427,
+      "nearest_history": "pool-100",
+      "history_distance": 1.1490985982879027
+    },
+    "outcome-sealed-pool-04": {
+      "nearest_other_split": "outcome-development-pool-01",
+      "other_split_distance": 0.2237041124544449,
+      "nearest_history": "pool-110",
+      "history_distance": 1.2304505087296789
+    },
+    "outcome-sealed-pool-05": {
+      "nearest_other_split": "outcome-train-pool-08",
+      "other_split_distance": 0.3543167601001016,
+      "nearest_history": "pool-110",
+      "history_distance": 1.0908291934397418
+    },
+    "outcome-sealed-pool-06": {
+      "nearest_other_split": "outcome-train-pool-12",
+      "other_split_distance": 0.27786291952960895,
+      "nearest_history": "pool-110",
+      "history_distance": 0.6185027858195264
+    },
+    "outcome-sealed-pool-07": {
+      "nearest_other_split": "outcome-development-pool-03",
+      "other_split_distance": 0.23180250455778592,
+      "nearest_history": "pool-110",
+      "history_distance": 0.9248252225884597
+    },
+    "outcome-sealed-pool-08": {
+      "nearest_other_split": "outcome-train-pool-04",
+      "other_split_distance": 0.31183921349669486,
+      "nearest_history": "pool-100",
+      "history_distance": 0.6355373393843584
+    },
+    "outcome-train-shaft-01": {
+      "nearest_other_split": "outcome-sealed-shaft-02",
+      "other_split_distance": 0.13542880912569086,
+      "nearest_history": "boba-230.247",
+      "history_distance": 0.12537839964489145
+    },
+    "outcome-train-shaft-02": {
+      "nearest_other_split": "outcome-sealed-shaft-01",
+      "other_split_distance": 0.1498981714083079,
+      "nearest_history": "boba-230.247",
+      "history_distance": 0.6011571336646645
+    },
+    "outcome-train-shaft-03": {
+      "nearest_other_split": "outcome-development-shaft-02",
+      "other_split_distance": 0.16024840978928884,
+      "nearest_history": "boba-210.147",
+      "history_distance": 0.06295982617585703
+    },
+    "outcome-train-shaft-04": {
+      "nearest_other_split": "outcome-sealed-shaft-04",
+      "other_split_distance": 0.16754146742483378,
+      "nearest_history": "boba-190.017",
+      "history_distance": 0.047726064091644094
+    },
+    "outcome-development-shaft-01": {
+      "nearest_other_split": "outcome-train-shaft-02",
+      "other_split_distance": 0.15515319835837046,
+      "nearest_history": "boba-230.247",
+      "history_distance": 0.7521510139978135
+    },
+    "outcome-development-shaft-02": {
+      "nearest_other_split": "outcome-train-shaft-03",
+      "other_split_distance": 0.16024840978928884,
+      "nearest_history": "boba-230.247",
+      "history_distance": 0.05923753363460394
+    },
+    "outcome-sealed-shaft-01": {
+      "nearest_other_split": "outcome-train-shaft-02",
+      "other_split_distance": 0.1498981714083079,
+      "nearest_history": "boba-230.247",
+      "history_distance": 0.45192057460533525
+    },
+    "outcome-sealed-shaft-02": {
+      "nearest_other_split": "outcome-train-shaft-01",
+      "other_split_distance": 0.13542880912569086,
+      "nearest_history": "boba-230.247",
+      "history_distance": 0.256003632337935
+    },
+    "outcome-sealed-shaft-03": {
+      "nearest_other_split": "outcome-train-shaft-04",
+      "other_split_distance": 0.35098166697083943,
+      "nearest_history": "perturb-shaft-d",
+      "history_distance": 0.0701209946042389
+    },
+    "outcome-sealed-shaft-04": {
+      "nearest_other_split": "outcome-train-shaft-04",
+      "other_split_distance": 0.16754146742483378,
+      "nearest_history": "perturb-shaft-c",
+      "history_distance": 0.06160663435043752
+    }
+  }
+}

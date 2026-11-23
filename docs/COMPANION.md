@@ -85,3 +85,27 @@ On a new world, death or respawn, the engine publishes a state snapshot on the t
 Snapshots are normally emitted at 5 Hz. This API directs strategy; it does not replace frame-by-frame gameplay. A future diagnostic extension should explicitly identify water, attachment, breath, recovery and Force outcomes before external policies depend on them. The v1 fields cannot reliably infer all of those facts from position alone. Absence of an observed damage change is not proof that an opponent used Absorb.
 
 The self-hosted unchanged JKWeb classic client can share a Cross Server session with native players. That transport relationship alone does not establish that the browser runs these hooks, that every current upstream netcode supports Cross Server, or that a public lobby accepts these bots. See the build-specific qualification notes and the [binary protocol specification](superpowers/specs/2026-11-21-companion-hearing-design.md).
+
+## Adaptive Lily
+
+The experimental controller uses the existing lease on the selected Lily seat. Use an engine built with the Lily protocol extension. To start a native session with the stock Kyle model and sound, run the following command.
+
+```sh
+python -m bots.run --server-config instance.json --profiles lily --adaptive-lily --no-taunts
+```
+
+With this flag the launcher opens an ephemeral companion port for Lily. If you also specify `--companion-port`, every selected bot gets its ordinary companion channel. Only Lily gets the adaptive controls. For the browser arena, add `--adaptive-lily` to your `python -m web_bots.serve` command. Its existing `--model-gob` option still selects the compatible Lily cosmetic. Ordinary launches retain their existing defaults.
+
+An enabled seat advertises `lily: {"version":1}` in `capabilities`. Its observation adds a `lily` object containing `sense`, `offers`, `progress` and `age_seconds`. The additional `terminals` list holds the last 16 distinct terminal progress notices for this fence, oldest first. A successor can begin between polls, so check this list when matching an earlier action. Each event starts as null and the three age values give seconds since the bridge received the corresponding event. A fresh stock snapshot and a fresh sense sample are separate checks. Synchronized peers may include occluded players. A replacement browser immediately invalidates the old ticket and clears telemetry. Read the new fence after the first stock snapshot. Sample IDs, offer IDs and action sequences always refer to the native instance under that fence. The event and action fields follow the [Lily protocol](LILY_PROTOCOL.md).
+
+Both `POST motor` and `POST commit` take the usual fence, lease and request ID, with the protocol fields directly in the JSON object. Each command may include `ttl_seconds` (0.1–30, default 2, capped at lease expiry). Choose a route TTL that gives the player time to reach its target. Commands require a sense sample received within one second. A commit also needs the current offer ID and an advertised node from a set received within two seconds. The native engine rechecks validity on delivery.
+
+For a CLI session, point the existing `companion` shell function at the run's `lily.json` credential. Attach once, then inspect `companion observe`. To try a short motor action, save an action object like the following in `motor.json`, replacing 73 with a current `lily.sense.sample_id` immediately before submission.
+
+```json
+{"sample_id":73,"revision":1,"steps":[{"duration_ms":160,"forward":0.5,"strafe":0.25}]}
+```
+
+Run `companion motor motor.json --request-id lily.1`. For a route, build a local action file with `sample_id`, `revision`, `offer_id`, `node` and optional `ttl_seconds`, then run `companion commit route.json --request-id lily.2`. The CLI supplies fence and lease fields from its private ticket. For live play, a controller can sample and submit automatically within the admission window.
+
+For new adaptive requests on a seat, use `lily.N` where N is a strictly increasing positive decimal integer up to 20 digits, with no leading zeros. The sequence spans every lease, world and life in the hub run. Enabled seats return the greatest accepted number as the decimal string `lily_request_floor` in `attach` and `capabilities`, initially `"0"`. Generate a number above that floor. The CLI takes the larger of its current timestamp in nanoseconds and the floor plus one. The 256-entry adaptive receipt history evicts only terminal records. Exact retries return the retained receipt. After eviction the same or an older number gets HTTP 409, so replay cannot apply another input. Check `commands/{request_id}` to inspect a retained receipt, including after reattach. An evicted receipt returns HTTP 404, and a later controller cannot reuse its ID. Its `action_seq` matches native `lily.progress.action_seq`. An applied ACK confirms command admission. Use progress and subsequent physical observations to evaluate arrival, playback and inventory changes. A lease renewal leaves the current action running.

@@ -15,7 +15,7 @@ import tempfile
 import time
 from urllib.parse import urlsplit
 
-from .companion import MODES
+from .companion import IDENTIFIER, LILY_REQUEST, MODES
 
 
 def load_private(path):
@@ -79,7 +79,7 @@ def parser():
     sub.add_parser("attach").add_argument("controller")
     sub.add_parser("events").add_argument("--after", default=0, type=int)
     sub.add_parser("command").add_argument("request_id")
-    for name in ("strategy", "say", "release"):
+    for name in ("strategy", "say", "release", "commit", "motor"):
         action = sub.add_parser(name)
         action.add_argument("--request-id", help="Reuse the same ID and payload to inspect a retry.")
         action.add_argument("--wait", default=1., type=float, help="Seconds to poll for the native ACK (0..10).")
@@ -90,6 +90,8 @@ def parser():
             action.add_argument("--range", type=float)
             for field in ("weapon", "resource", "focus-net-id", "focus-guid"):
                 action.add_argument("--"+field, type=int)
+        elif name in ("commit", "motor"):
+            action.add_argument("payload", type=Path, help="Local JSON file containing action fields.")
         elif name == "say":
             action.add_argument("text")
     return p
@@ -101,7 +103,7 @@ def execute(args):
     op = args.op
     if op in ("capabilities", "observe", "events", "command"):
         if op == "command":
-            if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", args.request_id):
+            if not (IDENTIFIER.fullmatch(args.request_id) or LILY_REQUEST.fullmatch(args.request_id)):
                 raise ValueError("Invalid request identifier.")
             route = "commands/" + args.request_id
         elif op == "events":
@@ -137,7 +139,27 @@ def execute(args):
         return {k:v for k,v in result.items() if k != "lease_id"}
     if not 0 <= args.wait <= 10:
         raise ValueError("--wait must be in 0..10 seconds.")
-    body = dict(lease, request_id=args.request_id or secrets.token_hex(12))
+    adaptive = op in ("commit", "motor")
+    request_id = args.request_id
+    if request_id is None and adaptive:
+        capabilities = call(cred, "capabilities")
+        floor = int(capabilities.get("lily_request_floor", "0"))
+        request_id = f"lily.{max(time.time_ns(), floor + 1)}"
+    body = dict(lease, request_id=request_id or secrets.token_hex(12))
+    if adaptive:
+        with args.payload.open("rb") as source:
+            raw = source.read(4097)
+        if len(raw) > 4096:
+            raise ValueError("Action payload exceeds 4096 bytes.")
+        def unique(pairs):
+            result = dict(pairs)
+            if len(result) != len(pairs):
+                raise ValueError("Duplicate action field.")
+            return result
+        action = json.loads(raw, object_pairs_hook=unique)
+        if type(action) is not dict or body.keys() & action.keys():
+            raise ValueError("Supply only action fields in the JSON file.")
+        body.update(action)
     if op == "say":
         body["text"] = args.text
     if op == "strategy":

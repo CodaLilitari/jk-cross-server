@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-11-22T14:03:01.990865+00:00",
+  "original_declaration_sha256": "9f328af455171ee262d27f018e501dd49b31e016991e9ed2d2255f0a70bb98c1",
+  "gate_matrix_started": false,
+  "contact_candidate_fitted": false,
+  "smoke_evidence_already_observed": "One original start with four arms, all landed; three extra baseline heading/sector checks. No full gate matrix or perturbation rollout results yet.",
+  "gate_clarification": [
+    "Resolve and reconcile every one of the 108 assigned original-matrix trials before deciding whether the learning gate opens.",
+    "Require 27 complete native baseline landings with native trace hashes matching the preceding checkpoint.",
+    "Require at least one complete every-tick v1 physical loss paired with a matched baseline landing. Infrastructure censoring, incomplete evidence or baseline mismatch cannot establish v1 insufficiency.",
+    "Repair a demonstrated infrastructure fault and retain both failed attempt and qualified rerun; do not silently drop assigned trials."
+  ],
+  "geometry_helper_correction": "Independent review identified that a fixed absolute float-rounding allowance is not sufficient for arbitrary large-coordinate cancellation. The final helper adds a conservative error bound proportional to absolute coordinate terms. The predeclared cases and outcomes plan are unchanged; all eight still pass.",
+  "corrected_geometry_validation": {
+    "schema": 1,
+    "map_sha256": "87bb3e919ee1f3749595f1ee37965bc083dbb866148775fd64280b0170926ecc",
+    "cases_sha256": "297a89c078dc5757c974dbb03ca9290a508f247cc13e6f24f2ae5bd0036925f7",
+    "helper_sha256": "cb34ee277db47896879632fb745c42d03f7c134b799b6a4a61aa709ab8fc4525",
+    "engine_input_sha256": {
+      "src/World/sithSurface.h": "90e3ad70eb145985510b61f4f684088a49020638a5da06b472725f478c9e4141",
+      "src/types_enums.h": "a546b85816c58d9aede433728997353a94528a8c083b9dcfee189dad81c08a1e",
+      "src/Engine/sithIntersect.c": "963f1ad3fbe80da6afcbabec939a2a5e720ac06885a5eda9dc58ac0bcd5a6d96"
+    },
+    "method": "all engine collision/movement sector planes; binary32 inputs, Python distance with a conservative native roundoff bound",
+    "radius": 0.065,
+    "rounding_allowance": "1e-5 + gamma(12, binary32) * sum(abs(normal) * (abs(position) + abs(plane_vertex)))",
+    "all_spheres_inside": true,
+    "pose_groups": 8,
+    "yaw_trials": 16,
+    "cases": [
+      {
+        "case": "perturb-shaft-a",
+        "start_sector": 54,
+        "plane_count": 10,
+        "minimum_plane_distance": 0.13475586169857476,
+        "radius_clearance": 0.06975586169857476,
+        "maximum_rounding_allowance": 1.437533616932982e-05,
+        "conservative_radius_clearance": 0.06974153609158787,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-shaft-b",
+        "start_sector": 54,
+        "plane_count": 10,
+        "minimum_plane_distance": 0.13475586169857476,
+        "radius_clearance": 0.06975586169857476,
+        "maximum_rounding_allowance": 1.437533616932982e-05,
+        "conservative_radius_clearance": 0.06974153609158787,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-shaft-c",
+        "start_sector": 54,
+        "plane_count": 10,
+        "minimum_plane_distance": 0.13475586169857476,
+        "radius_clearance": 0.06975586169857476,
+        "maximum_rounding_allowance": 1.437533616932982e-05,
+        "conservative_radius_clearance": 0.06974153609158787,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-shaft-d",
+        "start_sector": 54,
+        "plane_count": 10,
+        "minimum_plane_distance": 0.09999996423721313,
+        "radius_clearance": 0.03499996423721313,
+        "maximum_rounding_allowance": 1.437533616932982e-05,
+        "conservative_radius_clearance": 0.03498867677595659,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-pool-a",
+        "start_sector": 42,
+        "plane_count": 26,
+        "minimum_plane_distance": 0.10850000381469727,
+        "radius_clearance": 0.04350000381469726,
+        "maximum_rounding_allowance": 1.3153922431552499e-05,
+        "conservative_radius_clearance": 0.04348722039500741,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-pool-b",
+        "start_sector": 42,
+        "plane_count": 26,
+        "minimum_plane_distance": 0.1390000581741333,
+        "radius_clearance": 0.0740000581741333,
+        "maximum_rounding_allowance": 1.3100993468452086e-05,
+        "conservative_radius_clearance": 0.07398729656979791,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-pool-c",
+        "start_sector": 42,
+        "plane_count": 26,
+        "minimum_plane_distance": 0.09549999237060547,
+        "radius_clearance": 0.030499992370605467,
+        "maximum_rounding_allowance": 1.3127100305165866e-05,
+        "conservative_radius_clearance": 0.030487199652576194,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      },
+      {
+        "case": "perturb-pool-d",
+        "start_sector": 42,
+        "plane_count": 26,
+        "minimum_plane_distance": 0.11430001258850098,
+        "radius_clearance": 0.049300012588500974,
+        "maximum_rounding_allowance": 1.312731491764728e-05,
+        "conservative_radius_clearance": 0.04928723331730364,
+        "center_inside": true,
+        "sphere_inside": true,
+        "yaw_trials": 2
+      }
+    ],
+    "limitation": "Geometry-only sufficient check; no controller outcomes or reachability inferred."
+  },
+  "reporting_clarification": "The two added features change first-layer width and seeded initialization. A difference in success measures the fixed contact/history candidate; it does not isolate either sensor individually.",
+  "stress_outcomes_opened": false
+}

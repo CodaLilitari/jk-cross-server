@@ -91,6 +91,8 @@ class HostTests(unittest.IsolatedAsyncioTestCase):
         data = await res.json()
         self.assertEqual(data["env"]["JK_BOT_WEB_ROLE"],"host")
         self.assertNotIn(self.host.tokens["lily"],json.dumps(data))
+        self.assertNotIn("JK_BOT_LILY", data["env"])
+        self.assertEqual((await self.exchange([cp.frame(5,1,1,2,struct.pack("<IIB",42,13,0))])).status,400)
         self.assertEqual((await self.client.post("/engine/yun/boot",json=body,headers=self.auth)).status,401)
         self.assertEqual((await self.client.get("/engine/lily/assets/0",headers=self.auth)).status,200)
         self.assertEqual((await self.client.get("/engine/lily/assets/0")).status,401)
@@ -173,6 +175,64 @@ class HostTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual((await self.client.post("/engine/lily/frames",json=data,headers=self.auth)).status,200)
         self.assertEqual(hub.bots["lily"].world,2)
         self.assertIsNone(hub.bots["lily"].lease)
+
+    async def test_adaptive_restart_preserves_native_ids_and_revokes_tickets_at_boot(self):
+        arena = serve.Host(self.root/"game", self.root/"engine", self.root/"adaptive",
+                           "Canyon", None, False, adaptive_lily=True)
+        self.addCleanup(arena.close)
+        browser = TestClient(TestServer(arena.app(), host="127.0.0.1"))
+        await browser.start_server()
+        self.addAsyncCleanup(browser.close)
+        arena.set_port(browser.server.port)
+        async def send(seat, route, instance, frames=None):
+            body = {"instance": instance * 32}
+            if frames is not None:
+                body["frames"] = [base64.b64encode(f).decode() for f in frames]
+            return await browser.post(f"/engine/{seat}/{route}", json=body,
+                                      headers={"Authorization": "Bearer " + arena.tokens[seat]})
+        def request(route, body=None):
+            bot = arena.hub.bots["lily"]
+            return arena.hub.request("GET" if body is None else "POST", "lily", route, "", bot.token, body)[1]
+        state = bytearray(144)
+        struct.pack_into("<4I", state, 0, 1, 42, 14, 88)
+        struct.pack_into("<iII", state, 60, -1, 4, 0xffffffff)
+        initial = cp.frame(1, 1, 1, 1, state)
+        offer = cp.frame(5, 1, 1, 2, struct.pack("<IIB", 83, 90, 0))
+        self.assertNotIn("JK_BOT_LILY", (await (await send("yun", "boot", "a")).json())["env"])
+        self.assertEqual((await send("yun", "frames", "a", [offer])).status, 400)
+        self.assertEqual((await (await send("lily", "boot", "a")).json())["env"]["JK_BOT_LILY"], "1")
+        self.assertEqual((await send("lily", "frames", "a", [initial, offer])).status, 200)
+        obs = request("observation")
+        fence = {key: obs[key] for key in cp.FENCE}
+        lease = dict(fence, lease_id=request("attach", dict(fence, controller="fixture"))["lease_id"])
+        request("strategy", dict(lease, request_id="old", mode="recover"))
+        arena.seats["lily"]["poll"] -= 9
+        self.assertEqual((await send("lily", "boot", "b")).status, 200)
+        self.assertIsNone(request("observation")["lily"]["offers"])
+        self.assertFalse(request("observation")["native_active"])
+        with self.assertRaises(cp.Problem):
+            request("renew", lease)
+        self.assertEqual((await send("lily", "frames", "a", [])).status, 409)
+        resp = await (await send("lily", "frames", "b", [initial, offer])).json()
+        self.assertEqual(resp["frames"], [])
+        obs = request("observation")
+        self.assertEqual(obs["world_epoch"], 2)
+        self.assertEqual(obs["lily"]["offers"], {"sample_id":83, "offer_id":90, "choices":[]})
+        sense = cp.lily.SENSE_HEADER.pack(83, 0, 0, 0, -1, 0, 0, 1, 1, 0,
+                                          *([0.] * 14), 16., *([0.] * 4), 0, 0, 0, 0)
+        self.assertEqual((await send("lily", "frames", "b", [cp.frame(7, 1, 1, 3, sense)])).status, 200)
+        fresh = {key: obs[key] for key in cp.FENCE}
+        ticket = request("attach", dict(fresh, controller="fixture"))
+        action = dict(fresh, lease_id=ticket["lease_id"], request_id="lily.1", revision=5,
+                      sample_id=83, steps=[{"duration_ms": 80}])
+        receipt = request("motor", action)
+        exchanged = await (await send("lily", "frames", "b", [])).json()
+        packet = base64.b64decode(exchanged["frames"][0])
+        self.assertEqual(cp.HEADER.unpack_from(packet)[4:], (1, 1, receipt["action_seq"]))
+        self.assertEqual(cp.lily.MOTOR_HEADER.unpack_from(packet, cp.HEADER.size)[1:], (83, 5, 1))
+        ack = cp.frame(2, 1, 1, receipt["action_seq"], struct.pack("<BBH", 0, 20, 0))
+        self.assertEqual((await send("lily", "frames", "b", [ack])).status, 200)
+        self.assertEqual(request("commands/lily.1")["status"], "applied")
 
     async def test_ordered_and_bounded_private_video_file(self):
         await self.boot()

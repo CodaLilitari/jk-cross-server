@@ -1,0 +1,2 @@
+Frozen audit_memory_learning CLI: exit code 1; no final JSON output.
+Memory reconstruction failed: incorrect_initial_heading

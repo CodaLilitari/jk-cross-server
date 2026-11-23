@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "purpose": "Human Full Force Canyon Oasis visual reference; no skill rating or input labels.",
+  "clips": [
+    {
+      "source_url": "https://www.youtube.com/watch?v=XfU43kYxC88",
+      "requested_start_s": 120,
+      "requested_end_s_exclusive": 180,
+      "clip_file": "spidey-shinji-120-180.webm",
+      "clip_bytes": 7487710,
+      "clip_sha256": "29e9a3d84c957846b844228aa9fcdb5e99404503ee29bce34352edc558bdc1d9",
+      "container_duration_s": 60,
+      "container_start_pts_s": 0,
+      "first_decoded_pts_s": 0,
+      "last_decoded_pts_s": 59.97,
+      "width": 640,
+      "height": 360,
+      "nominal_decoded_frame_rate": "5943/200",
+      "decoded_video_frames": 1783,
+      "sample_fps": 1,
+      "sample_frames": 60,
+      "method": "Anonymous yt-dlp section extraction with --force-keyframes-at-cuts; FFmpeg 1 Hz sampling and full decode with showinfo.",
+      "limits": "Frame sample times are nominal offsets from the requested start. Re-encoding and seeking can shift boundaries. One-second stills cannot establish input order or subsecond timing.",
+      "visually_inspected_samples": 60,
+      "review_method": "Visual inspection of contact sheets; one still per nominal second, not real-time playback."
+    },
+    {
+      "source_url": "https://www.youtube.com/watch?v=1dCC8uMLdjo",
+      "requested_start_s": 370,
+      "requested_end_s_exclusive": 410,
+      "clip_file": "clip.webm",
+      "clip_bytes": 3745156,
+      "clip_sha256": "4170ed2aaa25b0242ad6f2a58a54791973d007d97b75d2f33f894dfcab6729bd",
+      "container_duration_s": 40,
+      "container_start_pts_s": 0,
+      "first_decoded_pts_s": 0,
+      "last_decoded_pts_s": 39.967,
+      "width": 640,
+      "height": 360,
+      "nominal_decoded_frame_rate": "30/1",
+      "decoded_video_frames": 1200,
+      "sample_fps": 1,
+      "sample_frames": 40,
+      "method": "Anonymous yt-dlp section extraction with --force-keyframes-at-cuts; FFmpeg 1 Hz sampling and full decode with showinfo.",
+      "limits": "Frame sample times are nominal offsets from the requested start. Re-encoding and seeking can shift boundaries. One-second stills cannot establish input order or subsecond timing.",
+      "visually_inspected_samples": 40,
+      "review_method": "Visual inspection of contact sheets; one still per nominal second, not real-time playback."
+    },
+    {
+      "source_url": "https://www.youtube.com/watch?v=1dCC8uMLdjo",
+      "requested_start_s": 384,
+      "requested_end_s_exclusive": 388,
+      "clip_file": "clip.mp4",
+      "clip_bytes": 4245353,
+      "clip_sha256": "7b334f365134206f5a7a16093303d798c2122ed4bf75024bc295e8e8a82b7924",
+      "container_duration_s": 4,
+      "container_start_pts_s": 0,
+      "first_decoded_pts_s": 0,
+      "last_decoded_pts_s": 3.983333,
+      "width": 1920,
+      "height": 1080,
+      "nominal_decoded_frame_rate": "60/1",
+      "decoded_video_frames": 240,
+      "sample_fps": 1,
+      "sample_frames": 4,
+      "method": "Anonymous yt-dlp section extraction with --force-keyframes-at-cuts; FFmpeg 1 Hz sampling and full decode with showinfo.",
+      "limits": "Frame sample times are nominal offsets from the requested start. Re-encoding and seeking can shift boundaries. One-second stills cannot establish input order or subsecond timing.",
+      "reproduce": "python sample_public_match.py \"https://www.youtube.com/watch?v=1dCC8uMLdjo\" 384 388 team384hd --height 1080",
+      "frame_06m27s": "frames/frame_004.jpg",
+      "visually_inspected_samples": 1,
+      "reviewed_nominal_seconds": [
+        387
+      ],
+      "review_method": "One 1920x1080 frame was visually inspected to resolve a status message.",
+      "observed_status": "You are taking Grip damage!"
+    }
+  ],
+  "preview_only": [
+    {
+      "url": "https://www.youtube.com/watch?v=_tTWrQepvn4",
+      "nominal_start_seconds": 0,
+      "nominal_last_sample_seconds": 240,
+      "sample_interval_seconds": 10
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=XfU43kYxC88",
+      "nominal_start_seconds": 0,
+      "nominal_last_sample_seconds": 240,
+      "sample_interval_seconds": 10
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=1dCC8uMLdjo",
+      "nominal_start_seconds": 250,
+      "nominal_last_sample_seconds": 490,
+      "sample_interval_seconds": 10
+    }
+  ],
+  "limits": [
+    "One-second samples cannot reconstruct exact inputs, reaction latency, launch timing or collision outcomes.",
+    "No reliable numeric health/ammunition interpretation or acoustic analysis was established; the 1080p frame resolves a Grip damage status message.",
+    "The uploader describes a machine/renderer disadvantage for Shinji in the duel.",
+    "Visual hypotheses do not count as stock-physics task success or comparative bot skill."
+  ]
+}

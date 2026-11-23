@@ -9,7 +9,7 @@
   const instance = Array.from(crypto.getRandomValues(new Uint8Array(16)), x => x.toString(16).padStart(2,"0")).join("");
   let token, mod, stage = "waiting", polling = false, captured = null, dropped = 0;
   const queue = [];
-  let render = null;
+  let render = null, adaptiveLily = false;
   let latestView = {flags:0, model:""};
 
   function message(err) {
@@ -61,6 +61,8 @@
   }
   function outgoing(bytes) {
     if (!(bytes instanceof Uint8Array) || bytes.length < 20 || bytes.length > 512) return;
+    const kind = bytes[5];
+    if (![1,2,3,4].includes(kind) && !(adaptiveLily && [5,6,7].includes(kind))) return;
     if (queue.length >= 128) {
       const stateIndex = queue.findIndex(f => f[5] === 1);
       queue.splice(stateIndex < 0 ? 0 : stateIndex, 1);
@@ -73,7 +75,8 @@
     const data = Uint8Array.from(atob(encoded), c => c.charCodeAt(0));
     if (data.length < 28 || data.length > 512) return;
     const view = new DataView(data.buffer);
-    if (![16,17,18].includes(data[5]) || view.getUint16(6,true) !== data.length-20) return;
+    const allowed = [16,17,18].includes(data[5]) || (adaptiveLily && [19,20].includes(data[5]));
+    if (!allowed || view.getUint16(6,true) !== data.length-20) return;
     // Charge the full poll latency against TTL. Absolute clock origins in
     // Python and Emscripten need not agree. Dequeued commands are sent once.
     const expires = t0 + (view.getFloat64(20,true)-serverMono);
@@ -110,6 +113,7 @@
     let boot;
     try { boot = await (await api("boot",{instance})).json(); }
     catch (err) { token = null; throw err; }
+    adaptiveLily = id === "lily" && boot.env.JK_BOT_LILY === "1";
     document.querySelector("#login").hidden = true;
     document.querySelector("#title").textContent = boot.env.JK_BOT_WEB_NAME;
     document.title = boot.env.JK_BOT_WEB_NAME+" · JKWeb";
@@ -129,7 +133,7 @@
       mod = globalThis.Module = {
         canvas,
         arguments: boot.mod ? ["-path","jkmods/companion"] : [],
-        jkBotConfig:{mode:env.JK_BOT_WEB_MODE,role:env.JK_BOT_WEB_ROLE,room:env.JK_BOT_WEB_ROOM,name:env.JK_BOT_WEB_NAME,
+        jkBotConfig:{lily:adaptiveLily,mode:env.JK_BOT_WEB_MODE,role:env.JK_BOT_WEB_ROLE,room:env.JK_BOT_WEB_ROOM,name:env.JK_BOT_WEB_NAME,
                      model:env.JK_BOT_WEB_MODEL,sound:env.JK_BOT_WEB_SOUND,side:env.JK_BOT_FORCE_SIDE,
                      saberColor:env.JK_BOT_WEB_SABER_COLOR,trace:env.JK_BOT_TRACE_FORCE==="1",
                      style:env.JK_BOT_FORCE_STYLE,thirdPerson:env.JK_BOT_WEB_THIRD_PERSON==="1",elite:true},

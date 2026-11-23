@@ -1,0 +1,47 @@
+{
+  "archives": {
+    "candidates": {
+      "bytes": 1691489,
+      "filename": "lily-memory-candidates.tar.gz",
+      "member_prefix": "",
+      "model_artifacts": 149,
+      "raw_bytes": 7569342,
+      "raw_files": 298,
+      "sha256": "8fb7cb16d85175910e123331414aa526b0f4c24f68c8f9516a3b6bdd63368520"
+    },
+    "existing_build_inputs": {
+      "archive_members": 98,
+      "bytes": 304264,
+      "excluded_license_members": {
+        "licenses/MIT.txt": {
+          "bytes": 1085,
+          "sha256": "c37b31c4160ade5e48cc6c47f5b2463f26d84ec7f419a79802e724f08c600f98"
+        },
+        "licenses/OpenJKDF2-LICENSE.md": {
+          "bytes": 1104,
+          "sha256": "2f4b8fa145aa8f7ca0c75717f480b090ee9d23ae0832a7f6de28b84ee7e38727"
+        }
+      },
+      "filename": "lily-outcome-build-inputs.tar.gz",
+      "member_prefix": "",
+      "raw_bytes": 1332811,
+      "raw_files": 96,
+      "sha256": "6c0cc363ca28040eaec778031bd154249152f1783483b8b56bf288ed9b9febb6"
+    },
+    "private_evidence": {
+      "additional_build_files": 5,
+      "bytes": 219364130,
+      "filename": "lily_memory_evidence_2026-11-22.tar.gz",
+      "member_prefix": "lily-memory-learning-20261122-01/",
+      "raw_bytes": 1304489795,
+      "raw_files": 20944,
+      "sha256": "833d2a827c4e3033fae100c31110a401ddeced51d0bb6b78e6ca270a2a28336d"
+    }
+  },
+  "raw_inventory_encoding": "SHA-256 of UTF-8 JSON mapping relative path to {bytes,sha256}; sorted keys, compact separators, no trailing newline",
+  "raw_inventory_sha256": "88a9389d73cd97c174f4bc738c36057d3a31b2ebb30e893fca52b132a5027ed5",
+  "retained_bytes": 1313391948,
+  "retained_files": 21338,
+  "run": "lily-memory-learning-20261122-01",
+  "schema": 1
+}

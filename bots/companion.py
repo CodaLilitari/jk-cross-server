@@ -20,11 +20,17 @@ import threading
 import time
 from urllib.parse import urlsplit
 
+from .lily import protocol as lily
+
 HEADER = struct.Struct("<4sBBHIII")
 STATE, ACK, CHAT, SOUND = 1, 2, 3, 4
 STRATEGY, SAY, RELEASE = 16, 17, 18
 STRATEGY_PAYLOAD = struct.Struct("<dBBHffII")
-KINDS = {"strategy": STRATEGY, "say": SAY, "release": RELEASE}
+LILY_COMMANDS = {"commit": lily.COMMIT, "motor": lily.MOTOR}
+KINDS = {"strategy": STRATEGY, "say": SAY, "release": RELEASE, **LILY_COMMANDS}
+LILY_EVENTS = {lily.SENSE: "sense", lily.OFFERS: "offers", lily.PROGRESS: "progress"}
+LILY_REQUEST = re.compile(r"lily\.([1-9][0-9]{0,19})\Z")
+LILY_HISTORY = 256
 MODES = ("autonomous", "pressure", "resource", "recover")
 RESOURCES = (0, 11, 12, 14, 15, 40, 60, 62, 63, 64, 65, 66)
 ACK_STATUS = ("applied", "rejected", "expired", "stale", "rate_limited")
@@ -32,6 +38,7 @@ MAX_PENDING, EVENT_HISTORY, COMMAND_HISTORY = 16, 128, 256
 UINT_MAX = 0xffffffff
 IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,64}\Z")
 FENCE = {"run_id", "world_epoch", "life_epoch"}
+COMMAND_TICKET = FENCE | {"lease_id", "request_id"}
 
 
 def create_private_directory(directory, *, parents=False):
@@ -150,7 +157,8 @@ class Command:
     sent: bool = False
 
     def result(self, key):
-        return {"request_id": key, "kind": self.name, "status": self.status, "reason": self.reason,
+        extra = {"action_seq": self.seq} if self.name in LILY_COMMANDS else {}
+        return {**extra, "request_id": key, "kind": self.name, "status": self.status, "reason": self.reason,
                 "world_epoch": self.world, "life_epoch": self.life}
 
 
@@ -175,6 +183,46 @@ class Bot:
     lease_until: float = 0.
     last_chat: float = -math.inf
     release: tuple | None = None
+
+    adaptive_lily: bool = False
+    lily_telemetry: dict = field(default_factory=dict)
+    lily_terminals: OrderedDict = field(default_factory=OrderedDict)
+    sample_times: OrderedDict = field(default_factory=OrderedDict)
+    lily_commands: OrderedDict = field(default_factory=OrderedDict)
+    lily_request_number: int = 0
+
+    def reset_state(self):
+        self.cancel()
+        self.lease = self.release = self.state = None
+        self.lily_telemetry.clear()
+        self.lily_terminals.clear()
+        self.sample_times.clear()
+
+    def lily_observation(self, now):
+        telemetry = {name: self.lily_telemetry.get(name, (None, None))
+                     for name in LILY_EVENTS.values()}
+        return {**{name: entry[0] for name, entry in telemetry.items()},
+                "terminals": list(self.lily_terminals.values()),
+                "age_seconds": {name: now - stamp if stamp is not None else None
+                                for name, (_, stamp) in telemetry.items()}}
+
+    def lily_payload(self, route, body, now):
+        """Validate the action encoding and its native references under the current fence."""
+        ttl = number(body.get("ttl_seconds", 2), .1, 30)
+        deadline = min(now + ttl, self.lease_until)
+        action = {k: v for k, v in body.items() if k not in COMMAND_TICKET and k != "ttl_seconds"}
+        try:
+            payload = lily.encode_command(LILY_COMMANDS[route], action, deadline)
+        except ValueError as err:
+            raise Problem(400, str(err)) from err
+        stamp = self.sample_times.get(action["sample_id"])
+        need(stamp is not None and now - stamp <= 1, "Stale or unknown native sense sample.", 409)
+        if route == "commit":
+            offers, stamp = self.lily_telemetry.get("offers", (None, None))
+            need(offers and now - stamp <= 2 and offers["offer_id"] == action["offer_id"]
+                 and any(item["node"] == action["node"] for item in offers["choices"]),
+                 "Stale or unavailable native route offer.", 409)
+        return payload, deadline
 
     def next_seq(self):
         self.sequence = self.sequence % UINT_MAX + 1
@@ -218,12 +266,25 @@ class Bot:
             if state is None:
                 return
             if (world, life) != (self.world, self.life):
-                self.cancel()
-                self.lease = self.release = None
+                self.reset_state()
                 self.world, self.life = world, life
             self.state, self.observed = state, now
         elif (world, life) != (self.world, self.life):
             return
+        elif self.adaptive_lily and kind in LILY_EVENTS:
+            value = lily.decode_event(kind, data)
+            if value is None:
+                return
+            self.lily_telemetry[LILY_EVENTS[kind]] = (value, now)
+            if kind == lily.SENSE:
+                self.sample_times[value["sample_id"]] = now
+                if len(self.sample_times) > 128:
+                    self.sample_times.popitem(last=False)
+            elif kind == lily.PROGRESS and value["phase"] in {"completed", "interrupted", "failed", "expired"}:
+                identity = (value["action_seq"], value["revision"], value["sample_id"])
+                self.lily_terminals.setdefault(identity, value)
+                if len(self.lily_terminals) > 16:
+                    self.lily_terminals.popitem(last=False)
         elif kind == CHAT and 9 <= length <= 118:
             slot, net = struct.unpack_from("<iI", data)
             text = data[8:].decode("ascii", "replace")
@@ -342,7 +403,12 @@ class BrowserChannel:
 
 
 class Hub:
-    def __init__(self, run_directory, ids, port, *, allow_chat=False, clock=time.monotonic, channel_factory=None):
+    def __init__(self, run_directory, ids, port, *, allow_chat=False, clock=time.monotonic,
+                 channel_factory=None, experimental_ids=()):
+        ids = tuple(ids)
+        enabled = frozenset(experimental_ids)
+        if enabled - {"lily"} or enabled - set(ids):
+            raise ValueError("Adaptive capability requires a selected lily seat.")
         self.clock, self.allow_chat = clock, allow_chat
         self.run_id = secrets.token_hex(16)
         self.directory = Path(run_directory) / "companion"
@@ -361,7 +427,7 @@ class Hub:
                 if not re.fullmatch(r"[a-z0-9_-]{1,32}", ident) or ident in self.bots:
                     raise ValueError("Invalid companion bot identity.")
                 parent, child = channel_factory() if channel_factory else socket.socketpair(socket.AF_UNIX, socket.SOCK_DGRAM)
-                bot = self.bots[ident] = Bot(ident, parent, child)
+                bot = self.bots[ident] = Bot(ident, parent, child, adaptive_lily=ident in enabled)
                 parent.setblocking(False)
                 child.setblocking(False)
                 credential = {"version": 1, "bot_id": ident, "run_id": self.run_id,
@@ -417,10 +483,13 @@ class Hub:
             if method == "GET":
                 need(not query or route == "events", "Unexpected query.")
                 if route == "capabilities":
-                    return 200, dict(fence, protocol=1, native_active=fresh, chat_enabled=self.allow_chat,
+                    extra = ({"lily": {"version": 1}, "lily_request_floor": str(bot.lily_request_number)}
+                             if bot.adaptive_lily else {})
+                    return 200, dict(fence, **extra, protocol=1, native_active=fresh, chat_enabled=self.allow_chat,
                                      modes=MODES, resource_bins=RESOURCES, lease_seconds=30)
                 if route == "observation":
-                    return 200, dict(fence, state=bot.state, native_active=fresh,
+                    extra = {"lily": bot.lily_observation(now)} if bot.adaptive_lily else {}
+                    return 200, dict(fence, **extra, state=bot.state, native_active=fresh,
                                      age_seconds=(now-bot.observed if bot.state else None))
                 if route == "events":
                     need(not query or re.fullmatch(r"after=[0-9]{1,18}", query), "Invalid event cursor.")
@@ -431,12 +500,13 @@ class Hub:
                                      wire_dropped=bot.wire_dropped,
                                      events=[ev for ev in bot.events if ev["cursor"] > after])
                 if route.startswith("commands/"):
-                    cmd = bot.commands.get(route[9:])
+                    cmd = bot.commands.get(route[9:]) or bot.lily_commands.get(route[9:])
                     need(cmd is not None, "Unknown request.", 404)
                     return 200, dict(run_id=self.run_id, **cmd.result(route[9:]))
                 raise Problem(404, "Unknown companion operation.")
             need(not query, "Unexpected query.")
             need(route in {"attach", "renew", *KINDS}, "Unknown companion operation.", 404)
+            need(route not in LILY_COMMANDS or bot.adaptive_lily, "Unknown companion operation.", 404)
             need(type(body) is dict and FENCE <= body.keys(), "Missing observation fence.")
             need(type(body["run_id"]) is str and type(body["world_epoch"]) is int and
                  type(body["life_epoch"]) is int, "Invalid observation fence.")
@@ -448,7 +518,8 @@ class Hub:
                 need(not bot.lease, "A controller holds this bot.", 409)
                 bot.lease = secrets.token_urlsafe(24)
                 bot.lease_until = now + 30
-                return 200, dict(fence, lease_id=bot.lease, expires_in=30)
+                extra = {"lily_request_floor": str(bot.lily_request_number)} if bot.adaptive_lily else {}
+                return 200, dict(fence, **extra, lease_id=bot.lease, expires_in=30)
             if route in KINDS:
                 return self.command(bot, route, body, now, fresh)
             fields(body, FENCE | {"lease_id"})
@@ -464,21 +535,29 @@ class Hub:
              hmac.compare_digest(supplied, bot.lease), "Controller lease expired or invalid.", 409)
 
     def command(self, bot, route, body, now, fresh):
-        base = FENCE | {"lease_id", "request_id"}
         strategy_options = {"ttl_seconds","weapon","resource","range","risk","focus_net_id","focus_guid"}
-        fields(body, base | ({"mode"} if route == "strategy" else {"text"} if route == "say" else set()),
-               strategy_options if route == "strategy" else ())
+        adaptive = route in LILY_COMMANDS
+        if adaptive:
+            need(COMMAND_TICKET <= body.keys(), "Missing command ticket or request ID.")
+        else:
+            fields(body, COMMAND_TICKET | ({"mode"} if route == "strategy" else {"text"} if route == "say" else set()),
+                   strategy_options if route == "strategy" else ())
         key = body["request_id"]
-        need(type(key) is str and IDENTIFIER.fullmatch(key), "Invalid request identifier.")
+        pattern = LILY_REQUEST if adaptive else IDENTIFIER
+        need(type(key) is str and pattern.fullmatch(key), "Invalid request identifier.")
         fingerprint = json.dumps([route, body], sort_keys=True, separators=(",",":"))
-        old = bot.commands.get(key)
+        old = bot.commands.get(key) or bot.lily_commands.get(key)
         if old:
             need(old.fingerprint == fingerprint, "Request ID was already used with different data.", 409)
             return (202 if old.status == "pending" else 200), dict(run_id=self.run_id, **old.result(key))
         self.check_lease(bot, body)
         need(fresh, "Waiting for native state.", 409)
         deadline = min(now + 2, bot.lease_until)
-        if route == "say":
+        if adaptive:
+            serial = int(key[5:])
+            need(serial > bot.lily_request_number, "Adaptive request ID has been retired.", 409)
+            payload, deadline = bot.lily_payload(route, body, now)
+        elif route == "say":
             need(self.allow_chat, "This bot run has outbound companion chat disabled.", 403)
             need(plain_text(body["text"]), "Invalid or reserved game chat.")
             need(now - bot.last_chat >= 5, "Chat cooldown.", 429)
@@ -504,13 +583,17 @@ class Hub:
             payload = struct.pack("<d", deadline)
         if route != "release":
             need(len(bot.pending) < MAX_PENDING, "Native command queue is full.", 429)
-        # Preserve all request IDs in a live lease. Past-lease history may be
-        # evicted because the secret that authorized it cannot become live again.
-        limit = COMMAND_HISTORY + (route == "release")
-        while len(bot.commands) >= limit:
-            victim = next((k for k,v in bot.commands.items() if v.lease != bot.lease and v.status != "pending"), None)
+        # Adaptive IDs carry a per-run monotonic counter. Once evicted, the
+        # high-water mark still rejects replay without retaining every receipt.
+        history = bot.lily_commands if adaptive else bot.commands
+        limit = LILY_HISTORY if adaptive else COMMAND_HISTORY + (route == "release")
+        while len(history) >= limit:
+            victim = next((k for k,v in history.items() if v.status != "pending"
+                           and (adaptive or v.lease != bot.lease)), None)
             need(victim is not None, "Command history full for this lease.", 429)
-            del bot.commands[victim]
+            del history[victim]
+        if adaptive:
+            bot.lily_request_number = serial
         if route == "release":
             bot.cancel()
             bot.lease = None
@@ -519,7 +602,7 @@ class Hub:
         seq = bot.next_seq()
         cmd = Command(route, fingerprint, body["lease_id"], seq, bot.world, bot.life,
                       frame(KINDS[route], bot.world, bot.life, seq, payload), deadline)
-        bot.commands[key] = bot.pending[seq] = cmd
+        history[key] = bot.pending[seq] = cmd
         return 202, dict(run_id=self.run_id, **cmd.result(key))
 
 
@@ -559,7 +642,7 @@ class Handler(BaseHTTPRequestHandler):
             auth = self.headers.get_all("Authorization", [])
             need(len(auth) == 1 and auth[0].startswith("Bearer "), "Bot credential required.", 401)
             parsed = urlsplit(self.path)
-            match = re.fullmatch(r"/v1/bots/([a-z0-9_-]{1,32})/([a-z]+(?:/[A-Za-z0-9_-]{1,64})?)", parsed.path)
+            match = re.fullmatch(r"/v1/bots/([a-z0-9_-]{1,32})/([a-z]+(?:/(?:[A-Za-z0-9_-]{1,64}|lily\.[1-9][0-9]{0,19}))?)", parsed.path)
             need(match and not parsed.netloc and not parsed.fragment, "Unknown companion route.", 404)
             bot_id, route = match.groups()
             token = auth[0][7:]

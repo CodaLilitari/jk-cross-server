@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 import shlex
 import subprocess
+import sys
 import tempfile
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -32,4 +33,29 @@ with tempfile.TemporaryDirectory(prefix='jk-companion-test-') as directory:
                     str(source / 'src/Dss/sithMulti.c'), '-o', str(obj)], check=True)
     cmd.insert(cmd.index('-Wl,--gc-sections'), str(obj))
     subprocess.run(cmd, check=True)
-    subprocess.run([str(executable)], check=True, timeout=10)
+    trace = Path(directory) / "observations.jkcp"
+    subprocess.run([str(executable), str(trace)], check=True, timeout=10)
+
+    # Check every actual datagram captured from the native actor using the
+    # same decoder as the browser and private companion bridge.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from bots.lily import protocol
+
+    wire = trace.read_bytes()
+    seen = set()
+    arrived = False
+    offered = False
+    while wire:
+        assert wire[:5] == b"JKCP\x01"
+        kind = wire[5]
+        size = int.from_bytes(wire[6:8], "little")
+        event = protocol.decode_event(kind, wire[20:20 + size])
+        assert event is not None, (kind, size)
+        seen.add(kind)
+        if kind == protocol.PROGRESS:
+            arrived |= event["action_seq"] == 7 and event["outcome"] == "arrived"
+        if kind == protocol.OFFERS:
+            offered |= any(c["node"] == 2 and c["position"][0] > 0.79 for c in event["choices"])
+        wire = wire[20 + size:]
+    assert seen == {protocol.SENSE, protocol.OFFERS, protocol.PROGRESS} and arrived and offered
+    print("PASS Python codec decoded all captured native extension datagrams")

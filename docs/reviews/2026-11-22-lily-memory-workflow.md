@@ -1,0 +1,55 @@
+# Preserved memory-learning workflow record
+
+This is the chronological execution ledger. Later entries explicitly supersede early assumptions about publication access and the run filesystem. The measured result, strict-audit failure and supplemental reconstruction are documented in the checkpoint.
+
+# SDD ledger — plan: docs/superpowers/plans/2026-11-22-lily-memory-learning.md
+
+Base: e5f58610bde6b920e239b93e101d090a65981ba6. Dedicated feature checkout restored; previous full raw run authenticated (7,765 files, 529,056,264 bytes; all 101 build hashes). No new game outcomes before declaration.
+
+Ruling: Use a paired four-unit learned residual over frozen G4, with an equally trained instantaneous control — tests the value of carried state while preserving an exact starting controller — a small memory bank and bounded random search may miss useful strategies.
+Ruling: Scale retention by physical control duration — the same elapsed time should have the same constant-input memory decay — imperfect numerical equivalence at floating-point boundaries is tested, and a different memory architecture might work better.
+Ruling: Reclassify all eight old development shafts as training rehearsal and the old pool set as open regression — those failures already informed design — qualifying results on these sets cannot establish generalization.
+Ruling: Reuse the authenticated retained executable and numeric map, with fresh baseline replication — the original retail map and full engine checkout were not retained in the reset environment — incompatible host behavior makes this experiment inconclusive rather than justifying a silent rebuild.
+Ruling: Use verified connector-created canonical Git commits for publication — shell Git authentication is unavailable but the authorized repository connector works — remote payload limits may require an explicit partial-publication report.
+
+Preflight: Task 1 exports canonical(model), policy_source(model), initial_state(model), validate_state(model,state), step(model,features,memory,tick_ms), motor_action(model,observation,context). Task 2 consumes these with an explicit fresh session per episode/audit pass. Task 3 consumes unchanged old dispatch/job/oracle functions and new execute/audit_attempt/model_identity. No native fixture or historical pin edits.
+
+Task 1: in progress; brief read. Baseline full suite running (session 7560). Existing authorization permits commits, draft-branch publication and fixed experiments without further confirmation.
+Task 1: complete (commits e5f5861..c152890, tests: python -m unittest discover -s tests -p test_lily_memory_*.py -q → OK)
+
+Baseline: 413 tests run, 406 passed, seven skipped, 128.415s. Task 1 RED: seven missing-contract failures; GREEN: all seven pass. Task 2 in progress, brief read.
+Task 2: complete (commits c152890..99ab91d, tests: python -m unittest discover -s tests -p test_lily_memory_rollouts.py -q → OK)
+
+Task 2 RED: five missing-contract failures; GREEN: five state/journal/real-socket tests pass. Task 3 focused GREEN: 19 tests; full suite GREEN: 432 tests, seven skips, 133.751s. Declaration preflight: 71 source pins, 72 rehearsal starts, 101 retained build files; prior reference coverage v3=40, G4=48. Final reviewer /root/review_memory_learning is evaluating e5f5861..ce5096e; no outcomes yet.
+
+Final review: independent /root/review_memory_learning, range e5f5861..ce5096e, report /tmp/lily-memory-independent-code-review.md. Seven Important findings accepted after concrete negative reproductions; no Critical finding for the clean run. One consolidated fix pass, no re-review.
+Final fixes: known terminal/engine contradictions, malformed isolated witnesses, legacy actuation beyond lost journal, prerequisite inventory and publication prefixes, labeled incomplete attempts and preserved selection/transfer facts, canonical run claim/API worker cap, exact inherited/historical source pins, calibration model snapshot, optional NumPy collection. RED/GREEN witnesses: 12 focused failures before fixes plus mutable-calibration regression; 28 focused tests now pass; standard-library-only profile cleanly skips 28.
+Ruling: Bind live execution to /tmp/lily-memory-learning-20261122-01 on the regular filesystem — one create-only path enforces the no-retry budget and avoids tmpfs capacity pressure — an interrupted run cannot be resumed under another parent; relocated evidence remains auditable.
+Ruling: Accept actual outcomes, publication and durable preservation as post-run validation rather than pre-run review — none existed at review time — the final result remains provisional until those checks complete.
+Declined review scope: original retail-map rebuild is covered by the authenticated-retained-fixture ruling above; no retail map or alternate engine is fabricated.
+Final: minor (deferred): retention logit clipping differs from the mathematical formula at extreme allowed logits and very short intervals; declared initialization/search remains far inside the clipping range.
+Final: minor (deferred): standalone missing context.state initializes zero; the experimental Session always supplies and verifies explicit state, so this experiment cannot silently reset that way.
+
+Consolidated full suite GREEN: 441 tests, seven skips, 127.800s. Source exact-tree push verified at 0df6d85faca861db917528bb8255e745f6725769.
+Ruling: Use the already authenticated desktop Git CLI after the GitHub integration returned 403 on blob creation — the desktop account has repository push permission and accepts a hash-verified Git bundle — transfers take extra time, but original reviewed commit identities are preserved; no credential is exported or global Git configuration changed.
+
+Public declaration verified at bfe9aa52957046375ca34733debdc8eb1ece3520, SHA256 77ef88dcfa3f94c2095a4fbd397cbfd3c6b11fafe8b55f387503df24b66b5b4d; source 0df6d85faca861db917528bb8255e745f6725769. One authorized run launched at canonical /tmp/lily-memory-learning-20261122-01, two workers, process session 90861. No retry/resume allowed.
+
+Calibration complete: 144 attempts,110 supported landings,34 failures,zero censors/invalid/unrun; all eight v3 anchors preserved;16 v3 and24 G4 overlapping historical starts reproduce outcomes/times/initial observations. First static and recurrent generations both selected16/16 rehearsal candidates.
+Storage observation: /tmp is actually tmpfs in this host, contrary to the pre-run expectation of a regular filesystem. The exact canonical directory, frozen source and all numerical gates remain unchanged; initial free space5,225,656,320 bytes met the declared4GiB requirement. Record this implementation-environment erratum in final evidence.
+
+Run stopped after all 2,608 pre-transfer assignments completed: 2,389 wins and 219 physical failures. Final static and recurrent candidates each reached 32/32 open landings; no-history also reached 32/32. Static selected with 45,889 charged steps versus recurrent 57,099. Exactly two sealed v3 attempts were invalid (incorrect_initial_heading); 286 sealed assignments were unrun and 134 diagnostics were never assigned. No retry, resume or post-outcome frozen source change. Independent measurement review reproduced all 144 candidate rankings, 16 winners and 64 open baseline traces.
+Post-run root cause: frozen stock lookup-table sine/cosine at diagonal yaws differ from ideal Python trigonometry by up to 0.000249835 per component, exceeding 2e-5. An independent binary32 reconstruction matches both actual initial facings bit for bit; cardinal training/open headings pass. The invalid transfer receipts remain unchanged. A prospective fix requires authenticated stock coefficients, synthetic diagonal coverage, a new protocol and disclosed prior case exposure.
+
+Frozen offline CLI exited 1 with incorrect_initial_heading and wrote no final JSON. Root cause: online dispatcher captures invalid exceptions; offline partial-block reconstruction calls the verifier without that exception boundary. Its invalid-row converter also assumes missing fields. No frozen source changed.
+Ruling: Add a distinct post-run supplemental report preserving the strict failure and fully reconstructed prefix — invalid exceptions otherwise erase the report — it is not preregistered code and cannot accept a transfer score; the same unchanged verifier must reproduce each invalid record.
+Independent preservation: 21,338 files, 1,313,391,948 source bytes; all three disjoint archives matched raw bytes. Private archive 219,364,130 bytes, SHA256 833d2a827c4e3033fae100c31110a401ddeced51d0bb6b78e6ca270a2a28336d, saved successfully.
+
+The separate report is qa/lily-memory-supplemental.json; the original intended qa/lily-memory-evaluation.json remains absent. Reporter verifies the exact throw-site stack, both invalid envelopes and the immutable raw inventory. It changes no game source or score. One full supplemental reconstruction launched (session 99269); no additional game episodes.
+Final checkpoint suite: 444 tests run, 437 passed, seven skipped, zero failed, 131.220 seconds. New failure-report focused tests: 3 passed; standard-library-only profile: 3 clean skips. Pre-run 441-test log remains unchanged.
+Task 3: complete (commits 99ab91d..bfe9aa5, tests: python -c 'import json,pathlib; d=json.loads(pathlib.Path("qa/lily-memory-supplemental.json").read_text()); assert d["status"]=="inconclusive" and d["original_cli_failed"] is True and d["selection"]["selected"]=="static" and d["reinferred_decisions"]==1120070 and d["counts"]["invalid"]==2; assert not pathlib.Path("qa/lily-memory-evaluation.json").exists(); print("Verified full supplemental prefix; original strict audit failed; transfer unscored")' → Verified full supplemental prefix; original strict audit failed; transfer unscored)
+Task 4: complete (commits bfe9aa5..6813fea, tests: python scripts/build_release.py --check → {"version": "0.4.0-dev", "managed_files": 631, "ok": true})
+
+Supplemental reconstruction completed successfully: 1,120,070 decisions re-inferred across 18 completed blocks; both invalid transfer envelopes and the full 21,338-file inventory matched. Independent reviewer compared all 2,896 public assignment rows, 16 rankings and 160 paired comparison rows. Original strict CLI remains failed and its intended final output absent.
+Published result commit 6813feada30e7090b73c0797f39e330462ee2642, tree 4555ac6d9f41d864e07c3d4ee7abd4009fb5a285. Authenticated desktop fast-forward push succeeded; independent Git fetch and PR metadata agree. PR 2 body matched the prepared text exactly, remains draft, base 04d482ea760f0604c5fb9e66a6c5f854b1d4385a unchanged. Release integrity passed with 631 managed files at that commit.
+All four plan tasks complete. The following metadata-only preservation commit retains this chronological ledger and publication receipt; it changes no model, frozen evaluator, experiment rule or raw evidence. The final release inventory includes this additional record. Only this plan's transient workflow directory will be removed after preservation. Raw evidence, private archives and the dedicated publishing clone remain available.

@@ -1,9 +1,9 @@
 diff --git a/src/AI/jkBot.c b/src/AI/jkBot.c
 new file mode 100644
-index 0000000..d59f677
+index 0000000..221699a
 --- /dev/null
 +++ b/src/AI/jkBot.c
-@@ -0,0 +1,1031 @@
+@@ -0,0 +1,1046 @@
 +/*
 + * Ordinary-client multiplayer bot input driver, reconstructed October 2026.
 + * Copyright (C) OpenJKDF2 contributors.
@@ -221,6 +221,14 @@ index 0000000..d59f677
 +static int Bot_ForceReady(SithThing *self,int bin,flex_t cost);
 +static int Bot_RequestForce(SithThing *self,int bin,flex_t holdSeconds,int targetSlot);
 +
++static int Lily_Command(int kind,const unsigned char *p,int size,uint32_t seq,double expiry);
++static void Lily_Clear(int reason);
++static void Lily_NewFence(int reason);
++static void Lily_Publish(SithThing *self,int dead);
++static int Lily_SenseDue(double now);
++static int Lily_Routing(void);
++static int Lily_Arrived(SithThing *self,int node);
++static void Lily_Configure(void);
 +#include "AI/jkBotCompanion.inc"
 +#include "AI/jkBotNavigation.inc"
 +
@@ -858,6 +866,8 @@ index 0000000..d59f677
 +    }
 +}
 +
++#include "AI/jkBotLily.inc"
++
 +int jkBot_IsEnabled(void) { return bot.enabled; }
 +
 +/* Opt-in receipt from this client's own inventory. Bit zero denotes Jump (bin 21). */
@@ -888,6 +898,7 @@ index 0000000..d59f677
 +{
 +    (void)skin;
 +    memset(&bot,0,sizeof(bot)); memset(&nav,0,sizeof(nav)); bot.enabled=1;
++    Lily_Configure();
 +    Companion_Configure();
 +    bot.fistsPeace=bot.forceEnabled=1;
 +    bot.competitiveForce=jkBotLoadout_Style(getenv("JK_BOT_FORCE_STYLE"))==JKBOT_STYLE_COMPETITIVE;
@@ -930,6 +941,7 @@ index 0000000..d59f677
 +    if (!bot.enabled || !bot.joined || !sithNet_isMulti || (g_submodeFlags&8) ||
 +        !sithWorld_g_pCurrentWorld || !sithPlayer_g_pLocalPlayerThing || !sithPlayer_g_pLocalPlayer) return;
 +    if (!isfinite(dt) || dt<=0) return;
++    if (lily.enabled) lily.tickMs=(double)dt*1000.0;
 +    bot.frameDt=Bot_Min(dt,0.25f); bot.now+=bot.frameDt;
 +#ifdef FIXED_TIMESTEP_PHYS
 +    bot.physicsStep=DELTA_PHYSTICK_FPS;
@@ -985,25 +997,28 @@ index 0000000..d59f677
 +            if (!nav.waterSince || bot.wasDead) nav.waterSince=bot.now;
 +        } else nav.waterSince=0;
 +        bot.followingRoute=bot.routeAim=0; bot.routeMode=-1;
-+        if (bot.armItem && !Bot_EquipmentMode()) Bot_ClearEquipment("mode");
-+        Bot_CheckGearDive(self);
-+        int releasingPower=bot.forceBin>=0;
-+        Bot_CheckPursuit(self);
-+        Bot_UpdateAudioLoops(self);
-+        SithThing *target=Bot_UpdateTarget(self);
-+        if (nav.waterExitUntil>0) Bot_ContinueWaterExit(self);
-+        else if (target) Bot_Combat(self,target);
-+        else {
-+            Bot_SelectWeapon(self,2.0f);
-+            if (bot.nextRecovery>0 || nav.combatJumpUntil>bot.now || Bot_ObjectiveUrgent(self) || Bot_SupplyOrder() ||
-+                Bot_NavigationWaiting(self) || nav.seekingSurface || (!Bot_ArmingMove(self,1e20f) && !Bot_InvestigateSound(self)))
-+                Bot_Navigate(self);
-+            Bot_ForceTick(self,NULL,180.0f);
++        if (!Lily_Drive(self)) {
++            if (bot.armItem && !Bot_EquipmentMode()) Bot_ClearEquipment("mode");
++            Bot_CheckGearDive(self);
++            int releasingPower=bot.forceBin>=0;
++            Bot_CheckPursuit(self);
++            Bot_UpdateAudioLoops(self);
++            SithThing *target=Bot_UpdateTarget(self);
++            if (nav.waterExitUntil>0) Bot_ContinueWaterExit(self);
++            else if (target) Bot_Combat(self,target);
++            else {
++                Bot_SelectWeapon(self,2.0f);
++                if (bot.nextRecovery>0 || nav.combatJumpUntil>bot.now || Bot_ObjectiveUrgent(self) || Bot_SupplyOrder() ||
++                    Bot_NavigationWaiting(self) || nav.seekingSurface || (!Bot_ArmingMove(self,1e20f) && !Bot_InvestigateSound(self)))
++                    Bot_Navigate(self);
++                Bot_ForceTick(self,NULL,180.0f);
++            }
++            Bot_Recovery(self);
++            if (!releasingPower) Bot_TryMovementSpeed(self);
 +        }
-+        Bot_Recovery(self);
-+        if (!releasingPower) Bot_TryMovementSpeed(self);
 +    }
 +    Companion_Publish(self,dead);
++    if (lily.enabled) Lily_EndFrame();
 +    bot.wasDead=dead;
 +    for (int i=0;i<INPUT_FUNC_MAX;i++) bot.presses[i]=bot.keys[i] && !bot.previous[i];
 +    if (!dead) Bot_TraceFireInput(self);
@@ -1642,10 +1657,10 @@ index 0000000..0cac724
 +}
 diff --git a/src/AI/jkBotCompanion.inc b/src/AI/jkBotCompanion.inc
 new file mode 100644
-index 0000000..bb04219
+index 0000000..b890dc5
 --- /dev/null
 +++ b/src/AI/jkBotCompanion.inc
-@@ -0,0 +1,407 @@
+@@ -0,0 +1,421 @@
 +/* Copyright (c) 2026 Coda Lilitari. SPDX-License-Identifier: MIT
 +   Private local companion transport. The ordinary game protocol is unchanged. */
 +#include "Dss/sithMulti.h"
@@ -1663,7 +1678,7 @@ index 0000000..bb04219
 +#include <unistd.h>
 +#endif
 +
-+enum { CP_STATE=1, CP_ACK, CP_CHAT, CP_SOUND, CP_STRATEGY=16, CP_SAY, CP_RELEASE };
++enum { CP_STATE=1, CP_ACK, CP_CHAT, CP_SOUND, CP_OFFERS, CP_PROGRESS, CP_SENSE, CP_STRATEGY=16, CP_SAY, CP_RELEASE, CP_COMMIT, CP_MOTOR };
 +enum { CP_APPLIED, CP_REJECTED, CP_EXPIRED, CP_STALE, CP_RATE };
 +enum { CP_OK, CP_INVALID, CP_UNAVAILABLE, CP_OBSOLETE, CP_RESERVED, CP_TOO_FAST, CP_TOO_LATE };
 +enum { CP_AUTO, CP_PRESSURE, CP_RESOURCE, CP_RECOVER };
@@ -1729,6 +1744,7 @@ index 0000000..bb04219
 +
 +static void Companion_NewWorld(void)
 +{
++    Lily_NewFence(3);
 +    if (!Companion_Connected()) return;
 +    Companion_ResetPlan();
 +    companion.world=Companion_Next(companion.world);
@@ -1766,6 +1782,7 @@ index 0000000..bb04219
 +void jkBotCompanion_SetTransport(int (*emit)(const uint8_t *,size_t))
 +{
 +    if (companion.emit==emit) return;
++    Lily_NewFence(7);
 +    Companion_ResetPlan();
 +    companion.identified=0;
 +    companion.queueRead=companion.queueCount=0;
@@ -1911,9 +1928,12 @@ index 0000000..bb04219
 +    if (n<20 || n>512 || memcmp(frame,"JKCP",4) || frame[4]!=1) return;
 +    int kind=frame[5], size=frame[6]|(frame[7]<<8);
 +    uint32_t seq=Companion_Word(frame+16);
-+    if (size!=n-20 || !seq || (kind!=CP_STRATEGY && kind!=CP_SAY && kind!=CP_RELEASE)) return;
++    if (size!=n-20 || !seq || kind<CP_STRATEGY || kind>CP_MOTOR) return;
 +    if ((kind==CP_STRATEGY && size!=28) || (kind==CP_SAY && (size<9 || size>118)) ||
 +        (kind==CP_RELEASE && size!=8)) return;
++    if (kind>=CP_COMMIT && (size<8 || size>(int)sizeof(companion.replies[0].request))) {
++        Companion_Ack(Companion_Word(frame+8),Companion_Word(frame+12),seq,kind,CP_REJECTED,CP_INVALID); return;
++    }
 +    uint32_t world=Companion_Word(frame+8), life=Companion_Word(frame+12);
 +    if (world!=companion.world || life!=companion.life) {
 +        Companion_Ack(world,life,seq,kind,CP_STALE,CP_OBSOLETE); return;
@@ -1935,11 +1955,15 @@ index 0000000..bb04219
 +    int status=CP_APPLIED, reason=CP_OK;
 +    if (!isfinite(expiry) || expiry>now+30) { status=CP_REJECTED; reason=CP_INVALID; }
 +    else if (expiry<=now) { status=CP_EXPIRED; reason=CP_TOO_LATE; }
-+    else if (kind==CP_RELEASE) Companion_ResetPlan();
++    else if (kind==CP_RELEASE) { Lily_Clear(1); Companion_ResetPlan(); }
 +    else if (!companion.identified || companion.dead) { status=CP_REJECTED; reason=CP_UNAVAILABLE; }
-+    else if (kind==CP_STRATEGY) {
++    else if (kind>=CP_COMMIT) {
++        reason=Lily_Command(kind,p,size,seq,expiry);
++        if (reason) status=reason==CP_OBSOLETE ? CP_STALE : CP_REJECTED;
++    } else if (kind==CP_STRATEGY) {
 +        reason=Companion_SetPolicy(self,p,expiry);
 +        if (reason) status=reason==CP_OBSOLETE ? CP_STALE : CP_REJECTED;
++        else Lily_Clear(8);
 +    } else if (!Companion_Printable(p+8,size-8)) { status=CP_REJECTED; reason=CP_INVALID; }
 +    else if (Companion_Reserved(p+8,size-8)) { status=CP_REJECTED; reason=CP_RESERVED; }
 +    else if (now<companion.nextChat) { status=CP_RATE; reason=CP_TOO_FAST; }
@@ -1969,6 +1993,7 @@ index 0000000..bb04219
 +    if (companion.identified && (dead!=companion.dead || self->idx!=companion.thing ||
 +        self->signature!=companion.signature || self->guid!=companion.guid ||
 +        own->playerNetId!=companion.net || playerThingIdx!=companion.slot)) {
++        Lily_NewFence(2);
 +        companion.life=Companion_Next(companion.life); companion.nextState=0;
 +        Companion_ResetPlan(); companion.heardKind=companion.hasPursuit=0;
 +        companion.highest=0; memset(companion.replies,0,sizeof(companion.replies));
@@ -2003,7 +2028,10 @@ index 0000000..bb04219
 +{
 +    if (!Companion_Connected() || !companion.identified) return;
 +    double now=companion.now;
-+    if (now<companion.nextState) return;
++    if (now<companion.nextState) {
++        if (Lily_SenseDue(now)) Lily_Publish(self,dead);
++        return;
++    }
 +    companion.nextState=now+0.2;
 +    unsigned char p[144]={0};
 +    SithPlayer *own=self->actorParams.pPlayer;
@@ -2046,6 +2074,7 @@ index 0000000..bb04219
 +    Companion_Put(p+140,active);
 +    /* STATE establishes the world/life fence for subsequent observations. */
 +    Companion_Event(CP_STATE,p,sizeof(p));
++    Lily_Publish(self,dead);
 +    if (newSound) {
 +        unsigned char sound[24];
 +        Companion_Put(sound,cue.kind); Companion_Vector(sound+4,cue.position);
@@ -2055,10 +2084,10 @@ index 0000000..bb04219
 +}
 diff --git a/src/AI/jkBotForce.inc b/src/AI/jkBotForce.inc
 new file mode 100644
-index 0000000..4369ec7
+index 0000000..83528da
 --- /dev/null
 +++ b/src/AI/jkBotForce.inc
-@@ -0,0 +1,477 @@
+@@ -0,0 +1,480 @@
 +/* Copyright (c) 2026 Coda Lilitari. SPDX-License-Identifier: MIT
 +   Use ordinary inventory hotkeys: stock COGs own eligibility, cost and effects. */
 +static int Bot_PowerKey(int bin)
@@ -2411,7 +2440,7 @@ index 0000000..4369ec7
 +    bot.axes[INPUT_FUNC_FORWARD]=bot.axes[INPUT_FUNC_SLIDE]=bot.axes[INPUT_FUNC_TURN]=0;
 +}
 +
-+static void Bot_ForceTick(SithThing *self, SithThing *target, flex_t aimError)
++static void Bot_ForceControl(SithThing *self, SithThing *target, flex_t aimError,int autonomous)
 +{
 +    bot.forceAvoid=0;
 +    /* Deadly Sight has no cancellation handler. New casts are forbidden in
@@ -2485,7 +2514,7 @@ index 0000000..4369ec7
 +        else bot.forceEffectBin=-1;
 +        return;
 +    }
-+    if (nav.waterExitUntil>0 || bot.now<bot.nextForce) return;
++    if (!autonomous || nav.waterExitUntil>0 || bot.now<bot.nextForce) return;
 +    /* Bacta is an inventory item, independent of the Force checkbox. */
 +    if (self->actorParams.health<=65 && sithInventory_IsInventoryAvailable(self,SITHBIN_BACTATANK) &&
 +        sithInventory_GetInventory(self,SITHBIN_BACTATANK)>0 &&
@@ -2536,6 +2565,9 @@ index 0000000..4369ec7
 +        Bot_RequestForce(self,SITHBIN_F_BLINDING,0.46f,slot)) return;
 +    if (distance<3.9f && Bot_ForceDebris(self)) Bot_RequestForce(self,SITHBIN_F_THROW,0.46f,slot);
 +}
++
++static void Bot_ForceTick(SithThing *self,SithThing *target,flex_t aimError)
++{ Bot_ForceControl(self,target,aimError,1); }
 diff --git a/src/AI/jkBotHearing.inc b/src/AI/jkBotHearing.inc
 new file mode 100644
 index 0000000..3761a38
@@ -2879,6 +2911,349 @@ index 0000000..3761a38
 +        Bot_Move(self,d,0);
 +    return 1;
 +}
+diff --git a/src/AI/jkBotLily.inc b/src/AI/jkBotLily.inc
+new file mode 100644
+index 0000000..7186390
+--- /dev/null
++++ b/src/AI/jkBotLily.inc
+@@ -0,0 +1,337 @@
++/* Opt-in companion input authority. Only the normal control driver consumes
++   these axes and keys. Transport and game clocks deliberately stay distinct. */
++enum { LILY_BASELINE,LILY_ROUTE,LILY_MOTOR };
++enum { LILY_IDLE,LILY_QUEUED,LILY_STARTED,LILY_RUNNING,LILY_COMPLETED,LILY_INTERRUPTED,LILY_FAILED,LILY_EXPIRED };
++enum { LILY_NONE,LILY_RELEASED,LILY_LIFE,LILY_WORLD,LILY_DEADLINE,LILY_INVALID_ROUTE,LILY_SURVIVAL,LILY_DISCONNECTED,LILY_REPLACED };
++enum { LILY_NO_OUTCOME,LILY_ARRIVED,LILY_PLAYBACK };
++typedef struct LilyStep {
++    unsigned duration,buttons,weapon,force;
++    float axes[4];
++} LilyStep;
++typedef struct LilyAction {
++    uint32_t seq,revision,sample;
++    int owner,node,count,index;
++    double expiry,applied,stepMs;
++    LilyStep steps[5];
++} LilyAction;
++static struct {
++    int enabled, neutral, motorBoundary, forceRequest;
++    uint32_t sample,offer;
++    struct { uint32_t id; double time; } samples[32];
++    int choices[8],choiceCount;
++    double offeredAt,tickMs,nextSense;
++    LilyAction active,queued;
++    struct { unsigned char data[24]; int repeats; } terminal[4];
++    unsigned terminalCursor;
++} lily;
++static const int lilyAxes[]={INPUT_FUNC_FORWARD,INPUT_FUNC_SLIDE,INPUT_FUNC_TURN,INPUT_FUNC_PITCH};
++static const int lilyButtons[]={INPUT_FUNC_JUMP,INPUT_FUNC_DUCK,INPUT_FUNC_ACTIVATE,INPUT_FUNC_FIRE1,INPUT_FUNC_FIRE2};
++
++static void Lily_Configure(void)
++{
++    memset(&lily,0,sizeof(lily));
++    const char *enabled=getenv("JK_BOT_LILY");
++    lily.enabled=enabled && !strcmp(enabled,"1");
++}
++static int Lily_Routing(void) { return lily.active.owner==LILY_ROUTE; }
++
++static void Lily_Progress(const LilyAction *a,int phase,int reason,int outcome)
++{
++    unsigned char data[24];
++    Companion_Put(data,a->seq); Companion_Put(data+4,a->revision); Companion_Put(data+8,a->sample);
++    data[12]=a->owner; data[13]=phase; data[14]=reason; data[15]=outcome;
++    Companion_Put(data+16,(a->applied>=UINT32_MAX ? UINT32_MAX : (uint32_t)(a->applied+0.5))); Companion_Put(data+20,(uint32_t)a->node);
++    Companion_Event(CP_PROGRESS,data,sizeof(data));
++    if (phase>=LILY_COMPLETED) {
++        unsigned i=lily.terminalCursor++%4;
++        memcpy(lily.terminal[i].data,data,sizeof(data)); lily.terminal[i].repeats=3;
++    }
++}
++static void Lily_Finish(LilyAction *a,int phase,int reason,int outcome)
++{
++    if (!a->seq) return;
++    Lily_Progress(a,phase,reason,outcome);
++    if (a==&lily.active && a->owner==LILY_ROUTE) {
++        bot.goal=-1; bot.routeCount=bot.routePos=0; bot.nextPlan=0;
++    }
++    memset(a,0,sizeof(*a));
++}
++static void Lily_ReleaseForce(int cancel)
++{
++    if (lily.forceRequest && bot.forceBin>=0) {
++        bot.forceUntil=bot.now;
++        if (cancel && (bot.forceBin==SITHBIN_F_THROW || bot.forceBin==SITHBIN_F_PULL ||
++            bot.forceBin==SITHBIN_F_GRIP || bot.forceBin==SITHBIN_F_BLINDING)) bot.forceCancel=1;
++    }
++    lily.forceRequest=0;
++}
++static void Lily_Clear(int reason)
++{
++    if (!lily.enabled) return;
++    if (lily.active.seq || lily.motorBoundary) lily.neutral=1;
++    Lily_ReleaseForce(lily.active.owner==LILY_MOTOR);
++    lily.motorBoundary=0;
++    Lily_Finish(&lily.active,LILY_INTERRUPTED,reason,0);
++    Lily_Finish(&lily.queued,LILY_INTERRUPTED,reason,0);
++}
++static void Lily_NewFence(int reason)
++{
++    Lily_Clear(reason);
++    lily.sample=lily.offer=0; lily.choiceCount=0; lily.offeredAt=lily.nextSense=0;
++    memset(lily.samples,0,sizeof(lily.samples));
++    memset(lily.terminal,0,sizeof(lily.terminal));
++}
++static int Lily_Atomic(SithThing *self)
++{
++    return (nav.liftWaitAt>0 && nav.waitUntil>bot.now) ||
++        (nav.crossingEntry && nav.crossingUntil>bot.now) ||
++        nav.waterExitUntil>0 || nav.jumpUntil>bot.now || nav.forceJumpPending ||
++        nav.combatJumpUntil>bot.now || bot.forceBin>=0 || bot.forceCancel || Bot_ActiveCompetitiveGrip(self);
++}
++static int Lily_Command(int kind,const unsigned char *p,int size,uint32_t seq,double expiry)
++{
++    if (!lily.enabled) return CP_UNAVAILABLE;
++    if ((kind==CP_COMMIT && size!=24) || (kind==CP_MOTOR && size<17)) return CP_INVALID;
++    LilyAction a={.seq=seq,.expiry=expiry,.revision=Companion_Word(p+12),.sample=Companion_Word(p+8),.node=-1};
++    if (!a.revision || !a.sample) return CP_INVALID;
++    if (lily.samples[a.sample%32].id!=a.sample || companion.now-lily.samples[a.sample%32].time>1)
++        return CP_OBSOLETE;
++    if (kind==CP_COMMIT) {
++        uint32_t offer=Companion_Word(p+16),node=Companion_Word(p+20);
++        if (!offer || node>=BOT_NODES) return CP_INVALID;
++        if (lily.offer!=offer || companion.now-lily.offeredAt>2) return CP_OBSOLETE;
++        int found=0;
++        for (int i=0;i<lily.choiceCount;i++) if (lily.choices[i]==(int)node) found=1;
++        if (!found) return CP_OBSOLETE;
++        a.owner=LILY_ROUTE; a.node=(int)node;
++    } else {
++        a.owner=LILY_MOTOR; a.count=p[16];
++        if (a.count<1 || a.count>5 || size!=17+9*a.count) return CP_INVALID;
++        unsigned total=0;
++        for (int i=0;i<a.count;i++) {
++            const unsigned char *step=p+17+9*i;
++            LilyStep *s=&a.steps[i];
++            s->duration=step[0]|(step[1]<<8); total+=s->duration;
++            s->buttons=step[6]; s->weapon=step[7]; s->force=step[8];
++            if (!s->duration || total>600 || s->buttons>31 || s->weapon>10 ||
++                (s->force && (s->force<21 || s->force>34))) return CP_INVALID;
++            for (int k=0;k<4;k++) {
++                int axis=step[k+2]; if (axis>127) axis-=256;
++                if (axis < -100 || axis>100) return CP_INVALID;
++                s->axes[k]=axis/100.0f;
++            }
++        }
++    }
++    if (lily.queued.seq || (lily.active.seq && (a.owner!=LILY_MOTOR || lily.active.owner!=LILY_MOTOR)))
++        return CP_UNAVAILABLE;
++    lily.queued=a; Lily_Progress(&a,LILY_QUEUED,0,0);
++    return CP_OK;
++}
++static int Lily_RouteStart(SithThing *self,int node)
++{
++    if (node<0 || node>=bot.nNodes || !Bot_SectorSafe(bot.nodes[node].sector) ||
++        bot.nodes[node].avoidUntil>bot.now) return 0;
++    BotGoalPaths paths;
++    paths.start=Bot_Nearest(self);
++    Bot_PathDistances(self,paths.start,paths.distance,paths.parent);
++    if (paths.start<0 || paths.distance[node]>=1e19f) return 0;
++    Bot_ClearEquipment("lily-route"); nav.pursuitNet=0; nav.objectiveRouteNode=-1;
++    return Bot_SetRoute(paths.start,node,paths.parent);
++}
++static int Lily_Arrived(SithThing *self,int node)
++{
++    if (!Lily_Routing() || lily.active.node!=node) return 0;
++    /* The follower verified horizontal and vertical proximity. Disconnected
++       overlapping sectors must not create a false arrival. */
++    if (self->sector==bot.nodes[node].sector)
++        Lily_Finish(&lily.active,LILY_COMPLETED,0,LILY_ARRIVED);
++    else Lily_Finish(&lily.active,LILY_FAILED,LILY_INVALID_ROUTE,0);
++    return 1;
++}
++static int Lily_FireAllowed(SithThing *self,int weapon)
++{
++    if (bot.sabersOnly && weapon!=SITHBIN_LIGHTSABER) return 0;
++    /* Policy aim is independent of the autonomous target. Check its actual
++       cone and splash margin for peaceful players and teammates. */
++    flex_t pitch=self->actorParams.headPYR.x/BOT_DEG;
++    rdVector3 aim=self->orient.lvec,up=self->orient.uvec;
++    aim=(rdVector3){aim.x*cosf(pitch)+up.x*sinf(pitch),aim.y*cosf(pitch)+up.y*sinf(pitch),
++                    aim.z*cosf(pitch)+up.z*sinf(pitch)};
++    int melee=weapon==SITHBIN_FISTS || weapon==SITHBIN_LIGHTSABER;
++    int splash=weapon==SITHBIN_CONCUSSION_RIFLE || weapon==SITHBIN_RAIL_DETONATOR ||
++               weapon==SITHBIN_THERMAL_DETONATOR || weapon==SITHBIN_SEQUENCER_CHARGE;
++    for (unsigned i=0;i<jkPlayer_maxPlayers && i<JKPLAYER_NUM_INFOS;i++) {
++        if (!Bot_ProtectedPlayer(self,(int)i)) continue;
++        SithThing *peer=jkPlayer_playerInfos[i].pLocalPlayer;
++        rdVector3 delta=Bot_Sub(peer->position,self->position);
++        flex_t length=Bot_Len(delta),along=Bot_Dot(delta,aim);
++        if (melee) { if (length<0.8f) return 0; continue; }
++        if (weapon==SITHBIN_TUSKEN_PROD && length<8) return 0;
++        flex_t margin=peer->collideSize+(splash ? 1.5f : 0.15f)+Bot_Max(0,along)*0.12f;
++        if ((splash && length<1.5f) || (along>0 && length*length-along*along<margin*margin)) return 0;
++    }
++    return 1;
++}
++static void Lily_Motor(SithThing *self)
++{
++    LilyAction *a=&lily.active; LilyStep *s=&a->steps[a->index];
++    for (int k=0;k<4;k++) bot.axes[lilyAxes[k]]=s->axes[k];
++    for (int k=0;k<5;k++) bot.keys[lilyButtons[k]]=!!(s->buttons&(1u<<k));
++    if ((s->buttons&24) && !Lily_FireAllowed(self,sithInventory_GetCurrentWeapon(self)))
++        bot.keys[INPUT_FUNC_FIRE1]=bot.keys[INPUT_FUNC_FIRE2]=0;
++    if (s->weapon && (!bot.sabersOnly || s->weapon==SITHBIN_LIGHTSABER) &&
++        Bot_HasWeapon(self,s->weapon)) bot.keys[INPUT_FUNC_SELECT1+s->weapon-1]=1;
++    if (lily.forceRequest && lily.forceRequest!=(int)s->force) {
++        Lily_ReleaseForce(0);
++        Bot_ForceControl(self,NULL,180,0);
++    }
++    if (s->force && lily.forceRequest!=(int)s->force &&
++        Bot_RequestForce(self,s->force,s->duration/1000.0f,bot.targetSlot)) lily.forceRequest=s->force;
++    if (s->force && (int)s->force==bot.forceBin) bot.forceUntil=bot.now+bot.frameDt+0.001f;
++    Bot_ForceControl(self,NULL,180,0);
++    a->stepMs+=lily.tickMs; a->applied+=lily.tickMs;
++}
++/* The frame's sense sample retains the identity of the controls just emitted.
++   Commit its elapsed duration before a later deadline, command or fence can
++   reinterpret already played input. The next tick can renew the held keys. */
++static void Lily_EndFrame(void)
++{
++    LilyAction *a=&lily.active;
++    if (a->owner!=LILY_MOTOR || a->stepMs+0.0001<a->steps[a->index].duration) return;
++    a->stepMs=0;
++    if (++a->index==a->count) {
++        Lily_Finish(a,LILY_COMPLETED,0,LILY_PLAYBACK);
++        lily.motorBoundary=1;
++    }
++}
++static int Lily_Drive(SithThing *self)
++{
++    if (!lily.enabled) return 0;
++    if (!Companion_Connected() || !companion.identified) Lily_Clear(LILY_DISCONNECTED);
++    if (lily.queued.seq && companion.now>=lily.queued.expiry)
++        Lily_Finish(&lily.queued,LILY_EXPIRED,LILY_DEADLINE,0);
++    if (lily.active.seq && companion.now>=lily.active.expiry) {
++        Lily_ReleaseForce(1); Lily_Finish(&lily.active,LILY_EXPIRED,LILY_DEADLINE,0); lily.neutral=1;
++    }
++    if (lily.neutral) { lily.neutral=0; Bot_ForceControl(self,NULL,180,0); return 1; }
++    if (lily.motorBoundary) {
++        lily.motorBoundary=0;
++        if (lily.queued.owner!=LILY_MOTOR) {
++            Lily_ReleaseForce(0); Bot_ForceControl(self,NULL,180,0); return 1;
++        }
++    }
++    if (!lily.active.seq && lily.queued.seq) {
++        if (Lily_Atomic(self) && !lily.forceRequest) return 0;
++        lily.active=lily.queued; memset(&lily.queued,0,sizeof(lily.queued));
++        if (Lily_Routing() && !Lily_RouteStart(self,lily.active.node)) {
++            Lily_Finish(&lily.active,LILY_INTERRUPTED,LILY_INVALID_ROUTE,0); return 0;
++        }
++        /* The old strategy timer must never clear a newly owned route. Its
++           plan-reset helper owns the legacy goal and is not a handover API. */
++        companion.policy=(CompanionPolicy){0};
++        Lily_Progress(&lily.active,LILY_STARTED,0,0);
++        bot.stuckAt=bot.now; bot.progressPos=self->position; bot.nextRecovery=0;
++    }
++    if (!lily.active.seq) return 0;
++    Bot_UpdateAudioLoops(self); (void)Bot_UpdateTarget(self);
++    if (lily.active.owner==LILY_MOTOR) { Lily_Motor(self); return 1; }
++    if (Bot_NeedsAir(self) || nav.diveEscape) {
++        Lily_Finish(&lily.active,LILY_INTERRUPTED,LILY_SURVIVAL,0); return 0;
++    }
++    if (bot.goal!=lily.active.node || bot.routePos>=bot.routeCount) {
++        Lily_Finish(&lily.active,LILY_FAILED,LILY_INVALID_ROUTE,0); return 0;
++    }
++    lily.active.applied+=lily.tickMs;
++    if (nav.waterExitUntil>0) Bot_ContinueWaterExit(self);
++    else { Bot_Navigate(self); Bot_ForceControl(self,NULL,180,0); }
++    if (Lily_Routing()) {
++        Bot_Recovery(self);
++        if (bot.goal!=lily.active.node) Lily_Finish(&lily.active,LILY_FAILED,LILY_INVALID_ROUTE,0);
++    }
++    return 1;
++}
++static void Lily_Offers(SithThing *self,int dead)
++{
++    unsigned char data[9+8*30];
++    float costs[8],scores[8]; lily.choiceCount=0;
++    if (!dead && bot.graphDone && bot.nNodes) {
++        BotGoalPaths paths;
++        paths.start=Bot_Nearest(self);
++        Bot_PathDistances(self,paths.start,paths.distance,paths.parent);
++        for (int n=0;paths.start>=0 && n<bot.nNodes;n++) {
++            BotNode *node=&bot.nodes[n]; float cost=paths.distance[n];
++            if (!Bot_SectorSafe(node->sector) || node->avoidUntil>bot.now || cost>=1e19f || !isfinite(cost)) continue;
++            float direct=Bot_Distance(self->position,node->pos);
++            if (direct<0.13f) continue;
++            float value=Bot_ItemValue(self,node->item);
++            if (node->item>=0 && (!Bot_NavThing(node->item) || value<=0.05f)) continue;
++            cost+=Bot_Distance(self->position,bot.nodes[paths.start].pos);
++            float score=(node->item>=0 ? value : 1.0f+Bot_Clamp((bot.now-node->visited)/40.0f,0,2)) /
++                         (1.0f+0.25f*cost);
++            int j=lily.choiceCount;
++            while (j && scores[j-1]<score) j--;
++            if (j>=8) continue;
++            int from=n,length=0;
++            while (from>=0 && from!=paths.start && length<BOT_PATH) { from=paths.parent[from]; length++; }
++            if (from!=paths.start) continue;
++            if (lily.choiceCount<8) lily.choiceCount++;
++            for (int k=lily.choiceCount-1;k>j;k--) {
++                costs[k]=costs[k-1]; scores[k]=scores[k-1]; lily.choices[k]=lily.choices[k-1];
++            }
++            costs[j]=cost; scores[j]=score; lily.choices[j]=n;
++        }
++    }
++    lily.offer=Companion_Next(lily.offer); lily.offeredAt=companion.now;
++    Companion_Put(data,lily.sample); Companion_Put(data+4,lily.offer); data[8]=lily.choiceCount;
++    for (int i=0;i<lily.choiceCount;i++) {
++        unsigned char *p=data+9+30*i;
++        int n=lily.choices[i]; BotNode *node=&bot.nodes[n];
++        SithThing *item=Bot_NavThing(node->item);
++        Companion_Put(p,n); Companion_Put(p+4,node->sector->id);
++        p[8]=item!=NULL; p[9]=item ? Bot_PickupType(item).bin : 0;
++        Companion_Vector(p+10,node->pos); Companion_PutFloat(p+22,costs[i]); Companion_PutFloat(p+26,scores[i]);
++    }
++    Companion_Event(CP_OFFERS,data,9+lily.choiceCount*30);
++}
++static void Lily_Publish(SithThing *self,int dead)
++{
++    if (!lily.enabled) return;
++    lily.nextSense=companion.now+0.05;
++    unsigned char p[108+8*40]={0};
++    LilyAction *a=lily.active.seq ? &lily.active : &lily.queued;
++    lily.sample=Companion_Next(lily.sample);
++    lily.samples[lily.sample%32].id=lily.sample; lily.samples[lily.sample%32].time=companion.now;
++    Companion_Put(p,lily.sample); Companion_Put(p+4,a->seq); Companion_Put(p+8,a->revision);
++    Companion_Put(p+12,a->sample); Companion_Put(p+16,a->seq ? (uint32_t)a->node : UINT32_MAX);
++    p[20]=a->owner; p[21]=lily.active.seq ? LILY_RUNNING : lily.queued.seq ? LILY_QUEUED : LILY_IDLE;
++    p[22]=!dead && !a->seq && !Lily_Atomic(self); p[23]=!!self->attach_flags;
++    Companion_Put(p+24,!!(self->sector->flags&SITH_SECTOR_UNDERWATER));
++    Companion_Vector(p+28,self->position); Companion_Vector(p+40,self->physicsParams.vel);
++    Companion_Vector(p+52,self->orient.lvec); Companion_Vector(p+64,self->orient.uvec);
++    Companion_PutFloat(p+76,self->actorParams.headPYR.x); Companion_PutFloat(p+80,self->actorParams.endurance);
++    Companion_PutFloat(p+84,(float)lily.tickMs);
++    for (int i=0;i<4;i++) Companion_PutFloat(p+88+i*4,bot.axes[lilyAxes[i]]);
++    for (int i=0;i<5;i++) if (bot.keys[lilyButtons[i]]) p[104]|=1u<<i;
++    for (int w=1;w<=10;w++) if (bot.keys[INPUT_FUNC_SELECT1+w-1]) p[105]=w;
++    for (int f=21;f<=34;f++) {
++        int key=Bot_PowerKey(f);
++        if (key>=0 && bot.keys[key]) p[106]=f;
++    }
++    for (unsigned i=0;i<jkPlayer_maxPlayers && i<JKPLAYER_NUM_INFOS && p[107]<8;i++) {
++        SithPlayer *player=&jkPlayer_playerInfos[i]; SithThing *t=player->pLocalPlayer;
++        if (!(player->flags&1) || !player->playerNetId || !t || t==self || !t->sector ||
++            t->type!=SITH_THING_PLAYER || t->flags&(SITH_TF_DESTROYED|SITH_TF_DISABLED|SITH_TF_DEAD)) continue;
++        unsigned char *q=p+108+p[107]++*40;
++        Companion_Put(q,i); Companion_Put(q+4,player->playerNetId); Companion_Put(q+8,t->guid);
++        Companion_Put(q+12,t->sector->id); Companion_Vector(q+16,t->position); Companion_Vector(q+28,t->physicsParams.vel);
++    }
++    Companion_Event(CP_SENSE,p,108+p[107]*40);
++    if (!lily.offer || companion.now-lily.offeredAt>=1) Lily_Offers(self,dead);
++    for (int i=0;i<4;i++) if (lily.terminal[i].repeats) {
++        lily.terminal[i].repeats--;
++        Companion_Event(CP_PROGRESS,lily.terminal[i].data,sizeof(lily.terminal[i].data));
++    }
++    if (lily.active.seq) Lily_Progress(&lily.active,LILY_RUNNING,0,0);
++}
++
++static int Lily_SenseDue(double now) { return lily.enabled && now>=lily.nextSense; }
 diff --git a/src/AI/jkBotLoadout.h b/src/AI/jkBotLoadout.h
 new file mode 100644
 index 0000000..d167eb8
@@ -2946,10 +3321,10 @@ index 0000000..d167eb8
 +#endif
 diff --git a/src/AI/jkBotNavigate.inc b/src/AI/jkBotNavigate.inc
 new file mode 100644
-index 0000000..7a4d61a
+index 0000000..9e56419
 --- /dev/null
 +++ b/src/AI/jkBotNavigate.inc
-@@ -0,0 +1,591 @@
+@@ -0,0 +1,592 @@
 +/* Movement execution for jkBotNavigation.inc; ordinary inputs only. */
 +/* Stock FreeCam tilts forward thrust with head pitch. Keep the extra
 +   upward stroke inside checked water clearance, including its lateral drift. */
@@ -3395,7 +3770,7 @@ index 0000000..7a4d61a
 +            return;
 +        }
 +    }
-+    if (bot.now>=bot.nextPlan || bot.goal<0 || bot.routePos>=bot.routeCount) Bot_Plan(self);
++    if (!Lily_Routing() && (bot.now>=bot.nextPlan || bot.goal<0 || bot.routePos>=bot.routeCount)) Bot_Plan(self);
 +    if (Bot_JoinMove(self)) return;
 +    if (bot.goal<0 || bot.routePos>=bot.routeCount) {
 +        bot.axes[INPUT_FUNC_TURN]=0.35f;
@@ -3410,8 +3785,9 @@ index 0000000..7a4d61a
 +        ((self->sector->flags&SITH_SECTOR_UNDERWATER) ||
 +         (bot.routePos>0 && (bot.nodes[bot.route[bot.routePos-1]].sector->flags&SITH_SECTOR_UNDERWATER)));
 +    if (!waitingForBank && Bot_Horizontal(d)<0.11f && fabsf(d.z)<0.18f &&
-+        (bot.routePos+1<bot.routeCount || !Bot_PickupNeedsContact(self,node))) {
++        (bot.routePos+1<bot.routeCount || !Bot_PickupNeedsContact(self,node) || Lily_Routing())) {
 +        node->visited=bot.now;
++        if (bot.routePos+1>=bot.routeCount && Lily_Arrived(self,nodeIndex)) return;
 +        if (bot.routePos+1>=bot.routeCount && bot.goal==nav.objectiveRouteNode && nav.objectiveValid) {
 +            rdVector3 objectiveDelta=Bot_Sub(nav.objectivePos,self->position);
 +            flex_t horizontal=Bot_Horizontal(objectiveDelta);
@@ -5746,7 +6122,7 @@ index 968c17d..d4c2444 100644
  #ifdef PLATFORM_WSRELAY
      // Added: a viewer's own message, back from the host's game through the
 diff --git a/src/Gui/jkGUIMultiplayer.c b/src/Gui/jkGUIMultiplayer.c
-index f62a779..6909ba5 100644
+index f62a779..eea7bbd 100644
 --- a/src/Gui/jkGUIMultiplayer.c
 +++ b/src/Gui/jkGUIMultiplayer.c
 @@ -21,6 +21,275 @@
@@ -5841,7 +6217,7 @@ index f62a779..6909ba5 100644
 +        {"model","JK_BOT_WEB_MODEL"},{"sound","JK_BOT_WEB_SOUND"},{"thirdPerson","JK_BOT_WEB_THIRD_PERSON"},
 +        {"side","JK_BOT_FORCE_SIDE"},{"style","JK_BOT_FORCE_STYLE"},{"elite","JK_BOT_ELITE"},
 +        {"mode","JK_BOT_WEB_MODE"},{"saberColor","JK_BOT_WEB_SABER_COLOR"},
-+        {"trace","JK_BOT_TRACE_FORCE"}
++        {"trace","JK_BOT_TRACE_FORCE"},{"lily","JK_BOT_LILY"}
 +    };
 +    char value[96];
 +    for (unsigned i=0;i<sizeof(options)/sizeof(options[0]);i++) {
