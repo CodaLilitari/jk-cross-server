@@ -15,6 +15,7 @@ import tempfile
 import time
 from urllib.parse import urlsplit
 
+from . import tactics
 from .companion import MODES
 
 
@@ -76,10 +77,11 @@ def parser():
     sub = p.add_subparsers(dest="op", required=True)
     for op in ("capabilities", "observe", "renew"):
         sub.add_parser(op)
+    sub.add_parser("tactics-info", help="Tactic table, presets and the adjustments applied so far.")
     sub.add_parser("attach").add_argument("controller")
     sub.add_parser("events").add_argument("--after", default=0, type=int)
     sub.add_parser("command").add_argument("request_id")
-    for name in ("strategy", "say", "release"):
+    for name in ("strategy", "say", "release", "tactics"):
         action = sub.add_parser(name)
         action.add_argument("--request-id", help="Reuse the same ID and payload to inspect a retry.")
         action.add_argument("--wait", default=1., type=float, help="Seconds to poll for the native ACK (0..10).")
@@ -92,6 +94,13 @@ def parser():
                 action.add_argument("--"+field, type=int)
         elif name == "say":
             action.add_argument("text")
+        elif name == "tactics":
+            action.add_argument("--preset", choices=sorted(tactics.PRESETS),
+                                help="Reset to the defaults, then apply this preset.")
+            action.add_argument("--set", action="append", metavar="NAME=VALUE",
+                                help="Set one tactic; repeatable. Merged over the preset or the current table.")
+            action.add_argument("--reset", action="store_true",
+                                help="Reset to the defaults before applying --set values.")
     return p
 
 
@@ -99,7 +108,7 @@ def execute(args):
     cred = load_private(args.credentials)
     ticket = args.lease_file or args.credentials.with_suffix(".lease.json")
     op = args.op
-    if op in ("capabilities", "observe", "events", "command"):
+    if op in ("capabilities", "observe", "events", "command", "tactics-info"):
         if op == "command":
             if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", args.request_id):
                 raise ValueError("Invalid request identifier.")
@@ -107,7 +116,7 @@ def execute(args):
         elif op == "events":
             route = "events?after=" + str(args.after)
         else:
-            route = "observation" if op == "observe" else op
+            route = "observation" if op == "observe" else "tactics" if op == "tactics-info" else op
         return call(cred, route)
     if op == "attach":
         # An expired ticket can be replaced. The hub itself serializes attach
@@ -140,6 +149,15 @@ def execute(args):
     body = dict(lease, request_id=args.request_id or secrets.token_hex(12))
     if op == "say":
         body["text"] = args.text
+    if op == "tactics":
+        values = tactics.parse_assignments(args.set)
+        tactics.resolve(args.preset, values, args.reset)
+        if args.preset:
+            body["preset"] = args.preset
+        if values:
+            body["values"] = values
+        if args.reset:
+            body["reset"] = True
     if op == "strategy":
         for key in ("mode","risk","range","weapon","resource","focus_net_id","focus_guid","ttl_seconds"):
             value = getattr(args, key)

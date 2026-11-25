@@ -29,7 +29,7 @@ def check_scope(config: dict, count: int) -> None:
 
 def behavior_values(config: dict) -> dict:
     return {"sabers_only": config.get("bots_sabers_only", False),
-            "fists_peace": config.get("bots_fists_peace", True),
+            "fists_peace": config.get("bots_fists_peace", False),
             "force_enabled": config.get("bots_force_enabled", True)}
 
 

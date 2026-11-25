@@ -3,6 +3,9 @@ static void test_initial_anchor_jump(void)
 {
     SithWorld world={0}; SithSector sector={0}; SithThing self={0}; SithPlayer own={0};
     jkBot_Configure("Bot_InitialAnchor","ky.3do");
+    /* This query fixture has no floors, which the standstill Force Jump model
+       (fjump_standstill) needs to find a landing; it is tested on its own. */
+    flex_t standstill=BT(FJUMP_STANDSTILL); BT(FJUMP_STANDSTILL)=0;
     corridorMode=fixtureMode=testSlopeActive=testBridgeActive=testC1Active=0;
     bot.world=&world; world.aSectors=&sector; world.numSectors=1; world.gravity=4;
     bot.now=5; bot.nextPlan=20; bot.goal=0; bot.nNodes=bot.routeCount=1;
@@ -62,7 +65,7 @@ static void test_initial_anchor_jump(void)
         bot.now=bot.forceUntil+.01f; memset(bot.keys,0,sizeof(bot.keys));
         Bot_ForceTick(&self,NULL,180.0f); assert(!bot.keys[jumpKey] && bot.forceBin==-1);
     }
-    assert(queryDepth==0);
+    assert(queryDepth==0); BT(FJUMP_STANDSTILL)=standstill;
     jkBot_Configure("Bot_Reset","ky.3do");
     puts("PASS dry initial anchor prefers ordinary jump, checks Force availability, releases on lost support and holds full rank 3/4 charge");
 }
@@ -166,6 +169,10 @@ static void test_bot_pickup_preferences(void)
     world.aThings=racks; world.numThings=1; world.numThingsLoaded=2; bot.world=&world;
     bot.now=20; bot.nNodes=3; bot.graphDone=1; bot.sabersOnly=0; bot.elite=0;
     for (int i=0;i<2;i++) { racks[i].type=SITH_THING_ITEM; racks[i].sector=&sector; }
+    /* A loaded bowcaster in hand: armed, so the values below are the plain
+       ones (resupply raises every real gun to 12 for a bot out of shots). */
+    own.aItems[SITHBIN_TUSKEN_PROD].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own.aItems[SITHBIN_TUSKEN_PROD].amount=1; own.aItems[SITHBIN_POWER].amount=40;
     strcpy(racks[0].aName,"railgun"); strcpy(racks[1].aName,"concrifle");
     assert(Bot_ItemValue(&self,0)==8 && Bot_ItemValue(&self,1)==8);
     bot.elite=1;
@@ -277,8 +284,17 @@ static void test_bot_navigation(void)
     assert(Bot_ItemValue(&self,3)==0);
     strcpy(templates[0].aName,"m5railgun"); strcpy(model.filename,"rldp.3do"); items[0].renderData.model3=&model;
     assert(Bot_ItemValue(&self,0)>=7); bot.sabersOnly=1; assert(Bot_ItemValue(&self,0)==0); bot.sabersOnly=0;
+    /* Thermals and charges: never collected under the legacy table; a few
+       to throw and lay with thermals and mines on. */
+    flex_t thermals=BT(THERMALS), mines=BT(MINES); BT(THERMALS)=BT(MINES)=0;
     strcpy(templates[0].aName,"detonator"); assert(Bot_ItemValue(&self,0)==0);
     strcpy(templates[0].aName,"seqcharge"); assert(Bot_ItemValue(&self,0)==0);
+    BT(THERMALS)=BT(MINES)=1;
+    assert(Bot_ItemValue(&self,0)==2.5f);
+    strcpy(templates[0].aName,"detonator"); assert(Bot_ItemValue(&self,0)==2.0f);
+    own.aItems[SITHBIN_THERMAL_DETONATOR].amount=4; assert(Bot_ItemValue(&self,0)==0);
+    own.aItems[SITHBIN_THERMAL_DETONATOR].amount=0; BT(THERMALS)=thermals; BT(MINES)=mines;
+    strcpy(templates[0].aName,"seqcharge");
     puts("PASS stock pickup need scoring, saber-only/Force gates and inherited model aliases");
     items[1].flags=SITH_TF_DISABLED; items[1].itemParams.secRespawnInterval=30;
     assert(Bot_ItemValue(&self,1)==0); bot.now=37;
@@ -303,6 +319,9 @@ static void test_bot_navigation(void)
     self.actorParams.health=100; Bot_PathDistances(&self,0,distances,parents); assert(distances[3]<1e19f);
     puts("PASS shortest routes, directed low-health drops and legal Force-jump resource gate");
     nav.jumpVelocity=1.5f; nav.maxRunSpeed=1; nav.forceJumpKnown=1;
+    /* The running-arc Force Jump model; test_fix_force_jump covers the
+       standstill one (fjump_standstill), which refuses these legs. */
+    flex_t standstill=BT(FJUMP_STANDSTILL); BT(FJUMP_STANDSTILL)=0;
     BotNode a={0},b={0}; a.sector=b.sector=&sectors[0]; b.pos=(rdVector3){0.4f,0,0};
     flex_t duration;
     assert(Bot_Jumpable(&a,&b,&duration) && duration>0.7f && duration<0.8f);
@@ -318,7 +337,7 @@ static void test_bot_navigation(void)
     b.pos=(rdVector3){-2.4f,-1.85f,-0.129886f};
     assert(!Bot_Jumpable(&a,&b,&duration) && !Bot_ForceJumpable(&a,&b,&duration));
     assert(!Bot_ForceJumpProfile(&a,&b,3,&duration,&hold));
-    assert(queryDepth==0); corridorMode=0;
+    assert(queryDepth==0); corridorMode=0; BT(FJUMP_STANDSTILL)=standstill;
     puts("PASS bounded normal/Force jump arcs and real low-ceiling rejection");
     jkBot_Configure("Bot_CTF","ky.3do"); bot.world=&world; bot.now=5;
     memset(jkPlayer_playerInfos,0,sizeof(jkPlayer_playerInfos)); jkPlayer_maxPlayers=3;

@@ -97,7 +97,7 @@ static void test_bot_movement_tick(int underwater,int opponent,int sound,int mak
         nav.jumpUntil=bot.now+1.0f;
         jkBot_Tick(0.05f);
         assert(bot.targetSlot==1);
-        assert(bot.axes[INPUT_FUNC_TURN]<-0.1f && bot.axes[INPUT_FUNC_PITCH]>0.1f);
+        assert(TestTurn()<-0.1f && TestPitch()>0.1f);
         assert(!bot.keys[INPUT_FUNC_FIRE1] && !bot.keys[INPUT_FUNC_FIRE2]);
 
         /* Heading is already needed before a takeoff has been committed.
@@ -109,18 +109,18 @@ static void test_bot_movement_tick(int underwater,int opponent,int sound,int mak
         bot.routeCount=2; bot.routePos=1; bot.nextPlan=bot.now+2;
         bot.nextRecovery=bot.now+1;
         jkBot_Tick(0.05f);
-        assert(bot.axes[INPUT_FUNC_TURN]<-0.1f && fabsf(bot.axes[INPUT_FUNC_PITCH])<0.01f);
+        assert(TestTurn()<-0.1f && fabsf(TestPitch())<0.01f);
         assert(!bot.keys[INPUT_FUNC_FIRE1]);
         bot.nodes[0].edges[0].drop=BOT_ROUTE_FORCEJUMP;
         bot.forceEnabled=1; own.aItems[SITHBIN_FORCEMANA].amount=100;
         jkBot_Tick(0.05f);
-        assert(bot.axes[INPUT_FUNC_TURN]<-0.1f && !bot.keys[INPUT_FUNC_FIRE1]);
+        assert(TestTurn()<-0.1f && !bot.keys[INPUT_FUNC_FIRE1]);
 
         /* Pending Force Jump must still receive its ordinary hold input. */
         nav.forceJumpPending=1; nav.forceChargeUntil=bot.now+0.5f;
         bot.forceBin=SITHBIN_F_JUMP; bot.forceUntil=nav.forceChargeUntil;
         jkBot_Tick(0.05f);
-        assert(bot.keys[Bot_PowerKey(SITHBIN_F_JUMP)] && bot.axes[INPUT_FUNC_TURN]<-0.1f);
+        assert(bot.keys[Bot_PowerKey(SITHBIN_F_JUMP)] && TestTurn()<-0.1f);
         assert(!bot.keys[INPUT_FUNC_FIRE1]);
         enemy.position=self.position; enemy.position.y+=1;
         jkBot_Tick(0.05f);

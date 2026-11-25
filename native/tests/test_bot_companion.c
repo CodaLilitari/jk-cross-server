@@ -79,6 +79,89 @@ static void ack(int kind,int status,int seq)
     assert(receive(2)==24 && word(frame+16)==(uint32_t)seq);
     assert(frame[20]==status && frame[21]==kind);
 }
+/* Earlier acknowledgement reads discard queued states; ask for a fresh one. */
+static void refresh(void)
+{
+    int states=0;
+    companion.nextState=0; tick();
+    while (receive(1)) { epoch=word(frame+8); life=word(frame+12); states++; }
+    assert(states);
+}
+/* TACTICS: deadline, flags, count, then count (identifier, float) records. */
+static void tactics_command(uint32_t seq,int flags,int count)
+{
+    command(21,seq,10+5*count,clockseconds()+5);
+    frame[28]=flags; frame[29]=count;
+}
+static void tactic(int slot,int id,float value)
+{
+    uint32_t bits; memcpy(&bits,&value,4);
+    frame[30+5*slot]=id; setword(frame+31+5*slot,bits);
+}
+static void test_companion_tactics(void)
+{
+    refresh();
+    float conc=BT(VALUE_CONC), rail=BT(VALUE_RAIL), run=BT(RUN);
+    uint32_t revision=tactics.revision;
+    tactics_command(20,0,2); tactic(0,BT_VALUE_CONC,25); tactic(1,BT_WATER_ENTRY_COST,9); submit(40);
+    ack(21,0,20);
+    assert(BT(VALUE_CONC)==25 && BT(WATER_ENTRY_COST)==9 && BT(VALUE_RAIL)==rail);
+    assert(tactics.revision==revision+1);
+    /* A second plan inside the commitment window is refused and changes nothing. */
+    tactics_command(21,0,1); tactic(0,BT_VALUE_CONC,30); submit(35);
+    ack(21,4,21); assert(frame[22]==CP_TOO_FAST && BT(VALUE_CONC)==25 && tactics.revision==revision+1);
+    /* A retransmission is answered from the receipt, not applied again. */
+    tactics_command(20,0,2); tactic(0,BT_VALUE_CONC,25); tactic(1,BT_WATER_ENTRY_COST,9);
+    memcpy(frame+20,companion.replies[20%64].request,8); submit(40);
+    ack(21,0,20); assert(tactics.revision==revision+1);
+    bot.now+=BOT_TACTICS_COMMIT_SECONDS+0.1f;
+    /* Malformed or out-of-range requests apply nothing and start no window. */
+    tactics_command(22,0,1); tactic(0,BT_VALUE_CONC,99); submit(35); ack(21,1,22);
+    tactics_command(23,0,1); tactic(0,BT_COUNT,1); submit(35); ack(21,1,23);
+    tactics_command(24,0,2); tactic(0,BT_VALUE_CONC,20); tactic(1,BT_VALUE_CONC,21); submit(40); ack(21,1,24);
+    tactics_command(25,0,1); frame[29]=2; tactic(0,BT_VALUE_CONC,20); submit(35); ack(21,1,25);
+    tactics_command(26,4,1); tactic(0,BT_VALUE_CONC,20); submit(35); ack(21,1,26);
+    tactics_command(27,0,0); submit(30); ack(21,1,27);
+    float nan; uint32_t quiet=0x7fc00000u; memcpy(&nan,&quiet,4);
+    tactics_command(28,0,1); tactic(0,BT_VALUE_CONC,nan); submit(35); ack(21,1,28);
+    assert(BT(VALUE_CONC)==25 && tactics.revision==revision+1);
+    tactics_command(29,0,1); tactic(0,BT_RUN,1-run); submit(35); ack(21,0,29);
+    assert(BT(RUN)==1-run && BT(VALUE_CONC)==25 && tactics.revision==revision+2);
+    /* RELEASE ends a policy, not the standing table. */
+    command(18,30,8,clockseconds()+5); submit(28); ack(18,0,30);
+    assert(BT(VALUE_CONC)==25 && BT(RUN)==1-run);
+    /* A coach may adjust between lives; a strategy still needs a living bot. */
+    bot.now+=BOT_TACTICS_COMMIT_SECONDS+0.1f;
+    self.actorParams.health=0; refresh();
+    command(16,31,28,clockseconds()+5); frame[28]=1; submit(48); ack(16,1,31);
+    tactics_command(32,0,1); tactic(0,BT_GUN_FAR,4); submit(35); ack(21,0,32);
+    assert(BT(GUN_FAR)==4);
+    self.actorParams.health=100; refresh();
+    /* Flag bit 0 restores the baseline before merging the records. */
+    bot.now+=BOT_TACTICS_COMMIT_SECONDS+0.1f;
+    tactics_command(33,1,1); tactic(0,BT_VALUE_RAIL,7); submit(35); ack(21,0,33);
+    assert(BT(VALUE_CONC)==conc && BT(RUN)==run && BT(VALUE_RAIL)==7);
+    bot.now+=BOT_TACTICS_COMMIT_SECONDS+0.1f;
+    tactics_command(34,1,0); submit(30); ack(21,0,34);
+    assert(BT(VALUE_RAIL)==rail);
+    /* Bit 1 restores the legacy column instead; both bits at once are refused. */
+    bot.now+=BOT_TACTICS_COMMIT_SECONDS+0.1f;
+    tactics_command(35,3,1); tactic(0,BT_VALUE_CONC,20); submit(35); ack(21,1,35);
+    tactics_command(36,2,0); submit(30); ack(21,0,36);
+    for (int i=0;i<BT_COUNT;i++) assert(tactics.value[i]==botTacticSpecs[i].legacy);
+    bot.now+=BOT_TACTICS_COMMIT_SECONDS+0.1f;
+    tactics_command(37,1,0); submit(30); ack(21,0,37);
+    assert(BT(VALUE_RAIL)==rail && BT(RUN)==run);
+    /* The largest request fits the receipt cache; one more record does not. */
+    bot.now+=BOT_TACTICS_COMMIT_SECONDS+0.1f;
+    tactics_command(38,0,BOT_TACTICS_WIRE_PAIRS);
+    for (int i=0;i<BOT_TACTICS_WIRE_PAIRS;i++) tactic(i,i,botTacticSpecs[i].legacy);
+    submit(30+5*BOT_TACTICS_WIRE_PAIRS); ack(21,0,38);
+    tactics_command(39,0,BOT_TACTICS_WIRE_PAIRS+1);
+    for (int i=0;i<=BOT_TACTICS_WIRE_PAIRS;i++) tactic(i,i,botTacticSpecs[i].legacy);
+    submit(35+5*BOT_TACTICS_WIRE_PAIRS); assert(!receive(2) && "an oversized frame is ignored");
+    puts("PASS companion tactics merge, commitment window, receipts, strict rejection, reset flag and adjustment between lives");
+}
 int main(void)
 {
     assert(socketpair(AF_UNIX,SOCK_DGRAM,0,channel)==0);
@@ -146,6 +229,7 @@ int main(void)
     self.signature++; tick(); assert(Bot_EngagementForward(0,2)==0);
     command(17,10,23,clockseconds()+5); memcpy(frame+28,"hold the bridge",15); submit(43);
     ack(17,3,10); assert(lines==1);
+    test_companion_tactics();
     jkBotCompanion_SetTransport(countFrame);
     command(18,11,8,clockseconds()+5);
     assert(!jkBotCompanion_Receive(frame,513));

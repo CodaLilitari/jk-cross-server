@@ -3,6 +3,9 @@
  * No retail map data, game session, live state writes, or rendering is needed. */
 #include <assert.h>
 #include <stdarg.h>
+#ifndef JKBOT_TEST_NEW_DEFAULTS
+#define JKBOT_TACTICS_BASELINE_LEGACY 1
+#endif
 #include "AI/jkBot.c"
 #ifdef NDEBUG
 #error Assertions must remain enabled for the portal regression

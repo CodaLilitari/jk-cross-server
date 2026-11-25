@@ -91,9 +91,13 @@ The bot checks that both the planned line and its current barrel would reach the
 first. A wall, moving lift or intervening player can block the shot. Rail uses its impact primary.
 
 Against a nearby, facing Bryar or stormtrooper rifle, an elite gun bot can draw its saber and keep
-both attack buttons up so stock bolt defense stays available. At contact it uses a primary swing.
-It reserves the slower heavy secondary for a grounded, dry attack on an immobilized opponent,
-with a clear area around the bot.
+both attack buttons up so stock bolt defense stays available. Any bot swings its saber only at
+contact. With `saber_heavy` (the default) it swings the heavy secondary, 160 damage against the
+primary's 40 to 60, wherever the target will still be in reach as the blade lands, and the quick
+primary at a target pulling away, beside a protected player, or underwater. With `saber_heavy` at 0,
+an elite bot in a gun match uses the primary at contact and keeps the heavy secondary for a grounded,
+dry attack on an immobilized opponent with a clear area around it; other bots swing the primary from
+0.6 units. See [Sabers](BOT_TACTICS.md#sabers).
 
 The bowcaster uses its immediate secondary. Its charged primary fires on key release, including when
 a target becomes peaceful. The bot also leaves thermal throws, sequencer placement and delayed rail

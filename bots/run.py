@@ -164,7 +164,8 @@ def prepare_bot(data: Path, directory: Path, profile: dict) -> None:
 
 def bot_environment(engine: Path, directory: Path, run_directory: Path, index: int,
                     display: str, taunts: bool, *, behavior_file: Path | None = None,
-                    team: int = 0, force_side: str = "light", force_style: str = "balanced") -> dict[str, str]:
+                    team: int = 0, force_side: str = "light", force_style: str = "balanced",
+                    tactics_file: Path | None = None) -> dict[str, str]:
     env = {k: v for k, v in os.environ.items()
            if not k.startswith(("OPENJKDF2_GATEWAY_", "JK_GATEWAY_", "JK_BOT_"))
            and k != "OPENJKDF2_REQUIRE_DP_POOL"}
@@ -177,6 +178,8 @@ def bot_environment(engine: Path, directory: Path, run_directory: Path, index: i
                JK_BOT_TEAM=str(team), JK_BOT_FORCE_SIDE=force_side, JK_BOT_FORCE_STYLE=force_style)
     if behavior_file is not None:
         env["JK_BOT_BEHAVIOR_FILE"] = str(behavior_file)
+    if tactics_file is not None:
+        env["JK_BOT_TACTICS_FILE"] = str(tactics_file)
     env["LD_LIBRARY_PATH"] = str(engine.parent) + (os.pathsep + env["LD_LIBRARY_PATH"] if env.get("LD_LIBRARY_PATH") else "")
     return env
 
@@ -299,8 +302,13 @@ def utc_now() -> str:
 def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
            runtime: Path, seconds: float, taunts: bool, behavior_file: Path | None = None,
            status_file: Path | None = None, managed: bool = False,
-           companion_port: int | None = None, companion_chat: bool = False) -> tuple[int, Path]:
+           companion_port: int | None = None, companion_chat: bool = False,
+           tactics_file: Path | None = None) -> tuple[int, Path]:
     check_scope(config, len(profiles))
+    if tactics_file is not None:
+        tactics_file = tactics_file.resolve()
+        if not tactics_file.is_file():
+            raise ValueError("The supplied bot tactics file does not exist.")
     if companion_chat and companion_port is None:
         raise ValueError("--companion-chat requires --companion-port.")
     if companion_port is not None and (type(companion_port) is not int or not 0 <= companion_port <= 65535):
@@ -377,7 +385,7 @@ def launch(config: dict, profiles: list[dict], *, engine: Path, connect: str,
             try:
                 env = bot_environment(engine, directory, run_directory, index, display, taunts,
                                       behavior_file=behavior_file, team=team, force_side=force_side,
-                                      force_style=force_style)
+                                      force_style=force_style, tactics_file=tactics_file)
                 if hub:
                     channel = hub.take_socket(profile["id"])
                     env["JK_BOT_COMPANION_FD"] = str(channel.fileno())
@@ -485,6 +493,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--companion-chat", action="store_true", help="Authorize companion SAY actions for this run.")
     parser.add_argument("--no-taunts", action="store_true")
     parser.add_argument("--behavior-file", type=Path, help="Read live behavior settings from this existing file")
+    parser.add_argument("--tactics-file", type=Path,
+                        help="Baseline tactic values for every bot (see python -m bots.tactics write)")
     parser.add_argument("--status-file", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--managed", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
@@ -503,7 +513,8 @@ def main(argv: list[str] | None = None) -> int:
                          runtime=args.runtime, seconds=args.seconds,
                          taunts=config["bots_taunts"] and not args.no_taunts,
                          behavior_file=args.behavior_file, status_file=args.status_file, managed=args.managed,
-                         companion_port=args.companion_port, companion_chat=args.companion_chat)
+                         companion_port=args.companion_port, companion_chat=args.companion_chat,
+                         tactics_file=args.tactics_file)
         return code
     except (OSError, ValueError, RuntimeError) as error:
         print("Bot launcher: " + str(error), file=sys.stderr)

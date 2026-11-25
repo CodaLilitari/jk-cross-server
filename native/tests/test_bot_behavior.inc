@@ -44,6 +44,7 @@ static void test_competitive_force(SithThing *self, SithThing *peer, rdModel3 *g
     assert(setenv("JK_BOT_FORCE_STYLE","competitive",1)==0);
     jkBot_Configure("Bot_Competitive","ky.3do");
     assert(unsetenv("JK_BOT_FORCE_STYLE")==0);
+    bot.fistsPeace=1; /* written with fists-as-peace on; the logic is kept */
     bot.joined=1; bot.now=20; bot.targetSlot=1;
     memset(own->aItems,0,sizeof(own->aItems));
     peer->playerInfo->rd_thing.model3=gun;
@@ -258,7 +259,7 @@ static void test_competitive_force(SithThing *self, SithThing *peer, rdModel3 *g
         marker.val.data[0]=-1; bot.now+=0.2f; test_force_frame();
         if (scenario==WRONG_MARKER) {
             nav.waterExitUntil=bot.now+4;
-            Bot_ContinueWaterExit(self);
+            Bot_ContinueWaterExit(self,NULL);
             assert(nav.waterExitUntil==0 && bot.forceBin==grip);
         } else Bot_ForceTick(self,peer,0);
         assert(bot.keys[Bot_PowerKey(grip)] && !bot.keys[INPUT_FUNC_NEXTSKILL]);
@@ -283,7 +284,7 @@ static void test_competitive_force(SithThing *self, SithThing *peer, rdModel3 *g
         bot.now+=0.3f; test_force_frame();
         if (scenario==WRONG_MARKER) {
             nav.waterExitUntil=bot.now+4;
-            Bot_ContinueWaterExit(self);
+            Bot_ContinueWaterExit(self,NULL);
             assert(!nav.waterExitUntil && bot.forceCancel);
         } else Bot_ForceTick(self,peer,0);
         assert((int)marker.val.data[0]==originalMarker);
@@ -344,6 +345,126 @@ static void test_competitive_force(SithThing *self, SithThing *peer, rdModel3 *g
     puts("PASS balanced and master sequencing, original cross-power interval and Protection threshold");
 }
 
+/* Force Pull on an item: aim, hold until the stock marker names the item,
+   release, stand to catch; a wrong marker cancels through deselection. */
+static void test_item_pull(SithThing *self)
+{
+    static SithWorld world; static SithThing items[3]; static SithSector dry;
+    SithPlayer *own=self->actorParams.pPlayer;
+    SithCogSymbol marker={0}; SithCogSymbolTable table={0}; sithCog cog={0};
+    int pull=SITHBIN_F_PULL, key;
+    flex_t least;
+    memset(&dry,0,sizeof(dry)); memset(items,0,sizeof(items));
+    assert(setenv("JK_BOT_FORCE_STYLE","competitive",1)==0);
+    jkBot_Configure("Bot_Puller","ky.3do");
+    assert(unsetenv("JK_BOT_FORCE_STYLE")==0);
+    bot.joined=1; bot.now=50; bot.elite=1; jkPlayer_maxPlayers=0;
+    flex_t saved=BT(ITEM_PULL); least=2.0f; BT(ITEM_PULL)=least; /* the default */
+    /* The pull made standing still; pull_on_move is covered in test_bot_tactic_fixes.inc. */
+    flex_t savedMove=BT(PULL_ON_MOVE); BT(PULL_ON_MOVE)=0;
+    memset(own->aItems,0,sizeof(own->aItems));
+    own->aItems[pull].amount=4; own->aItems[pull].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own->aItems[SITHBIN_F_JUMP].amount=4; own->aItems[SITHBIN_F_JUMP].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own->aItems[SITHBIN_FORCEMANA].amount=400; own->curPower=SITHBIN_F_JUMP;
+    own->aItems[SITHBIN_POWER].amount=500; own->aItems[SITHBIN_POWER].state=SITHINVENTORY_ITEM_AVAILABLE;
+    table.aSymbols=&marker; table.tableSize=table.numUsedSymbols=1; cog.pSymbolTable=&table;
+    marker.pName="victim"; marker.val.type=COG_TYPE_INT; marker.val.data[0]=-1;
+    testInventoryTypes[pull].cog=&cog;
+    self->sector=&dry; self->position=(rdVector3){0,0,0}; self->attach_flags=SITH_ATTACH_SURFACE;
+    self->actorParams.health=100; self->actorParams.headPYR=(rdVector3){0,0,0};
+    bot.world=sithWorld_g_pCurrentWorld=&world; world.aThings=items; world.numThings=2; world.numThingsLoaded=3;
+    const char *names[3]={"concrifle","powercell","concrifle"};
+    for (int i=0;i<3;i++) {
+        items[i].type=SITH_THING_ITEM; items[i].idx=i; items[i].guid=300+i; items[i].sector=&dry;
+        strcpy(items[i].aName,names[i]);
+    }
+    items[0].position=(rdVector3){0,1.5f,0};   /* a missing rifle in reach, dead ahead */
+    items[1].position=(rdVector3){0.5f,1.0f,0}; /* cells it is full of: not worth a cast */
+    items[2].position=(rdVector3){0,4.0f,0};   /* out of reach at rank 4 */
+    key=Bot_PowerKey(pull); assert(key>=0);
+    /* Off in the legacy table. */
+    BT(ITEM_PULL)=0; Bot_ForceTick(self,NULL,180); assert(!bot.pullItem && bot.forceBin<0);
+    BT(ITEM_PULL)=least;
+    /* A flag never; out of sight never. */
+    items[0].itemParams.flags=SITH_ITEM_8; Bot_ForceTick(self,NULL,180); assert(!bot.pullItem);
+    items[0].itemParams.flags=0; testLOS=0; bot.nextItemPull=0;
+    Bot_ForceTick(self,NULL,180); assert(!bot.pullItem); testLOS=1; bot.nextItemPull=0;
+    /* Chosen, then aimed and cast while standing still. */
+    Bot_ForceTick(self,NULL,180); assert(bot.pullItem==1 && bot.pullPhase==1);
+    bot.axes[INPUT_FUNC_FORWARD]=1; test_force_frame(); Bot_ForceTick(self,NULL,180);
+    assert(bot.pullPhase==2 && bot.forceBin==pull && bot.keys[key] && bot.axes[INPUT_FUNC_FORWARD]==0);
+    own->curPower=pull;
+    /* Held until the marker names the item, then released. */
+    bot.now+=0.3f; test_force_frame(); Bot_ForceTick(self,NULL,180); assert(bot.keys[key]);
+    marker.val.data[0]=0;
+    bot.now+=0.3f; test_force_frame(); Bot_ForceTick(self,NULL,180);
+    assert(!bot.keys[key] && bot.forceBin<0 && bot.pullPhase==3 && bot.tele.itemPulls==1);
+    /* Standing to catch it; its pickup ends the pull. */
+    items[0].position=(rdVector3){0,0.4f,0}; /* in flight */
+    bot.now+=0.1f; test_force_frame(); Bot_ForceTick(self,NULL,180); assert(bot.pullPhase==3);
+    items[0].flags|=SITH_TF_DISABLED;
+    bot.now+=0.1f; test_force_frame(); Bot_ForceTick(self,NULL,180);
+    assert(!bot.pullItem && bot.tele.itemCaught==1);
+    puts("PASS Force Pull draws an item worth the cast: aims, holds for the stock marker, releases and stands to catch it");
+    /* A wrong marker after the hold: deselect instead of pulling something else. */
+    items[0].flags=0; items[0].position=(rdVector3){0,1.5f,0}; own->curPower=SITHBIN_F_JUMP;
+    marker.val.data[0]=-1; bot.now+=2; bot.nextItemPull=0; bot.pullItemLast=0;
+    test_force_frame(); Bot_ForceTick(self,NULL,180); assert(bot.pullPhase==1);
+    test_force_frame(); Bot_ForceTick(self,NULL,180); assert(bot.pullPhase==2); own->curPower=pull;
+    marker.val.data[0]=1;
+    bot.now+=1.0f; test_force_frame(); Bot_ForceTick(self,NULL,180);
+    assert(bot.forceCancel && bot.keys[INPUT_FUNC_NEXTSKILL] && bot.tele.pullCancels==1);
+    own->curPower=SITHBIN_F_JUMP; test_force_frame(); Bot_ForceTick(self,NULL,180);
+    assert(!bot.pullItem && bot.forceBin<0 && !bot.keys[key]);
+    /* That item rests ten seconds before another try. */
+    bot.now+=2; bot.nextItemPull=0; test_force_frame(); Bot_ForceTick(self,NULL,180); assert(!bot.pullItem);
+    bot.now+=9; bot.nextItemPull=0; test_force_frame(); Bot_ForceTick(self,NULL,180); assert(bot.pullItem==1);
+    /* An enemy in the fight takes precedence while aiming. */
+    SithThing enemy={0}; test_force_frame(); Bot_ForceTick(self,&enemy,0); assert(!bot.pullItem);
+    marker.val.data[0]=-1; testInventoryTypes[pull].cog=NULL; own->curPower=SITHBIN_F_JUMP;
+    bot.world=sithWorld_g_pCurrentWorld=NULL; self->attach_flags=0; BT(ITEM_PULL)=saved; BT(PULL_ON_MOVE)=savedMove;
+    puts("PASS a wrong marker deselects, the item rests before a retry, and a fight takes precedence");
+}
+
+/* Absorb at rank four turns all Force damage (Grip among it) into mana, and
+   costs 200: optional casts keep that much while it is down, and a Grip is
+   answered with it before bacta. */
+static void test_grip_answer(SithThing *self)
+{
+    SithPlayer *own=self->actorParams.pPlayer;
+    int absorb=SITHBIN_F_ABSORB, pull=SITHBIN_F_PULL;
+    assert(setenv("JK_BOT_FORCE_STYLE","competitive",1)==0);
+    jkBot_Configure("Bot_Gripped","ky.3do");
+    assert(unsetenv("JK_BOT_FORCE_STYLE")==0);
+    bot.joined=1; bot.now=80; jkPlayer_maxPlayers=0;
+    flex_t reserve=BT(ABSORB_RESERVE); BT(ABSORB_RESERVE)=1;
+    memset(own->aItems,0,sizeof(own->aItems));
+    own->aItems[absorb].amount=4; own->aItems[absorb].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own->aItems[pull].amount=4; own->aItems[pull].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own->aItems[SITHBIN_F_JUMP].amount=4; own->aItems[SITHBIN_F_JUMP].state=SITHINVENTORY_ITEM_AVAILABLE;
+    own->aItems[SITHBIN_FORCEMANA].amount=210;
+    assert(!Bot_ForceReady(self,pull,20) && "210 leaves less than Absorb's 200 after a pull");
+    own->aItems[SITHBIN_FORCEMANA].amount=220; assert(Bot_ForceReady(self,pull,20));
+    own->aItems[SITHBIN_FORCEMANA].amount=150; assert(Bot_ForceReady(self,SITHBIN_F_JUMP,20) && "jumps are not held back");
+    own->aItems[absorb].state|=SITHINVENTORY_ITEM_ACTIVATED; assert(Bot_ForceReady(self,pull,20) && "Absorb already up");
+    own->aItems[absorb].state=SITHINVENTORY_ITEM_AVAILABLE;
+    BT(ABSORB_RESERVE)=0; assert(Bot_ForceReady(self,pull,20) && "legacy spends freely"); BT(ABSORB_RESERVE)=1;
+    puts("PASS optional casts keep 200 mana for Absorb while it is down; jumps and the legacy table do not");
+    /* Gripped and hurt, with bacta in hand: Absorb first. */
+    own->aItems[SITHBIN_FORCEMANA].amount=250; self->actorParams.health=50;
+    own->aItems[SITHBIN_BACTATANK].amount=1; own->aItems[SITHBIN_BACTATANK].state=SITHINVENTORY_ITEM_AVAILABLE;
+    bot.grippedUntil=bot.now+0.8f; bot.nextForce=0; bot.forceBin=-1;
+    test_force_frame(); Bot_ForceTick(self,NULL,180);
+    assert(bot.forceBin==absorb && !bot.keys[Bot_PowerKey(SITHBIN_BACTATANK)]);
+    /* Not gripped: bacta comes first as before. */
+    bot.now+=1; test_force_frame(); Bot_ForceTick(self,NULL,180); bot.forceBin=-1; bot.grippedUntil=0; bot.nextForce=0;
+    test_force_frame(); Bot_ForceTick(self,NULL,180);
+    assert(bot.keys[Bot_PowerKey(SITHBIN_BACTATANK)] && bot.forceBin<0);
+    puts("PASS a Grip is answered with Absorb before bacta");
+    self->actorParams.health=100; BT(ABSORB_RESERVE)=reserve; bot.nextForce=0; bot.forceBin=-1;
+    memset(own->aItems,0,sizeof(own->aItems));
+}
+
 static void test_bot_behavior(void)
 {
     SithSector sector={0}; SithThing self={0},peer={0},shot={0};
@@ -351,6 +472,8 @@ static void test_bot_behavior(void)
     strcpy(fists.filename,"fistg.3do"); strcpy(gun.filename,"strg.3do");
     strcpy(saber.filename,"sabg.3do"); strcpy(bomb.filename,"detg.3do");
     jkBot_Configure("Bot_Policy","ky.3do"); bot.joined=1; bot.now=10;
+    assert(!bot.fistsPeace && "fists as peace is taken out for now");
+    bot.fistsPeace=1; /* the peace logic is kept for when it comes back */
     corridorMode=0; testLOS=1; sithNet_MultiModeFlags=0; jkPlayer_maxPlayers=2;
     self.type=peer.type=SITH_THING_PLAYER; self.sector=peer.sector=&sector;
     self.actorParams.pPlayer=&own; self.actorParams.health=100; self.collideSize=0.065f;
@@ -432,7 +555,16 @@ static void test_bot_behavior(void)
         a=b=c=9; f=tmpfile(); assert(f); fputs(bad[i],f); rewind(f);
         assert(!Bot_ReadBehavior(f,&a,&b,&c) && a==9 && b==9 && c==9); fclose(f);
     }
-    puts("PASS complete atomic behavior config and invalid/partial/duplicate rejection");
+    {   /* A settings file that still asks for fists-as-peace is read but not obeyed. */
+        char path[]="/tmp/jk-bot-behaviorXXXXXX"; int fd=mkstemp(path); assert(fd>=0);
+        FILE *w=fdopen(fd,"w"); assert(w);
+        fputs("version=1\nsabers_only=0\nfists_peace=1\nforce_enabled=1\n",w); fclose(w);
+        strcpy(bot.behaviorFile,path); bot.fistsPeace=1; bot.sabersOnly=1; bot.now=50;
+        Bot_ReloadBehavior();
+        assert(!bot.fistsPeace && !bot.sabersOnly && bot.forceEnabled);
+        unlink(path); bot.behaviorFile[0]=0;
+    }
+    puts("PASS complete atomic behavior config and invalid/partial/duplicate rejection; fists_peace=1 is ignored");
     jkBot_Configure("Bot_Weapon","ky.3do"); bot.joined=1; bot.now=10;
     sithPlayer_g_pLocalPlayerThing=&self; bot.targetSlot=1; bot.fistsPeace=0;
     remote.rd_thing.model3=&gun; peer.position=(rdVector3){0,4,0}; own.curWeaponID=SITHBIN_STORMTROOPER_RIFLE;
@@ -535,6 +667,8 @@ static void test_bot_behavior(void)
     bot.world=NULL; assert(!Bot_ForceDebris(&self));
     puts("PASS Force debris includes final active slot and respects empty/single/capacity bounds");
     test_competitive_force(&self,&peer,&gun,&fists);
+    test_item_pull(&self);
+    test_grip_answer(&self);
     test_force_trace(&self);
     sithPlayer_g_pLocalPlayerThing=NULL;
 }

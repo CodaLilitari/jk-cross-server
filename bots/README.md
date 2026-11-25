@@ -58,7 +58,7 @@ Existing configurations remain **bots disabled** until explicitly enabled.
 | Add bots when the server starts | `bots_enabled` | `false` |
 | Selected characters | `bots_profiles` | `["boba_fett", "jan_ors"]` |
 | Sabers only | `bots_sabers_only` | `false` |
-| Fists = peace | `bots_fists_peace` | `true` |
+| Fists = peace | `bots_fists_peace` | `false` (taken out for now: bots ignore it) |
 | Use Force powers | `bots_force_enabled` | `true` |
 | Occasional character chat | `bots_taunts` | `true` |
 | Bot client executable | `bots_engine` | Empty: use the packaged client |
@@ -292,9 +292,12 @@ change it live, atomically replace the complete file with all four lines:
 ```ini
 version=1
 sabers_only=0
-fists_peace=1
+fists_peace=0
 force_enabled=1
 ```
+
+`fists_peace` is still read so older files stay valid, but bots currently
+ignore it: a player holding fists is fought like anyone else.
 
 Only `0` and `1` are accepted. A missing, partial, duplicate, or invalid setting
 preserves the last valid rules. Editing the server's JSON during a standalone
@@ -306,6 +309,31 @@ and its own Xvfb, if needed, and leaves the running server and unrelated
 processes alone. If a component exits, a join is rejected, or a bot has not
 joined after 90 seconds, it stops its own roster and returns failure. A bounded
 run that ends before all bots join also returns failure.
+
+## Tactics and the coach
+
+Proposed in `native/bot-tactics.patch`; not yet in the packaged bot clients.
+See [Bot movement, tactics and the coach seat](../docs/BOT_TACTICS.md).
+
+With that overlay built in, 64 named values steer the planner and the
+movement code: what each heavy gun is worth, how much water costs, whether
+the bot runs, how long it may stay in one spot before it must go elsewhere,
+whether it fights its way out of water and keeps Force Speed up, whether it
+pulls items on the run, how it goes after dropped packs, whether it keeps
+clear of, springs and disarms the stock levels' traps and works Nar
+Shaddaa's force field, whether it calls a lift that will not come, whether
+it opens the floor door of a pit it fell into, how it gets through a narrow
+opening from against the wall beside it, whether it swings the saber's heavy
+secondary, and how much margin a running jump or a Force Jump leg must have.
+`python3 -m bots.tactics list` prints them with their ranges and presets.
+
+- `python3 -m bots.tactics write PATH --preset NAME --set name=value` writes a
+  baseline file; pass it to the launcher with `--tactics-file PATH`.
+- `python3 -m bots.companion_cli --credentials BOT.json tactics --preset NAME`
+  adjusts a running bot through the companion. The engine accepts one
+  adjustment every 8 seconds.
+- `python3 -m bots.coach --credentials BOT.json --memory FILE --label NAME`
+  tries presets on a running bot and keeps the ones that score.
 
 ## Isolation and diagnostics
 

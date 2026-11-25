@@ -1,6 +1,14 @@
 /* Controlled regression checks; not a live multiplayer qualification. */
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+/* These groups were written against the behaviour before the tactic table.
+   They pin its legacy column; test_bot_tactics.inc covers the new defaults.
+   Compile with -DJKBOT_TEST_NEW_DEFAULTS to run them against the defaults. */
+#ifndef JKBOT_TEST_NEW_DEFAULTS
+#define JKBOT_TACTICS_BASELINE_LEGACY 1
+#endif
 #include "AI/jkBot.c"
 #ifdef NDEBUG
 #error Assertions must remain enabled for the driver regression tests
@@ -11,7 +19,9 @@ int32_t sithNet_MultiModeFlags;
 int32_t sithNet_tickrate=16;
 SithThing *sithPlayer_g_pLocalPlayerThing;
 flex_t sithTime_g_secGameTime;
+int sithControl_death_msgtimer; /* quick_respawn reads the stock death message timer */
 static int testLOS=1;
+static SithThing *testGrenade;
 static SithInventoryType testInventoryTypes[SITHBIN_NUMBINS];
 static int corridorMode, queryDepth, pendingHit;
 static flex_t corridorCeiling=-0.05f;
@@ -24,9 +34,11 @@ static SithCollision fixtureHit;
 #include "test_bot_static_bridge.inc"
 #include "test_bot_slope_geometry.inc"
 #include "test_bot_combat.inc"
+#include "test_bot_plain_geometry.inc"
 /* Bounded box matching stock m2 sector110; not a full level simulation. */
 int sithIntersect_IsSphereInSector(const rdVector3 *p, flex_t radius, SithSector *sector)
 {
+    if (testPlainActive) return TestPlainSphere(p,radius,sector);
     if (testC1Active) return TestC1Sphere(p,radius,sector);
     if (testBridgeActive) return TestBridgeSphere(p,radius,sector);
     if (testSlopeActive) return TestSlopeSphere(p,radius,sector);
@@ -38,6 +50,7 @@ int sithIntersect_IsSphereInSector(const rdVector3 *p, flex_t radius, SithSector
 SithSector *sithSector_FindSectorAtPos(SithWorld *world, rdVector3 *position)
 {
     (void)world;
+    if (testPlainActive) return TestPlainSector(position);
     if (testC1Active) return TestC1Sector(position);
     if (testBridgeActive) return TestBridgeSector(position);
     if (testSlopeActive) return TestSlopeSectorAt(position);
@@ -48,6 +61,10 @@ flex_t sithCollision_SearchForCollisions(SithSector *sector, SithThing *thing,
     flex_t radius, int flags)
 {
     queryDepth++; pendingHit=0;
+    if (testPlainActive) {
+        pendingHit=TestPlainCollision(from,direction,distance,radius,&corridorHit);
+        return distance;
+    }
     if (testCombatArena) {
         pendingHit=TestCombatCollision(sector,from,direction,distance,radius,&corridorHit);
         if (thing && thing->type==SITH_THING_WEAPON && flags==0)
@@ -108,13 +125,20 @@ SithThing *sithTemplate_GetTemplate(const char *name)
     if (testCombatArena && !strcmp(name,"+concblast2")) return &testConcBeam;
     if (testCombatArena && !strcmp(name,"+concbullet")) return &testConcProjectile;
     if (testCombatArena && !strcmp(name,"+raildet")) return &testRailProjectile;
+    if (testGrenade && !strcmp(name,"+grenade1")) return testGrenade;
     return NULL;
 }
+/* The turn the bot asked for this tick: a keyboard axis, or (turn_rate) a
+   mouse-look rotation in degrees. Tests read its direction. */
+static flex_t TestTurn(void) { return bot.axes[INPUT_FUNC_TURN]!=0 ? bot.axes[INPUT_FUNC_TURN] : bot.rawTurn; }
+static flex_t TestPitch(void) { return bot.axes[INPUT_FUNC_PITCH]!=0 ? bot.axes[INPUT_FUNC_PITCH] : bot.rawPitch; }
 #include "test_bot_behavior.inc"
 #include "test_bot_navigation.inc"
 #include "test_bot_movement_tick.inc"
 #include "test_bot_combat_jump.inc"
 #include "test_bot_equipment.inc"
+#include "test_bot_tactics.inc"
+#include "test_bot_tactic_fixes.inc"
 
 int main(void)
 {
@@ -164,11 +188,22 @@ int main(void)
     self.orient.rvec=(rdVector3){1,0,0};
     self.orient.lvec=(rdVector3){0,1,0};
     self.actorParams.maxRotVelocity=200;
+    /* The keyboard path (turn_rate 0): rate-limited turn and pitch axes. */
+    flex_t turnRate=BT(TURN_RATE); BT(TURN_RATE)=0;
     Bot_Aim(&self,(rdVector3){1,1,0},1);
-    assert(jkBot_GetAxis(INPUT_FUNC_TURN)<0);
+    assert(jkBot_GetAxis(INPUT_FUNC_TURN)<0 && jkBot_GetRawAxis(INPUT_FUNC_TURN)==0);
     Bot_Aim(&self,(rdVector3){-1,1,0.2f},1);
     assert(jkBot_GetAxis(INPUT_FUNC_TURN)>0 && jkBot_GetAxis(INPUT_FUNC_PITCH)>0);
     assert(jkBot_GetAxis(-1)==0 && jkBot_GetAxis(INPUT_FUNC_MAX)==0);
+    /* The mouse-look path: this frame's rotation in degrees, capped by turn_rate. */
+    BT(TURN_RATE)=1800; bot.frameDt=0.02f;
+    Bot_Aim(&self,(rdVector3){1,1,0},1);
+    assert(jkBot_GetAxis(INPUT_FUNC_TURN)==0 && fabsf(jkBot_GetRawAxis(INPUT_FUNC_TURN)+36.0f)<0.01f && "45 degrees right, 36 this frame");
+    Bot_Aim(&self,(rdVector3){-0.1f,1,0.1f},1);
+    assert(fabsf(jkBot_GetRawAxis(INPUT_FUNC_TURN)-5.711f)<0.01f && fabsf(jkBot_GetRawAxis(INPUT_FUNC_PITCH)-5.682f)<0.01f && "a small error closes in one frame");
+    bot.axes[INPUT_FUNC_TURN]=0.5f; assert(jkBot_GetRawAxis(INPUT_FUNC_TURN)==0 && "a key turn set after the aim wins");
+    assert(jkBot_GetRawAxis(INPUT_FUNC_FORWARD)==0);
+    bot.axes[INPUT_FUNC_TURN]=0; bot.rawTurn=bot.rawPitch=0; BT(TURN_RATE)=turnRate;
     bot.keys[INPUT_FUNC_ACTIVATE]=1; bot.presses[INPUT_FUNC_ACTIVATE]=1;
     int pressed=-1;
     assert(jkBot_GetKey(INPUT_FUNC_ACTIVATE,NULL)==1);
@@ -238,5 +273,7 @@ int main(void)
     test_bot_equipment();
     test_bot_movement_ownership();
     test_combat_supply_jump();
+    test_bot_tactics();
+    test_bot_tactic_fixes();
     return 0;
 }

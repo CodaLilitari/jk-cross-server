@@ -63,6 +63,9 @@ static void test_alternate_fire(SithThing *self,SithThing *enemy,SithThing *ally
     testConcBeam.weaponParams.flags=SITH_WF_INSTANT_IMPACT;
     testConcBeam.weaponParams.range=5; testConcBeam.weaponParams.damage=80;
     int conc=SITHBIN_CONCUSSION_RIFLE, rpt=SITHBIN_REPEATER, bow=SITHBIN_TUSKEN_PROD;
+    /* These cases were written for the beam-first rule (conc_alt_range 99). */
+    flex_t altRange=BT(CONC_ALT_RANGE), heavyHold=BT(HEAVY_HOLD);
+    BT(CONC_ALT_RANGE)=99;
     BotGunShot ground=test_fire_input(self,enemy,conc,0,1); assert(ground.floorAim);
     enemy->physicsParams.vel.x=1;
     BotGunShot crossing=test_fire_input(self,enemy,conc,0,2);
@@ -90,6 +93,53 @@ static void test_alternate_fire(SithThing *self,SithThing *enemy,SithThing *ally
     test_fire_input(self,enemy,conc,0,0); bot.previous[INPUT_FUNC_FIRE2]=0; test_fire_input(self,enemy,conc,0,1);
     puts("PASS concussion mode holds actual buttons for splash or stock-range beam, verifies first target and physical aim, rejects unsafe lines, enforces ammo and neutral handoff");
 
+    /* Since the first recorded match: the shell at range, the beam inside
+       conc_alt_range or when the shell is not safe. */
+    BT(CONC_ALT_RANGE)=1.4f;
+    enemy->position=(rdVector3){0,2,BOT_FOOT_HEIGHT}; enemy->physicsParams.vel.x=1;
+    assert(!test_fire_input(self,enemy,conc,0,1).beam && "a crossing target at 2 units gets the shell, not the beam");
+    enemy->physicsParams.vel.x=0;
+    enemy->position.y=1.0f; assert(test_fire_input(self,enemy,conc,0,2).beam && "inside 1.4 the beam");
+    enemy->position.y=.40f; test_fire_input(self,enemy,conc,0,2);
+    ally->position=(rdVector3){.6f,2,BOT_FOOT_HEIGHT}; enemy->position.y=2;
+    assert(test_fire_input(self,enemy,conc,0,2).beam && "an ally in the shell's blast: the beam, whose first hit is the target");
+    ally->position.x=10;
+    /* heavy_hold: no safe conc shot this instant (the beam is blocked and the
+       shell would catch the shooter), but the beam is in reach: keep the rifle. */
+    enemy->position.y=.60f; testBeamObstacle=&lift; p->curWeaponID=conc;
+    BT(HEAVY_HOLD)=1; memset(bot.keys,0,sizeof(bot.keys)); bot.nextSelect=0; Bot_SelectWeapon(self,.60f);
+    assert(!bot.keys[INPUT_FUNC_SELECT1+rpt-1] && !bot.keys[INPUT_FUNC_SELECT1+SITHBIN_LIGHTSABER-1] && "the rifle stays in hand");
+    BT(HEAVY_HOLD)=0; memset(bot.keys,0,sizeof(bot.keys)); bot.nextSelect=0; Bot_SelectWeapon(self,.60f);
+    assert(!bot.keys[INPUT_FUNC_SELECT1+conc-1] && "legacy changes weapons");
+    testBeamObstacle=NULL; memset(bot.keys,0,sizeof(bot.keys));
+    /* A wall across the rail's path blocks every gun alike: heavy_hold keeps
+       the rail in hand and waits; the legacy rule puts it away. */
+    int rail=SITHBIN_RAIL_DETONATOR;
+    SithInventoryItem railItem=p->aItems[rail], charges=p->aItems[SITHBIN_RAILCHARGES];
+    int weaponBefore=p->curWeaponID;
+    p->aItems[rail].amount=1; p->aItems[rail].state=SITHINVENTORY_ITEM_AVAILABLE;
+    p->aItems[SITHBIN_RAILCHARGES].amount=5; p->aItems[SITHBIN_RAILCHARGES].state=SITHINVENTORY_ITEM_AVAILABLE;
+    enemy->position.y=2; p->curWeaponID=rail; testCombatWall=1;
+    BotGunShot walled=Bot_ChooseGunShot(self,enemy,rail);
+    assert(!Bot_GunSafe(self,enemy,&walled,0.02f) && !strcmp(bot_unsafeWhy,"muzzle"));
+    BT(HEAVY_HOLD)=1; memset(bot.keys,0,sizeof(bot.keys)); bot.nextSelect=0; Bot_SelectWeapon(self,2);
+    for (int w=1;w<=10;w++) assert(!bot.keys[INPUT_FUNC_SELECT1+w-1] && "the rail stays in hand behind the wall");
+    BT(HEAVY_HOLD)=0; memset(bot.keys,0,sizeof(bot.keys)); bot.nextSelect=0; Bot_SelectWeapon(self,2);
+    int swapped=0; for (int w=1;w<=10;w++) swapped|=bot.keys[INPUT_FUNC_SELECT1+w-1] && w!=rail;
+    assert(swapped && "legacy puts the rail away");
+    testCombatWall=0;
+    /* A dodge hop fires a heavy gun when the kick still lands on floor; an
+       ordinary combat jump, or the legacy rule, holds fire in the air. */
+    nav.combatJumpUntil=bot.now+1; nav.dodgeHop=1; nav.dodgeFrom=self->position; nav.dodgeSector=self->sector;
+    BT(HEAVY_HOLD)=1; assert(!Bot_HeavyGrounded(self,conc) && Bot_HeavyGrounded(self,rail)==0);
+    BT(HEAVY_HOLD)=0; assert(Bot_HeavyGrounded(self,conc));
+    BT(HEAVY_HOLD)=1; nav.dodgeHop=0; assert(Bot_HeavyGrounded(self,conc) && !Bot_HeavyGrounded(self,rpt));
+    nav.combatJumpUntil=0; nav.dodgeSector=NULL;
+    p->curWeaponID=weaponBefore; p->aItems[rail]=railItem; p->aItems[SITHBIN_RAILCHARGES]=charges;
+    memset(bot.keys,0,sizeof(bot.keys));
+    BT(CONC_ALT_RANGE)=altRange; BT(HEAVY_HOLD)=heavyHold;
+    puts("PASS concussion shell at range, beam up close or when the shell is unsafe; heavies stay in hand while the beam reaches or the path is only blocked");
+
     enemy->position.y=.45f; test_fire_input(self,enemy,rpt,0,2);
     enemy->position.y=1.1f; test_fire_input(self,enemy,rpt,0,1);
     enemy->position.y=.45f; test_fire_input(self,enemy,rpt,4,1);
@@ -101,12 +151,35 @@ static void test_alternate_fire(SithThing *self,SithThing *enemy,SithThing *ally
     test_fire_input(self,enemy,SITHBIN_BRYARPISTOL,0,1); test_fire_input(self,enemy,SITHBIN_STORMTROOPER_RIFLE,0,1);
     puts("PASS repeater uses converging short burst and falls back for spread or low charge; bow uses safe immediate release-free mode; rail and blasters use primary");
 
+    /* These cases were written for the primary-first saber (saber_heavy 0). */
+    flex_t saberHeavy=BT(SABER_HEAVY);
+    BT(SABER_HEAVY)=0;
     enemy->position.y=.20f; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,1);
     enemy->actorParams.flags|=SITH_AF_IMMOBILE; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,2);
     self->sector->flags|=SITH_SECTOR_UNDERWATER;
     test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,1); self->sector->flags&=~SITH_SECTOR_UNDERWATER;
     enemy->actorParams.flags&=~SITH_AF_IMMOBILE;
     enemy->position.y=.30f; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,0);
+    /* saber_heavy: the heavy secondary from contact wherever the target will
+       still be in reach as its blade comes down; the quick primary for one
+       pulling away, beside a protected player, or underwater; out of contact
+       no swing, whatever the bot's grade. */
+    BT(SABER_HEAVY)=1; bot.tele.saberHeavy=bot.tele.saberLight=0;
+    enemy->position.y=.20f; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,2);
+    assert(bot.tele.saberHeavy==1 && !bot.tele.saberLight);
+    enemy->physicsParams.vel.y=1; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,1);
+    enemy->physicsParams.vel.y=0; self->physicsParams.vel.y=1; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,2);
+    self->physicsParams.vel.y=0;
+    ally->position=(rdVector3){.30f,.10f,BOT_FOOT_HEIGHT}; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,1);
+    ally->position=(rdVector3){10,0,BOT_FOOT_HEIGHT};
+    self->sector->flags|=SITH_SECTOR_UNDERWATER;
+    test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,1); self->sector->flags&=~SITH_SECTOR_UNDERWATER;
+    enemy->position.y=.30f; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,0);
+    int elite=bot.elite; bot.elite=0; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,0);
+    enemy->position.y=.20f; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,2);
+    BT(SABER_HEAVY)=0; enemy->position.y=.30f; test_fire_input(self,enemy,SITHBIN_LIGHTSABER,0,1);
+    bot.elite=elite; BT(SABER_HEAVY)=saberHeavy; bot.tele.saberHeavy=bot.tele.saberLight=0;
+    puts("PASS saber_heavy swings the heavy secondary from contact at a target still in reach as it lands, the quick primary at one pulling away, beside a protected player or underwater, and nothing out of contact; legacy swings the primary from farther out");
     p->aItems[SITHBIN_POWER].amount=40; enemy->position.y=2; nav.combatJumpUntil=bot.now+5;
     test_fire_input(self,enemy,conc,0,0); test_fire_input(self,enemy,SITHBIN_RAIL_DETONATOR,0,0);
     test_fire_input(self,enemy,rpt,0,1); p->curWeaponID=SITHBIN_BRYARPISTOL;

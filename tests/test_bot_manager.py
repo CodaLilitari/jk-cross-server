@@ -26,7 +26,7 @@ class BotConfigurationTests(unittest.TestCase):
         value = conf.validate({})
         self.assertFalse(value["bots_enabled"])
         self.assertFalse(value["bots_sabers_only"])
-        self.assertTrue(value["bots_fists_peace"])
+        self.assertFalse(value["bots_fists_peace"])  # taken out for now; bots ignore it
         self.assertTrue(value["bots_force_enabled"])
         self.assertEqual(value["bots_profiles"], ["boba_fett", "jan_ors"])
         value["bots_profiles"].append("yun")

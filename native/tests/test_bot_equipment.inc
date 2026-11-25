@@ -33,6 +33,9 @@ static void test_failed_supply_approach(void)
     SithWorld world={0}; SithSector bank={0},air={0},water={.flags=SITH_SECTOR_UNDERWATER};
     SithThing self={0},items[4]={0}; SithPlayer own={0};
     jkBot_Configure("Supply_Approach","ky.3do"); Bot_ResetHearing();
+    /* Hand-set edge costs, not lengths: swim_cost would reprice the swims by
+       geometry and move a tied pursuit anchor. It is tested on its own. */
+    flex_t swimCost=BT(SWIM_COST); BT(SWIM_COST)=1;
     bot.world=sithWorld_g_pCurrentWorld=&world;
     world.aThings=items; world.numThings=2; world.numThingsLoaded=3;
     sithPlayer_g_pLocalPlayer=&own; sithPlayer_g_pLocalPlayerThing=&self;
@@ -100,7 +103,7 @@ static void test_failed_supply_approach(void)
         if (!i) fprintf(stderr,"SUPPLY_HEARING pursuit=%u slide=%.3f turn=%.3f\n",
             nav.pursuitNet,(double)bot.axes[INPUT_FUNC_SLIDE],(double)bot.axes[INPUT_FUNC_TURN]);
         assert(!bot.armItem && nav.pursuitNet==42 && bot.goal==4 && bot.axes[INPUT_FUNC_SLIDE]<-.2f);
-        assert(bot.axes[INPUT_FUNC_TURN]<0 && !bot.keys[INPUT_FUNC_FIRE1] && !bot.keys[INPUT_FUNC_FIRE2]);
+        assert(TestTurn()<0 && !bot.keys[INPUT_FUNC_FIRE1] && !bot.keys[INPUT_FUNC_FIRE2]);
     }
     jkPlayer_maxPlayers=0; testLOS=1; Bot_ResetHearing();
     /* The failed entrance is also the sole transit to the far bank. A dry
@@ -277,7 +280,7 @@ static void test_failed_supply_approach(void)
     puts("PASS dry extra guns yield to active bank patrol, alternate entries, cached rearming and underwater dry-transit rescans");
     puts("PASS independent failed approach expiries and ordinary life/world reset; reverse air route, dry pursuit and projectile attention");
     puts("PASS loaded heavy defers a failed water approach across item identities in both planners; dry movement, other banks/pools, rearming, cached routes and expiry");
-    assert(queryDepth==0); testCombatArena=0; Bot_ResetHearing();
+    assert(queryDepth==0); testCombatArena=0; Bot_ResetHearing(); BT(SWIM_COST)=swimCost;
 }
 
 static void test_bot_equipment(void)

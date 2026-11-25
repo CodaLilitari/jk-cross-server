@@ -16,7 +16,8 @@ async function check(mode) {
   const heap = new Uint8Array(2048);
   let sent = false, payloadReceived = false, inited = false;
   const clockCmd = new Uint8Array(20+28);
-  clockCmd.set(Buffer.from("JKCP")); clockCmd[4]=1; clockCmd[5]=16;
+  // Sabers modes carry a tactics command (21); guns modes a strategy (16).
+  clockCmd.set(Buffer.from("JKCP")); clockCmd[4]=1; clockCmd[5]=mode.endsWith("sabers") ? 21 : 16;
   const view = new DataView(clockCmd.buffer);
   view.setUint16(6,28,true); view.setFloat64(20,5002,true);
   const ctx = { crypto:crypto.webcrypto, Uint8Array, DataView, TextDecoder, Blob, console, btoa, atob,
@@ -64,6 +65,7 @@ async function check(mode) {
   assert.equal(payloadReceived,true);
   assert.equal(delivered.length,1);
   assert.equal(new DataView(delivered[0].buffer).getFloat64(20,true),102);
+  assert.equal(delivered[0][5],mode.endsWith("sabers") ? 21 : 16);
   console.log("Browser client boot, scoped MEMFS, frame transfer and monotonic TTL mapping passed.");
 }
 Promise.all(["ff-guns","ff-sabers","nf-guns","nf-sabers"].map(check)).catch(e=>{console.error(e);process.exitCode=1;});

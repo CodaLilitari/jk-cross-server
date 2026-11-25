@@ -21,7 +21,7 @@ DEFAULT = {
     "web_origins": [], "web_ice_servers": [], "retail_enabled": False, "directplay_bridge": "",
     "wine": "", "wine_prefix": "", "auto_restart": False,
     "bots_enabled": False, "bots_profiles": ["boba_fett", "jan_ors"],
-    "bots_sabers_only": False, "bots_fists_peace": True,
+    "bots_sabers_only": False, "bots_fists_peace": False,
     "bots_force_enabled": True, "bots_taunts": True, "bots_engine": "",
 }
 

@@ -75,7 +75,7 @@ static void test_combat_supply_jump(void)
         own.curWeaponID=SITHBIN_BRYARPISTOL; own.aItems[gun].amount=0;
     }
     enemy->position.x=2;
-    jkBot_Tick(.04f); assert(!bot.keys[INPUT_FUNC_FIRE1] && fabsf(bot.axes[INPUT_FUNC_TURN])>.1f);
+    jkBot_Tick(.04f); assert(!bot.keys[INPUT_FUNC_FIRE1] && fabsf(TestTurn())>.1f);
     self->attach_flags=SITH_ATTACH_SURFACE; enemy->position.x=0;
     jkBot_Tick(.04f); jkBot_Tick(.04f);
     assert(!nav.combatJumpUntil && bot.armItem==3 && bot.axes[INPUT_FUNC_FORWARD]>.5f && !bot.keys[jump]);
